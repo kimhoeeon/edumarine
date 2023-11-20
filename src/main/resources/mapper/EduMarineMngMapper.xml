@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mtf.edumarine.mapper.EduMarineMngMapper">
+
+    <select id="login" parameterType="com.mtf.edumarine.dto.AdminDTO" resultType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.login */
+        SELECT id
+        FROM admin
+        WHERE id = #{id}
+          AND password = <![CDATA[#{password}]]>
+    </select>
+
+    <select id="selectNoticeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNoticeList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM notice
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectNoticeSingle" parameterType="com.mtf.edumarine.dto.NoticeDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectNoticeSingle */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM notice
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteNotice" parameterType="com.mtf.edumarine.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteNotice */
+        DELETE FROM notice
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateNotice" parameterType="com.mtf.edumarine.dto.NoticeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateNotice */
+        UPDATE notice
+        SET lang = #{lang}
+        , notice_gbn = #{noticeGbn}
+        , title = <![CDATA[#{title}]]>
+        , content = <![CDATA[#{content}]]>
+        , writer = #{writer}
+        , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getNoticeSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getNoticeSeq */
+        SELECT CONCAT('N', LPAD(nextval('notice_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertNotice" parameterType="com.mtf.edumarine.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertNotice */
+        INSERT INTO notice
+        ( seq
+        , lang
+        , notice_gbn
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{noticeGbn}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , #{note}
+            , 'NOTICE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'NOTICE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectSipaNewsList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SipaNewsDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSipaNewsList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM sipa_news
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectSipaNewsSingle" parameterType="com.mtf.edumarine.dto.SipaNewsDTO" resultType="com.mtf.edumarine.dto.SipaNewsDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectSipaNewsSingle */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sipa_news
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteSipaNews" parameterType="com.mtf.edumarine.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteSipaNews */
+        DELETE FROM sipa_news
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateSipaNews" parameterType="com.mtf.edumarine.dto.SipaNewsDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSipaNews */
+        UPDATE sipa_news
+        SET lang = #{lang}
+          , notice_gbn = #{noticeGbn}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getSipaNewsSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getSipaNewsSeq */
+        SELECT CONCAT('S', LPAD(nextval('sipanews_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSipaNews" parameterType="com.mtf.edumarine.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertSipaNews */
+        INSERT INTO sipa_news
+        ( seq
+        , lang
+        , notice_gbn
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{noticeGbn}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , #{note}
+            , 'SIPANEWS'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'SIPANEWS'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectEventList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.EventDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectEventList */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , location
+             , year
+             , start_date
+             , end_date
+             , init_regi_dttm
+             , final_regi_dttm
+        FROM event
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY write_date desc, title asc
+    </select>
+
+    <select id="selectEventSingle" parameterType="com.mtf.edumarine.dto.EventDTO" resultType="com.mtf.edumarine.dto.EventDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectEventSingle */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , location
+             , year
+             , start_date
+             , end_date
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM event
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteEvent" parameterType="com.mtf.edumarine.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteEvent */
+        DELETE FROM event
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateEvent" parameterType="com.mtf.edumarine.dto.EventDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateEvent */
+        UPDATE event
+        SET lang = #{lang}
+          , title = <![CDATA[#{title}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+          , location = #{location}
+          <if test='startDate != null and startDate != ""'>
+          , year = substr(#{startDate}, 1, 4)
+          </if>
+          , start_date = #{startDate}
+          , end_date = #{endDate}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getEventSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getEventSeq */
+        SELECT CONCAT('E', LPAD(nextval('event_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertEvent" parameterType="com.mtf.edumarine.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertEvent */
+        INSERT INTO event
+        ( seq
+        , lang
+        , title
+        , writer
+        , write_date
+        , location
+        , year
+        , start_date
+        , end_date
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , <![CDATA[#{title}]]>
+            , #{writer}
+            , #{writeDate}
+            , #{location}
+            , substr(#{startDate}, 1, 4)
+            , #{startDate}
+            , #{endDate}
+            , #{note}
+            , 'EVENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'EVENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectFaqList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFaqList */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM faq
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY write_date desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectFaqSingle" parameterType="com.mtf.edumarine.dto.FaqDTO" resultType="com.mtf.edumarine.dto.FaqDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectFaqSingle */
+        SELECT seq
+             , lang
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM faq
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteFaq" parameterType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteFaq */
+        DELETE FROM faq
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateFaq" parameterType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFaq */
+        UPDATE faq
+        SET lang = #{lang}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getFaqSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getFaqSeq */
+        SELECT CONCAT('Q', LPAD(nextval('faq_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertFaq" parameterType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertFaq */
+        INSERT INTO faq
+        ( seq
+        , lang
+        , title
+        , content
+        , writer
+        , write_date
+        , view_cnt
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , 0
+            , null
+            , #{note}
+            , 'FAQ'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'FAQ'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectAscdirectorsList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.AscdirectorsDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAscdirectorsList */
+        SELECT seq
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , logo
+             , intro
+             , field
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM ascdirectors
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND company_name LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY init_regi_dttm desc, company_name asc
+    </select>
+
+    <select id="selectAscdirectorsSingle" parameterType="com.mtf.edumarine.dto.AscdirectorsDTO" resultType="com.mtf.edumarine.dto.AscdirectorsDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectAscdirectorsSingle */
+        SELECT seq
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , logo
+             , intro
+             , field
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM ascdirectors
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteAscdirectors" parameterType="com.mtf.edumarine.dto.AscdirectorsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteAscdirectors */
+        DELETE FROM ascdirectors
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateAscdirectors" parameterType="com.mtf.edumarine.dto.AscdirectorsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateAscdirectors */
+        UPDATE ascdirectors
+        SET lang = #{lang}
+          , company_name = #{companyName}
+          , company_ceo = #{companyCeo}
+          , company_homepage = <![CDATA[#{companyHomepage}]]>
+          , company_tel = #{companyTel}
+          , company_address = <![CDATA[#{companyAddress}]]>
+          , company_business_type = <![CDATA[#{companyBusinessType}]]>
+          , company_business_item = <![CDATA[#{companyBusinessItem}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getAscdirectorsSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getAscdirectorsSeq */
+        SELECT CONCAT('D', LPAD(nextval('ascdirectors_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertAscdirectors" parameterType="com.mtf.edumarine.dto.AscdirectorsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertAscdirectors */
+        INSERT INTO ascdirectors
+        ( seq
+        , lang
+        , company_name
+        , company_ceo
+        , company_homepage
+        , company_tel
+        , company_address
+        , company_business_type
+        , company_business_item
+        , logo
+        , intro
+        , field
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{companyName}
+            , #{companyCeo}
+            , <![CDATA[#{companyHomepage}]]>
+            , #{companyTel}
+            , <![CDATA[#{companyAddress}]]>
+            , <![CDATA[#{companyBusinessType}]]>
+            , <![CDATA[#{companyBusinessItem}]]>
+            , #{logo}
+            , #{intro}
+            , #{field}
+            , #{note}
+            , 'ASCDIREC'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'ASCDIREC'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectAdviserList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.AdviserDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAdviserList */
+        SELECT seq
+             , gbn
+             , lang
+             , position
+             , name
+             , organization
+             , depart
+             , homepage
+             , tel
+             , brief_description
+             , represent_image
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM adviser
+        WHERE 1=1
+          AND gbn = 'G'
+        <if test='searchText != null and searchText != ""'>
+            AND name LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY init_regi_dttm desc, name asc
+    </select>
+
+    <select id="selectAdviserSingle" parameterType="com.mtf.edumarine.dto.AdviserDTO" resultType="com.mtf.edumarine.dto.AdviserDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectAdviserSingle */
+        SELECT seq
+             , gbn
+             , lang
+             , position
+             , name
+             , organization
+             , depart
+             , homepage
+             , tel
+             , brief_description
+             , represent_image
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM adviser
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteAdviser" parameterType="com.mtf.edumarine.dto.AdviserDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteAdviser */
+        DELETE FROM adviser
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateAdviser" parameterType="com.mtf.edumarine.dto.AdviserDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateAdviser */
+        UPDATE adviser
+        SET lang = #{lang}
+          , position = #{position}
+          , name = #{name}
+          , organization = #{organization}
+          , depart = #{depart}
+          , homepage = <![CDATA[#{homepage}]]>
+          , tel = <![CDATA[#{tel}]]>
+          , brief_description = <![CDATA[#{briefDescription}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getAdviserSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getAdviserSeq */
+        SELECT CONCAT('V', LPAD(nextval('adviser_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertAdviser" parameterType="com.mtf.edumarine.dto.AdviserDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertAdviser */
+        INSERT INTO adviser
+        ( seq
+        , gbn
+        , lang
+        , position
+        , name
+        , organization
+        , depart
+        , homepage
+        , tel
+        , brief_description
+        , represent_image
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , 'G'
+            , #{lang}
+            , #{position}
+            , #{name}
+            , #{organization}
+            , #{depart}
+            , <![CDATA[#{homepage}]]>
+            , <![CDATA[#{tel}]]>
+            , <![CDATA[#{briefDescription}]]>
+            , null
+            , #{note}
+            , 'ADVISER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'ADVISER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectConsultationList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ConsultationDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectConsultationList */
+        SELECT seq
+        , gbn
+        , lang
+        , position
+        , name
+        , organization
+        , depart
+        , homepage
+        , tel
+        , brief_description
+        , represent_image
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        FROM adviser
+        WHERE 1=1
+        AND gbn = 'J'
+        <if test='searchText != null and searchText != ""'>
+            AND name LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY init_regi_dttm desc, name asc
+    </select>
+
+    <select id="selectConsultationSingle" parameterType="com.mtf.edumarine.dto.ConsultationDTO" resultType="com.mtf.edumarine.dto.ConsultationDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectConsultationSingle */
+        SELECT seq
+             , gbn
+             , lang
+             , position
+             , name
+             , organization
+             , depart
+             , homepage
+             , tel
+             , brief_description
+             , represent_image
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM adviser
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteConsultation" parameterType="com.mtf.edumarine.dto.ConsultationDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteConsultation */
+        DELETE FROM adviser
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateConsultation" parameterType="com.mtf.edumarine.dto.ConsultationDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateConsultation */
+        UPDATE adviser
+        SET lang = #{lang}
+          , position = #{position}
+          , name = #{name}
+          , organization = #{organization}
+          , depart = #{depart}
+          , homepage = <![CDATA[#{homepage}]]>
+          , tel = <![CDATA[#{tel}]]>
+          , brief_description = <![CDATA[#{briefDescription}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getConsultationSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getConsultationSeq */
+        SELECT CONCAT('J', LPAD(nextval('adviser_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertConsultation" parameterType="com.mtf.edumarine.dto.ConsultationDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertConsultation */
+        INSERT INTO adviser
+        ( seq
+        , gbn
+        , lang
+        , position
+        , name
+        , organization
+        , depart
+        , homepage
+        , tel
+        , brief_description
+        , represent_image
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , 'J'
+            , #{lang}
+            , #{position}
+            , #{name}
+            , #{organization}
+            , #{depart}
+            , <![CDATA[#{homepage}]]>
+            , <![CDATA[#{tel}]]>
+            , <![CDATA[#{briefDescription}]]>
+            , null
+            , #{note}
+            , 'ADVISER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'ADVISER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectCompanyList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.CompanyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectCompanyList */
+        SELECT seq
+             , gbn
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM company
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND company_name LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        <if test='gbn != null and gbn != ""'>
+            AND gbn = #{gbn}
+        </if>
+        ORDER BY init_regi_dttm desc, company_name asc
+    </select>
+
+    <select id="selectCompanySingle" parameterType="com.mtf.edumarine.dto.CompanyDTO" resultType="com.mtf.edumarine.dto.CompanyDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectCompanySingle */
+        SELECT seq
+             , gbn
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM company
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteCompany" parameterType="com.mtf.edumarine.dto.CompanyDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteCompany */
+        DELETE FROM company
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateCompany" parameterType="com.mtf.edumarine.dto.CompanyDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateCompany */
+        UPDATE company
+        SET lang = #{lang}
+          , gbn = #{gbn}
+          , company_name = #{companyName}
+          , company_ceo = #{companyCeo}
+          , company_homepage = <![CDATA[#{companyHomepage}]]>
+          , company_tel = #{companyTel}
+          , company_address = <![CDATA[#{companyAddress}]]>
+          , company_business_type = <![CDATA[#{companyBusinessType}]]>
+          , company_business_item = <![CDATA[#{companyBusinessItem}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getCompanySeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getCompanySeq */
+        SELECT CONCAT('C', LPAD(nextval('company_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertCompany" parameterType="com.mtf.edumarine.dto.CompanyDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertCompany */
+        INSERT INTO company
+        ( seq
+        , gbn
+        , lang
+        , company_name
+        , company_ceo
+        , company_homepage
+        , company_tel
+        , company_address
+        , company_business_type
+        , company_business_item
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{gbn}
+            , #{lang}
+            , #{companyName}
+            , #{companyCeo}
+            , <![CDATA[#{companyHomepage}]]>
+            , #{companyTel}
+            , <![CDATA[#{companyAddress}]]>
+            , <![CDATA[#{companyBusinessType}]]>
+            , <![CDATA[#{companyBusinessItem}]]>
+            , #{note}
+            , 'COMPANY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'COMPANY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectPartnershipList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PartnershipDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPartnershipList */
+        SELECT seq
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , logo
+             , intro
+             , field
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM partnership
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND company_name LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY init_regi_dttm desc, company_name asc
+    </select>
+
+    <select id="selectPartnershipSingle" parameterType="com.mtf.edumarine.dto.PartnershipDTO" resultType="com.mtf.edumarine.dto.PartnershipDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectPartnershipSingle */
+        SELECT seq
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , logo
+             , intro
+             , field
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM partnership
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deletePartnership" parameterType="com.mtf.edumarine.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deletePartnership */
+        DELETE FROM partnership
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updatePartnership" parameterType="com.mtf.edumarine.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updatePartnership */
+        UPDATE partnership
+        SET lang = #{lang}
+          , company_name = #{companyName}
+          , company_ceo = #{companyCeo}
+          , company_homepage = <![CDATA[#{companyHomepage}]]>
+          , company_tel = #{companyTel}
+          , company_address = <![CDATA[#{companyAddress}]]>
+          , company_business_type = <![CDATA[#{companyBusinessType}]]>
+          , company_business_item = <![CDATA[#{companyBusinessItem}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getPartnershipSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getPartnershipSeq */
+        SELECT CONCAT('P', LPAD(nextval('partnership_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertPartnership" parameterType="com.mtf.edumarine.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertPartnership */
+        INSERT INTO partnership
+        ( seq
+        , lang
+        , company_name
+        , company_ceo
+        , company_homepage
+        , company_tel
+        , company_address
+        , company_business_type
+        , company_business_item
+        , logo
+        , intro
+        , field
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{companyName}
+            , #{companyCeo}
+            , <![CDATA[#{companyHomepage}]]>
+            , #{companyTel}
+            , <![CDATA[#{companyAddress}]]>
+            , <![CDATA[#{companyBusinessType}]]>
+            , <![CDATA[#{companyBusinessItem}]]>
+            , #{logo}
+            , #{intro}
+            , #{field}
+            , #{note}
+            , 'PARTNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'PARTNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="getFileId" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getFileId */
+        SELECT CONCAT('F', LPAD(nextval('file_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertFileInfo" parameterType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertFileInfo */
+        INSERT INTO file
+        ( id
+        , user_id
+        , full_file_path
+        , full_path
+        , folder_path
+        , full_file_name
+        , uuid
+        , file_name
+        , file_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{id}
+            , #{userId}
+            , <![CDATA[#{fullFilePath}]]>
+            , <![CDATA[#{fullPath}]]>
+            , <![CDATA[#{folderPath}]]>
+            , <![CDATA[#{fullFileName}]]>
+            , <![CDATA[#{uuid}]]>
+            , <![CDATA[#{fileName}]]>
+            , #{fileYn}
+            , #{note}
+            , 'FILE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'FILE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectFileUserIdList" parameterType="com.mtf.edumarine.dto.FileDTO" resultType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectFileUserIdList */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM file
+        WHERE user_id = #{userId}
+          AND file_yn = 'Y'
+    </select>
+
+    <update id="updateFileUseN" parameterType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateFileUseN */
+        UPDATE file
+        SET file_yn = 'N'
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateFileUserId" parameterType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateFileUserId */
+        UPDATE file
+        SET user_id = #{userId}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE id = #{id}
+    </update>
+
+</mapper>
+
