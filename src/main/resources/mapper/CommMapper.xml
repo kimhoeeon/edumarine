@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mtf.edumarine.mapper.CommMapper">
+
+    <select id="getCommCodeList" parameterType="com.mtf.edumarine.dto.CommCodeDTO" resultType="com.mtf.edumarine.dto.CommCodeDTO">
+        <!-- com.mtf.edumarinearine.mapper.CommMapper.getCommCodeList -->
+        SELECT comm_cd_val
+        , use_yn
+        , cd_note_1
+        FROM comm_code
+        WHERE comm_cd_nm = #{commCdNm}
+        ORDER BY comm_cd_val ASC
+    </select>
+
+</mapper>
+

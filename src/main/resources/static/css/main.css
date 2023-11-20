@@ -1,0 +1,144 @@
+@font-face {
+    font-family: 'GmarketSans'; font-style:normal; font-weight: 700;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'GmarketSans'; font-style: normal;  font-weight: 500;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'GmarketSans'; font-style: normal;  font-weight: 300;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+}
+
+body, input, textarea, select, button {
+    font-family: 'GmarketSans', 'Noto Sans KR', sans-serif;  word-break:keep-all; font-weight: 500;
+}
+
+*{box-sizing: border-box;}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+img {max-width:100%;}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table,
+td {
+    border: 1px solid #333;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+td,
+th {
+    padding: 3px;
+}
+
+thead,
+tfoot {
+    background-color: #333;
+    color: #fff;
+}
+
+td.center {
+    text-align: center;
+}
+
+a {text-decoration:none; color:#000;}
+
+#app {
+    padding: 20px;
+}
+
+div.paging {
+    /* width: 100%; */
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+div.paging>div>i {
+    margin: 0 3px;
+}
+
+div.paging>div>div.pages {
+    margin: 0 5px;
+}
+
+div.paging>div>div.pages>span {
+    margin: 0 3px;
+}
+
+div.paging>div>i:hover,
+div.paging>div>div.pages>span:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+span.active {
+    color: orangered;
+    font-weight: bold;
+}
+
+.tbl_cate {background-color: antiquewhite;}
+
+#rsv_btn { width: 40%; height: 40px; background-color: darkseagreen; }
+
+#breweryInfo_box { float: left;}
+#calendar_box { }
+#calendar { max-width: 1100px; height: auto; margin: 20px auto;}
+
+/* fullcalendar CSS */
+.fc-day-sat .fc-daygrid-day-number { color:#0000FF; }     /* 토요일 */
+.fc-day-sun .fc-daygrid-day-number { color:#FF0000; }    /* 일요일 */
+
+#calendar tbody .fc-day:hover {background-color: lightgrey;}
