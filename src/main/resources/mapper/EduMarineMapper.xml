@@ -3,5 +3,51 @@
 
 <mapper namespace="com.mtf.edumarine.mapper.EduMarineMapper">
 
+    <select id="checkStatisticsAccessor" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.checkStatisticsAccessor */
+        SELECT seq
+        FROM statistics
+        WHERE gbn = #{gbn}
+          AND join_year = #{joinYear}
+          AND in_dttm <![CDATA[>=]]> #{inDttm}
+        ORDER BY in_dttm DESC
+        LIMIT 1
+    </select>
+
+    <update id="updateStatisticsAccessor" parameterType="com.mtf.edumarine.dto.StatisticsDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateStatisticsAccessor */
+        UPDATE statistics
+        SET in_count = in_count + 1
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <insert id="insertStatisticsAccessor" parameterType="com.mtf.edumarine.dto.StatisticsDTO">
+        <!-- com.mtf.edumarine.mapper.EduMarineMapper.insertStatisticsAccessor -->
+        INSERT INTO statistics
+        ( seq
+        , join_year
+        , gbn
+        , in_dttm
+        , in_count
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        ) VALUES
+        ( CONCAT('S', LPAD(nextval('statistics_seq'), '7', '0'))
+        , #{joinYear}
+        , #{gbn}
+        , #{inDttm}
+        , #{inCount}
+        , #{note}
+        , 'STAT'
+        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        , 'STAT'
+        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        )
+    </insert>
+
 </mapper>
 

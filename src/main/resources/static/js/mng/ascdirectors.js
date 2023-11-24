@@ -243,7 +243,7 @@ function f_member_ascdirectors_save(seq){
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = '/mng/member/ascdirectors.do'; // 목록으로 이동
+                                        window.location.href = '/mng/board/notice.do'; // 목록으로 이동
                                     }
                                 });
                             } else {

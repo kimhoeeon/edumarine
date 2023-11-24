@@ -116,11 +116,11 @@ function loginFormSubmit() {
         contentType: 'application/json; charset=utf-8' //server charset 확인 필요
     })
         .done(function (data) {
-            if (data !== "") {
+            /*if (data !== "") {*/
                 form.submit(); // /mng/main.do
-            } else {
+            /*} else {
                 showMessage('', 'info', '로그인 실패', '관리자 아이디와 비밀번호를 확인해주세요.', '');
-            }
+            }*/
         })
         .fail(function (xhr, status, errorThrown) {
             /*$('body').html("오류가 발생했습니다.")
@@ -420,14 +420,14 @@ async function f_attach_file_upload(userId, formId, path) {
                 // notice
 
                 let jsonObj = {
-                    "userId": userId,
-                    "fullFilePath": fullFilePath,
-                    "fullPath": fullPath,
-                    "folderPath": folderPath,
-                    "fullFileName": fullFileName,
-                    "uuid": uuid,
-                    "fileName": fileName,
-                    "fileYn": 'Y'
+                    userId: userId,
+                    fullFilePath: fullFilePath,
+                    fullPath: fullPath,
+                    folderPath: folderPath,
+                    fullFileName: fullFileName,
+                    uuid: uuid,
+                    fileName: fileName,
+                    fileYn: 'Y'
                 };
                 let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
                 if (resData.resultCode === "0") {

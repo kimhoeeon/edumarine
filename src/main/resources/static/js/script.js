@@ -1,93 +1,95 @@
-
-
 $(document).ready(function () {
-    // dept1 메뉴 아이템에 대한 마우스 오버
-    $('.nav .dept1 > li').mouseover(function () {
-        $(this).find('.dept2').addClass('on');
-    }).mouseout(function () {
-        $(this).find('.dept2').removeClass('on');
-    });
 
-    // 모바일 슬라이드 메뉴
-    $('.side_menu, .side_menu_close').on('click', function () {
-        $('.hd_site_map').toggleClass('on');
-        $('.side_bg').toggleClass('on');
-    });
+    // 뷰포트 너비가 769px 이상일 경우
+    if (window.innerWidth >= 769) {
 
+        $(".nav .dept1 > li").on('mouseover', function () {
+            $(this).children("ul").addClass('on');
+        });
 
-    // 모바일 메뉴
-    function handleDept1Click() {
-        // Check viewport width
-        var viewportWidth = $(window).width();
-        if (viewportWidth <= 1024) {
-            // Check if any other .dept2 is visible
-            var otherDept2 = $('.site_map_nav .dept1 > li').not($(this)).find('.dept2:visible');
+        $(".nav .dept1 > li").on('mouseleave', function () {
+            $(this).children("ul").removeClass('on');
+        });
 
-            // Slide up the previously exposed .dept2 and expose the corresponding child element
-            otherDept2.slideUp();
-            $(this).find('.dept2').slideToggle();
-        }
+    } else {
+        $(".nav .dept1 > li").on('click', function () {
+            $(".nav .dept1 > li").not(this).removeClass('on').children("ul").slideUp();
+            $(this).toggleClass('on').children("ul").slideToggle();
+        });
     }
 
-    // Handle .dept1 click on page load
-    $('.site_map_nav .dept1 > li').on('click', handleDept1Click);
-
-    // Handle .dept1 click on window resize
-    $(window).resize(function () {
-        $('.site_map_nav .dept1 > li').off('click', handleDept1Click);
-        $('.site_map_nav .dept1 > li').on('click', handleDept1Click);
-    });
-
-    $(".sub_top_tab").click(function () {
-        if ($(window).width() <= 768) {
-            var selectedMenu = $(this).find(".tabOptSel");
-            if (selectedMenu.is(':visible')) {
-                selectedMenu.slideUp();
-            } else {
-                $(".tabOptSel").slideUp();
-                selectedMenu.slideDown();
-            }
-        }
-    });
-
-
-    $('.sp_cate_icon li, .sp_cate_list li').on('click', function () {
-        // Remove "on" class from all other li elements
-        $('li').not(this).removeClass('on');
-
-        // Toggle "on" class on the clicked li element
+    $('.m_menu').on('click', function () {
         $(this).toggleClass('on');
-    });
-
-    //자주묻는 질문
-    $(".board_faq .ask").click(function () {
-        var answer = $(this).next("div");
-        $(this).toggleClass('on');
-
-        if (answer.is(":visible")) {
-            answer.slideUp();
-        } else {
-            answer.slideDown();
-        }
-    });
-
-    // 갤러리
-    $('.viewGallery').on('click', function () {
-        $('.popGallery').toggleClass('on');
+        $('.aside_bg, #header .nav').toggleClass('on');
         $('body').toggleClass('lock_scroll')
     });
 
-    // 팝업닫기    
-    $('.popup .close').on('click', function () {
-        $('.popup').removeClass('on');
-        $('body').removeClass('lock_scroll')
+
+    // tab
+    $('.tab_menu li').on('click', function () {
+        var tab_id = $(this).attr('data-tab');
+
+        $('.tab_menu li').removeClass('on');
+        $('.tab_content').removeClass('on');
+
+        $(this).addClass('on');
+        $("#" + tab_id).addClass('on');
     });
 
-    // 연락처 입력 시 자동으로 - 삽입과 숫자만 입력
-    $('.onlyTel').on("keyup", function () {
-        $(this).val($(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
+    // 푸터 관련기관 사이트
+    $('.footer_other_site .btn').on('click', function () {
+        $('.footer_other_site .option_box').slideToggle();
     });
 
 
+    // 서브페이지 사이드바 모바일
+    $('#sidebar .lnb li.on').on('click', function () {
+        $('#sidebar .lnb li').not(this).slideToggle();
+    });
+
+
+    // 팝업 - 댣기
+    $('.popup_close').on('click', function () {
+        $(this).parents('.popup').removeClass('on')
+        $('body').removeClass('lock_scroll');
+    });
+    // 팝업 - 갤러리
+    $('.gallery_view').on('click', function () {
+        $('#popupGallery').addClass('on');
+        $('body').addClass('lock_scroll');
+    });
+    // 팝업 - 비디오
+    $('.video_view').on('click', function () {
+        $('#popupVideo').addClass('on');
+        $('body').addClass('lock_scroll');
+    });
+    // 팝업 - 닫기 클릭 시 유튜브 영상 정지
+    $('#popupVideo .popup_close').on('click', function () {
+        //playVideo=재생, pauseVideo=일시정지, stopVideo=정지 
+        $("iframe")[0].contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
+    });
+
+    // 팝업 - 취창업후기
+    $('.job_review_view').on('click', function () {
+        $('#popupJobReview').addClass('on');
+        $('body').addClass('lock_scroll');
+    });
+
+     // 팝업 - 스케줄표
+    $('.sked_wrap .sked_btn').on('click', function () {
+        $('#popupCalendar').addClass('on');
+        $('body').addClass('lock_scroll');
+    });
+    $('#popupCalendar .close_btn').on('click', function () {
+        $(this).parents('.popup').removeClass('on')
+        $('body').removeClass('lock_scroll');
+    });
+
+
+    $('.reply_wrap .recommend_btn').on('click', function () {
+        $(this).toggleClass('on');
+    });
 
 });
+
+

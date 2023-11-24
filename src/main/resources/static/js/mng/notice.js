@@ -30,12 +30,12 @@ function f_board_notice_search(){
     let searchText = $('#search_text').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            "condition": condition
+            condition: condition
         };
     }else{
         jsonObj = {
-            "condition": condition ,
-            "searchText": searchText
+            condition: condition ,
+            searchText: searchText
         }
     }
 

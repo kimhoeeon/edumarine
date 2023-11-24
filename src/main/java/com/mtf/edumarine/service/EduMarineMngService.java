@@ -27,18 +27,6 @@ public interface EduMarineMngService {
      */
     void logoutCheck(HttpSession session);
 
-    List<NoticeDTO> processSelectNoticeList(SearchDTO searchDTO);
-
-    NoticeDTO processSelectNoticeSingle(NoticeDTO noticeDTO);
-
-    ResponseDTO processDeleteNotice(NoticeDTO noticeDTO);
-
-    ResponseDTO processUpdateNotice(NoticeDTO noticeDTO);
-
-    ResponseDTO processInsertNotice(NoticeDTO noticeDTO);
-
-    List<SipaNewsDTO> processSelectSipaNewsList(SearchDTO searchDTO);
-
     ResponseDTO processUpdateFileUserId(FileDTO fileDTO);
 
     List<FileDTO> processSelectFileUserIdList(FileDTO fileDTO);
@@ -51,81 +39,24 @@ public interface EduMarineMngService {
 
     ResponseDTO processMailSend(MailRequestDTO mailRequestDTO);
 
-    SipaNewsDTO processSelectSipaNewsSingle(SipaNewsDTO sipaNewsDTO);
+    List<NoticeDTO> processSelectNoticeList(SearchDTO searchDTO);
 
-    ResponseDTO processDeleteSipaNews(SipaNewsDTO sipaNewsDTO);
+    NoticeDTO processSelectNoticeSingle(NoticeDTO noticeDTO);
 
-    ResponseDTO processUpdateSipaNews(SipaNewsDTO sipaNewsDTO);
+    ResponseDTO processDeleteNotice(NoticeDTO noticeDTO);
 
-    ResponseDTO processInsertSipaNews(SipaNewsDTO sipaNewsDTO);
+    ResponseDTO processUpdateNotice(NoticeDTO noticeDTO);
 
-    List<EventDTO> processSelectEventList(SearchDTO searchDTO);
+    ResponseDTO processInsertNotice(NoticeDTO noticeDTO);
 
-    EventDTO processSelectEventSingle(EventDTO eventDTO);
+    List<PressDTO> processSelectPressList(SearchDTO searchDTO);
 
-    ResponseDTO processDeleteEvent(EventDTO eventDTO);
+    PressDTO processSelectPressSingle(PressDTO pressDTO);
 
-    ResponseDTO processUpdateEvent(EventDTO eventDTO);
+    ResponseDTO processDeletePress(PressDTO pressDTO);
 
-    ResponseDTO processInsertEvent(EventDTO eventDTO);
+    ResponseDTO processUpdatePress(PressDTO pressDTO);
 
-    List<FaqDTO> processSelectFaqList(SearchDTO searchDTO);
+    ResponseDTO processInsertPress(PressDTO pressDTO);
 
-    FaqDTO processSelectFaqSingle(FaqDTO faqDTO);
-
-    ResponseDTO processDeleteFaq(FaqDTO faqDTO);
-
-    ResponseDTO processUpdateFaq(FaqDTO faqDTO);
-
-    ResponseDTO processInsertFaq(FaqDTO faqDTO);
-
-    List<AscdirectorsDTO> processSelectAscdirectorsList(SearchDTO searchDTO);
-
-    AscdirectorsDTO processSelectAscdirectorsSingle(AscdirectorsDTO ascdirectorsDTO);
-
-    ResponseDTO processDeleteAscdirectors(AscdirectorsDTO ascdirectorsDTO);
-
-    ResponseDTO processUpdateAscdirectors(AscdirectorsDTO ascdirectorsDTO);
-
-    ResponseDTO processInsertAscdirectors(AscdirectorsDTO ascdirectorsDTO);
-
-    List<AdviserDTO> processSelectAdviserList(SearchDTO searchDTO);
-
-    AdviserDTO processSelectAdviserSingle(AdviserDTO adviserDTO);
-
-    ResponseDTO processDeleteAdviser(AdviserDTO adviserDTO);
-
-    ResponseDTO processUpdateAdviser(AdviserDTO adviserDTO);
-
-    ResponseDTO processInsertAdviser(AdviserDTO adviserDTO);
-
-    List<ConsultationDTO> processSelectConsultationList(SearchDTO searchDTO);
-
-    ConsultationDTO processSelectConsultationSingle(ConsultationDTO consultationDTO);
-
-    ResponseDTO processDeleteConsultation(ConsultationDTO consultationDTO);
-
-    ResponseDTO processUpdateConsultation(ConsultationDTO consultationDTO);
-
-    ResponseDTO processInsertConsultation(ConsultationDTO consultationDTO);
-
-    List<CompanyDTO> processSelectCompanyList(SearchDTO searchDTO);
-
-    CompanyDTO processSelectCompanySingle(CompanyDTO companyDTO);
-
-    ResponseDTO processDeleteCompany(CompanyDTO companyDTO);
-
-    ResponseDTO processUpdateCompany(CompanyDTO companyDTO);
-
-    ResponseDTO processInsertCompany(CompanyDTO companyDTO);
-
-    List<PartnershipDTO> processSelectPartnershipList(SearchDTO searchDTO);
-
-    PartnershipDTO processSelectPartnershipSingle(PartnershipDTO partnershipDTO);
-
-    ResponseDTO processDeletePartnership(PartnershipDTO partnershipDTO);
-
-    ResponseDTO processUpdatePartnership(PartnershipDTO partnershipDTO);
-
-    ResponseDTO processInsertPartnership(PartnershipDTO partnershipDTO);
 }

@@ -62,111 +62,27 @@ public class EduMarineController {
     public ModelAndView main() {
         System.out.println("EduMarineController > main");
         ModelAndView mv = new ModelAndView();
+
+        /* 방문자 수 카운트 */
+        eduMarineService.processStatisticsAccessor();
+
         mv.setViewName("main");
         return mv;
     }
 
-    //***************************************************************************
-    // community Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/community/contact.do", method = RequestMethod.GET)
-    public ModelAndView community_contact() {
-        System.out.println("EduMarineController > community_contact");
+    @RequestMapping(value = "/sitemap.do", method = RequestMethod.GET)
+    public ModelAndView sitemap() {
+        System.out.println("EduMarineController > sitemap");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/community/contact");
+        mv.setViewName("sitemap");
         return mv;
     }
 
-    @RequestMapping(value = "/community/event.do", method = RequestMethod.GET)
-    public ModelAndView community_event() {
-        System.out.println("EduMarineController > community_event");
+    @RequestMapping(value = "/search.do", method = RequestMethod.GET)
+    public ModelAndView search() {
+        System.out.println("EduMarineController > search");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/community/event");
-        return mv;
-    }
-
-    @RequestMapping(value = "/community/gallery.do", method = RequestMethod.GET)
-    public ModelAndView community_gallery() {
-        System.out.println("EduMarineController > community_gallery");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/community/gallery");
-        return mv;
-    }
-
-    @RequestMapping(value = "/community/notice.do", method = RequestMethod.GET)
-    public ModelAndView community_notice() {
-        System.out.println("EduMarineController > community_notice");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/community/notice");
-        return mv;
-    }
-
-    @RequestMapping(value = "/community/notice/detail.do", method = RequestMethod.GET)
-    public ModelAndView community_notice_detail() {
-        System.out.println("EduMarineController > community_notice_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("community/notice/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/community/news.do", method = RequestMethod.GET)
-    public ModelAndView community_news() {
-        System.out.println("EduMarineController > community_news");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/community/news");
-        return mv;
-    }
-
-    @RequestMapping(value = "/community/news/detail.do", method = RequestMethod.GET)
-    public ModelAndView community_news_detail() {
-        System.out.println("EduMarineController > community_news_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/community/news/detail");
-        return mv;
-    }
-
-    //***************************************************************************
-    // introduce Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/introduce/business.do", method = RequestMethod.GET)
-    public ModelAndView introduce_business() {
-        System.out.println("EduMarineController > introduce_business");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/introduce/business");
-        return mv;
-    }
-
-    @RequestMapping(value = "/introduce/vision.do", method = RequestMethod.GET)
-    public ModelAndView introduce_vision() {
-        System.out.println("EduMarineController > introduce_vision");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/introduce/vision");
-        return mv;
-    }
-
-    @RequestMapping(value = "/introduce/history.do", method = RequestMethod.GET)
-    public ModelAndView introduce_history() {
-        System.out.println("EduMarineController > introduce_history");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/introduce/history");
-        return mv;
-    }
-
-    @RequestMapping(value = "/introduce/way.do", method = RequestMethod.GET)
-    public ModelAndView introduce_way() {
-        System.out.println("EduMarineController > introduce_way");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/introduce/way");
-        return mv;
-    }
-
-    @RequestMapping(value = "/introduce/greeting.do", method = RequestMethod.GET)
-    public ModelAndView introduce_greeting() {
-        System.out.println("EduMarineController > introduce_greeting");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/introduce/greeting");
+        mv.setViewName("search");
         return mv;
     }
 
@@ -174,435 +90,251 @@ public class EduMarineController {
     // member Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/member/ascdirectors.do", method = RequestMethod.GET)
-    public ModelAndView member_ascdirectors() {
-        System.out.println("EduMarineController > member_ascdirectors");
+    @RequestMapping(value = "/member/login.do", method = RequestMethod.GET)
+    public ModelAndView member_login() {
+        System.out.println("EduMarineController > member_login");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/ascdirectors");
+        mv.setViewName("/member/login");
         return mv;
     }
 
-    @RequestMapping(value = "/member/detailA.do", method = RequestMethod.GET)
-    public ModelAndView member_detailA() {
-        System.out.println("EduMarineController > member_detailA");
+    @RequestMapping(value = "/member/findpw.do", method = RequestMethod.GET)
+    public ModelAndView member_findpw() {
+        System.out.println("EduMarineController > member_findpw");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/detailA");
+        mv.setViewName("/member/findpw");
         return mv;
     }
 
-    @RequestMapping(value = "/member/detailB.do", method = RequestMethod.GET)
-    public ModelAndView member_detailB() {
-        System.out.println("EduMarineController > member_detailB");
+    @RequestMapping(value = "/member/join.do", method = RequestMethod.GET)
+    public ModelAndView member_join() {
+        System.out.println("EduMarineController > member_join");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/detailB");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/detailC.do", method = RequestMethod.GET)
-    public ModelAndView member_detailC() {
-        System.out.println("EduMarineController > member_detailC");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/detailC");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/adviser.do", method = RequestMethod.GET)
-    public ModelAndView member_adviser() {
-        System.out.println("EduMarineController > member_adviser");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/adviser");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/consultation.do", method = RequestMethod.GET)
-    public ModelAndView member_consultation() {
-        System.out.println("EduMarineController > member_consultation");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/consultation");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/regular.do", method = RequestMethod.GET)
-    public ModelAndView member_regular() {
-        System.out.println("EduMarineController > member_regular");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/regular");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/ascmembers.do", method = RequestMethod.GET)
-    public ModelAndView member_ascmembers() {
-        System.out.println("EduMarineController > member_ascmembers");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/ascmembers");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/partnership.do", method = RequestMethod.GET)
-    public ModelAndView member_partnership() {
-        System.out.println("EduMarineController > member_partnership");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/partnership");
+        mv.setViewName("/member/join");
         return mv;
     }
 
     //***************************************************************************
-    // service Folder
+    // apply Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/service/benefits.do", method = RequestMethod.GET)
-    public ModelAndView service_benefits() {
-        System.out.println("EduMarineController > service_benefits");
+    @RequestMapping(value = "/apply/schedule.do", method = RequestMethod.GET)
+    public ModelAndView apply_schedule() {
+        System.out.println("EduMarineController > apply_schedule");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/service/benefits");
+        mv.setViewName("/apply/schedule");
         return mv;
     }
 
-    @RequestMapping(value = "/service/faq.do", method = RequestMethod.GET)
-    public ModelAndView service_faq() {
-        System.out.println("EduMarineController > service_faq");
+    @RequestMapping(value = "/apply/eduApply01.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply01() {
+        System.out.println("EduMarineController > apply_eduApply01");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/service/faq");
+        mv.setViewName("/apply/eduApply01");
         return mv;
     }
 
-    @RequestMapping(value = "/service/guide.do", method = RequestMethod.GET)
-    public ModelAndView service_guide() {
-        System.out.println("EduMarineController > service_guide");
+    @RequestMapping(value = "/apply/eduApply04.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply04() {
+        System.out.println("EduMarineController > apply_eduApply04");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/service/guide");
-        return mv;
-    }
-
-    //***************************************************************************
-    // support Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/support/bidanm.do", method = RequestMethod.GET)
-    public ModelAndView support_bidanm() {
-        System.out.println("EduMarineController > support_bidanm");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/support/bidanm");
-        return mv;
-    }
-
-    @RequestMapping(value = "/support/bidanm/detail.do", method = RequestMethod.GET)
-    public ModelAndView support_bidanm_detail() {
-        System.out.println("EduMarineController > support_bidanm_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/support/bidanm/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/support/bizanm.do", method = RequestMethod.GET)
-    public ModelAndView support_bizanm() {
-        System.out.println("EduMarineController > support_bizanm");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/support/bizanm");
-        return mv;
-    }
-
-    @RequestMapping(value = "/support/bizanm/detail.do", method = RequestMethod.GET)
-    public ModelAndView support_bizanm_detail() {
-        System.out.println("EduMarineController > support_bizanm_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/support/bizanm/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/support/issue.do", method = RequestMethod.GET)
-    public ModelAndView support_issue() {
-        System.out.println("EduMarineController > support_issue");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/support/issue");
-        return mv;
-    }
-
-    @RequestMapping(value = "/support/issue/detail.do", method = RequestMethod.GET)
-    public ModelAndView support_issue_detail() {
-        System.out.println("EduMarineController > support_issue_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/support/issue/detail");
+        mv.setViewName("/apply/eduApply04");
         return mv;
     }
 
     //***************************************************************************
-    // eng Folder
+    // board Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/eng/index.do", method = RequestMethod.GET)
-    public ModelAndView eng_index() {
-        System.out.println("EduMarineController > eng_index");
+    @RequestMapping(value = "/board/notice_list.do", method = RequestMethod.GET)
+    public ModelAndView board_notice_list() {
+        System.out.println("EduMarineController > board_notice_list");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/index");
+        mv.setViewName("/board/notice_list");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/main.do", method = RequestMethod.GET)
-    public ModelAndView eng_main() {
-        System.out.println("EduMarineController > eng_main");
+    @RequestMapping(value = "/board/notice_view.do", method = RequestMethod.GET)
+    public ModelAndView board_notice_view() {
+        System.out.println("EduMarineController > board_notice_view");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/main");
+        mv.setViewName("/board/notice_view");
         return mv;
     }
 
-    //***************************************************************************
-    // community Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/eng/community/contact.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_contact() {
-        System.out.println("EduMarineController > eng_community_contact");
+    @RequestMapping(value = "/board/press_list.do", method = RequestMethod.GET)
+    public ModelAndView board_press_list() {
+        System.out.println("EduMarineController > board_press_list");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/community/contact");
+        mv.setViewName("/board/press_list");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/community/event.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_event() {
-        System.out.println("EduMarineController > eng_community_event");
+    @RequestMapping(value = "/board/press_view.do", method = RequestMethod.GET)
+    public ModelAndView board_press_view() {
+        System.out.println("EduMarineController > board_press_view");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/community/event");
+        mv.setViewName("/board/press_view");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/community/gallery.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_gallery() {
-        System.out.println("EduMarineController > eng_community_gallery");
+    @RequestMapping(value = "/board/gallery.do", method = RequestMethod.GET)
+    public ModelAndView board_gallery() {
+        System.out.println("EduMarineController > board_gallery");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/community/gallery");
+        mv.setViewName("/board/gallery");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/community/notice.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_notice() {
-        System.out.println("EduMarineController > eng_community_notice");
+    @RequestMapping(value = "/board/media.do", method = RequestMethod.GET)
+    public ModelAndView board_media() {
+        System.out.println("EduMarineController > board_media");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/community/notice");
+        mv.setViewName("/board/media");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/community/notice/detail.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_notice_detail() {
-        System.out.println("EduMarineController > eng_community_notice_detail");
+    @RequestMapping(value = "/board/news_list.do", method = RequestMethod.GET)
+    public ModelAndView board_news_list() {
+        System.out.println("EduMarineController > board_news_list");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/community/notice/detail");
+        mv.setViewName("/board/news_list");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/community/news.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_news() {
-        System.out.println("EduMarineController > eng_community_news");
+    @RequestMapping(value = "/board/news_view.do", method = RequestMethod.GET)
+    public ModelAndView board_news_view() {
+        System.out.println("EduMarineController > board_news_view");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/community/news");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/community/news/detail.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_news_detail() {
-        System.out.println("EduMarineController > eng_community_news_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/community/news/detail");
+        mv.setViewName("/board/news_view");
         return mv;
     }
 
     //***************************************************************************
-    // introduce Folder
+    // job Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/eng/introduce/business.do", method = RequestMethod.GET)
-    public ModelAndView eng_introduce_business() {
-        System.out.println("EduMarineController > eng_introduce_business");
+    @RequestMapping(value = "/job/announcement_list.do", method = RequestMethod.GET)
+    public ModelAndView job_announcement_list() {
+        System.out.println("EduMarineController > job_announcement_list");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/introduce/business");
+        mv.setViewName("/job/announcement_list");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/introduce/vision.do", method = RequestMethod.GET)
-    public ModelAndView eng_introduce_vision() {
-        System.out.println("EduMarineController > eng_introduce_vision");
+    @RequestMapping(value = "/job/announcement_view.do", method = RequestMethod.GET)
+    public ModelAndView job_announcement_view() {
+        System.out.println("EduMarineController > job_announcement_view");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/introduce/vision");
+        mv.setViewName("/job/announcement_view");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/introduce/history.do", method = RequestMethod.GET)
-    public ModelAndView eng_introduce_history() {
-        System.out.println("EduMarineController > eng_introduce_history");
+    @RequestMapping(value = "/job/state01.do", method = RequestMethod.GET)
+    public ModelAndView job_state01() {
+        System.out.println("EduMarineController > job_state01");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/introduce/history");
+        mv.setViewName("/job/state01");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/introduce/way.do", method = RequestMethod.GET)
-    public ModelAndView eng_introduce_way() {
-        System.out.println("EduMarineController > eng_introduce_way");
+    @RequestMapping(value = "/job/state02.do", method = RequestMethod.GET)
+    public ModelAndView job_state02() {
+        System.out.println("EduMarineController > job_state02");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/introduce/way");
+        mv.setViewName("/job/state02");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/introduce/greeting.do", method = RequestMethod.GET)
-    public ModelAndView eng_introduce_greeting() {
-        System.out.println("EduMarineController > eng_introduce_greeting");
+    @RequestMapping(value = "/job/review.do", method = RequestMethod.GET)
+    public ModelAndView job_review() {
+        System.out.println("EduMarineController > job_review");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/introduce/greeting");
+        mv.setViewName("/job/review");
         return mv;
     }
 
-    //***************************************************************************
-    // member Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/eng/member/ascdirectors.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_ascdirectors() {
-        System.out.println("EduMarineController > eng_member_ascdirectors");
+    @RequestMapping(value = "/job/community_list.do", method = RequestMethod.GET)
+    public ModelAndView job_community_list() {
+        System.out.println("EduMarineController > job_community_list");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/ascdirectors");
+        mv.setViewName("/job/community_list");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/member/detailA.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_detailA() {
-        System.out.println("EduMarineController > eng_member_detailA");
+    @RequestMapping(value = "/job/community_view.do", method = RequestMethod.GET)
+    public ModelAndView job_community_view() {
+        System.out.println("EduMarineController > job_community_view");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/detailA");
+        mv.setViewName("/job/community_view");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/member/detailB.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_detailB() {
-        System.out.println("EduMarineController > eng_member_detailB");
+    @RequestMapping(value = "/job/community_write.do", method = RequestMethod.GET)
+    public ModelAndView job_community_write() {
+        System.out.println("EduMarineController > job_community_write");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/detailB");
+        mv.setViewName("/job/community_write");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/member/detailC.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_detailC() {
-        System.out.println("EduMarineController > eng_member_detailC");
+    @RequestMapping(value = "/job/community_modify.do", method = RequestMethod.GET)
+    public ModelAndView job_community_modify() {
+        System.out.println("EduMarineController > job_community_modify");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/detailC");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/member/adviser.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_adviser() {
-        System.out.println("EduMarineController > eng_member_adviser");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/adviser");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/member/consultation.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_consultation() {
-        System.out.println("EduMarineController > eng_member_consultation");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/consultation");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/member/regular.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_regular() {
-        System.out.println("EduMarineController > eng_member_regular");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/regular");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/member/ascmembers.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_ascmembers() {
-        System.out.println("EduMarineController > eng_member_ascmembers");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/ascmembers");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/member/partnership.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_partnership() {
-        System.out.println("EduMarineController > eng_member_partnership");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/member/partnership");
+        mv.setViewName("/job/community_modify");
         return mv;
     }
 
     //***************************************************************************
-    // service Folder
+    // mypage Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/eng/service/benefits.do", method = RequestMethod.GET)
-    public ModelAndView eng_service_benefits() {
-        System.out.println("EduMarineController > eng_service_benefits");
+    @RequestMapping(value = "/mypage/eduApplyInfo.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApplyInfo() {
+        System.out.println("EduMarineController > mypage_eduApplyInfo");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/service/benefits");
+        mv.setViewName("/mypage/eduApplyInfo");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/service/faq.do", method = RequestMethod.GET)
-    public ModelAndView eng_service_faq() {
-        System.out.println("EduMarineController > eng_service_faq");
+    @RequestMapping(value = "/mypage/eduPayInfo.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduPayInfo() {
+        System.out.println("EduMarineController > mypage_eduPayInfo");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/service/faq");
+        mv.setViewName("/mypage/eduPayInfo");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/service/guide.do", method = RequestMethod.GET)
-    public ModelAndView eng_service_guide() {
-        System.out.println("EduMarineController > eng_service_guide");
+    @RequestMapping(value = "/mypage/resume.do", method = RequestMethod.GET)
+    public ModelAndView mypage_resume() {
+        System.out.println("EduMarineController > mypage_resume");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/service/guide");
+        mv.setViewName("/mypage/resume");
         return mv;
     }
 
-    //***************************************************************************
-    // support Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/eng/support/bidanm.do", method = RequestMethod.GET)
-    public ModelAndView eng_support_bidanm() {
-        System.out.println("EduMarineController > eng_support_bidanm");
+    @RequestMapping(value = "/mypage/post.do", method = RequestMethod.GET)
+    public ModelAndView mypage_post() {
+        System.out.println("EduMarineController > mypage_post");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/support/bidanm");
+        mv.setViewName("/mypage/post");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/support/bidanm/detail.do", method = RequestMethod.GET)
-    public ModelAndView eng_support_bidanm_detail() {
-        System.out.println("EduMarineController > eng_support_bidanm_detail");
+    @RequestMapping(value = "/mypage/modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_modify() {
+        System.out.println("EduMarineController > mypage_modify");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/support/bidanm/detail");
+        mv.setViewName("/mypage/modify");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/support/bizanm.do", method = RequestMethod.GET)
-    public ModelAndView eng_support_bizanm() {
-        System.out.println("EduMarineController > eng_support_bizanm");
+    @RequestMapping(value = "/mypage/eduApply01_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply01_modify() {
+        System.out.println("EduMarineController > mypage_eduApply01_modify");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/support/bizanm");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/support/bizanm/detail.do", method = RequestMethod.GET)
-    public ModelAndView eng_support_bizanm_detail() {
-        System.out.println("EduMarineController > eng_support_bizanm_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/support/bizanm/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/support/issue.do", method = RequestMethod.GET)
-    public ModelAndView eng_support_issue() {
-        System.out.println("EduMarineController > eng_support_issue");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/support/issue");
-        return mv;
-    }
-
-    @RequestMapping(value = "/eng/support/issue/detail.do", method = RequestMethod.GET)
-    public ModelAndView eng_support_issue_detail() {
-        System.out.println("EduMarineController > eng_support_issue_detail");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/eng/support/issue/detail");
+        mv.setViewName("/mypage/eduApply01_modify");
         return mv;
     }
 
@@ -630,7 +362,7 @@ public class EduMarineController {
             for (MultipartFile multipartFile : uploadFiles) {
                 try {
                     /* Prod */
-                    String path = ResourceUtils.getFile("./tomcat/webapps/upload/" + uploadFilePath).toPath().toString();
+                    String path = ResourceUtils.getFile("./usr/local/tomcat/webapps/upload/" + uploadFilePath).toPath().toString();
 
                     /* Local */
                     //String path = ResourceUtils.getFile("C:/Users/slhge/project/Kibs/upload/" + uploadFilePath).toPath().toString();
