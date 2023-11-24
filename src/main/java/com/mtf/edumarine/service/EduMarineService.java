@@ -6,4 +6,6 @@ public interface EduMarineService {
 
     void logoutCheck(HttpSession session);
 
+    void processStatisticsAccessor();
+
 }

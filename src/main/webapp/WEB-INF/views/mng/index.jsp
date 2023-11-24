@@ -7,17 +7,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="title" property="og:title" content="SIPA 스마트산업진흥협회">
-    <meta name="description" property="og:description" content="SIPA 스마트산업진흥협회">
-    <meta name="author" content="SIPA 스마트산업진흥협회">
-    <meta name="format-detection" content="telephone=no"/>
-    <title>SIPA 스마트산업진흥협회 관리자</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="format-detection" content="telephone=no" />
+    <title>해양레저인력양성센터</title>
+
     <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/mngStyle.css" rel="stylesheet">
 
-    <%-- favicon --%>
+    <%-- favicon
     <link rel="shortcut icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+    --%>
 </head>
 
 <body>
@@ -61,14 +62,34 @@
     });
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jui-core.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jui-ui.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jui-grid.js"></script>
-<script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script type="text/javascript">
+
+    function getIP(json) {
+        let myIp = json.ip;
+        let ipArr = ['118.36.143.89'];
+        let pass = false;
+        for(let i=0; i<ipArr.length; i++){
+            if(myIp === ipArr[i]){
+                pass = true;
+                break;
+            }
+        }
+
+        if(!pass){
+            alert('EDU marine 관리자 시스템에 접근 권한이 없는 IP입니다.\n메인페이지로 이동합니다.');
+            window.location.href = '/';
+        }
+    }
+
+    document.addEventListener("keyup", function(event) {
+        if (event.key === 'Enter') {
+            loginFormSubmit();
+        }
+    });
+</script>
+
+<c:import url="../inc/commonMngJS.jsp" charEncoding="UTF-8"/>
+<script type="text/javascript" src="https://api64.ipify.org?format=jsonp&callback=getIP"></script>
 
 </body>
 

@@ -1,72 +1,43 @@
 $(document).ready(function () {
-
-    //main slide
-    var swiper = new Swiper('.swiper_main_slide', {
+    // 메인 슬라이드
+    var swiper = new Swiper('.main_swiper_wrap .swiper', {
         slidesPerView: 1,
-        spaceBetween: 20,
+        spaceBetween: 0,
+        direction: getDirection(),
         autoplay: {
             delay: 2500,
             disableOnInteraction: false,
         },
-        autoHeight: true,
+        effect : 'fade',
         loop: true,
-        pagination: {
-            el: ".main_pagination",
-            clickable: true,
+        pagination: { 
+            el: ".main_swiper_wrap .swiper-pagination",
+            clickable: true, 
+        },
+        navigation: {
+            nextEl: '.main_swiper_wrap .swiper-button-next',
+            prevEl: '.main_swiper_wrap .swiper-button-prev',
         },
         on: {
             resize: function () {
                 swiper.changeDirection(getDirection());
             },
-
         },
-
     });
 
-    //main company
-    var swiper = new Swiper('.swiper_main_company', {
-        slidesPerView: 2,
-        spaceBetween: 20,
-        autoplay: {
-            delay: 2500,
-            disableOnInteraction: false,
-        },
-        autoHeight: true,
-        loop: true,
-        breakpoints: {
-            575: { // 575px ~ 991px
-                slidesPerView: 3,
-            },
-
-            768: { // 768px ~ 
-                slidesPerView: 4,
-                spaceBetween: 20,
-            },
-
-            1024: {  // 1024px ~ 
-                slidesPerView: 5,
-                spaceBetween: 20,
-            },
-        },
-        on: {
-            resize: function () {
-                swiper.changeDirection(getDirection());
-            },
-
-        },
-
-    });
-
-
-    // edumarine-news
-    var swiper = new Swiper('.swiper_gallery', {
+    // 갤러리
+    var swiper = new Swiper('.gallery_swiper .swiper', {
         slidesPerView: 1,
-        spaceBetween: 20,
+        spaceBetween: 0,
         direction: getDirection(),
         loop: true,
+        pagination: { 
+            el: ".gallery_swiper .swiper-pagination",
+            clickable: true, 
+        },
         navigation: {
-            nextEl: '.swiper_gallery_next',
-            prevEl: '.swiper_gallery_prev',
+            nextEl: '.gallery_swiper .swiper-button-next',
+            prevEl: '.gallery_swiper .swiper-button-prev',
         },
         on: {
             resize: function () {

@@ -366,7 +366,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/member/ascdirectors.do"
+                                                                        <a href="/mng/board/notice.do"
                                                                            class="menu-link active">
                                                                             <span class="menu-title">협회이사</span>
                                                                         </a>
@@ -376,7 +376,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/member/adviser.do"
+                                                                        <a href="/mng/board/press.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">고문위원</span>
                                                                         </a>
@@ -804,7 +804,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/member/ascdirectors.do">
+                                            <a class="menu-link active" href="/mng/board/notice.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -816,7 +816,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/member/adviser.do">
+                                            <a class="menu-link" href="/mng/board/press.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1225,7 +1225,7 @@ if (document.documentElement) {
                                     <!--begin::Actions-->
                                     <div class="card-footer d-flex justify-content-between py-6 px-9">
                                         <div>
-                                            <a href="/mng/member/ascdirectors.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
+                                            <a href="/mng/board/notice.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>
                                         <div>
                                             <button type="button" onclick="f_member_ascdirectors_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>

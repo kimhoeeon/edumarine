@@ -220,34 +220,45 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mng/board/sipaNews.do", method = RequestMethod.GET)
-    public ModelAndView mng_board_sipaNews() {
-        System.out.println("EduMarineMngController > mng_board_sipaNews");
+    @RequestMapping(value = "/mng/board/press.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_press() {
+        System.out.println("EduMarineMngController > mng_board_press");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/board/sipaNews");
+        mv.setViewName("/mng/board/press");
         return mv;
     }
 
-    @RequestMapping(value = "/mng/board/sipaNews/selectList.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mng/board/press/selectList.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<List<SipaNewsDTO>> mng_board_sipaNews_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_board_sipaNews_selectList");
+    public ResponseEntity<List<PressDTO>> mng_board_press_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_press_selectList");
         //System.out.println(searchDTO.toString());
 
-        List<SipaNewsDTO> responseList = eduMarineMngService.processSelectSipaNewsList(searchDTO);
+        List<PressDTO> responseList = eduMarineMngService.processSelectPressList(searchDTO);
 
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mng/board/sipaNews/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_board_sipaNews_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_board_sipaNews_detail");
+    @RequestMapping(value = "/mng/board/press/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<PressDTO> mng_board_press_selectSingle(@RequestBody PressDTO pressDTO) {
+        System.out.println("EduMarineMngController > mng_board_press_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        PressDTO response = eduMarineMngService.processSelectPressSingle(pressDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/press/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_press_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_press_detail");
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !"".equals(seq)){
-            SipaNewsDTO sipaNewsDTO = new SipaNewsDTO();
-            sipaNewsDTO.setSeq(seq);
-            SipaNewsDTO info = eduMarineMngService.processSelectSipaNewsSingle(sipaNewsDTO);
+            PressDTO pressDTO = new PressDTO();
+            pressDTO.setSeq(seq);
+            PressDTO info = eduMarineMngService.processSelectPressSingle(pressDTO);
             mv.addObject("info", info);
 
             FileDTO fileDTO = new FileDTO();
@@ -256,47 +267,36 @@ public class EduMarineMngController {
             mv.addObject("fileList", fileList);
         }
 
-        mv.setViewName("/mng/board/sipaNews/detail");
+        mv.setViewName("/mng/board/press/detail");
         return mv;
     }
 
-    @RequestMapping(value = "/mng/board/sipaNews/selectSingle.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mng/board/press/delete.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<SipaNewsDTO> mng_board_notice_selectSingle(@RequestBody SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngController > mng_board_notice_selectSingle");
-        //System.out.println(searchDTO.toString());
+    public ResponseEntity<ResponseDTO> mng_board_press_delete(@RequestBody PressDTO pressDTO) {
+        System.out.println("EduMarineMngController > mng_board_press_delete");
 
-        SipaNewsDTO response = eduMarineMngService.processSelectSipaNewsSingle(sipaNewsDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/sipaNews/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_board_sipaNews_delete(@RequestBody SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngController > mng_board_sipaNews_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeleteSipaNews(sipaNewsDTO);
+        ResponseDTO responseDTO = eduMarineMngService.processDeletePress(pressDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mng/board/sipaNews/update.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mng/board/press/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_sipaNews_update(@RequestBody SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngController > mng_center_board_sipaNews_update");
+    public ResponseEntity<ResponseDTO> mng_board_press_update(@RequestBody PressDTO pressDTO) {
+        System.out.println("EduMarineMngController > mng_board_press_update");
         //System.out.println(noticeDTO.toString());
 
-        ResponseDTO responseDTO = eduMarineMngService.processUpdateSipaNews(sipaNewsDTO);
+        ResponseDTO responseDTO = eduMarineMngService.processUpdatePress(pressDTO);
 
-        String fileIdList = sipaNewsDTO.getFileIdList();
+        String fileIdList = pressDTO.getFileIdList();
         if(fileIdList != null && !"".equals(fileIdList)){
             String[] fileIdSplit = fileIdList.split(",");
             for(int i=0; i<fileIdSplit.length; i++){
                 if(!"".equals(fileIdSplit[i])){
                     FileDTO fileDTO = new FileDTO();
                     fileDTO.setId(fileIdSplit[i]);
-                    fileDTO.setUserId(sipaNewsDTO.getSeq());
+                    fileDTO.setUserId(pressDTO.getSeq());
                     ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
                 }
             }
@@ -305,202 +305,15 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mng/board/sipaNews/insert.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mng/board/press/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_sipaNews_insert(@RequestBody SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngController > mng_center_board_sipaNews_insert");
+    public ResponseEntity<ResponseDTO> mng_board_press_insert(@RequestBody PressDTO pressDTO) {
+        System.out.println("EduMarineMngController > mng_board_press_insert");
         //System.out.println(noticeDTO.toString());
 
-        ResponseDTO responseDTO = eduMarineMngService.processInsertSipaNews(sipaNewsDTO);
+        ResponseDTO responseDTO = eduMarineMngService.processInsertPress(pressDTO);
 
-        String fileIdList = sipaNewsDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
-            String[] fileIdSplit = fileIdList.split(",");
-            for(int i=0; i<fileIdSplit.length; i++){
-                if(!"".equals(fileIdSplit[i])){
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdSplit[i]);
-                    fileDTO.setUserId(responseDTO.getCustomValue());
-                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
-                }
-            }
-        }
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/event.do", method = RequestMethod.GET)
-    public ModelAndView mng_board_event() {
-        System.out.println("EduMarineMngController > mng_board_event");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/board/event");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/board/event/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<EventDTO>> mng_board_event_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_board_event_selectList");
-        //System.out.println(searchDTO.toString());
-
-        List<EventDTO> responseList = eduMarineMngService.processSelectEventList(searchDTO);
-
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/event/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<EventDTO> mng_board_event_selectSingle(@RequestBody EventDTO eventDTO) {
-        System.out.println("EduMarineMngController > mng_board_event_selectSingle");
-        //System.out.println(searchDTO.toString());
-
-        EventDTO response = eduMarineMngService.processSelectEventSingle(eventDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/event/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_board_event_delete(@RequestBody EventDTO eventDTO) {
-        System.out.println("EduMarineMngController > mng_board_event_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeleteEvent(eventDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/event/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_board_event_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_board_event_detail");
-        ModelAndView mv = new ModelAndView();
-
-        if(seq != null && !"".equals(seq)){
-            EventDTO eventDTO = new EventDTO();
-            eventDTO.setSeq(seq);
-            EventDTO info = eduMarineMngService.processSelectEventSingle(eventDTO);
-            mv.addObject("info", info);
-        }
-
-        mv.setViewName("/mng/board/event/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/board/event/update.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_event_update(@RequestBody EventDTO eventDTO) {
-        System.out.println("EduMarineMngController > mng_center_board_event_update");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processUpdateEvent(eventDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/event/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_event_insert(@RequestBody EventDTO eventDTO) {
-        System.out.println("EduMarineMngController > mng_center_board_event_insert");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertEvent(eventDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/faq.do", method = RequestMethod.GET)
-    public ModelAndView mng_board_faq() {
-        System.out.println("EduMarineMngController > mng_board_faq");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/board/faq");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/board/faq/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<FaqDTO>> mng_board_faq_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_board_faq_selectList");
-        //System.out.println(searchDTO.toString());
-
-        List<FaqDTO> responseList = eduMarineMngService.processSelectFaqList(searchDTO);
-
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/faq/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<FaqDTO> mng_board_faq_selectSingle(@RequestBody FaqDTO faqDTO) {
-        System.out.println("EduMarineMngController > mng_board_faq_selectSingle");
-        //System.out.println(searchDTO.toString());
-
-        FaqDTO response = eduMarineMngService.processSelectFaqSingle(faqDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/faq/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_board_faq_delete(@RequestBody FaqDTO faqDTO) {
-        System.out.println("EduMarineMngController > mng_board_faq_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeleteFaq(faqDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/faq/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_board_faq_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_board_faq_detail");
-        ModelAndView mv = new ModelAndView();
-
-        if(seq != null && !"".equals(seq)){
-            FaqDTO faqDTO = new FaqDTO();
-            faqDTO.setSeq(seq);
-            FaqDTO info = eduMarineMngService.processSelectFaqSingle(faqDTO);
-            mv.addObject("info", info);
-
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.setUserId(info.getSeq());
-            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-            mv.addObject("fileList", fileList);
-        }
-
-        mv.setViewName("/mng/board/faq/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/board/faq/update.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_faq_update(@RequestBody FaqDTO faqDTO) {
-        System.out.println("EduMarineMngController > mng_center_board_faq_update");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processUpdateFaq(faqDTO);
-
-        String fileIdList = faqDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
-            String[] fileIdSplit = fileIdList.split(",");
-            for(int i=0; i<fileIdSplit.length; i++){
-                if(!"".equals(fileIdSplit[i])){
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdSplit[i]);
-                    fileDTO.setUserId(faqDTO.getSeq());
-                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
-                }
-            }
-        }
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/board/faq/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_faq_insert(@RequestBody FaqDTO faqDTO) {
-        System.out.println("EduMarineMngController > mng_center_board_faq_insert");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertFaq(faqDTO);
-
-        String fileIdList = faqDTO.getFileIdList();
+        String fileIdList = pressDTO.getFileIdList();
         if(fileIdList != null && !"".equals(fileIdList)){
             String[] fileIdSplit = fileIdList.split(",");
             for(int i=0; i<fileIdSplit.length; i++){
@@ -512,465 +325,6 @@ public class EduMarineMngController {
                 }
             }
         }
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    //***************************************************************************
-    // popup Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/mng/popup/popup.do", method = RequestMethod.GET)
-    public ModelAndView mng_popup_popup() {
-        System.out.println("EduMarineMngController > mng_popup_popup");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/popup/popup");
-        return mv;
-    }
-
-    //***************************************************************************
-    // company Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/mng/company/businessNotice.do", method = RequestMethod.GET)
-    public ModelAndView mng_company_businessNotice() {
-        System.out.println("EduMarineMngController > mng_company_businessNotice");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/company/businessNotice");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/company/tenderNotice.do", method = RequestMethod.GET)
-    public ModelAndView mng_company_tenderNotice() {
-        System.out.println("EduMarineMngController > mng_company_tenderNotice");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/company/tenderNotice");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/company/issue.do", method = RequestMethod.GET)
-    public ModelAndView mng_company_issue() {
-        System.out.println("EduMarineMngController > mng_company_issue");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/company/issue");
-        return mv;
-    }
-
-    //***************************************************************************
-    // member Folder
-    //***************************************************************************
-
-    @RequestMapping(value = "/mng/member/ascdirectors.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_ascdirectors() {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/member/ascdirectors");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/ascdirectors/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<AscdirectorsDTO>> mng_member_ascdirectors_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors_selectList");
-        //System.out.println(searchDTO.toString());
-
-        List<AscdirectorsDTO> responseList = eduMarineMngService.processSelectAscdirectorsList(searchDTO);
-
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/ascdirectors/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<AscdirectorsDTO> mng_member_ascdirectors_selectSingle(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors_selectSingle");
-        //System.out.println(searchDTO.toString());
-
-        AscdirectorsDTO response = eduMarineMngService.processSelectAscdirectorsSingle(ascdirectorsDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/ascdirectors/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_ascdirectors_delete(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeleteAscdirectors(ascdirectorsDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/ascdirectors/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_ascdirectors_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors_detail");
-        ModelAndView mv = new ModelAndView();
-
-        if(seq != null && !"".equals(seq)){
-            AscdirectorsDTO ascdirectorsDTO = new AscdirectorsDTO();
-            ascdirectorsDTO.setSeq(seq);
-            AscdirectorsDTO info = eduMarineMngService.processSelectAscdirectorsSingle(ascdirectorsDTO);
-            mv.addObject("info", info);
-
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.setUserId(info.getSeq());
-            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-            mv.addObject("fileList", fileList);
-        }
-
-        mv.setViewName("/mng/member/ascdirectors/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/ascdirectors/update.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_ascdirectors_update(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors_update");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processUpdateAscdirectors(ascdirectorsDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/ascdirectors/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_ascdirectors_insert(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors_insert");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertAscdirectors(ascdirectorsDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/adviser.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_adviser() {
-        System.out.println("EduMarineMngController > mng_member_adviser");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/member/adviser");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/adviser/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<AdviserDTO>> mng_member_adviser_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_member_adviser_selectList");
-        //System.out.println(searchDTO.toString());
-
-        List<AdviserDTO> responseList = eduMarineMngService.processSelectAdviserList(searchDTO);
-
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/adviser/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<AdviserDTO> mng_member_adviser_selectSingle(@RequestBody AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngController > mng_member_adviser_selectSingle");
-        //System.out.println(searchDTO.toString());
-
-        AdviserDTO response = eduMarineMngService.processSelectAdviserSingle(adviserDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/adviser/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_adviser_delete(@RequestBody AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngController > mng_member_adviser_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeleteAdviser(adviserDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/adviser/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_adviser_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_member_adviser_detail");
-        ModelAndView mv = new ModelAndView();
-
-        if(seq != null && !"".equals(seq)){
-            AdviserDTO adviserDTO = new AdviserDTO();
-            adviserDTO.setSeq(seq);
-            AdviserDTO info = eduMarineMngService.processSelectAdviserSingle(adviserDTO);
-            mv.addObject("info", info);
-
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.setUserId(info.getSeq());
-            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-            mv.addObject("fileList", fileList);
-        }
-
-        mv.setViewName("/mng/member/adviser/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/adviser/update.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_adviser_update(@RequestBody AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngController > mng_member_adviser_update");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processUpdateAdviser(adviserDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/adviser/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_adviser_insert(@RequestBody AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngController > mng_member_adviser_insert");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertAdviser(adviserDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/consultation.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_consultation() {
-        System.out.println("EduMarineMngController > mng_member_consultation");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/member/consultation");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/consultation/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<ConsultationDTO>> mng_member_consultation_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_member_consultation_selectList");
-        //System.out.println(searchDTO.toString());
-
-        List<ConsultationDTO> responseList = eduMarineMngService.processSelectConsultationList(searchDTO);
-
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/consultation/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ConsultationDTO> mng_member_consultation_selectSingle(@RequestBody ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngController > mng_member_consultation_selectSingle");
-        //System.out.println(searchDTO.toString());
-
-        ConsultationDTO response = eduMarineMngService.processSelectConsultationSingle(consultationDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/consultation/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_consultation_delete(@RequestBody ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngController > mng_member_consultation_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeleteConsultation(consultationDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/consultation/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_consultation_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_member_consultation_detail");
-        ModelAndView mv = new ModelAndView();
-
-        if(seq != null && !"".equals(seq)){
-            ConsultationDTO consultationDTO = new ConsultationDTO();
-            consultationDTO.setSeq(seq);
-            ConsultationDTO info = eduMarineMngService.processSelectConsultationSingle(consultationDTO);
-            mv.addObject("info", info);
-
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.setUserId(info.getSeq());
-            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-            mv.addObject("fileList", fileList);
-        }
-
-        mv.setViewName("/mng/member/consultation/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/consultation/update.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_consultation_update(@RequestBody ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngController > mng_member_consultation_update");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processUpdateConsultation(consultationDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/consultation/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_consultation_insert(@RequestBody ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngController > mng_member_consultation_insert");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertConsultation(consultationDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/company.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_company() {
-        System.out.println("EduMarineMngController > mng_member_company");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/member/company");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/company/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<CompanyDTO>> mng_member_company_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_member_company_selectList");
-        //System.out.println(searchDTO.toString());
-
-        List<CompanyDTO> responseList = eduMarineMngService.processSelectCompanyList(searchDTO);
-
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/company/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<CompanyDTO> mng_member_company_selectSingle(@RequestBody CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngController > mng_member_company_selectSingle");
-        //System.out.println(searchDTO.toString());
-
-        CompanyDTO response = eduMarineMngService.processSelectCompanySingle(companyDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/company/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_company_delete(@RequestBody CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngController > mng_member_company_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeleteCompany(companyDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/company/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_company_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_member_company_detail");
-        ModelAndView mv = new ModelAndView();
-
-        if(seq != null && !"".equals(seq)){
-            CompanyDTO companyDTO = new CompanyDTO();
-            companyDTO.setSeq(seq);
-            CompanyDTO info = eduMarineMngService.processSelectCompanySingle(companyDTO);
-            mv.addObject("info", info);
-
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.setUserId(info.getSeq());
-            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-            mv.addObject("fileList", fileList);
-        }
-
-        mv.setViewName("/mng/member/company/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/company/update.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_company_update(@RequestBody CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngController > mng_member_company_update");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processUpdateCompany(companyDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/company/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_company_insert(@RequestBody CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngController > mng_member_company_insert");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertCompany(companyDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/partnership.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_partnership() {
-        System.out.println("EduMarineMngController > mng_member_partnership");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/member/partnership");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/partnership/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<PartnershipDTO>> mng_member_partnership_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_member_partnership_selectList");
-        //System.out.println(searchDTO.toString());
-
-        List<PartnershipDTO> responseList = eduMarineMngService.processSelectPartnershipList(searchDTO);
-
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/partnership/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<PartnershipDTO> mng_member_partnership_selectSingle(@RequestBody PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngController > mng_member_partnership_selectSingle");
-        //System.out.println(searchDTO.toString());
-
-        PartnershipDTO response = eduMarineMngService.processSelectPartnershipSingle(partnershipDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/partnership/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_partnership_delete(@RequestBody PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngController > mng_member_partnership_delete");
-
-        ResponseDTO responseDTO = eduMarineMngService.processDeletePartnership(partnershipDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/partnership/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_member_partnership_detail(String seq) {
-        System.out.println("EduMarineMngController > mng_member_partnership_detail");
-        ModelAndView mv = new ModelAndView();
-
-        if(seq != null && !"".equals(seq)){
-            PartnershipDTO partnershipDTO = new PartnershipDTO();
-            partnershipDTO.setSeq(seq);
-            PartnershipDTO info = eduMarineMngService.processSelectPartnershipSingle(partnershipDTO);
-            mv.addObject("info", info);
-
-            FileDTO fileDTO = new FileDTO();
-            fileDTO.setUserId(info.getSeq());
-            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-            mv.addObject("fileList", fileList);
-        }
-
-        mv.setViewName("/mng/member/partnership/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/member/partnership/update.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_partnership_update(@RequestBody PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngController > mng_member_ascdirectors_update");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processUpdatePartnership(partnershipDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/member/partnership/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_member_partnership_insert(@RequestBody PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngController > mng_member_partnership_insert");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertPartnership(partnershipDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1027,10 +381,10 @@ public class EduMarineMngController {
         try {
             String path = "";
             if("mail".equals(gbn)){
-                path = ResourceUtils.getFile("./tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + gbn + "/").toPath().toString();
+                path = ResourceUtils.getFile("./usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + gbn + "/").toPath().toString();
             }else{
                 /* prod */
-                path = ResourceUtils.getFile("./tomcat/webapps/upload/" + gbn + "/").toPath().toString();
+                path = ResourceUtils.getFile("./usr/local/tomcat/webapps/upload/" + gbn + "/").toPath().toString();
             }
 
             /* 날짜로 폴더 setting
@@ -1159,10 +513,10 @@ public class EduMarineMngController {
 
         String file_repo = "";
         if("mail".equals(path)){
-            file_repo = ResourceUtils.getFile("./tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path + "/").toPath().toString();
+            file_repo = ResourceUtils.getFile("./usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path + "/").toPath().toString();
         }else {
             // 파일 업로드된 경로
-            file_repo = ResourceUtils.getFile("./tomcat/webapps/upload/" + path + "/").toPath().toString();
+            file_repo = ResourceUtils.getFile("./usr/local/tomcat/webapps/upload/" + path + "/").toPath().toString();
         }
         // 서버에 실제 저장된 파일명
         //String filename = "20140819151221.zip" ;

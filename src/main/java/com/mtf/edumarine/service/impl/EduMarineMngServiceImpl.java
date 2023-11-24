@@ -8,7 +8,6 @@ import com.mtf.edumarine.service.EduMarineMngService;
 import com.mtf.edumarine.util.StringUtil;
 import lombok.Setter;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -52,7 +51,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
             session.setAttribute("status", "logon");
             session.setAttribute("id", admin.getId());
         }
-        return admin;
+        return new AdminDTO();
     }
 
     @Override
@@ -61,28 +60,25 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         session.invalidate(); // 세션 초기화
     }
 
-    //***************************************************************************
-    // board
-    //***************************************************************************
-
+    /* Board */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NoticeDTO> processSelectNoticeList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectNoticeList");
+        System.out.println("KibsMngServiceImpl > processSelectNoticeList");
         return eduMarineMngMapper.selectNoticeList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public NoticeDTO processSelectNoticeSingle(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectNoticeSingle");
+        System.out.println("KibsMngServiceImpl > processSelectNoticeSingle");
         return eduMarineMngMapper.selectNoticeSingle(noticeDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteNotice(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteNotice");
+        System.out.println("KibsMngServiceImpl > processDeleteNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -93,19 +89,11 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Seq : " + noticeDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(noticeDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
                 }
                 //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
+                resultMessage = "[Id Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -121,7 +109,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateNotice(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateNotice");
+        System.out.println("KibsMngServiceImpl > processUpdateNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -142,11 +130,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                     resultMessage = "[Data Update Fail] Seq : " + noticeDTO.getSeq();
                 }
                 //System.out.println(result);
-
-                responseDTO.setCustomValue(noticeDTO.getSeq());
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
+                resultMessage = "[Id Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -162,7 +148,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertNotice(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertNotice");
+        System.out.println("KibsMngServiceImpl > processInsertNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -175,14 +161,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                 noticeDTO.setNoticeGbn("1");
             }
 
-            String noticeSeq = eduMarineMngMapper.getNoticeSeq();
-            noticeDTO.setSeq(noticeSeq);
+            String getSeq = eduMarineMngMapper.getNoticeSeq();
+            noticeDTO.setSeq(getSeq);
 
             String content = noticeDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
             noticeDTO.setContent(content);
             result = eduMarineMngMapper.insertNotice(noticeDTO);
 
-            responseDTO.setCustomValue(noticeSeq);
+            responseDTO.setCustomValue(getSeq);
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Insert Fail]";
@@ -199,51 +185,44 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         return responseDTO;
     }
 
+    /* Press */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public List<SipaNewsDTO> processSelectSipaNewsList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSipaNewsList");
-        return eduMarineMngMapper.selectSipaNewsList(searchDTO);
+    public List<PressDTO> processSelectPressList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectPressList");
+        return eduMarineMngMapper.selectPressList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public SipaNewsDTO processSelectSipaNewsSingle(SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSipaNewsSingle");
-        return eduMarineMngMapper.selectSipaNewsSingle(sipaNewsDTO);
+    public PressDTO processSelectPressSingle(PressDTO pressDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectPressSingle");
+        return eduMarineMngMapper.selectPressSingle(pressDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processDeleteSipaNews(SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteSipaNews");
+    public ResponseDTO processDeletePress(PressDTO pressDTO) {
+        System.out.println("KibsMngServiceImpl > processDeletePress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(sipaNewsDTO.getSeq() != null){
-                result = eduMarineMngMapper.deleteSipaNews(sipaNewsDTO);
+            if(pressDTO.getSeq() != null){
+                result = eduMarineMngMapper.deletePress(pressDTO);
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + sipaNewsDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(sipaNewsDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
+                    resultMessage = "[Data Delete Fail] Seq : " + pressDTO.getSeq();
                 }
                 //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
+                resultMessage = "[Id Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteSipaNews ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            resultMessage = "[processDeletePress ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 
@@ -254,37 +233,35 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processUpdateSipaNews(SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSipaNews");
+    public ResponseDTO processUpdatePress(PressDTO pressDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdatePress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(!StringUtil.isEmpty(sipaNewsDTO.getSeq())){
-                if(StringUtil.isEmpty(sipaNewsDTO.getNoticeGbn()) || "off".equals(sipaNewsDTO.getNoticeGbn())){
-                    sipaNewsDTO.setNoticeGbn("0");
+            if(!StringUtil.isEmpty(pressDTO.getSeq())){
+                if(StringUtil.isEmpty(pressDTO.getNoticeGbn()) || "off".equals(pressDTO.getNoticeGbn())){
+                    pressDTO.setNoticeGbn("0");
                 }else{
-                    sipaNewsDTO.setNoticeGbn("1");
+                    pressDTO.setNoticeGbn("1");
                 }
 
-                String content = sipaNewsDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
-                sipaNewsDTO.setContent(content);
-                result = eduMarineMngMapper.updateSipaNews(sipaNewsDTO);
+                String content = pressDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+                pressDTO.setContent(content);
+                result = eduMarineMngMapper.updatePress(pressDTO);
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + sipaNewsDTO.getSeq();
+                    resultMessage = "[Data Update Fail] Seq : " + pressDTO.getSeq();
                 }
                 //System.out.println(result);
-
-                responseDTO.setCustomValue(sipaNewsDTO.getSeq());
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
+                resultMessage = "[Id Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateSipaNews ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            resultMessage = "[processUpdatePress ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 
@@ -295,28 +272,28 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processInsertSipaNews(SipaNewsDTO sipaNewsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertSipaNews");
+    public ResponseDTO processInsertPress(PressDTO pressDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertPress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
 
-            if(StringUtil.isEmpty(sipaNewsDTO.getNoticeGbn()) || "off".equals(sipaNewsDTO.getNoticeGbn())){
-                sipaNewsDTO.setNoticeGbn("0");
+            if(StringUtil.isEmpty(pressDTO.getNoticeGbn()) || "off".equals(pressDTO.getNoticeGbn())){
+                pressDTO.setNoticeGbn("0");
             }else{
-                sipaNewsDTO.setNoticeGbn("1");
+                pressDTO.setNoticeGbn("1");
             }
 
-            String seq = eduMarineMngMapper.getSipaNewsSeq();
-            sipaNewsDTO.setSeq(seq);
+            String getSeq = eduMarineMngMapper.getPressSeq();
+            pressDTO.setSeq(getSeq);
 
-            String content = sipaNewsDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
-            sipaNewsDTO.setContent(content);
-            result = eduMarineMngMapper.insertSipaNews(sipaNewsDTO);
+            String content = pressDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            pressDTO.setContent(content);
+            result = eduMarineMngMapper.insertPress(pressDTO);
 
-            responseDTO.setCustomValue(seq);
+            responseDTO.setCustomValue(getSeq);
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Insert Fail]";
@@ -324,829 +301,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
             //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertSipaNews ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<EventDTO> processSelectEventList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectEventList");
-        return eduMarineMngMapper.selectEventList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public EventDTO processSelectEventSingle(EventDTO eventDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectEventSingle");
-        return eduMarineMngMapper.selectEventSingle(eventDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteEvent(EventDTO eventDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteEvent");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(eventDTO.getSeq() != null){
-                result = eduMarineMngMapper.deleteEvent(eventDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + eventDTO.getSeq();
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteEvent ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdateEvent(EventDTO eventDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateEvent");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(eventDTO.getSeq())){
-                result = eduMarineMngMapper.updateEvent(eventDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + eventDTO.getSeq();
-                }
-                //System.out.println(result);
-
-                responseDTO.setCustomValue(eventDTO.getSeq());
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateEvent ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertEvent(EventDTO eventDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertEvent");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String seq = eduMarineMngMapper.getEventSeq();
-            eventDTO.setSeq(seq);
-            result = eduMarineMngMapper.insertEvent(eventDTO);
-
-            responseDTO.setCustomValue(seq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertEvent ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<FaqDTO> processSelectFaqList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFaqList");
-        return eduMarineMngMapper.selectFaqList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public FaqDTO processSelectFaqSingle(FaqDTO faqDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFaqSingle");
-        return eduMarineMngMapper.selectFaqSingle(faqDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteFaq(FaqDTO faqDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteFaq");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(faqDTO.getSeq() != null){
-                result = eduMarineMngMapper.deleteFaq(faqDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + faqDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(faqDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteFaq ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdateFaq(FaqDTO faqDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFaq");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(faqDTO.getSeq())){
-
-                String content = faqDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
-                faqDTO.setContent(content);
-                result = eduMarineMngMapper.updateFaq(faqDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + faqDTO.getSeq();
-                }
-                //System.out.println(result);
-
-                responseDTO.setCustomValue(faqDTO.getSeq());
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateFaq ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertFaq(FaqDTO faqDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertFaq");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String seq = eduMarineMngMapper.getFaqSeq();
-            faqDTO.setSeq(seq);
-
-            String content = faqDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
-            faqDTO.setContent(content);
-            result = eduMarineMngMapper.insertFaq(faqDTO);
-
-            responseDTO.setCustomValue(seq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertFaq ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<AscdirectorsDTO> processSelectAscdirectorsList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAscdirectorsList");
-        return eduMarineMngMapper.selectAscdirectorsList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public AscdirectorsDTO processSelectAscdirectorsSingle(AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAscdirectorsSingle");
-        return eduMarineMngMapper.selectAscdirectorsSingle(ascdirectorsDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteAscdirectors(AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteAscdirectors");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(ascdirectorsDTO.getSeq() != null){
-                result = eduMarineMngMapper.deleteAscdirectors(ascdirectorsDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + ascdirectorsDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(ascdirectorsDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteAscdirectors ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdateAscdirectors(AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateAscdirectors");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(ascdirectorsDTO.getSeq())){
-
-                result = eduMarineMngMapper.updateAscdirectors(ascdirectorsDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + ascdirectorsDTO.getSeq();
-                }
-                //System.out.println(result);
-                responseDTO.setCustomValue(ascdirectorsDTO.getSeq());
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateAscdirectors ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertAscdirectors(AscdirectorsDTO ascdirectorsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertAscdirectors");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String seq = eduMarineMngMapper.getAscdirectorsSeq();
-            ascdirectorsDTO.setSeq(seq);
-
-            result = eduMarineMngMapper.insertAscdirectors(ascdirectorsDTO);
-
-            responseDTO.setCustomValue(seq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertAscdirectors ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<AdviserDTO> processSelectAdviserList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAdviserList");
-        return eduMarineMngMapper.selectAdviserList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public AdviserDTO processSelectAdviserSingle(AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAdviserSingle");
-        return eduMarineMngMapper.selectAdviserSingle(adviserDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteAdviser(AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteAdviser");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(adviserDTO.getSeq() != null){
-                result = eduMarineMngMapper.deleteAdviser(adviserDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + adviserDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(adviserDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteAdviser ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdateAdviser(AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateAdviser");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(adviserDTO.getSeq())){
-
-                result = eduMarineMngMapper.updateAdviser(adviserDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + adviserDTO.getSeq();
-                }
-                //System.out.println(result);
-                responseDTO.setCustomValue(adviserDTO.getSeq());
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateAdviser ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertAdviser(AdviserDTO adviserDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertAdviser");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String seq = eduMarineMngMapper.getAdviserSeq();
-            adviserDTO.setSeq(seq);
-
-            result = eduMarineMngMapper.insertAdviser(adviserDTO);
-
-            responseDTO.setCustomValue(seq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertAdviser ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<ConsultationDTO> processSelectConsultationList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectConsultationList");
-        return eduMarineMngMapper.selectConsultationList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ConsultationDTO processSelectConsultationSingle(ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectConsultationSingle");
-        return eduMarineMngMapper.selectConsultationSingle(consultationDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteConsultation(ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteConsultation");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(consultationDTO.getSeq() != null){
-                result = eduMarineMngMapper.deleteConsultation(consultationDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + consultationDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(consultationDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteConsultation ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdateConsultation(ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateConsultation");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(consultationDTO.getSeq())){
-
-                result = eduMarineMngMapper.updateConsultation(consultationDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + consultationDTO.getSeq();
-                }
-                //System.out.println(result);
-                responseDTO.setCustomValue(consultationDTO.getSeq());
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateConsultation ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertConsultation(ConsultationDTO consultationDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertConsultation");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String seq = eduMarineMngMapper.getConsultationSeq();
-            consultationDTO.setSeq(seq);
-
-            result = eduMarineMngMapper.insertConsultation(consultationDTO);
-
-            responseDTO.setCustomValue(seq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertConsultation ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<CompanyDTO> processSelectCompanyList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectCompanyList");
-        return eduMarineMngMapper.selectCompanyList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public CompanyDTO processSelectCompanySingle(CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectCompanySingle");
-        return eduMarineMngMapper.selectCompanySingle(companyDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteCompany(CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteCompany");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(companyDTO.getSeq() != null){
-                result = eduMarineMngMapper.deleteCompany(companyDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + companyDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(companyDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteCompany ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdateCompany(CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateCompany");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(companyDTO.getSeq())){
-
-                result = eduMarineMngMapper.updateCompany(companyDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + companyDTO.getSeq();
-                }
-                //System.out.println(result);
-                responseDTO.setCustomValue(companyDTO.getSeq());
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateCompany ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertCompany(CompanyDTO companyDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertCompany");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String seq = eduMarineMngMapper.getCompanySeq();
-            companyDTO.setSeq(seq);
-
-            result = eduMarineMngMapper.insertCompany(companyDTO);
-
-            responseDTO.setCustomValue(seq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertCompany ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<PartnershipDTO> processSelectPartnershipList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPartnershipList");
-        return eduMarineMngMapper.selectPartnershipList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public PartnershipDTO processSelectPartnershipSingle(PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPartnershipSingle");
-        return eduMarineMngMapper.selectPartnershipSingle(partnershipDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeletePartnership(PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeletePartnership");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(partnershipDTO.getSeq() != null){
-                result = eduMarineMngMapper.deletePartnership(partnershipDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + partnershipDTO.getSeq();
-                }else{
-                    // file list useYn = N update
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(partnershipDTO.getSeq());
-                    List<FileDTO> fileList = eduMarineMngMapper.selectFileUserIdList(fileDTO);
-                    for(FileDTO file : fileList){
-                        eduMarineMngMapper.updateFileUseN(file);
-                    }
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeletePartnership ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdatePartnership(PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdatePartnership");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(partnershipDTO.getSeq())){
-
-                result = eduMarineMngMapper.updatePartnership(partnershipDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Seq : " + partnershipDTO.getSeq();
-                }
-                //System.out.println(result);
-                responseDTO.setCustomValue(partnershipDTO.getSeq());
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdatePartnership ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertPartnership(PartnershipDTO partnershipDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertPartnership");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String seq = eduMarineMngMapper.getPartnershipSeq();
-            partnershipDTO.setSeq(seq);
-
-            result = eduMarineMngMapper.insertPartnership(partnershipDTO);
-
-            responseDTO.setCustomValue(seq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertPartnership ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            resultMessage = "[processInsertPress ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 
@@ -1306,8 +461,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         }
         return list;
     }
-
-
 
     /*******************************************
      * Mail Send Service Impl
@@ -1602,38 +755,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         }
 
         return responseDto;
-    }
-
-    public ResponseDTO memberExcelUp(MultipartFile excelFile) {
-        ResponseDTO rrVO = new ResponseDTO();
-        try {
-            OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream()); // 파일 읽어옴
-            XSSFWorkbook workbook =  new XSSFWorkbook(opcPackage);
-
-            XSSFSheet sheet = workbook.getSheetAt(0);
-
-            // 입력된 행의 수만큼 반복
-            for(int i=1;i<=sheet.getLastRowNum();i++) {
-                XSSFRow row = sheet.getRow(i); // i번째 행 가져옴
-                XSSFCell cell = null;
-
-                if(row == null) continue;
-
-                // 0번째 열
-                cell = row.getCell(0);
-                // Cell 값이 null 일 수도 있으므로 체크
-                if(cell != null)
-                {
-                    cell.setCellType(CellType.STRING); // 숫자만 입력받는 경우를 대비해 STRING 처리
-                    //System.out.println(cell.getStringCellValue().replace(" ", "")); // 공백처리
-                }
-
-            }
-
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return rrVO;
     }
 
 }

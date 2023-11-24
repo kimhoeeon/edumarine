@@ -241,7 +241,7 @@ function f_member_adviser_save(seq){
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = '/mng/member/adviser.do'; // 목록으로 이동
+                                        window.location.href = '/mng/board/press.do'; // 목록으로 이동
                                     }
                                 });
                             } else {

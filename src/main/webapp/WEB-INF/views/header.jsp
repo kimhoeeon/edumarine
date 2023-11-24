@@ -1,150 +1,84 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<!-- header -->
 <div id="header">
-
-    <!-- header menu -->
-    <div class="hd_top">
-        <div class="hd_top_inner">
-            <h1 class="hd_logo">
-                <a href="/">
-                    <img src="<%request.getContextPath();%>/static/img/logo.png">
-                </a>
-            </h1>
-            <div class="hd_top_right">
-                <a href="/" class="language kor">KOR</a>
-                <a href="/eng/index.do" class="language eng">ENG</a>
-                <a href="#a" class="side_menu m_menu">
-                    <span>메뉴</span>
-                </a>
-            </div>
+    <!-- header_top -->
+    <div class="header_top">
+        <div class="inner">
+            <a href="/member/login.do">로그인</a>
+            <a href="/member/join.do">회원가입</a>
+            <a href="/sitemap.do" class="sitemap"><img src="<%request.getContextPath();%>/static/img/icon_menu_white.png" alt="메뉴 아이콘"></a>
         </div>
     </div>
-
-    <div class="hd_nav">
-        <div class="hd_nav_inner">
-            <div class="nav">
-                <ul class="dept1">
-                    <li>
-                        <a href="#a" class="side_menu pc_menu">
-                            <span>메뉴</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/introduce/greeting.do"><span>협회소개</span></a>
-                        <ul class="dept2">
-                            <li><a href="/introduce/greeting.do"><span>인사말</span></a></li>
-                            <li><a href="/introduce/history.do"><span>연혁</span></a></li>
-                            <li><a href="/introduce/vision.do"><span>비전</span></a></li>
-                            <li><a href="/introduce/business.do"><span>주요사업</span></a></li>
-                            <li><a href="/introduce/way.do"><span>오시는길</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="/member/ascdirectors.do"><span>회원사</span></a>
-                        <ul class="dept2">
-                            <li><a href="/member/ascdirectors.do"><span>협회이사</span></a></li>
-                            <li><a href="/member/adviser.do"><span>고문위원</span></a></li>
-                            <li><a href="/member/consultation.do"><span>자문위원</span></a></li>
-                            <li><a href="/member/regular.do"><span>정회원</span></a></li>
-                            <li><a href="/member/ascmembers.do"><span>준회원</span></a></li>
-                            <li><a href="/member/partnership.do"><span>협력기관</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="/service/guide.do"><span>회원서비스</span></a>
-                        <ul class="dept2">
-                            <li><a href="/service/guide.do"><span>가입 안내</span></a></li>
-                            <li><a href="/service/benefits.do"><span>회원사 혜택</span></a></li>
-                            <li><a href="/service/faq.do"><span>FAQ</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="/support/bizanm.do"><span>기업지원</span></a>
-                        <ul class="dept2">
-                            <li><a href="/support/bizanm.do"><span>사업공고</span></a></li>
-                            <li><a href="/support/bidanm.do"><span>입찰공고</span></a></li>
-                            <li><a href="/support/issue.do"><span>Issue&Trend</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="/community/notice.do"><span>커뮤니티</span></a>
-                        <ul class="dept2">
-                            <li><a href="/community/notice.do"><span>공지사항</span></a></li>
-                            <li><a href="/community/news.do"><span>SIPA-NEWS</span></a></li>
-                            <li><a href="/community/event.do"><span>행사 게시판</span></a></li>
-                            <li><a href="/community/contact.do"><span>Contact us</span></a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- header menu -->
-
-    <!-- site map & mobile -->
-    <div class="hd_site_map">
-        <div class="side_top_box">
-            <div class="side_top_txt">전체메뉴</div>
-            <a href="" class="language kor">KOR</a>
-            <a href="" class="language eng">ENG</a>
-            <a href="#a" class="side_menu_close">
-                <span>닫기</span>
+    <!-- //header_top -->
+    <!-- header_bottom -->
+    <div class="header_bot">
+        <div class="inner">
+            <h1><a href="/" class="logo"><img src="<%request.getContextPath();%>/static/img/logo.png" alt="로고"></a></h1>
+            <a href="#a" class="m_menu">
+                <span>메뉴</span>
             </a>
-        </div>
-        <div class="site_map_box">
-            <div class="site_map_nav">
+            <div class="nav">
+                <div class="mobile_top">
+                    <a href="/member/login.do">로그인</a>
+                    <a href="/member/join.do">회원가입</a>
+                </div>
                 <ul class="dept1">
                     <li>
-                        <a href="/introduce/greeting.do"><span>협회소개</span></a>
+                        <a href="">센터소개</a>
                         <ul class="dept2">
-                            <li><a href="/introduce/greeting.do"><span>인사말</span></a></li>
-                            <li><a href="/introduce/history.do"><span>연혁</span></a></li>
-                            <li><a href="/introduce/vision.do"><span>비전</span></a></li>
-                            <li><a href="/introduce/business.do"><span>주요사업</span></a></li>
-                            <li><a href="/introduce/way.do"><span>오시는길</span></a></li>
+                            <li><a href="">EDU marine 소개</a></li>
+                            <li><a href="">사업개요</a></li>
+                            <li><a href="">경기도 해양레저 현황</a></li>
+                            <li><a href="">해양레저 인력양성의 필요성</a></li>
+                            <li><a href="">협력 및 후원기관</a></li>
+                            <li><a href="">찾아오시는 길</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/member/ascdirectors.do"><span>회원사</span></a>
+                        <a href="">교육안내</a>
                         <ul class="dept2">
-                            <li><a href="/member/ascdirectors.do"><span>협회이사</span></a></li>
-                            <li><a href="/member/adviser.do"><span>고문위원</span></a></li>
-                            <li><a href="/member/consultation.do"><span>자문위원</span></a></li>
-                            <li><a href="/member/regular.do"><span>정회원</span></a></li>
-                            <li><a href="/member/ascmembers.do"><span>준회원</span></a></li>
-                            <li><a href="/member/partnership.do"><span>협력기관</span></a></li>
+                            <li><a href="">전체 교육과정 소개</a></li>
+                            <li><a href="">해상엔진테크니션 (선내기·선외기)</a></li>
+                            <li><a href="">마리나선박 정비사 실기교육</a></li>
+                            <li><a href="">FRP 레저보트 선체 정비 테크니션</a></li>
+                            <li><a href="">위탁교육</a></li>
+                            <li><a href="">해상엔진 자가정비 (선외기)</a></li>
+                            <li><a href="">해상엔진 자가정비 (선내기)</a></li>
+                            <li><a href="">해상엔진 자가정비 (세일요트)</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/service/guide.do"><span>회원서비스</span></a>
+                        <a href="">교육신청</a>
                         <ul class="dept2">
-                            <li><a href="/service/guide.do"><span>가입 안내</span></a></li>
-                            <li><a href="/service/benefits.do"><span>회원사 혜택</span></a></li>
-                            <li><a href="/service/faq.do"><span>FAQ</span></a></li>
+                            <li><a href="">교육일정</a></li>
+                            <li><a href="/apply/schedule.do">교육신청</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/support/bizanm.do"><span>기업지원</span></a>
+                        <a href="/board/notice_list.do">자료실</a>
                         <ul class="dept2">
-                            <li><a href="/support/bizanm.do"><span>사업공고</span></a></li>
-                            <li><a href="/support/bidanm.do"><span>입찰공고</span></a></li>
-                            <li><a href="/support/issue.do"><span>Issue&Trend</span></a></li>
+                            <li><a href="/board/notice_list.do">공지사항</a></li>
+                            <li><a href="/board/press_list.do">보도자료</a></li>
+                            <li><a href="/board/gallery.do">사진자료</a></li>
+                            <li><a href="/board/gallery.do">영상자료</a></li>
+                            <li><a href="/board/news_list.do">뉴스레터</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/community/notice.do"><span>커뮤니티</span></a>
+                        <a href="/job/announcement_list.do">취업/창업</a>
                         <ul class="dept2">
-                            <li><a href="/community/notice.do"><span>공지사항</span></a></li>
-                            <li><a href="/community/news.do"><span>SIPA-NEWS</span></a></li>
-                            <li><a href="/community/event.do"><span>행사 게시판</span></a></li>
-                            <li><a href="/community/contact.do"><span>Contact us</span></a></li>
+                            <li><a href="/job/announcement_list.do">채용공고</a></li>
+                            <li><a href="/job/state01.do">취창업현황</a></li>
+                            <li><a href="/job/review.do">취업성공후기</a></li>
+                            <li><a href="/job/community_list.do">커뮤니티</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <!-- //site map & mobile -->
-    <div class="side_bg"></div>
-
+    <!-- //header_bottom -->
+    <div class="aside_bg"></div>
 </div>
+<!-- //header -->
