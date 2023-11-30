@@ -1,34 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
-<!--
-Author: Keenthemes
-Product Name: Metronic
-Product Version: 8.1.8
-Purchase: https://1.envato.market/EA4JP
-Website: http://www.keenthemes.com
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
--->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
-<!--begin::Head-->
+
 <head>
-    <base href="/mng/"/>
-    <title>SIPA 스마트산업진흥협회 관리자</title>
-    <meta charset="utf-8"/>
-    <meta name="description" content="SIPA 스마트산업진흥협회 홈페이지"/>
-    <meta name="keywords" content="SIPA"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta property="og:locale" content="ko_KR"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:title" content="SIPA"/>
-    <meta property="og:url" content="http://sipakuei.cafe24.com/main.do"/>
-    <meta property="og:site_name" content="2024 SIPA | 스마트산업진흥협회"/>
-    <link rel="canonical" href="http://sipakuei.cafe24.com/main.do"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="format-detection" content="telephone=no" />
+    <title>해양레저인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -39,9 +23,10 @@ License: For each use you must have a valid license purchased only from above li
     <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    <%-- favicon --%>
+    <%-- favicon
     <link rel="shortcut icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+    --%>
 
     <!--begin::Fonts(mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
@@ -148,7 +133,7 @@ if (document.documentElement) {
                                      data-kt-menu-placement="bottom-start" class="menu-item">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
-                                        <span class="menu-title">게시판 관리</span>
+                                        <span class="menu-title">회원 / 신청</span>
                                         <span class="menu-arrow d-lg-none"></span>
                                     </span>
                                     <!--end:Menu link-->
@@ -161,23 +146,16 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
                                                            data-bs-toggle="tab"
-                                                           data-bs-target="#kt_app_header_menu_pages_board">게시판 관리</a>
+                                                           data-bs-target="#kt_app_header_menu_pages_member">회원 관리</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
                                                         <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
-                                                           data-bs-target="#kt_app_header_menu_pages_popup">팝업 관리</a>
-                                                    </li>
-                                                    <!--end:Nav item-->
-                                                    <!--begin:Nav item-->
-                                                    <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
-                                                           data-bs-toggle="tab"
-                                                           data-bs-target="#kt_app_header_menu_pages_company">기업지원</a>
+                                                           data-bs-target="#kt_app_header_menu_pages_user">신청자 목록</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                 </ul>
@@ -186,7 +164,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-350px active" id="kt_app_header_menu_pages_board">
+                                                <div class="tab-pane active w-lg-200px" id="kt_app_header_menu_pages_member">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -200,37 +178,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/notice.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">공지사항</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/board/sipaNews.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">SIPA-NEWS</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/board/event.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">행사 게시판</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/board/faq.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">FAQ</span>
+                                                                            <span class="menu-title">전체 회원 목록</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -246,7 +194,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_popup">
+                                                <div class="tab-pane w-lg-200px" id="kt_app_header_menu_pages_user">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -260,7 +208,57 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/popup/popup.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">팝업 등록</span>
+                                                                            <span class="menu-title">상시 사전 신청</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/popup/popup.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">해상 엔진 테크니션</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/popup/popup.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">FRP 정비 테크니션</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/popup/popup.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">선외기 자가 정비</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/popup/popup.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">선내기 자가 정비</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/popup/popup.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">세일요트 자가 정비</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -275,8 +273,44 @@ if (document.documentElement) {
                                                     <!--end:Row-->
                                                 </div>
                                                 <!--end:Tab pane-->
+                                            </div>
+                                            <!--end:Tab content-->
+                                        </div>
+                                        <!--end:Pages menu-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-title">교육</span>
+                                        <span class="menu-arrow d-lg-none"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0">
+                                        <!--begin:Pages menu-->
+                                        <div class="menu-active-bg px-4 px-lg-0">
+                                            <!--begin:Tabs nav-->
+                                            <div class="d-flex w-100 overflow-auto">
+                                                <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_education">교육 관리</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                </ul>
+                                            </div>
+                                            <!--end:Tabs nav-->
+                                            <!--begin:Tab content-->
+                                            <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_company">
+                                                <div class="tab-pane active w-lg-125px" id="kt_app_header_menu_pages_education">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -288,9 +322,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/company/businessNotice.do"
+                                                                        <a href="/mng/board/notice.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">사업공고</span>
+                                                                            <span class="menu-title">교육 현황</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -298,19 +332,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/company/tenderNotice.do"
+                                                                        <a href="/mng/board/press.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">입찰공고</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/company/issue.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">Issue&Trend</span>
+                                                                            <span class="menu-title">결제/환불 현황</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -338,7 +362,264 @@ if (document.documentElement) {
                                      data-kt-menu-placement="bottom-start" class="menu-item here">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
-                                        <span class="menu-title">회원사</span>
+                                        <span class="menu-title">정보센터</span>
+                                        <span class="menu-arrow d-lg-none"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0">
+                                        <!--begin:Pages menu-->
+                                        <div class="menu-active-bg px-4 px-lg-0">
+                                            <!--begin:Tabs nav-->
+                                            <div class="d-flex w-100 overflow-auto">
+                                                <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_board">게시판 관리</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_pop">팝업/배너 관리</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_news">뉴스레터 관리</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_sms">SMS 관리</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                </ul>
+                                            </div>
+                                            <!--end:Tabs nav-->
+                                            <!--begin:Tab content-->
+                                            <div class="tab-content py-4 py-lg-8 px-lg-7">
+                                                <!--begin:Tab pane-->
+                                                <div class="tab-pane active w-lg-400px" id="kt_app_header_menu_pages_board">
+                                                    <!--begin:Row-->
+                                                    <div class="row">
+                                                        <!--begin:Col-->
+                                                        <div class="col-lg-12 mb-6 mb-lg-0">
+                                                            <!--begin:Row-->
+                                                            <div class="row">
+                                                                <!--begin:Col-->
+                                                                <div class="col-lg-12">
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/notice.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">공지사항</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/press.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">보도자료</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/gallery.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">사진자료</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/media.do"
+                                                                           class="menu-link active">
+                                                                            <span class="menu-title">영상자료</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/newsletter.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">뉴스레터</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/announcement.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">채용공고</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/job.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">취/창업 성공후기</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/community.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">커뮤니티</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                </div>
+                                                                <!--end:Col-->
+                                                            </div>
+                                                            <!--end:Row-->
+                                                        </div>
+                                                        <!--end:Col-->
+                                                    </div>
+                                                    <!--end:Row-->
+                                                </div>
+                                                <!--end:Tab pane-->
+                                                <!--begin:Tab pane-->
+                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_pop">
+                                                    <!--begin:Row-->
+                                                    <div class="row">
+                                                        <!--begin:Col-->
+                                                        <div class="col-lg-12 mb-6 mb-lg-0">
+                                                            <!--begin:Row-->
+                                                            <div class="row">
+                                                                <!--begin:Col-->
+                                                                <div class="col-lg-12">
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/pop/popup.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">팝업 관리</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/press.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">배너 관리</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                </div>
+                                                                <!--end:Col-->
+                                                            </div>
+                                                            <!--end:Row-->
+                                                        </div>
+                                                        <!--end:Col-->
+                                                    </div>
+                                                    <!--end:Row-->
+                                                </div>
+                                                <!--end:Tab pane-->
+                                                <!--begin:Tab pane-->
+                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_news">
+                                                    <!--begin:Row-->
+                                                    <div class="row">
+                                                        <!--begin:Col-->
+                                                        <div class="col-lg-12 mb-6 mb-lg-0">
+                                                            <!--begin:Row-->
+                                                            <div class="row">
+                                                                <!--begin:Col-->
+                                                                <div class="col-lg-12">
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/notice.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">뉴스레터 구독자 관리</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                </div>
+                                                                <!--end:Col-->
+                                                            </div>
+                                                            <!--end:Row-->
+                                                        </div>
+                                                        <!--end:Col-->
+                                                    </div>
+                                                    <!--end:Row-->
+                                                </div>
+                                                <!--end:Tab pane-->
+                                                <!--begin:Tab pane-->
+                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_sms">
+                                                    <!--begin:Row-->
+                                                    <div class="row">
+                                                        <!--begin:Col-->
+                                                        <div class="col-lg-12 mb-6 mb-lg-0">
+                                                            <!--begin:Row-->
+                                                            <div class="row">
+                                                                <!--begin:Col-->
+                                                                <div class="col-lg-12">
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/notice.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">SMS 발송 관리</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                </div>
+                                                                <!--end:Col-->
+                                                            </div>
+                                                            <!--end:Row-->
+                                                        </div>
+                                                        <!--end:Col-->
+                                                    </div>
+                                                    <!--end:Row-->
+                                                </div>
+                                                <!--end:Tab pane-->
+                                            </div>
+                                            <!--end:Tab content-->
+                                        </div>
+                                        <!--end:Pages menu-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-title">파일</span>
                                         <span class="menu-arrow d-lg-none"></span>
                                     </span>
                                     <!--end:Menu link-->
@@ -353,7 +634,7 @@ if (document.documentElement) {
                                                     <li class="nav-item mx-lg-1">
                                                         <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
                                                            data-bs-toggle="tab"
-                                                           data-bs-target="#kt_app_header_menu_pages_membership">회원사 관리</a>
+                                                           data-bs-target="#kt_app_header_menu_pages_file">파일 관리</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                 </ul>
@@ -362,7 +643,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-250px" id="kt_app_header_menu_pages_membership">
+                                                <div class="tab-pane active w-lg-150px" id="kt_app_header_menu_pages_file">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -376,7 +657,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/notice.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">협회이사</span>
+                                                                            <span class="menu-title">다운로드 내역</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -386,37 +667,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/press.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">고문위원</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/member/consultation.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">자문위원</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/member/company.do"
-                                                                           class="menu-link active">
-                                                                            <span class="menu-title">회원사</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/member/partnership.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">협력기관</span>
+                                                                            <span class="menu-title">임시 휴지통</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -582,10 +833,10 @@ if (document.documentElement) {
                     <div class="app-sidebar-logo pe-4 justify-content-center h-90px" id="kt_app_sidebar_logo">
                         <!--begin::Logo image-->
                         <a href="/mng/main.do">
-                            <img alt="Logo" src="<%request.getContextPath();%>/static/img/logo_natural.png<%--/static/assets/media/logos/default-dark.svg--%>"
-                                 class="h-45px app-sidebar-logo-default"/>
-                            <img alt="Logo" src="<%request.getContextPath();%>/static/img/logo_natural.png<%--assets/media/logos/default-small.svg--%>"
-                                 class="h-45px app-sidebar-logo-minimize"/>
+                            <img alt="Logo" src="<%request.getContextPath();%>/static/img/mng_logo.png<%--/static/assets/media/logos/default-dark.svg--%>"
+                                 class="h-80px app-sidebar-logo-default"/>
+                            <img alt="Logo" src="<%request.getContextPath();%>/static/img/mng_logo.png<%--assets/media/logos/default-small.svg--%>"
+                                 class="h-80px app-sidebar-logo-minimize"/>
                         </a>
                         <!--end::Logo image-->
                         <!--begin::Sidebar toggle-->
@@ -616,7 +867,7 @@ if (document.documentElement) {
                                 <div class="menu-item pt-5">
                                     <!--begin:Menu content-->
                                     <div class="menu-content">
-                                        <span class="menu-heading fw-bold text-uppercase fs-7">정보센터</span>
+                                        <span class="menu-heading fw-bold text-uppercase fs-7">회원 / 신청</span>
                                     </div>
                                     <!--end:Menu content-->
                                 </div>
@@ -630,6 +881,197 @@ if (document.documentElement) {
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                                 <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">회원관리</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/notice.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">전체 회원 목록</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-people fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">신청자 목록</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">상시 사전 신청</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">해상 엔진 테크니션</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">FRP 정비 테크니션</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">선외기 자가 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">선내기 자가 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">세일요트 자가 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item pt-5">
+                                    <!--begin:Menu content-->
+                                    <div class="menu-content">
+                                        <span class="menu-heading fw-bold text-uppercase fs-7">교육</span>
+                                    </div>
+                                    <!--end:Menu content-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-book-open fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">교육 관리</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/notice.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">교육 현황</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/press.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">결제/환불 현황</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item pt-5">
+                                    <!--begin:Menu content-->
+                                    <div class="menu-content">
+                                        <span class="menu-heading fw-bold text-uppercase fs-7">정보센터</span>
+                                    </div>
+                                    <!--end:Menu content-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-element-8 fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
                                             </i>
                                         </span>
                                         <span class="menu-title">게시판 관리</span>
@@ -653,11 +1095,11 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/sipaNews.do">
+                                            <a class="menu-link" href="/mng/board/press.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">SIPA-NEWS</span>
+                                                <span class="menu-title">보도자료</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -665,11 +1107,11 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/event.do">
+                                            <a class="menu-link" href="/mng/board/gallery.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">행사 게시판</span>
+                                                <span class="menu-title">사진자료</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -677,11 +1119,59 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/faq.do">
+                                            <a class="menu-link active" href="/mng/board/media.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">FAQ</span>
+                                                <span class="menu-title">영상자료</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/newsletter.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">뉴스레터</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/announcement.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">채용공고</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/job.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">취/창업 성공후기</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/community.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">커뮤니티</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -695,7 +1185,7 @@ if (document.documentElement) {
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
-                                            <i class="ki-duotone ki-abstract-26 fs-2">
+                                            <i class="ki-duotone ki-messages fs-2">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                                 <span class="path3"></span>
@@ -703,7 +1193,7 @@ if (document.documentElement) {
                                                 <span class="path5"></span>
                                             </i>
                                         </span>
-                                        <span class="menu-title">팝업 관리</span>
+                                        <span class="menu-title">팝업/배너 관리</span>
                                         <span class="menu-arrow"></span>
                                     </span>
                                     <!--end:Menu link-->
@@ -712,11 +1202,23 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                            <a class="menu-link" href="/mng/pop/popup.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">팝업 등록</span>
+                                                <span class="menu-title">팝업 관리</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/press.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">배너 관리</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -730,80 +1232,14 @@ if (document.documentElement) {
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
-                                            <i class="ki-duotone ki-file fs-2">
+                                            <i class="ki-duotone ki-directbox-default fs-2">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                                 <span class="path3"></span>
                                                 <span class="path4"></span>
-                                                <span class="path5"></span>
                                             </i>
                                         </span>
-                                        <span class="menu-title">기업지원</span>
-                                        <span class="menu-arrow"></span>
-                                    </span>
-                                    <!--end:Menu link-->
-                                    <!--begin:Menu sub-->
-                                    <div class="menu-sub menu-sub-accordion">
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/company/businessNotice.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">사업공고</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/company/tenderNotice.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">입찰공고</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/company/issue.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Issue&Trend</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                    </div>
-                                    <!--end:Menu sub-->
-                                </div>
-                                <!--end:Menu item-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item pt-5">
-                                    <!--begin:Menu content-->
-                                    <div class="menu-content">
-                                        <span class="menu-heading fw-bold text-uppercase fs-7">회원사</span>
-                                    </div>
-                                    <!--end:Menu content-->
-                                </div>
-                                <!--end:Menu item-->
-                                <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
-                                    <!--begin:Menu link-->
-                                    <span class="menu-link">
-                                        <span class="menu-icon">
-                                            <i class="ki-duotone ki-crown-2 fs-2">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </span>
-                                        <span class="menu-title">회원사 관리</span>
+                                        <span class="menu-title">뉴스레터 관리</span>
                                         <span class="menu-arrow"></span>
                                     </span>
                                     <!--end:Menu link-->
@@ -816,55 +1252,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">협회이사</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/press.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">고문위원</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/member/consultation.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">자문위원</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/member/company.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">회원사</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/member/partnership.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">협력기관</span>
+                                                <span class="menu-title">뉴스레터 구독자 관리</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -873,6 +1261,92 @@ if (document.documentElement) {
                                     <!--end:Menu sub-->
                                 </div>
                                 <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-sms fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">SMS 관리</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/notice.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">SMS 발송 관리</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item pt-5">
+                                    <!--begin:Menu content-->
+                                    <div class="menu-content">
+                                        <span class="menu-heading fw-bold text-uppercase fs-7">파일</span>
+                                    </div>
+                                    <!--end:Menu content-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-folder fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">파일 관리</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/notice.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">다운로드 내역</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/notice.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">임시 휴지통</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+
                             </div>
                             <!--end::Menu-->
                         </div>
@@ -881,11 +1355,11 @@ if (document.documentElement) {
                     <!--end::sidebar menu-->
                     <!--begin::Footer-->
                     <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-                        <a href="http://sipakuei.cafe24.com"
+                        <a href="javascript:alert('준비 중입니다.');"
                            class="btn btn-flex flex-center btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
                            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
-                           title="홈페이지 바로가기" target="_blank">
-                            <span class="btn-label">홈페이지</span>
+                           title="방문자 데이터 보기"<%-- target="_blank"--%>>
+                            <span class="btn-label">방문자 데이터 보기</span>
                         </a>
                     </div>
                     <!--end::Footer-->
@@ -903,7 +1377,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        회원사</h1>
+                                        영상자료</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -918,7 +1392,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">회원사</li>
+                                        <li class="breadcrumb-item text-muted">정보센터</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -926,7 +1400,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">회원사 관리</li>
+                                        <li class="breadcrumb-item text-muted">게시판 관리</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -934,7 +1408,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">회원사</li>
+                                        <li class="breadcrumb-item text-muted">영상자료</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -943,7 +1417,7 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('mng_member_company_table', '회원사')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_excel_export('mng_board_media_table', '영상자료')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -974,7 +1448,7 @@ if (document.documentElement) {
                                                 <!--begin::Select2-->
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
                                                         aria-label="- 언어 -" data-placeholder="- 언어 -"
-                                                        data-allow-clear="true" data-hide-search="true" onchange="f_member_company_search()">
+                                                        data-allow-clear="true" data-hide-search="true" onchange="f_board_media_search()">
                                                     <option></option>
                                                     <option disabled>- 언어 -</option>
                                                     <option value="" selected>전체</option>
@@ -995,64 +1469,43 @@ if (document.documentElement) {
                                             <!--end::Search-->
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
-                                                <button type="button" onclick="f_member_company_search()" class="btn btn-primary me-5">Search</button>
-                                                <button type="button" onclick="f_member_company_search_condition_init()" class="btn btn-secondary me-5">
+                                                <button type="button" onclick="f_board_media_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_board_media_search_condition_init()" class="btn btn-secondary me-5">
                                                     <i class="ki-duotone ki-arrows-circle fs-3">
                                                         <i class="path1"></i>
                                                         <i class="path2"></i>
                                                     </i>검색조건 초기화</button>
                                             </div>
-                                        </div>
-                                        <!--end::Card title-->
-                                        <!--begin::Card toolbar-->
-                                        <div class="card-toolbar flex-row-fluid gap-5">
-                                            <%--begin::부스구분--%>
-                                            <div class="w-100 mw-150px">
-                                                <!--begin::Select2-->
-                                                <select id="gbn_type" class="form-select form-select-solid" data-control="select2"
-                                                        data-hide-search="true" data-allow-clear="true"
-                                                        data-placeholder="- 구분 -" onchange="f_search_condition_box_change()">
-                                                    <option></option>
-                                                    <option value="" disabled>- 구분 -</option>
-                                                    <option value="R">정회원</option>
-                                                    <option value="A">준회원</option>
-                                                </select>
-                                                <!--end::Select2-->
-                                            </div>
-                                            <%--end::부스구분--%>
-
                                             <!--end:Action-->
                                             <div class="ms-auto">
                                                 <!--begin::글쓰기-->
-                                                <a href="javascript:void(0);" onclick="f_member_company_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
+                                                <a href="javascript:void(0);" onclick="f_board_media_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
                                                 <!--end::글쓰기-->
                                             </div>
                                         </div>
-                                        <!--end::Card toolbar-->
+                                        <!--end::Card title-->
                                     </div>
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
                                     <div class="card-body pt-0">
                                         <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
                                         <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_member_company_table">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_board_media_table">
                                             <thead>
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
                                                     <th class="text-center min-w-50px">언어</th>
-                                                    <th class="text-center min-w-50px">구분</th>
-                                                    <th class="text-center min-w-100px">회사명</th>
-                                                    <th class="text-center min-w-50px">대표자</th>
-                                                    <th class="text-center min-w-150px">주요사업</th>
-                                                    <th class="text-center min-w-150px">주요생산품</th>
-                                                    <th class="text-center min-w-150px">최종수정일시</th>
+                                                    <th class="text-center min-w-300px">제목</th>
+                                                    <th class="text-center min-w-125px">작성자</th>
+                                                    <th class="text-center min-w-150px">등록일시</th>
+                                                    <th class="text-center min-w-150px">수정일시</th>
+                                                    <th class="text-center min-w-50px">조회수</th>
                                                     <th class="text-center min-w-100px">기능</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1108,7 +1561,7 @@ if (document.documentElement) {
                 <!--begin::Modal header-->
                 <div class="modal-header" style="background-color: #1e1e2d;">
                     <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">회원사 정보 상세보기</h2>
+                    <h2 style="color: #FFFFFF;">사진자료 상세보기</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -1140,35 +1593,13 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">회원 구분</label>
-                                <!--begin::Label-->
-                                <!--begin::Label-->
-                                <div class="d-flex align-items-center">
-                                    <div class="form-check form-check-custom">
-                                        <input class="form-check-input form-control-solid-bg opacity-100" type="radio" id="gbnR" name="gbn" value="R" disabled/>
-                                        <label class="form-check-label opacity-100" for="gbnR">
-                                            정회원
-                                        </label>
-                                        <input class="form-check-input form-control-solid-bg ml20 opacity-100" type="radio" id="gbnA" name="gbn" value="A" disabled/>
-                                        <label class="form-check-label opacity-100" for="gbnA">
-                                            준회원
-                                        </label>
-                                    </div>
-                                </div>
-                                <!--begin::Label-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">회사명</label>
+                                <label class="form-label">제목</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_name" placeholder="회사명" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_title" placeholder="제목" readonly>
                                 <!--end::Input-->
                                 <!--begin::Description-->
-                                    <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
+                                <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
                                 <!--end::Description-->
                             </div>
                             <!--end::Input group-->
@@ -1176,10 +1607,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">대표자명</label>
+                                <label class="form-label">작성자</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_ceo" placeholder="대표자명" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_writer" placeholder="작성자" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1187,10 +1618,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">홈페이지</label>
+                                <label class="form-label">작성일</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_homepage" placeholder="홈페이지" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_write_date" placeholder="작성일" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1198,10 +1629,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">전화번호</label>
+                                <label class="form-label">조회수</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_tel" placeholder="전화번호" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_view_cnt" placeholder="조회수" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1209,43 +1640,21 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">주소</label>
+                                <label class="form-label">영상 URL</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_address" placeholder="주소" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_media_url" placeholder="영상 URL" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
 
                             <!--begin::Input group-->
-                            <div class="mb-10">
+                            <div class="mb-10 d-none">
                                 <!--begin::Label-->
-                                <label class="form-label">주요 사업</label>
+                                <label class="form-label">영상 URL 미리보기</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_business_type" placeholder="주요 사업" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">주요 생산품</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_business_item" placeholder="주요 생산품" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div id="file_list">
-                                <!--begin::Label-->
-                                <label class="form-label">첨부파일</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                    <%--<input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" readonly>--%>
+                                <iframe id="md_media_preview" class="form-control form-control-lg form-control-solid-bg mb-2" frameborder='0' allowfullscreen></iframe>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1294,12 +1703,12 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/company.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/media.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <script>
         document.addEventListener("keyup", function(event) {
             if (event.key === 'Enter') {
-                f_member_company_search();
+                f_board_media_search();
             }
         });
     </script>

@@ -14,15 +14,16 @@
     <select id="selectNoticeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNoticeList */
         SELECT seq
-        , lang
-        , notice_gbn
-        , title
-        , writer
-        , write_date
-        , final_regi_dttm
-        , view_cnt
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
         FROM notice
         WHERE 1=1
+            AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
             AND title LIKE CONCAT('%',#{searchText},'%')
         </if>
@@ -91,6 +92,7 @@
         , writer
         , write_date
         , file_id_list
+        , del_yn
         , note
         , init_regi_pic
         , init_regi_dttm
@@ -106,6 +108,7 @@
             , #{writer}
             , #{writeDate}
             , <![CDATA[#{fileIdList}]]>
+            , 'N'
             , #{note}
             , 'NOTICE'
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -117,15 +120,16 @@
     <select id="selectPressList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PressDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPressList */
         SELECT seq
-        , lang
-        , notice_gbn
-        , title
-        , writer
-        , write_date
-        , final_regi_dttm
-        , view_cnt
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
         FROM press
         WHERE 1=1
+            AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
             AND title LIKE CONCAT('%',#{searchText},'%')
         </if>
@@ -194,6 +198,7 @@
         , writer
         , write_date
         , file_id_list
+        , del_yn
         , note
         , init_regi_pic
         , init_regi_dttm
@@ -209,10 +214,637 @@
             , #{writer}
             , #{writeDate}
             , <![CDATA[#{fileIdList}]]>
+            , 'N'
             , #{note}
             , 'PRESS'
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
             , 'PRESS'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectGalleryList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.GalleryDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectGalleryList */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM gallery
+        WHERE 1=1
+          AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY write_date desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectGallerySingle" parameterType="com.mtf.edumarine.dto.GalleryDTO" resultType="com.mtf.edumarine.dto.GalleryDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectGallerySingle */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM gallery
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteGallery" parameterType="com.mtf.edumarine.dto.GalleryDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteGallery */
+        DELETE FROM gallery
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateGallery" parameterType="com.mtf.edumarine.dto.GalleryDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateGallery */
+        UPDATE gallery
+        SET lang = #{lang}
+        , title = <![CDATA[#{title}]]>
+        , writer = #{writer}
+        , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getGallerySeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getGallerySeq */
+        SELECT CONCAT('G', LPAD(nextval('gallery_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertGallery" parameterType="com.mtf.edumarine.dto.GalleryDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertGallery */
+        INSERT INTO gallery
+        ( seq
+        , lang
+        , title
+        , writer
+        , write_date
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , <![CDATA[#{title}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , 'N'
+            , #{note}
+            , 'GALLERY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'GALLERY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectMediaList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.MediaDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMediaList */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM media
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY write_date desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectMediaSingle" parameterType="com.mtf.edumarine.dto.MediaDTO" resultType="com.mtf.edumarine.dto.MediaDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMediaSingle */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , view_cnt
+             , media_url
+             , media_key
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM media
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteMedia" parameterType="com.mtf.edumarine.dto.MediaDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteMedia */
+        DELETE FROM media
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateMedia" parameterType="com.mtf.edumarine.dto.MediaDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateMedia */
+        UPDATE media
+        SET lang = #{lang}
+          , title = <![CDATA[#{title}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+          , media_url = <![CDATA[#{mediaUrl}]]>
+          , media_key = #{mediaKey}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getMediaSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getMediaSeq */
+        SELECT CONCAT('M', LPAD(nextval('media_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertMedia" parameterType="com.mtf.edumarine.dto.MediaDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertMedia */
+        INSERT INTO media
+        ( seq
+        , lang
+        , title
+        , writer
+        , write_date
+        , media_url
+        , media_key
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , <![CDATA[#{title}]]>
+            , #{writer}
+            , #{writeDate}
+            , #{mediaUrl}
+            , #{mediaKey}
+            , <![CDATA[#{fileIdList}]]>
+            , 'N'
+            , #{note}
+            , 'MEDIA'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'MEDIA'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectNewsletterList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NewsletterDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNewsletterList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM newsletter
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectNewsletterSingle" parameterType="com.mtf.edumarine.dto.NewsletterDTO" resultType="com.mtf.edumarine.dto.NewsletterDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNewsletterSingle */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM newsletter
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteNewsletter" parameterType="com.mtf.edumarine.dto.NewsletterDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteNewsletter */
+        DELETE FROM newsletter
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateNewsletter" parameterType="com.mtf.edumarine.dto.NewsletterDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateNewsletter */
+        UPDATE newsletter
+        SET lang = #{lang}
+        , notice_gbn = #{noticeGbn}
+        , title = <![CDATA[#{title}]]>
+        , content = <![CDATA[#{content}]]>
+        , writer = #{writer}
+        , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getNewsletterSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getNewsletterSeq */
+        SELECT CONCAT('L', LPAD(nextval('newsletter_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertNewsletter" parameterType="com.mtf.edumarine.dto.NewsletterDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertNewsletter */
+        INSERT INTO newsletter
+        ( seq
+        , lang
+        , notice_gbn
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{noticeGbn}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , 'N'
+            , #{note}
+            , 'NEWSLETTER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'NEWSLETTER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectAnnouncementList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.AnnouncementDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAnnouncementList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM announcement
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectAnnouncementSingle" parameterType="com.mtf.edumarine.dto.AnnouncementDTO" resultType="com.mtf.edumarine.dto.AnnouncementDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAnnouncementSingle */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM announcement
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteAnnouncement" parameterType="com.mtf.edumarine.dto.AnnouncementDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteAnnouncement */
+        DELETE FROM announcement
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateAnnouncement" parameterType="com.mtf.edumarine.dto.AnnouncementDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateAnnouncement */
+        UPDATE announcement
+        SET lang = #{lang}
+          , notice_gbn = #{noticeGbn}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getAnnouncementSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getAnnouncementSeq */
+        SELECT CONCAT('A', LPAD(nextval('announcement_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertAnnouncement" parameterType="com.mtf.edumarine.dto.AnnouncementDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertAnnouncement */
+        INSERT INTO announcement
+        ( seq
+        , lang
+        , notice_gbn
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{noticeGbn}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , 'N'
+            , #{note}
+            , 'ANNOUNCE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'ANNOUNCE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectJobList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.JobDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectJobList */
+        SELECT seq
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM job
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            /*AND lang = #{condition}*/
+        </if>
+        ORDER BY write_date desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectJobSingle" parameterType="com.mtf.edumarine.dto.JobDTO" resultType="com.mtf.edumarine.dto.JobDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectJobSingle */
+        SELECT seq
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM job
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteJob" parameterType="com.mtf.edumarine.dto.JobDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteJob */
+        DELETE FROM job
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateJob" parameterType="com.mtf.edumarine.dto.JobDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateJob */
+        UPDATE job
+        SET title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getJobSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getJobSeq */
+        SELECT CONCAT('J', LPAD(nextval('job_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertJob" parameterType="com.mtf.edumarine.dto.JobDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertJob */
+        INSERT INTO job
+        ( seq
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , 'N'
+            , #{note}
+            , 'JOB'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'JOB'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectCommunityList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectCommunityList */
+        SELECT seq
+             , gbn
+             , title
+             , writer
+             , writer_key
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM community
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            /*AND lang = #{condition}*/
+        </if>
+        ORDER BY write_date desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectCommunitySingle" parameterType="com.mtf.edumarine.dto.CommunityDTO" resultType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectCommunitySingle */
+        SELECT seq
+             , gbn
+             , title
+             , content
+             , hashtag
+             , writer
+             , writer_key
+             , write_date
+             , recommend_cnt
+             , view_cnt
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM community
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteCommunity" parameterType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteCommunity */
+        DELETE FROM community
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateCommunity" parameterType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateCommunity */
+        UPDATE community
+        SET gbn = #{gbn}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+          , hashtag = <![CDATA[#{hashtag}]]>
+          , recommend_cnt = #{recommendCnt}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getCommunitySeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getCommunitySeq */
+        SELECT CONCAT('C', LPAD(nextval('community_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertCommunity" parameterType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertCommunity */
+        INSERT INTO community
+        ( seq
+        , gbn
+        , title
+        , content
+        , hashtag
+        , writer
+        , writer_key
+        , write_date
+        , recommend_cnt
+        , view_cnt
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{gbn}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , <![CDATA[#{hashtag}]]>
+            , #{writer}
+            , #{writerKey}
+            , #{writeDate}
+            , #{recommendCnt}
+            , 0
+            , <![CDATA[#{fileIdList}]]>
+            , 'N'
+            , #{note}
+            , 'COMMUNITY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'COMMUNITY'
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
             )
     </insert>

@@ -442,7 +442,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu link-->
                                                                     <a href="/mng/board/press.do"
                                                                        class="menu-link">
-                                                                        <span class="menu-title">사진자료</span>
+                                                                        <span class="menu-title">/mng/board/press.do</span>
                                                                     </a>
                                                                     <!--end:Menu link-->
                                                                 </div>
@@ -450,7 +450,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/board/press.do"
+                                                                    <a href="/mng/board/media.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">영상자료</span>
                                                                     </a>
@@ -460,7 +460,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/board/press.do"
+                                                                    <a href="/mng/board/newsletter.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">뉴스레터</span>
                                                                     </a>
@@ -470,7 +470,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/board/press.do"
+                                                                    <a href="/mng/board/announcement.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">채용공고</span>
                                                                     </a>
@@ -480,17 +480,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/board/press.do"
-                                                                       class="menu-link">
-                                                                        <span class="menu-title">취/창업 현황</span>
-                                                                    </a>
-                                                                    <!--end:Menu link-->
-                                                                </div>
-                                                                <!--end:Menu item-->
-                                                                <!--begin:Menu item-->
-                                                                <div class="menu-item p-0 m-0">
-                                                                    <!--begin:Menu link-->
-                                                                    <a href="/mng/board/press.do"
+                                                                    <a href="/mng/board/job.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">취/창업 성공후기</span>
                                                                     </a>
@@ -500,7 +490,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/board/press.do"
+                                                                    <a href="/mng/board/community.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">커뮤니티</span>
                                                                     </a>
@@ -530,7 +520,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/board/notice.do"
+                                                                    <a href="/mng/pop/popup.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">팝업 관리</span>
                                                                     </a>
@@ -844,10 +834,10 @@ if (document.documentElement) {
                 <div class="app-sidebar-logo pe-4 justify-content-center h-90px" id="kt_app_sidebar_logo">
                     <!--begin::Logo image-->
                     <a href="/mng/main.do">
-                        <img alt="Logo" src="<%request.getContextPath();%>/static/img/logo.png<%--/static/assets/media/logos/default-dark.svg--%>"
-                             class="h-45px app-sidebar-logo-default"/>
-                        <img alt="Logo" src="<%request.getContextPath();%>/static/img/logo.png<%--assets/media/logos/default-small.svg--%>"
-                             class="h-45px app-sidebar-logo-minimize"/>
+                        <img alt="Logo" src="<%request.getContextPath();%>/static/img/mng_logo.png<%--/static/assets/media/logos/default-dark.svg--%>"
+                             class="h-80px app-sidebar-logo-default"/>
+                        <img alt="Logo" src="<%request.getContextPath();%>/static/img/mng_logo.png<%--assets/media/logos/default-small.svg--%>"
+                             class="h-80px app-sidebar-logo-minimize"/>
                     </a>
                     <!--end::Logo image-->
                     <!--begin::Sidebar toggle-->
@@ -1118,7 +1108,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/press.do">
+                                        <a class="menu-link" href="/mng/board/gallery.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -1130,7 +1120,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/press.do">
+                                        <a class="menu-link" href="/mng/board/media.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -1142,7 +1132,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/press.do">
+                                        <a class="menu-link" href="/mng/board/newsletter.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -1154,7 +1144,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/press.do">
+                                        <a class="menu-link" href="/mng/board/announcement.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -1166,19 +1156,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/press.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">취/창업 현황</span>
-                                        </a>
-                                        <!--end:Menu link-->
-                                    </div>
-                                    <!--end:Menu item-->
-                                    <!--begin:Menu item-->
-                                    <div class="menu-item">
-                                        <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/press.do">
+                                        <a class="menu-link" href="/mng/board/job.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -1190,7 +1168,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/press.do">
+                                        <a class="menu-link" href="/mng/board/community.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -1225,7 +1203,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/board/notice.do">
+                                        <a class="menu-link" href="/mng/pop/popup.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>

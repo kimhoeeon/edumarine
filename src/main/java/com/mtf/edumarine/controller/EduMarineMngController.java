@@ -329,6 +329,651 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/board/gallery.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_gallery() {
+        System.out.println("EduMarineMngController > mng_board_gallery");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/gallery");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/gallery/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<GalleryDTO>> mng_board_gallery_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_gallery_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<GalleryDTO> responseList = eduMarineMngService.processSelectGalleryList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/gallery/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<GalleryDTO> mng_board_gallery_selectSingle(@RequestBody GalleryDTO galleryDTO) {
+        System.out.println("EduMarineMngController > mng_board_gallery_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        GalleryDTO response = eduMarineMngService.processSelectGallerySingle(galleryDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/gallery/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_gallery_delete(@RequestBody GalleryDTO galleryDTO) {
+        System.out.println("EduMarineMngController > mng_board_gallery_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteGallery(galleryDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/gallery/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_gallery_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_gallery_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            GalleryDTO galleryDTO = new GalleryDTO();
+            galleryDTO.setSeq(seq);
+            GalleryDTO info = eduMarineMngService.processSelectGallerySingle(galleryDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/gallery/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/gallery/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_gallery_update(@RequestBody GalleryDTO galleryDTO) {
+        System.out.println("EduMarineMngController > mng_board_gallery_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateGallery(galleryDTO);
+
+        String fileIdList = galleryDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(galleryDTO.getSeq());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/gallery/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_gallery_insert(@RequestBody GalleryDTO galleryDTO) {
+        System.out.println("EduMarineMngController > mng_board_gallery_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertGallery(galleryDTO);
+
+        String fileIdList = galleryDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/media.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_media() {
+        System.out.println("EduMarineMngController > mng_board_media");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/media");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/media/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MediaDTO>> mng_board_media_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_media_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<MediaDTO> responseList = eduMarineMngService.processSelectMediaList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/media/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<MediaDTO> mng_board_media_selectSingle(@RequestBody MediaDTO mediaDTO) {
+        System.out.println("EduMarineMngController > mng_board_media_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        MediaDTO response = eduMarineMngService.processSelectMediaSingle(mediaDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/media/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_media_delete(@RequestBody MediaDTO mediaDTO) {
+        System.out.println("EduMarineMngController > mng_board_media_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteMedia(mediaDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/media/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_media_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_media_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            MediaDTO mediaDTO = new MediaDTO();
+            mediaDTO.setSeq(seq);
+            MediaDTO info = eduMarineMngService.processSelectMediaSingle(mediaDTO);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/mng/board/media/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/media/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_media_update(@RequestBody MediaDTO mediaDTO) {
+        System.out.println("EduMarineMngController > mng_board_media_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateMedia(mediaDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/media/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_media_insert(@RequestBody MediaDTO mediaDTO) {
+        System.out.println("EduMarineMngController > mng_board_media_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertMedia(mediaDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/newsletter.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_newsletter() {
+        System.out.println("EduMarineMngController > mng_board_newsletter");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/newsletter");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/newsletter/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<NewsletterDTO>> mng_board_newsletter_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_newsletter_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<NewsletterDTO> responseList = eduMarineMngService.processSelectNewsletterList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/newsletter/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<NewsletterDTO> mng_board_newsletter_selectSingle(@RequestBody NewsletterDTO newsletterDTO) {
+        System.out.println("EduMarineMngController > mng_board_newsletter_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        NewsletterDTO response = eduMarineMngService.processSelectNewsletterSingle(newsletterDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/newsletter/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_newsletter_delete(@RequestBody NewsletterDTO newsletterDTO) {
+        System.out.println("EduMarineMngController > mng_board_newsletter_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteNewsletter(newsletterDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/newsletter/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_newsletter_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_newsletter_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            NewsletterDTO newsletterDTO = new NewsletterDTO();
+            newsletterDTO.setSeq(seq);
+            NewsletterDTO info = eduMarineMngService.processSelectNewsletterSingle(newsletterDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/newsletter/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/newsletter/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_newsletter_update(@RequestBody NewsletterDTO newsletterDTO) {
+        System.out.println("EduMarineMngController > mng_center_board_newsletter_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateNewsletter(newsletterDTO);
+
+        String fileIdList = newsletterDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(newsletterDTO.getSeq());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/newsletter/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_newsletter_insert(@RequestBody NewsletterDTO newsletterDTO) {
+        System.out.println("EduMarineMngController > mng_center_board_newsletter_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertNewsletter(newsletterDTO);
+
+        String fileIdList = newsletterDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/announcement.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_announcement() {
+        System.out.println("EduMarineMngController > mng_board_announcement");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/announcement");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/announcement/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<AnnouncementDTO>> mng_board_announcement_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_announcement_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<AnnouncementDTO> responseList = eduMarineMngService.processSelectAnnouncementList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/announcement/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<AnnouncementDTO> mng_board_announcement_selectSingle(@RequestBody AnnouncementDTO announcementDTO) {
+        System.out.println("EduMarineMngController > mng_board_announcement_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        AnnouncementDTO response = eduMarineMngService.processSelectAnnouncementSingle(announcementDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/announcement/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_announcement_delete(@RequestBody AnnouncementDTO announcementDTO) {
+        System.out.println("EduMarineMngController > mng_board_announcement_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteAnnouncement(announcementDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/announcement/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_announcement_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_announcement_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            AnnouncementDTO announcementDTO = new AnnouncementDTO();
+            announcementDTO.setSeq(seq);
+            AnnouncementDTO info = eduMarineMngService.processSelectAnnouncementSingle(announcementDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/announcement/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/announcement/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_announcement_update(@RequestBody AnnouncementDTO announcementDTO) {
+        System.out.println("EduMarineMngController > mng_center_board_announcement_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateAnnouncement(announcementDTO);
+
+        String fileIdList = announcementDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(announcementDTO.getSeq());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/announcement/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_announcement_insert(@RequestBody AnnouncementDTO announcementDTO) {
+        System.out.println("EduMarineMngController > mng_center_board_announcement_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertAnnouncement(announcementDTO);
+
+        String fileIdList = announcementDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/job.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_job() {
+        System.out.println("EduMarineMngController > mng_board_job");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/job");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/job/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<JobDTO>> mng_board_job_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_job_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<JobDTO> responseList = eduMarineMngService.processSelectJobList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/job/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<JobDTO> mng_board_job_selectSingle(@RequestBody JobDTO jobDTO) {
+        System.out.println("EduMarineMngController > mng_board_job_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        JobDTO response = eduMarineMngService.processSelectJobSingle(jobDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/job/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_job_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_job_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            JobDTO jobDTO = new JobDTO();
+            jobDTO.setSeq(seq);
+            JobDTO info = eduMarineMngService.processSelectJobSingle(jobDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/job/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/job/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_job_delete(@RequestBody JobDTO jobDTO) {
+        System.out.println("EduMarineMngController > mng_board_job_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteJob(jobDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/job/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_job_update(@RequestBody JobDTO jobDTO) {
+        System.out.println("EduMarineMngController > mng_board_job_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateJob(jobDTO);
+
+        String fileIdList = jobDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(jobDTO.getSeq());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/job/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_job_insert(@RequestBody JobDTO jobDTO) {
+        System.out.println("EduMarineMngController > mng_center_board_job_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertJob(jobDTO);
+
+        String fileIdList = jobDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/community.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_community() {
+        System.out.println("EduMarineMngController > mng_board_community");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/community");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/community/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<CommunityDTO>> mng_board_community_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_community_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<CommunityDTO> responseList = eduMarineMngService.processSelectCommunityList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/community/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<CommunityDTO> mng_board_community_selectSingle(@RequestBody CommunityDTO communityDTO) {
+        System.out.println("EduMarineMngController > mng_board_community_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        CommunityDTO response = eduMarineMngService.processSelectCommunitySingle(communityDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/community/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_community_delete(@RequestBody CommunityDTO communityDTO) {
+        System.out.println("EduMarineMngController > mng_board_community_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteCommunity(communityDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/community/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_community_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_community_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            CommunityDTO communityDTO = new CommunityDTO();
+            communityDTO.setSeq(seq);
+            CommunityDTO info = eduMarineMngService.processSelectCommunitySingle(communityDTO);
+            mv.addObject("info", info);
+
+            // TODO: 댓글
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/community/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/community/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_community_update(@RequestBody CommunityDTO communityDTO) {
+        System.out.println("EduMarineMngController > mng_board_community_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateCommunity(communityDTO);
+
+        // TODO: 댓글 업데이트 추가
+
+        String fileIdList = communityDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(communityDTO.getSeq());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/community/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_community_insert(@RequestBody CommunityDTO communityDTO) {
+        System.out.println("EduMarineMngController > mng_center_board_community_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertCommunity(communityDTO);
+
+        String fileIdList = communityDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = eduMarineMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/popup.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_popup() {
+        System.out.println("EduMarineMngController > mng_pop_popup");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/pop/popup");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_popup_detail() {
+        System.out.println("EduMarineMngController > mng_pop_popup_detail");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/pop/popup/detail");
+        return mv;
+    }
+
+
     /*********************** file upload ***********************/
 
     @RequestMapping(value = "/file/upload/save.do", method = RequestMethod.POST)

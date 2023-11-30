@@ -1,6 +1,6 @@
 /***
- * mng/board/sipaNews
- * 정보센터>게시판관리>SIPA-NEWS
+ * mng/board/newsletter
+ * 정보센터>게시판관리>뉴스레터
  * */
 
 $(function(){
@@ -14,13 +14,13 @@ $(function(){
 
 });
 
-function f_board_sipa_news_search(){
+function f_board_newsletter_search(){
 
     /* 로딩페이지 */
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#mng_board_sipa_news_table').DataTable();
+    let dataTbl = $('#mng_board_newsletter_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -28,7 +28,7 @@ function f_board_sipa_news_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
-    if(nvl(searchText,'') === ''){
+    if(nullToEmpty(searchText) === ""){
         jsonObj = {
             condition: condition
         };
@@ -39,14 +39,15 @@ function f_board_sipa_news_search(){
         }
     }
 
-    let resData = ajaxConnect('/mng/board/sipaNews/selectList.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/board/newsletter/selectList.do', 'post', jsonObj);
+
     dataTbl.rows.add(resData).draw();
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#mng_board_sipa_news_table tbody td');
+    let jb = $('#mng_board_newsletter_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
@@ -63,26 +64,26 @@ function f_board_sipa_news_search(){
     jb.tooltip();
 }
 
-function f_board_sipa_news_search_condition_init(){
+function f_board_newsletter_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
 
     /* 재조회 */
-    f_board_sipa_news_search();
+    f_board_newsletter_search();
 }
 
-function f_board_sipa_news_detail_modal_set(seq){
+function f_board_newsletter_detail_modal_set(seq){
     /* TM 및 잠재DB 목록 상세 조회 */
     let jsonObj = {
         seq: seq
     };
 
-    let resData = ajaxConnect('/mng/board/sipaNews/selectSingle.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/board/newsletter/selectSingle.do', 'post', jsonObj);
 
-    /* 공지사항 상세보기 Modal form Set */
+    /* 상세보기 Modal form Set */
     //console.log(resData);
 
-    if(resData.lang === "KO"){
+    if(resData.lang==="KO"){
         document.querySelector('#md_lang').value = '국문';
     }else{
         document.querySelector('#md_lang').value = '영문';
@@ -106,21 +107,25 @@ function f_board_sipa_news_detail_modal_set(seq){
         userId: seq
     };
 
-    let file_list_el = document.getElementById('file_list');
-    while (file_list_el.hasChildNodes()) {
-        file_list_el.removeChild(file_list_el.firstChild);
-    }
+    $('#file_list label').remove();
+    $('#file_list input').remove();
 
     let fileData = ajaxConnect('/file/upload/selectList.do', 'post', jsonObj2);
     if(nullToEmpty(fileData) !== ''){
         for(let i=0; i<fileData.length; i++){
             let file_list_el = document.getElementById('file_list');
+            let label_el = document.createElement('label');
+            label_el.classList.add('form-label');
+            label_el.innerText = '첨부파일 ' + (i+1);
+
+            file_list_el.append(label_el);
+
             let input_el = document.createElement('input');
             input_el.type = 'text';
             input_el.classList.add('form-control');
             input_el.classList.add('form-control-lg');
             input_el.classList.add('form-control-solid-bg');
-            input_el.classList.add('mb-2');
+            input_el.classList.add('mb-4');
             input_el.value = fileData[i].fileName;
             input_el.readOnly = true;
 
@@ -129,14 +134,14 @@ function f_board_sipa_news_detail_modal_set(seq){
     }
 }
 
-function f_board_sipa_news_remove(seq){
+function f_board_newsletter_remove(seq){
     //console.log('삭제버튼');
     if(nullToEmpty(seq) !== ""){
         let jsonObj = {
             seq: seq
         }
         Swal.fire({
-            title: '선택한 SIPA-NEWS를 삭제하시겠습니까?',
+            title: '선택한 뉴스레터를 삭제하시겠습니까?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -146,24 +151,24 @@ function f_board_sipa_news_remove(seq){
         }).then((result) => {
             if (result.isConfirmed) {
 
-                let resData = ajaxConnect('/mng/board/sipaNews/delete.do', 'post', jsonObj);
+                let resData = ajaxConnect('/mng/board/newsletter/delete.do', 'post', jsonObj);
 
                 if (resData.resultCode === "0") {
-                    showMessage('', 'info', 'SIPA-NEWS 삭제', 'SIPA-NEWS가 삭제되었습니다.', '');
-                    f_board_sipa_news_search(); // 삭제 성공 후 재조회 수행
+                    showMessage('', 'info', '뉴스레터 삭제', '뉴스레터가 삭제되었습니다.', '');
+                    f_board_newsletter_search(); // 삭제 성공 후 재조회 수행
                 } else {
-                    showMessage('', 'error', '에러 발생', 'SIPA-NEWS 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', '뉴스레터 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }
             }
         });
     }
 }
 
-function f_board_sipa_news_modify_init_set(seq){
-    window.location.href = '/mng/board/sipaNews/detail.do?seq=' + seq;
+function f_board_newsletter_modify_init_set(seq){
+    window.location.href = '/mng/board/newsletter/detail.do?seq=' + seq;
 }
 
-function f_board_sipa_news_save(seq){
+function f_board_newsletter_save(seq){
     //console.log(id + '변경내용저장 클릭');
     Swal.fire({
         title: '입력된 정보를 저장하시겠습니까?',
@@ -177,7 +182,7 @@ function f_board_sipa_news_save(seq){
         if (result.isConfirmed) {
 
             /* form valid check */
-            let validCheck = f_board_sipa_news_valid();
+            let validCheck = f_board_newsletter_valid();
 
             if(validCheck){
                 /* File upload */
@@ -204,12 +209,12 @@ function f_board_sipa_news_save(seq){
                 }
 
                 /* form data setting */
-                let data = f_board_sipa_news_form_data_setting();
+                let data = f_board_newsletter_form_data_setting();
 
                 /* Modify */
                 if(nvl(seq, '') !== ''){
                     $.ajax({
-                        url: '/mng/board/sipaNews/update.do',
+                        url: '/mng/board/newsletter/update.do',
                         method: 'POST',
                         async: false,
                         data: data,
@@ -218,18 +223,18 @@ function f_board_sipa_news_save(seq){
                         success: function (data) {
                             if (data.resultCode === "0") {
                                 Swal.fire({
-                                    title: 'SIPA-NEWS 정보 변경',
-                                    text: "SIPA-NEWS 정보가 변경되었습니다.",
+                                    title: '뉴스레터 정보 변경',
+                                    text: "뉴스레터 정보가 변경되었습니다.",
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        f_board_sipa_news_modify_init_set(seq); // 재조회
+                                        f_board_newsletter_modify_init_set(seq); // 재조회
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', 'SIPA-NEWS 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', '뉴스레터 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -238,7 +243,7 @@ function f_board_sipa_news_save(seq){
                     })//ajax
                 }else { /* Insert */
                     $.ajax({
-                        url: '/mng/board/sipaNews/insert.do',
+                        url: '/mng/board/newsletter/insert.do',
                         method: 'POST',
                         async: false,
                         data: data,
@@ -247,18 +252,18 @@ function f_board_sipa_news_save(seq){
                         success: function (data) {
                             if (data.resultCode === "0") {
                                 Swal.fire({
-                                    title: 'SIPA-NEWS 정보 등록',
-                                    text: "SIPA-NEWS 정보가 등록되었습니다.",
+                                    title: '뉴스레터 정보 등록',
+                                    text: "뉴스레터 정보가 등록되었습니다.",
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = '/mng/board/sipaNews.do'; // 목록으로 이동
+                                        window.location.href = '/mng/board/newsletter.do'; // 목록으로 이동
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', 'SIPA-NEWS 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', '뉴스레터 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -274,7 +279,7 @@ function f_board_sipa_news_save(seq){
 
 }
 
-function f_board_sipa_news_form_data_setting(){
+function f_board_newsletter_form_data_setting(){
 
     let form = JSON.parse(JSON.stringify($('#dataForm').serializeObject()));
 
@@ -283,7 +288,7 @@ function f_board_sipa_news_form_data_setting(){
     return JSON.stringify(form);
 }
 
-function f_board_sipa_news_valid(){
+function f_board_newsletter_valid(){
     let title = document.querySelector('#title').value;
     let writer = document.querySelector('#writer').value;
     let writeDate = document.querySelector('#writeDate').value;

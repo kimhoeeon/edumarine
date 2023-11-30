@@ -435,6 +435,14 @@ async function f_attach_file_upload(userId, formId, path) {
                     let li_el = document.createElement('li');
                     let a_el = document.createElement('a');
 
+                    if(folderPath === 'gallery'){
+                        let img_el = document.createElement('img');
+                        img_el.src = fullFilePath.replace('./usr/local/tomcat/webapps','../../../../..');
+                        img_el.classList.add('w-350px','mr10');
+                        img_el.style.border = '1px solid #009ef7';
+                        li_el.append(img_el);
+                    }
+
                     /*a_el.href = 'javascript:f_file_download(' + '\'' + pureFileName + '\'' + ',' + '\'' + pureFilePath + '\'' +')';*/
                     a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;
                     a_el.text = fileName;

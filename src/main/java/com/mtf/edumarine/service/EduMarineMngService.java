@@ -59,4 +59,63 @@ public interface EduMarineMngService {
 
     ResponseDTO processInsertPress(PressDTO pressDTO);
 
+    List<GalleryDTO> processSelectGalleryList(SearchDTO searchDTO);
+
+    GalleryDTO processSelectGallerySingle(GalleryDTO galleryDTO);
+
+    ResponseDTO processDeleteGallery(GalleryDTO galleryDTO);
+
+    ResponseDTO processUpdateGallery(GalleryDTO galleryDTO);
+
+    ResponseDTO processInsertGallery(GalleryDTO galleryDTO);
+
+    List<MediaDTO> processSelectMediaList(SearchDTO searchDTO);
+
+    MediaDTO processSelectMediaSingle(MediaDTO mediaDTO);
+
+    ResponseDTO processDeleteMedia(MediaDTO mediaDTO);
+
+    ResponseDTO processUpdateMedia(MediaDTO mediaDTO);
+
+    ResponseDTO processInsertMedia(MediaDTO mediaDTO);
+
+    List<NewsletterDTO> processSelectNewsletterList(SearchDTO searchDTO);
+
+    NewsletterDTO processSelectNewsletterSingle(NewsletterDTO newsletterDTO);
+
+    ResponseDTO processDeleteNewsletter(NewsletterDTO newsletterDTO);
+
+    ResponseDTO processUpdateNewsletter(NewsletterDTO newsletterDTO);
+
+    ResponseDTO processInsertNewsletter(NewsletterDTO newsletterDTO);
+
+    List<AnnouncementDTO> processSelectAnnouncementList(SearchDTO searchDTO);
+
+    AnnouncementDTO processSelectAnnouncementSingle(AnnouncementDTO announcementDTO);
+
+    ResponseDTO processDeleteAnnouncement(AnnouncementDTO announcementDTO);
+
+    ResponseDTO processUpdateAnnouncement(AnnouncementDTO announcementDTO);
+
+    ResponseDTO processInsertAnnouncement(AnnouncementDTO announcementDTO);
+
+    List<JobDTO> processSelectJobList(SearchDTO searchDTO);
+
+    JobDTO processSelectJobSingle(JobDTO jobDTO);
+
+    ResponseDTO processDeleteJob(JobDTO jobDTO);
+
+    ResponseDTO processUpdateJob(JobDTO jobDTO);
+
+    ResponseDTO processInsertJob(JobDTO jobDTO);
+
+    List<CommunityDTO> processSelectCommunityList(SearchDTO searchDTO);
+
+    CommunityDTO processSelectCommunitySingle(CommunityDTO communityDTO);
+
+    ResponseDTO processDeleteCommunity(CommunityDTO communityDTO);
+
+    ResponseDTO processUpdateCommunity(CommunityDTO communityDTO);
+
+    ResponseDTO processInsertCommunity(CommunityDTO communityDTO);
 }

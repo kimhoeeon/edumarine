@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The interface Sipa Mng mapper.
+ * The interface EduMarine Mng mapper.
  */
 @Repository
 public interface EduMarineMngMapper {
@@ -47,4 +47,75 @@ public interface EduMarineMngMapper {
 
     Integer insertFileInfo(FileDTO fileDTO);
 
+    List<GalleryDTO> selectGalleryList(SearchDTO searchDTO);
+
+    GalleryDTO selectGallerySingle(GalleryDTO galleryDTO);
+
+    Integer deleteGallery(GalleryDTO galleryDTO);
+
+    Integer updateGallery(GalleryDTO galleryDTO);
+
+    String getGallerySeq();
+
+    Integer insertGallery(GalleryDTO galleryDTO);
+
+    List<MediaDTO> selectMediaList(SearchDTO searchDTO);
+
+    MediaDTO selectMediaSingle(MediaDTO mediaDTO);
+
+    Integer deleteMedia(MediaDTO mediaDTO);
+
+    Integer updateMedia(MediaDTO mediaDTO);
+
+    String getMediaSeq();
+
+    Integer insertMedia(MediaDTO mediaDTO);
+
+    List<NewsletterDTO> selectNewsletterList(SearchDTO searchDTO);
+
+    NewsletterDTO selectNewsletterSingle(NewsletterDTO newsletterDTO);
+
+    Integer deleteNewsletter(NewsletterDTO newsletterDTO);
+
+    Integer updateNewsletter(NewsletterDTO newsletterDTO);
+
+    String getNewsletterSeq();
+
+    Integer insertNewsletter(NewsletterDTO newsletterDTO);
+
+    List<AnnouncementDTO> selectAnnouncementList(SearchDTO searchDTO);
+
+    AnnouncementDTO selectAnnouncementSingle(AnnouncementDTO announcementDTO);
+
+    Integer deleteAnnouncement(AnnouncementDTO announcementDTO);
+
+    Integer updateAnnouncement(AnnouncementDTO announcementDTO);
+
+    String getAnnouncementSeq();
+
+    Integer insertAnnouncement(AnnouncementDTO announcementDTO);
+
+    List<JobDTO> selectJobList(SearchDTO searchDTO);
+
+    JobDTO selectJobSingle(JobDTO jobDTO);
+
+    Integer deleteJob(JobDTO jobDTO);
+
+    Integer updateJob(JobDTO jobDTO);
+
+    String getJobSeq();
+
+    Integer insertJob(JobDTO jobDTO);
+
+    List<CommunityDTO> selectCommunityList(SearchDTO searchDTO);
+
+    CommunityDTO selectCommunitySingle(CommunityDTO communityDTO);
+
+    Integer deleteCommunity(CommunityDTO communityDTO);
+
+    Integer updateCommunity(CommunityDTO communityDTO);
+
+    String getCommunitySeq();
+
+    Integer insertCommunity(CommunityDTO communityDTO);
 }

@@ -93,7 +93,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                 //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Id Not Found Error]";
+                resultMessage = "[Seq Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -132,7 +132,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                 //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Id Not Found Error]";
+                resultMessage = "[Seq Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -218,7 +218,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                 //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Id Not Found Error]";
+                resultMessage = "[Seq Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -257,7 +257,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                 //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Id Not Found Error]";
+                resultMessage = "[Seq Not Found Error]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -310,9 +310,717 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         return responseDTO;
     }
 
-    //***************************************************************************
-    // file
-    //***************************************************************************
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<GalleryDTO> processSelectGalleryList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectGalleryList");
+        return eduMarineMngMapper.selectGalleryList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public GalleryDTO processSelectGallerySingle(GalleryDTO galleryDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectGallerySingle");
+        return eduMarineMngMapper.selectGallerySingle(galleryDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteGallery(GalleryDTO galleryDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteGallery");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(galleryDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteGallery(galleryDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + galleryDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteGallery ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateGallery(GalleryDTO galleryDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateGallery");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(galleryDTO.getSeq())){
+
+                result = eduMarineMngMapper.updateGallery(galleryDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + galleryDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateGallery ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertGallery(GalleryDTO galleryDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertGallery");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getGallerySeq();
+            galleryDTO.setSeq(getSeq);
+
+            result = eduMarineMngMapper.insertGallery(galleryDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertGallery ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<MediaDTO> processSelectMediaList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectMediaList");
+        return eduMarineMngMapper.selectMediaList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public MediaDTO processSelectMediaSingle(MediaDTO mediaDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectMediaSingle");
+        return eduMarineMngMapper.selectMediaSingle(mediaDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteMedia(MediaDTO mediaDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteMedia");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(mediaDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteMedia(mediaDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + mediaDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteMedia ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateMedia(MediaDTO mediaDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateMedia");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(mediaDTO.getSeq())){
+
+                result = eduMarineMngMapper.updateMedia(mediaDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + mediaDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateMedia ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertMedia(MediaDTO mediaDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertMedia");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getMediaSeq();
+            mediaDTO.setSeq(getSeq);
+
+            result = eduMarineMngMapper.insertMedia(mediaDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertMedia ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<NewsletterDTO> processSelectNewsletterList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectNewsletterList");
+        return eduMarineMngMapper.selectNewsletterList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public NewsletterDTO processSelectNewsletterSingle(NewsletterDTO newsletterDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectNewsletterSingle");
+        return eduMarineMngMapper.selectNewsletterSingle(newsletterDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteNewsletter(NewsletterDTO newsletterDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteNewsletter");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(newsletterDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteNewsletter(newsletterDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + newsletterDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteNewsletter ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateNewsletter(NewsletterDTO newsletterDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateNewsletter");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(newsletterDTO.getSeq())){
+                if(StringUtil.isEmpty(newsletterDTO.getNoticeGbn()) || "off".equals(newsletterDTO.getNoticeGbn())){
+                    newsletterDTO.setNoticeGbn("0");
+                }else{
+                    newsletterDTO.setNoticeGbn("1");
+                }
+
+                String content = newsletterDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+                newsletterDTO.setContent(content);
+                result = eduMarineMngMapper.updateNewsletter(newsletterDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + newsletterDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateNewsletter ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertNewsletter(NewsletterDTO newsletterDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertNewsletter");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(StringUtil.isEmpty(newsletterDTO.getNoticeGbn()) || "off".equals(newsletterDTO.getNoticeGbn())){
+                newsletterDTO.setNoticeGbn("0");
+            }else{
+                newsletterDTO.setNoticeGbn("1");
+            }
+
+            String getSeq = eduMarineMngMapper.getNewsletterSeq();
+            newsletterDTO.setSeq(getSeq);
+
+            String content = newsletterDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            newsletterDTO.setContent(content);
+            result = eduMarineMngMapper.insertNewsletter(newsletterDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertNewsletter ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<AnnouncementDTO> processSelectAnnouncementList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectAnnouncementList");
+        return eduMarineMngMapper.selectAnnouncementList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public AnnouncementDTO processSelectAnnouncementSingle(AnnouncementDTO announcementDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectAnnouncementSingle");
+        return eduMarineMngMapper.selectAnnouncementSingle(announcementDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteAnnouncement(AnnouncementDTO announcementDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteAnnouncement");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(announcementDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteAnnouncement(announcementDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + announcementDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteAnnouncement ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateAnnouncement(AnnouncementDTO announcementDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateAnnouncement");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(announcementDTO.getSeq())){
+                if(StringUtil.isEmpty(announcementDTO.getNoticeGbn()) || "off".equals(announcementDTO.getNoticeGbn())){
+                    announcementDTO.setNoticeGbn("0");
+                }else{
+                    announcementDTO.setNoticeGbn("1");
+                }
+
+                String content = announcementDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+                announcementDTO.setContent(content);
+                result = eduMarineMngMapper.updateAnnouncement(announcementDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + announcementDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateAnnouncement ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertAnnouncement(AnnouncementDTO announcementDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertAnnouncement");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(StringUtil.isEmpty(announcementDTO.getNoticeGbn()) || "off".equals(announcementDTO.getNoticeGbn())){
+                announcementDTO.setNoticeGbn("0");
+            }else{
+                announcementDTO.setNoticeGbn("1");
+            }
+
+            String getSeq = eduMarineMngMapper.getAnnouncementSeq();
+            announcementDTO.setSeq(getSeq);
+
+            String content = announcementDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            announcementDTO.setContent(content);
+            result = eduMarineMngMapper.insertAnnouncement(announcementDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertAnnouncement ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<JobDTO> processSelectJobList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectJobList");
+        return eduMarineMngMapper.selectJobList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public JobDTO processSelectJobSingle(JobDTO jobDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectJobSingle");
+        return eduMarineMngMapper.selectJobSingle(jobDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteJob(JobDTO jobDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteJob");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(jobDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteJob(jobDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + jobDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteJob ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateJob(JobDTO jobDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateJob");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(jobDTO.getSeq())){
+
+                String content = jobDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+                jobDTO.setContent(content);
+                result = eduMarineMngMapper.updateJob(jobDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + jobDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateJob ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertJob(JobDTO jobDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertJob");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getJobSeq();
+            jobDTO.setSeq(getSeq);
+
+            String content = jobDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            jobDTO.setContent(content);
+            result = eduMarineMngMapper.insertJob(jobDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertJob ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<CommunityDTO> processSelectCommunityList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectCommunityList");
+        return eduMarineMngMapper.selectCommunityList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public CommunityDTO processSelectCommunitySingle(CommunityDTO communityDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectCommunitySingle");
+        return eduMarineMngMapper.selectCommunitySingle(communityDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteCommunity(CommunityDTO communityDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteCommunity");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(communityDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteCommunity(communityDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + communityDTO.getSeq();
+                }else{
+                    // TODO: 댓글 삭제 프로세스
+
+
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteCommunity ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateCommunity(CommunityDTO communityDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateCommunity");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(communityDTO.getSeq())){
+
+                if(StringUtil.isEmpty(communityDTO.getGbn()) || "off".equals(communityDTO.getGbn())){
+                    communityDTO.setGbn("0");
+                }else{
+                    communityDTO.setGbn("1");
+                }
+
+                String content = communityDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+                communityDTO.setContent(content);
+                result = eduMarineMngMapper.updateCommunity(communityDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + communityDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateCommunity ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertCommunity(CommunityDTO communityDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertCommunity");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(StringUtil.isEmpty(communityDTO.getGbn()) || "off".equals(communityDTO.getGbn())){
+                communityDTO.setGbn("0");
+            }else{
+                communityDTO.setGbn("1");
+            }
+
+            String getSeq = eduMarineMngMapper.getCommunitySeq();
+            communityDTO.setSeq(getSeq);
+
+            String content = communityDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            communityDTO.setContent(content);
+            result = eduMarineMngMapper.insertCommunity(communityDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertCommunity ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    /*******************************************
+     * File
+     * *****************************************/
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override

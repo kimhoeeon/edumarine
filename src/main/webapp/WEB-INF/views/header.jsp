@@ -61,7 +61,7 @@
                             <li><a href="/board/notice_list.do">공지사항</a></li>
                             <li><a href="/board/press_list.do">보도자료</a></li>
                             <li><a href="/board/gallery.do">사진자료</a></li>
-                            <li><a href="/board/gallery.do">영상자료</a></li>
+                            <li><a href="/board/media.do">영상자료</a></li>
                             <li><a href="/board/news_list.do">뉴스레터</a></li>
                         </ul>
                     </li>
