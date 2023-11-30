@@ -8,16 +8,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PressDTO extends AbstractPagingRequestVo {
+public class MediaDTO extends AbstractPagingRequestVo {
     Integer totalRecords;
     Integer rownum; //연번
     String seq; //ID
     String lang; //언어
-    String noticeGbn; //구분
     String title; //제목
-    String content; //내용
     String writer; //작성자
     String writeDate; //작성일
+    String mediaUrl; //영상URL
+    String mediaKey; //영상Key
     Integer viewCnt; //조회수
     String fileIdList; //파일ID목록
     String delYn; //임시휴지통여부

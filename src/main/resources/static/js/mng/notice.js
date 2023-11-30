@@ -107,21 +107,25 @@ function f_board_notice_detail_modal_set(seq){
         userId: seq
     };
 
-    let file_list_el = document.getElementById('file_list');
-    while (file_list_el.hasChildNodes()) {
-        file_list_el.removeChild(file_list_el.firstChild);
-    }
+    $('#file_list label').remove();
+    $('#file_list input').remove();
 
     let fileData = ajaxConnect('/file/upload/selectList.do', 'post', jsonObj2);
     if(nullToEmpty(fileData) !== ''){
         for(let i=0; i<fileData.length; i++){
             let file_list_el = document.getElementById('file_list');
+            let label_el = document.createElement('label');
+            label_el.classList.add('form-label');
+            label_el.innerText = '첨부파일 ' + (i+1);
+
+            file_list_el.append(label_el);
+
             let input_el = document.createElement('input');
             input_el.type = 'text';
             input_el.classList.add('form-control');
             input_el.classList.add('form-control-lg');
             input_el.classList.add('form-control-solid-bg');
-            input_el.classList.add('mb-2');
+            input_el.classList.add('mb-4');
             input_el.value = fileData[i].fileName;
             input_el.readOnly = true;
 
@@ -296,13 +300,4 @@ function f_board_notice_valid(){
     if(nvl(content,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '내용을 입력해 주세요.', ''); return false; }
 
     return true;
-}
-
-function objectifyForm(formArray) {
-    //serialize data function
-    let returnArray = {};
-    for (let i = 0; i < formArray.length; i++){
-        returnArray[formArray[i]['name']] = formArray[i]['value'];
-    }
-    return returnArray;
 }

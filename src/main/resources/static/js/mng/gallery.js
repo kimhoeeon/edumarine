@@ -1,6 +1,6 @@
 /***
- * mng/member/company
- * 정보센터>회원사관리>회원사
+ * mng/board/gallery
+ * 정보센터>게시판관리>사진자료
  * */
 
 $(function(){
@@ -14,13 +14,13 @@ $(function(){
 
 });
 
-function f_member_company_search(){
+function f_board_gallery_search(){
 
     /* 로딩페이지 */
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#mng_member_company_table').DataTable();
+    let dataTbl = $('#mng_board_gallery_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -39,7 +39,7 @@ function f_member_company_search(){
         }
     }
 
-    let resData = ajaxConnect('/mng/member/company/selectList.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/board/gallery/selectList.do', 'post', jsonObj);
 
     dataTbl.rows.add(resData).draw();
 
@@ -47,7 +47,7 @@ function f_member_company_search(){
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#mng_member_company_table tbody td');
+    let jb = $('#mng_board_gallery_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
@@ -64,88 +64,36 @@ function f_member_company_search(){
     jb.tooltip();
 }
 
-function f_search_condition_box_change(){
-
-    /* 로딩페이지 */
-    loadingBarShow();
-
-    /* DataTable Data Clear */
-    let dataTbl = $('#mng_member_company_table').DataTable();
-    dataTbl.clear();
-    dataTbl.draw(false);
-
-    let gbn = $('#gbn_type option:selected').val();
-    let condition = $('#search_box option:selected').val();
-    let searchText = $('#search_text').val();
-
-    let jsonObj = {
-        gbn: gbn,
-        condition: condition,
-        searchText: searchText
-    }
-
-    //console.log(jsonObj);
-
-    /* 목록 데이터 조회 */
-    let resData = ajaxConnect('/mng/member/company/selectList.do', 'post', jsonObj);
-
-    dataTbl.rows.add(resData).draw();
-
-    /* 조회 카운트 입력 */
-    document.getElementById('search_cnt').innerText = resData.length;
-
-    /* DataTable Column tooltip Set */
-    let jb = $('#mng_member_company_table tbody td');
-    let cnt = 0;
-    jb.each(function(index, item){
-        let itemText = $(item).text();
-        let itemText_trim = itemText.replaceAll(' ','');
-        if(itemText_trim !== '' && !itemText.match('Actions')){
-            $(item).attr('data-bs-toggle', 'tooltip');
-            $(item).attr('data-bs-trigger', 'hover');
-            $(item).attr('data-bs-custom-class', 'tooltip-inverse');
-            $(item).attr('data-bs-placement', 'top');
-            $(item).attr('title',itemText);
-        }
-        cnt++;
-    })
-    jb.tooltip();
-}
-
-function f_member_company_search_condition_init(){
+function f_board_gallery_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
 
     /* 재조회 */
-    f_member_company_search();
+    f_board_gallery_search();
 }
 
-function f_member_company_detail_modal_set(seq){
+function f_board_gallery_detail_modal_set(seq){
     /* TM 및 잠재DB 목록 상세 조회 */
     let jsonObj = {
         seq: seq
     };
 
-    let resData = ajaxConnect('/mng/member/company/selectSingle.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/board/gallery/selectSingle.do', 'post', jsonObj);
 
-    /* 공지사항 상세보기 Modal form Set */
+    /* 사진자료 상세보기 Modal form Set */
     //console.log(resData);
 
-    if(resData.lang === 'KO'){
+    if(resData.lang==="KO"){
         document.querySelector('#md_lang').value = '국문';
     }else{
         document.querySelector('#md_lang').value = '영문';
     }
 
-    $('input:radio[name=gbn]:input[value="' + resData.gbn + '"]').attr('checked', true);
+    document.querySelector('#md_title').value = resData.title;
+    document.querySelector('#md_writer').value = resData.writer;
+    document.querySelector('#md_write_date').value = resData.writeDate;
 
-    document.querySelector('#md_company_name').value = resData.companyName;
-    document.querySelector('#md_company_ceo').value = resData.companyCeo;
-    document.querySelector('#md_company_homepage').value = resData.companyHomepage;
-    document.querySelector('#md_company_tel').value = resData.companyTel;
-    document.querySelector('#md_company_address').value = resData.companyAddress;
-    document.querySelector('#md_company_business_type').value = resData.companyBusinessType;
-    document.querySelector('#md_company_business_item').value = resData.companyBusinessItem;
+    document.querySelector('#md_view_cnt').value = resData.viewCnt;
 
     /* TM 및 잠재DB 목록 상세 조회 */
     let jsonObj2 = {
@@ -161,6 +109,12 @@ function f_member_company_detail_modal_set(seq){
     if(nullToEmpty(fileData) !== ''){
         for(let i=0; i<fileData.length; i++){
             let file_list_el = document.getElementById('file_list');
+            let img_el = document.createElement('img');
+            img_el.src = fileData[i].fullFilePath.replace('./usr/local/tomcat/webapps','../../../../..');
+            img_el.classList.add('w-350px','mr10', 'mb-6');
+            img_el.style.border = '1px solid #009ef7';
+            file_list_el.append(img_el);
+
             let input_el = document.createElement('input');
             input_el.type = 'text';
             input_el.classList.add('form-control');
@@ -170,24 +124,19 @@ function f_member_company_detail_modal_set(seq){
             input_el.value = fileData[i].fileName;
             input_el.readOnly = true;
 
-            let label_el = document.createElement('label');
-            label_el.classList.add('form-label');
-            label_el.innerText = '첨부파일';
-
-            file_list_el.append(label_el);
             file_list_el.append(input_el);
         }
     }
 }
 
-function f_member_company_remove(seq){
+function f_board_gallery_remove(seq){
     //console.log('삭제버튼');
     if(nullToEmpty(seq) !== ""){
         let jsonObj = {
             seq: seq
         }
         Swal.fire({
-            title: '선택한 회원사 정보를 삭제하시겠습니까?',
+            title: '선택한 사진자료를 삭제하시겠습니까?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -197,24 +146,24 @@ function f_member_company_remove(seq){
         }).then((result) => {
             if (result.isConfirmed) {
 
-                let resData = ajaxConnect('/mng/member/company/delete.do', 'post', jsonObj);
+                let resData = ajaxConnect('/mng/board/gallery/delete.do', 'post', jsonObj);
 
                 if (resData.resultCode === "0") {
-                    showMessage('', 'info', '회원사 삭제', '회원사 정보가 삭제되었습니다.', '');
-                    f_member_company_search(); // 삭제 성공 후 재조회 수행
+                    showMessage('', 'info', '사진자료 삭제', '사진자료가 삭제되었습니다.', '');
+                    f_board_gallery_search(); // 삭제 성공 후 재조회 수행
                 } else {
-                    showMessage('', 'error', '에러 발생', '회원사 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', '사진자료 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }
             }
         });
     }
 }
 
-function f_member_company_modify_init_set(seq){
-    window.location.href = '/mng/member/company/detail.do?seq=' + seq;
+function f_board_gallery_modify_init_set(seq){
+    window.location.href = '/mng/board/gallery/detail.do?seq=' + seq;
 }
 
-function f_member_company_save(seq){
+function f_board_gallery_save(seq){
     //console.log(id + '변경내용저장 클릭');
     Swal.fire({
         title: '입력된 정보를 저장하시겠습니까?',
@@ -228,19 +177,38 @@ function f_member_company_save(seq){
         if (result.isConfirmed) {
 
             /* form valid check */
-            let validCheck = f_member_company_valid();
+            let validCheck = f_board_gallery_valid();
 
             if(validCheck){
+                /* File upload */
+
+                let fileIdList = '';
+                let uploadFileList = document.getElementById('uploadFileList').children;
+                let uploadFileListLen = uploadFileList.length;
+                for(let i=0; i<uploadFileListLen; i++){
+                    let fileId = uploadFileList[i].children[2].id;
+                    fileIdList += fileId;
+                    if((i+1) !== uploadFileListLen){
+                        fileIdList += ',';
+                    }
+                }
+
+                if(fileIdList !== ''){
+                    let dataForm = document.getElementById('dataForm');
+                    let hidden_el = document.createElement('input');
+                    hidden_el.type = 'hidden';
+                    hidden_el.name = 'fileIdList';
+                    hidden_el.value = fileIdList;
+                    dataForm.append(hidden_el);
+                }
 
                 /* form data setting */
-                let data = f_member_company_form_data_setting();
-
-                console.log(data);
+                let data = f_board_gallery_form_data_setting();
 
                 /* Modify */
                 if(nvl(seq, '') !== ''){
                     $.ajax({
-                        url: '/mng/member/company/update.do',
+                        url: '/mng/board/gallery/update.do',
                         method: 'POST',
                         async: false,
                         data: data,
@@ -248,24 +216,19 @@ function f_member_company_save(seq){
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
                             if (data.resultCode === "0") {
-
-                                /* file function */
-                                let tableSeq = data.customValue; //tableSeq return 값
-                                f_company_file_upload_call(tableSeq, 'member/company/' + tableSeq);
-
                                 Swal.fire({
-                                    title: '회원사 정보 변경',
-                                    text: "회원사 정보가 변경되었습니다.",
+                                    title: '사진자료 정보 변경',
+                                    text: "사진자료 정보가 변경되었습니다.",
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        f_member_company_modify_init_set(seq); // 재조회
+                                        f_board_gallery_modify_init_set(seq); // 재조회
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', '회원사 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', '사진자료 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -274,7 +237,7 @@ function f_member_company_save(seq){
                     })//ajax
                 }else { /* Insert */
                     $.ajax({
-                        url: '/mng/member/company/insert.do',
+                        url: '/mng/board/gallery/insert.do',
                         method: 'POST',
                         async: false,
                         data: data,
@@ -283,18 +246,18 @@ function f_member_company_save(seq){
                         success: function (data) {
                             if (data.resultCode === "0") {
                                 Swal.fire({
-                                    title: '회원사 정보 등록',
-                                    text: "회원사 정보가 등록되었습니다.",
+                                    title: '사진자료 정보 등록',
+                                    text: "사진자료 정보가 등록되었습니다.",
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = '/mng/member/company.do'; // 목록으로 이동
+                                        window.location.href = '/mng/board/gallery.do'; // 목록으로 이동
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', '회원사 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', '사진자료 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -310,40 +273,32 @@ function f_member_company_save(seq){
 
 }
 
-function f_member_company_form_data_setting(){
+function f_board_gallery_form_data_setting(){
 
     let form = JSON.parse(JSON.stringify($('#dataForm').serializeObject()));
 
-    // 주요 사업
-    let companyBusinessTypeList = $('input[type=checkbox][name=companyBusinessType]:checked');
-    let companyBusinessType = '';
-    for(let i=0; i<companyBusinessTypeList.length; i++){
-        companyBusinessType += companyBusinessTypeList.eq(i).val();
-        if((i+1) !== companyBusinessTypeList.length){
-            companyBusinessType += ',';
-        }
-    }
-    form.companyBusinessType = companyBusinessType;
+    form.uploadFile = '';
 
     return JSON.stringify(form);
 }
 
-function f_member_company_valid(){
-    let companyName = document.querySelector('#companyName').value;
-    //let companyCeo = document.querySelector('#companyCeo').value;
+function f_board_gallery_valid(){
+    let title = document.querySelector('#title').value;
+    let writer = document.querySelector('#writer').value;
+    let writeDate = document.querySelector('#writeDate').value;
 
-    if(nvl(companyName,'') === ''){ showMessage('#companyName', 'error', '[상세 정보]', '회사명을 입력해 주세요.', ''); return false; }
-    //if(nvl(companyCeo,'') === ''){ showMessage('#companyCeo', 'error', '[상세 정보]', '대표자명을 입력해 주세요.', ''); return false; }
+    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[글 등록 정보]', '제목을 입력해 주세요.', ''); return false; }
+    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[글 등록 정보]', '작성자를 입력해 주세요.', ''); return false; }
+    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '작성일을 입력해 주세요.', ''); return false; }
 
     return true;
 }
 
-function f_company_file_upload_call(id, path) {
-
-    /* 로고 */
-    let logoFile = document.getElementById('logoFile').value;
-    if (nvl(logoFile, '') !== '') {
-        f_company_file_upload(id, 'logoFile', path);
+function objectifyForm(formArray) {
+    //serialize data function
+    let returnArray = {};
+    for (let i = 0; i < formArray.length; i++){
+        returnArray[formArray[i]['name']] = formArray[i]['value'];
     }
-
+    return returnArray;
 }

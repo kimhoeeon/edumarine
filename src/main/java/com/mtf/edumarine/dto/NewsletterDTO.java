@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PressDTO extends AbstractPagingRequestVo {
+public class NewsletterDTO extends AbstractPagingRequestVo {
     Integer totalRecords;
     Integer rownum; //연번
     String seq; //ID

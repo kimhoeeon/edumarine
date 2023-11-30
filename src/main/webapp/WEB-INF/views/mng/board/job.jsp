@@ -419,7 +419,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/notice.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">공지사항</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -479,7 +479,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/job.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">취/창업 성공후기</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -1082,7 +1082,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/board/notice.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1154,7 +1154,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/job.do">
+                                            <a class="menu-link active" href="/mng/board/job.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1376,7 +1376,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        공지사항</h1>
+                                        취/창업 성공후기</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1407,7 +1407,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">공지사항</li>
+                                        <li class="breadcrumb-item text-muted">취/창업 성공후기</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1416,7 +1416,7 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('mng_board_notice_table', '공지사항')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_excel_export('mng_board_job_table', '취창업성공후기')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -1447,7 +1447,7 @@ if (document.documentElement) {
                                                 <!--begin::Select2-->
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
                                                         aria-label="- 언어 -" data-placeholder="- 언어 -"
-                                                        data-allow-clear="true" data-hide-search="true" onchange="f_board_notice_search()">
+                                                        data-allow-clear="true" data-hide-search="true" onchange="f_board_job_search()">
                                                     <option></option>
                                                     <option disabled>- 언어 -</option>
                                                     <option value="" selected>전체</option>
@@ -1468,8 +1468,8 @@ if (document.documentElement) {
                                             <!--end::Search-->
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
-                                                <button type="button" onclick="f_board_notice_search()" class="btn btn-primary me-5">Search</button>
-                                                <button type="button" onclick="f_board_notice_search_condition_init()" class="btn btn-secondary me-5">
+                                                <button type="button" onclick="f_board_job_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_board_job_search_condition_init()" class="btn btn-secondary me-5">
                                                     <i class="ki-duotone ki-arrows-circle fs-3">
                                                         <i class="path1"></i>
                                                         <i class="path2"></i>
@@ -1478,7 +1478,7 @@ if (document.documentElement) {
                                             <!--end:Action-->
                                             <div class="ms-auto">
                                                 <!--begin::글쓰기-->
-                                                <a href="javascript:void(0);" onclick="f_board_notice_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
+                                                <a href="javascript:void(0);" onclick="f_board_job_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
                                                 <!--end::글쓰기-->
                                             </div>
                                         </div>
@@ -1489,13 +1489,11 @@ if (document.documentElement) {
                                     <div class="card-body pt-0">
                                         <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
                                         <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_board_notice_table">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_board_job_table">
                                             <thead>
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
-                                                    <th class="text-center min-w-50px">언어</th>
-                                                    <th class="text-center min-w-50px">중요공지</th>
                                                     <th class="text-center min-w-300px">제목</th>
                                                     <th class="text-center min-w-125px">작성자</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
@@ -1506,8 +1504,6 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1562,7 +1558,7 @@ if (document.documentElement) {
                 <!--begin::Modal header-->
                 <div class="modal-header" style="background-color: #1e1e2d;">
                     <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">공지사항 상세보기</h2>
+                    <h2 style="color: #FFFFFF;">취/창업 성공후기 상세보기</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -1580,16 +1576,6 @@ if (document.documentElement) {
 
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">언어</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_lang" placeholder="언어" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
 
                             <!--begin::Input group-->
                             <div class="mb-10">
@@ -1623,27 +1609,6 @@ if (document.documentElement) {
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_write_date" placeholder="작성일" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">추가 설정</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex flex-wrap">
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_notice_gbn" value="중요 공지사항" disabled/>
-                                        <label class="form-check-label opacity-100 text-black" for="md_notice_gbn">
-                                            중요 공지사항
-                                        </label>
-                                    </div>
-                                </div>
-                                <!--end::Col-->
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1725,12 +1690,12 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/notice.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/job.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <script>
         document.addEventListener("keyup", function(event) {
             if (event.key === 'Enter') {
-                f_board_notice_search();
+                f_board_job_search();
             }
         });
     </script>

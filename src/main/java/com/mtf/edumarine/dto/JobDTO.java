@@ -8,12 +8,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PressDTO extends AbstractPagingRequestVo {
+public class JobDTO extends AbstractPagingRequestVo {
     Integer totalRecords;
     Integer rownum; //연번
     String seq; //ID
-    String lang; //언어
-    String noticeGbn; //구분
     String title; //제목
     String content; //내용
     String writer; //작성자

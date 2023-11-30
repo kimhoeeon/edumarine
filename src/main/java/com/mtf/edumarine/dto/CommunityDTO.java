@@ -8,16 +8,18 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PressDTO extends AbstractPagingRequestVo {
+public class CommunityDTO extends AbstractPagingRequestVo {
     Integer totalRecords;
     Integer rownum; //연번
     String seq; //ID
-    String lang; //언어
-    String noticeGbn; //구분
+    String gbn; //공지구분
     String title; //제목
     String content; //내용
+    String hashtag; //해시태그
     String writer; //작성자
+    String writerKey; //작성자Key
     String writeDate; //작성일
+    Integer recommendCnt; //추천수
     Integer viewCnt; //조회수
     String fileIdList; //파일ID목록
     String delYn; //임시휴지통여부

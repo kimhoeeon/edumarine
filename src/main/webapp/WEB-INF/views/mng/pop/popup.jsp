@@ -374,14 +374,14 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_board">게시판 관리</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_pop">팝업/배너 관리</a>
                                                     </li>
@@ -406,7 +406,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-400px" id="kt_app_header_menu_pages_board">
+                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_board">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -419,7 +419,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/notice.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">공지사항</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -506,7 +506,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_pop">
+                                                <div class="tab-pane w-lg-400px active" id="kt_app_header_menu_pages_pop">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -519,7 +519,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/pop/popup.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">팝업 관리</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -1064,7 +1064,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1082,7 +1082,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/board/notice.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1180,7 +1180,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1201,7 +1201,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/pop/popup.do">
+                                            <a class="menu-link active" href="/mng/pop/popup.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1376,7 +1376,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        공지사항</h1>
+                                        팝업 관리</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1399,7 +1399,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">게시판 관리</li>
+                                        <li class="breadcrumb-item text-muted">팝업/배너 관리</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1407,7 +1407,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">공지사항</li>
+                                        <li class="breadcrumb-item text-muted">팝업 관리</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1416,7 +1416,7 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('mng_board_notice_table', '공지사항')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_excel_export('mng_board_notice_table', '팝업')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>

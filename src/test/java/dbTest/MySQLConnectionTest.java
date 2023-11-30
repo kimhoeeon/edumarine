@@ -11,9 +11,9 @@ public class MySQLConnectionTest {
     // MySQL Connector 의 클래스. DB 연결 드라이버 정의
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     // DB 경로
-    private static final String URL = "jdbc:mysql://sipakuei.cafe24.com:3306/sipakuei?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false";
-    private static final String USER = "sipakuei";
-    private static final String PASSWORD = "sipa1103!";
+    private static final String URL = "jdbc:mysql://139.150.86.221:3306/edumarine?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false";
+    private static final String USER = "root";
+    private static final String PASSWORD = "Rkqldk2023@)@#";
 
     @Test
     public void testConnection() throws Exception {
