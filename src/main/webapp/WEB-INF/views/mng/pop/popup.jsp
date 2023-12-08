@@ -175,7 +175,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/notice.do"
+                                                                        <a href="/mng/customer/member.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">전체 회원 목록</span>
                                                                         </a>
@@ -205,7 +205,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/popup/popup.do"
+                                                                        <a href="/mng/customer/regular.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">상시 사전 신청</span>
                                                                         </a>
@@ -237,7 +237,17 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/popup/popup.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">선외기 자가 정비</span>
+                                                                            <span class="menu-title">자가정비 (선외기)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/inboarder.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">자가정비 (선내기)</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -247,17 +257,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/popup/popup.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">선내기 자가 정비</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/popup/popup.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">세일요트 자가 정비</span>
+                                                                            <span class="menu-title">자가정비 (세일요트)</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -321,7 +321,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/notice.do"
+                                                                        <a href="/mng/education/train.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">교육 현황</span>
                                                                         </a>
@@ -466,14 +466,14 @@ if (document.documentElement) {
                                                                     </div>
                                                                     <!--end:Menu item-->
                                                                     <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
+                                                                    <%--<div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/announcement.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">채용공고</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
-                                                                    </div>
+                                                                    </div>--%>
                                                                     <!--end:Menu item-->
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
@@ -528,7 +528,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/press.do"
+                                                                        <a href="/mng/pop/banner.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">배너 관리</span>
                                                                         </a>
@@ -696,7 +696,7 @@ if (document.documentElement) {
                         <!--begin::Navbar-->
                         <div class="app-navbar flex-shrink-0">
                             <!--begin::Search-->
-                            <div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
+                            <%--<div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
                                 <!--begin::Search-->
                                 <div id="kt_header_search" class="header-search d-flex align-items-stretch"
                                      data-kt-search-keypress="true" data-kt-search-min-length="2"
@@ -756,7 +756,7 @@ if (document.documentElement) {
                                     <!--end::Menu-->
                                 </div>
                                 <!--end::Search-->
-                            </div>
+                            </div>--%>
                             <!--end::Search-->
                             <!--begin::User menu-->
                             <div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
@@ -782,7 +782,7 @@ if (document.documentElement) {
                                                 <div class="fw-bold d-flex align-items-center fs-5">${sessionScope.id}
                                                     <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">admin</span>
                                                 </div>
-                                                <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">SIPA 관리자</a>
+                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">EduMarine 관리자</a>
                                             </div>
                                             <!--end::Username-->
                                         </div>
@@ -891,7 +891,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/customer/member.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -926,7 +926,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                            <a class="menu-link" href="/mng/customer/regular.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -966,7 +966,19 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">선외기 자가 정비</span>
+                                                <span class="menu-title">자가정비 (선외기)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/inboarder.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">자가정비 (선내기)</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -978,19 +990,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">선내기 자가 정비</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">세일요트 자가 정비</span>
+                                                <span class="menu-title">자가정비 (세일요트)</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1029,7 +1029,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/education/train.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1140,7 +1140,7 @@ if (document.documentElement) {
                                         </div>
                                         <!--end:Menu item-->
                                         <!--begin:Menu item-->
-                                        <div class="menu-item">
+                                        <%--<div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/board/announcement.do">
                                                 <span class="menu-bullet">
@@ -1149,7 +1149,7 @@ if (document.documentElement) {
                                                 <span class="menu-title">채용공고</span>
                                             </a>
                                             <!--end:Menu link-->
-                                        </div>
+                                        </div>--%>
                                         <!--end:Menu item-->
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
@@ -1213,7 +1213,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/press.do">
+                                            <a class="menu-link" href="/mng/pop/banner.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1416,7 +1416,7 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('mng_board_notice_table', '팝업')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_excel_export('mng_pop_popup_table', '팝업')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -1447,7 +1447,7 @@ if (document.documentElement) {
                                                 <!--begin::Select2-->
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
                                                         aria-label="- 언어 -" data-placeholder="- 언어 -"
-                                                        data-allow-clear="true" data-hide-search="true" onchange="f_board_notice_search()">
+                                                        data-allow-clear="true" data-hide-search="true" onchange="f_pop_popup_search()">
                                                     <option></option>
                                                     <option disabled>- 언어 -</option>
                                                     <option value="" selected>전체</option>
@@ -1468,8 +1468,8 @@ if (document.documentElement) {
                                             <!--end::Search-->
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
-                                                <button type="button" onclick="f_board_notice_search()" class="btn btn-primary me-5">Search</button>
-                                                <button type="button" onclick="f_board_notice_search_condition_init()" class="btn btn-secondary me-5">
+                                                <button type="button" onclick="f_pop_popup_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_pop_popup_search_condition_init()" class="btn btn-secondary me-5">
                                                     <i class="ki-duotone ki-arrows-circle fs-3">
                                                         <i class="path1"></i>
                                                         <i class="path2"></i>
@@ -1478,7 +1478,7 @@ if (document.documentElement) {
                                             <!--end:Action-->
                                             <div class="ms-auto">
                                                 <!--begin::글쓰기-->
-                                                <a href="javascript:void(0);" onclick="f_board_notice_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
+                                                <a href="javascript:void(0);" onclick="f_pop_popup_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
                                                 <!--end::글쓰기-->
                                             </div>
                                         </div>
@@ -1489,24 +1489,22 @@ if (document.documentElement) {
                                     <div class="card-body pt-0">
                                         <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
                                         <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_board_notice_table">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_pop_popup_table">
                                             <thead>
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
-                                                    <th>seq</th>
-                                                    <th class="text-center min-w-50px">언어</th>
-                                                    <th class="text-center min-w-50px">중요공지</th>
-                                                    <th class="text-center min-w-300px">제목</th>
-                                                    <th class="text-center min-w-125px">작성자</th>
+                                                    <th>SEQ</th>
+                                                    <th class="text-center min-w-100px">사용여부</th>
+                                                    <th class="text-center min-w-150px">타이틀</th>
+                                                    <th class="text-center min-w-150px">게시일시</th>
+                                                    <th class="text-center min-w-150px">만료일시</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
                                                     <th class="text-center min-w-150px">수정일시</th>
-                                                    <th class="text-center min-w-50px">조회수</th>
                                                     <th class="text-center min-w-100px">기능</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1553,146 +1551,6 @@ if (document.documentElement) {
     </div>
     <!--end::App-->
 
-    <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="kt_modal_modify_history" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">공지사항 상세보기</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <div class="card card-flush py-4">
-
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">언어</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_lang" placeholder="언어" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">제목</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_title" placeholder="제목" readonly>
-                                <!--end::Input-->
-                                <!--begin::Description-->
-                                <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
-                                <!--end::Description-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">작성자</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_writer" placeholder="작성자" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">작성일</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_write_date" placeholder="작성일" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">추가 설정</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex flex-wrap">
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_notice_gbn" value="중요 공지사항" disabled/>
-                                        <label class="form-check-label opacity-100 text-black" for="md_notice_gbn">
-                                            중요 공지사항
-                                        </label>
-                                    </div>
-                                </div>
-                                <!--end::Col-->
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">내용</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <div id="md_content" class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" placeholder="내용" readonly></div>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">조회수</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_view_cnt" placeholder="조회수" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div id="file_list">
-                                <!--begin::Label-->
-                                <label class="form-label">첨부파일</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <%--<input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" readonly>--%>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                        </div>
-                        <!--end::Card header-->
-                    </div>
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 수정이력-->
-
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up">
@@ -1725,12 +1583,12 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/notice.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/popup.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <script>
         document.addEventListener("keyup", function(event) {
             if (event.key === 'Enter') {
-                f_board_notice_search();
+                f_pop_popup_search();
             }
         });
     </script>

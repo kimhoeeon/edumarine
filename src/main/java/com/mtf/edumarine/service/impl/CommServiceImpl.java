@@ -159,4 +159,17 @@ public class CommServiceImpl implements CommService {
         return result.toString();
     }
 
+    @Override
+    public String getSystemicSiteMap() {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" +
+                "  <!-- edumarine 페이지들 -->\n" +
+                "  <url>\n" +
+                "    <loc>http://www.meeting-fan.shop/main.do</loc>\n" +
+                "    <changefreq>daily</changefreq>\n" +
+                "    <priority>0.9</priority>\n" +
+                "  </url>\n" +
+                "</urlset>";
+    }
+
 }

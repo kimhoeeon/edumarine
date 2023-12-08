@@ -118,4 +118,78 @@ public interface EduMarineMngMapper {
     String getCommunitySeq();
 
     Integer insertCommunity(CommunityDTO communityDTO);
+
+    List<PopupDTO> selectPopupList(SearchDTO searchDTO);
+
+    Integer deletePopup(PopupDTO popupDTO);
+
+    PopupDTO selectPopupSingle(PopupDTO popupDTO);
+
+    Integer updatePopup(PopupDTO popupDTO);
+
+    String getPopupSeq();
+
+    Integer insertPopup(PopupDTO popupDTO);
+
+    Integer getActivePopupCount(PopupDTO reqDTO);
+
+    List<BannerDTO> selectBannerList(SearchDTO searchDTO);
+
+    BannerDTO selectBannerSingle(BannerDTO bannerDTO);
+
+    Integer deleteBanner(BannerDTO bannerDTO);
+
+    Integer updateBanner(BannerDTO bannerDTO);
+
+    String getBannerSeq();
+
+    Integer insertBanner(BannerDTO bannerDTO);
+
+    List<MemberDTO> selectMemberList(SearchDTO searchDTO);
+
+    MemberDTO selectMemberSingle(MemberDTO memberDTO);
+
+    Integer deleteMember(MemberDTO memberDTO);
+
+    Integer updateMember(MemberDTO memberDTO);
+
+    String getMemberSeq();
+
+    Integer insertMember(MemberDTO memberDTO);
+
+    List<RegularDTO> selectRegularList(SearchDTO searchDTO);
+
+    RegularDTO selectRegularSingle(RegularDTO regularDTO);
+
+    Integer deleteRegular(RegularDTO regularDTO);
+
+    Integer updateRegular(RegularDTO regularDTO);
+
+    String getRegularSeq();
+
+    Integer insertRegular(RegularDTO regularDTO);
+
+    List<InboarderDTO> selectInboarderList(SearchDTO searchDTO);
+
+    InboarderDTO selectInboarderSingle(InboarderDTO inboarderDTO);
+
+    Integer deleteInboarder(InboarderDTO inboarderDTO);
+
+    Integer updateInboarder(InboarderDTO inboarderDTO);
+
+    String getInboarderSeq();
+
+    Integer insertInboarder(InboarderDTO inboarderDTO);
+
+    List<TrainDTO> selectTrainList(SearchDTO searchDTO);
+
+    TrainDTO selectTrainSingle(TrainDTO trainDTO);
+
+    Integer deleteTrain(TrainDTO trainDTO);
+
+    Integer updateTrain(TrainDTO trainDTO);
+
+    String getTrainSeq();
+
+    Integer insertTrain(TrainDTO trainDTO);
 }

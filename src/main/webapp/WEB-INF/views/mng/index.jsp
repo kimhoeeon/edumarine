@@ -35,7 +35,7 @@
             <form id="login_form" name="login_form" action="/mng/main.do" method="post" onsubmit="return false;">
                 <div>
                     <p class="brand-logo">
-                        <img src="<%request.getContextPath();%>/static/img/logo.png" class="mngLogo">
+                        <img src="<%request.getContextPath();%>/static/img/mng_main_logo.png" width="500" class="mngLogo">
                         <br><br>
                         <span id="logo_txt">[ 관리자 시스템 ]</span>
                     </p>

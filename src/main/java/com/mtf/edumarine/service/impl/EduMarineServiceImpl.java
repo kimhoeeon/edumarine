@@ -1,5 +1,6 @@
 package com.mtf.edumarine.service.impl;
 
+import com.mtf.edumarine.dto.PopupDTO;
 import com.mtf.edumarine.dto.StatisticsDTO;
 import com.mtf.edumarine.mapper.EduMarineMapper;
 import com.mtf.edumarine.service.EduMarineService;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class EduMarineServiceImpl implements EduMarineService {
@@ -58,6 +60,13 @@ public class EduMarineServiceImpl implements EduMarineService {
             System.out.println(e.getMessage() == null ? "" : e.getMessage());
         }
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<PopupDTO> processSelectPopupList(PopupDTO popupDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectPopupList");
+        return eduMarineMapper.selectPopupList(popupDTO);
     }
 
 }

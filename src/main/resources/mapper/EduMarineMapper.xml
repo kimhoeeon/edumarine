@@ -49,5 +49,30 @@
         )
     </insert>
 
+    <select id="selectPopupList" parameterType="com.mtf.edumarine.dto.PopupDTO" resultType="com.mtf.edumarine.dto.PopupDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectPopupList */
+        SELECT seq
+             , use_yn
+             , title
+             , published_date
+             , expiration_date
+             , width_px
+             , left_px
+             , top_px
+             , align
+             , writer
+             , content
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM popup
+        WHERE 1=1
+          AND use_yn = #{useYn}
+          AND published_date <![CDATA[<=]]> #{today}
+          AND expiration_date <![CDATA[>=]]> #{today}
+    </select>
+
 </mapper>
 

@@ -5,13 +5,6 @@
 
 $(function(){
 
-    // 파일 입력 변경에 대한 이벤트 핸들러 추가
-    $(document).on('change', '.upload_hidden', function () {
-        let fileName = $(this).val().split('\\').pop();
-        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-        fileNameInput.val(fileName);
-    });
-
 });
 
 function f_board_job_search(){

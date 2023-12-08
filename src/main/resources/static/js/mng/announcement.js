@@ -9,7 +9,16 @@ $(function(){
     $(document).on('change', '.upload_hidden', function () {
         let fileName = $(this).val().split('\\').pop();
         let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-        fileNameInput.val(fileName);
+
+        // 파일명에 특수문자 체크
+        let pattern =   /[\{\}\/?,.;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+        if(pattern.test(String(fileName)) ){
+            //alert("파일명에 허용된 특수문자는 '-', '_', '(', ')', '[', ']', '.' 입니다.");
+            fileNameInput.val('');
+            alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) [ ] 입니다.');
+        }else{
+            fileNameInput.val(fileName);
+        }
     });
 
 });

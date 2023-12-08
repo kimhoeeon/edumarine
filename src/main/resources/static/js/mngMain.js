@@ -38,7 +38,19 @@ $(function(){
     $(document).on('change', '.upload_hidden', function () {
         let fileName = $(this).val().split('\\').pop();
         let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-        fileNameInput.val(fileName);
+
+        let _lastDot = fileName.lastIndexOf('.');
+        let realFileName = fileName.substring(0, _lastDot).toLowerCase();
+
+        // 파일명에 특수문자 체크
+        let pattern =   /[\{\}\/?,.;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+        if(pattern.test(String(realFileName)) ){
+            //alert("파일명에 허용된 특수문자는 '-', '_', '(', ')', '[', ']', '.' 입니다.");
+            fileNameInput.val('');
+            alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) [ ] 입니다.');
+        }else{
+            fileNameInput.val(realFileName);
+        }
     });
 
     let customDatepicker = document.getElementById("kt_td_picker_custom_icons");
@@ -242,7 +254,8 @@ function nullToEmpty(nullStr){
  */
 function nvl(str, defaultStr){
 
-    if(typeof str === "undefined" || typeof str === undefined || str === null || str === "" || str === "null"){
+
+    if(typeof str === "undefined" || typeof str === undefined || str === null || str === "" || str === "null" || Object.keys(str).length === 0){
         str = defaultStr ;
     }
 
@@ -389,89 +402,94 @@ function f_company_uploadFile(elementId, path) {
 }
 
 async function f_attach_file_upload(userId, formId, path) {
-    let uploadFileResponse = '';
-    uploadFileResponse = await f_mng_uploadFile(formId, path);
-    if (nvl(uploadFileResponse, "") !== '') {
-        Swal.fire({
-            title: '파일 업로드',
-            text: "파일 업로드 성공",
-            icon: 'info',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: '확인'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let fullFilePath = uploadFileResponse.replaceAll('\\','/');
-                // ./tomcat/webapps/upload/center/board/notice/b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
+    let file = $('#attachFileInput').val();
+    if(nvl(file,'') !== ''){
+        let uploadFileResponse = '';
+        uploadFileResponse = await f_mng_uploadFile(formId, path);
+        if (nvl(uploadFileResponse, "") !== '') {
+            Swal.fire({
+                title: '파일 업로드',
+                text: "파일 업로드 성공",
+                icon: 'info',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let fullFilePath = uploadFileResponse.replaceAll('\\','/');
+                    // ./tomcat/webapps/upload/center/board/notice/b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
 
-                let fullPath = fullFilePath.substring(0, fullFilePath.lastIndexOf('/')+1);
-                // ./tomcat/webapps/upload/center/board/notice/
+                    let fullPath = fullFilePath.substring(0, fullFilePath.lastIndexOf('/')+1);
+                    // ./tomcat/webapps/upload/center/board/notice/
 
-                let pureFileNameSplit = fullFilePath.split('/');
-                let fullFileName = pureFileNameSplit[pureFileNameSplit.length - 1];
-                // b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
+                    let pureFileNameSplit = fullFilePath.split('/');
+                    let fullFileName = pureFileNameSplit[pureFileNameSplit.length - 1];
+                    // b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
 
-                let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
-                // b3eb661d-34de-4fd0-bc74-17db9fffc1bd
+                    let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
+                    // b3eb661d-34de-4fd0-bc74-17db9fffc1bd
 
-                let fileName = fullFileName.substring(fullFileName.indexOf('_')+1);
-                // KIBS_TV_목록_excel_20230817151752.xlsx
+                    let fileName = fullFileName.substring(fullFileName.indexOf('_')+1);
+                    // KIBS_TV_목록_excel_20230817151752.xlsx
 
-                let folderPath = pureFileNameSplit[pureFileNameSplit.length - 2];
-                // notice
+                    let folderPath = pureFileNameSplit[pureFileNameSplit.length - 2];
+                    // notice
 
-                let jsonObj = {
-                    userId: userId,
-                    fullFilePath: fullFilePath,
-                    fullPath: fullPath,
-                    folderPath: folderPath,
-                    fullFileName: fullFileName,
-                    uuid: uuid,
-                    fileName: fileName,
-                    fileYn: 'Y'
-                };
-                let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
-                if (resData.resultCode === "0") {
-                    let ul_el = document.getElementById('uploadFileList');
-                    let li_el = document.createElement('li');
-                    let a_el = document.createElement('a');
+                    let jsonObj = {
+                        userId: userId,
+                        fullFilePath: fullFilePath,
+                        fullPath: fullPath,
+                        folderPath: folderPath,
+                        fullFileName: fullFileName,
+                        uuid: uuid,
+                        fileName: fileName,
+                        fileYn: 'Y'
+                    };
+                    let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
+                    if (resData.resultCode === "0") {
+                        let ul_el = document.getElementById('uploadFileList');
+                        let li_el = document.createElement('li');
+                        let a_el = document.createElement('a');
 
-                    if(folderPath === 'gallery'){
-                        let img_el = document.createElement('img');
-                        img_el.src = fullFilePath.replace('./usr/local/tomcat/webapps','../../../../..');
-                        img_el.classList.add('w-350px','mr10');
-                        img_el.style.border = '1px solid #009ef7';
-                        li_el.append(img_el);
+                        if(folderPath === 'gallery' || folderPath === 'banner'){
+                            let img_el = document.createElement('img');
+                            img_el.src = fullFilePath.replace('./usr/local/tomcat/webapps','../../../../..');
+                            img_el.classList.add('w-350px','mr10');
+                            img_el.style.border = '1px solid #009ef7';
+                            li_el.append(img_el);
+                        }
+
+                        /*a_el.href = 'javascript:f_file_download(' + '\'' + pureFileName + '\'' + ',' + '\'' + pureFilePath + '\'' +')';*/
+                        a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;
+                        a_el.text = fileName;
+                        li_el.append(a_el);
+
+                        let hidden_el = document.createElement('input');
+                        hidden_el.type = 'hidden';
+                        hidden_el.name = 'uploadFile';
+                        hidden_el.id = resData.fileId;
+                        hidden_el.value = fullFilePath;
+                        li_el.append(hidden_el);
+
+                        let button_el = document.createElement('button');
+                        button_el.type = 'button';
+                        button_el.className = 'ml10';
+                        button_el.onclick = function(){ f_file_remove(this, resData.fileId) }
+                        button_el.innerHTML = '<i class="ki-duotone ki-abstract-11">\n' +
+                            '<i class="path1"></i>\n' +
+                            '<i class="path2"></i>\n' +
+                            '</i>';
+                        li_el.append(button_el);
+
+                        ul_el.append(li_el);
+
+                        /* modal 창 닫기 */
+                        f_upload_modal_close('kt_modal_file_upload','attachFile');
                     }
-
-                    /*a_el.href = 'javascript:f_file_download(' + '\'' + pureFileName + '\'' + ',' + '\'' + pureFilePath + '\'' +')';*/
-                    a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;
-                    a_el.text = fileName;
-                    li_el.append(a_el);
-
-                    let hidden_el = document.createElement('input');
-                    hidden_el.type = 'hidden';
-                    hidden_el.name = 'uploadFile';
-                    hidden_el.id = resData.fileId;
-                    hidden_el.value = fullFilePath;
-                    li_el.append(hidden_el);
-
-                    let button_el = document.createElement('button');
-                    button_el.type = 'button';
-                    button_el.className = 'ml10';
-                    button_el.onclick = function(){ f_file_remove(this, resData.fileId) }
-                    button_el.innerHTML = '<i class="ki-duotone ki-abstract-11">\n' +
-                        '<i class="path1"></i>\n' +
-                        '<i class="path2"></i>\n' +
-                        '</i>';
-                    li_el.append(button_el);
-
-                    ul_el.append(li_el);
-
-                    /* modal 창 닫기 */
-                    f_upload_modal_close('kt_modal_file_upload','attachFile');
                 }
-            }
-        });
+            });
+        }
+    }else{
+        alert('첨부된 파일이 없습니다.');
     }
 }
 

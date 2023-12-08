@@ -1,6 +1,9 @@
 package com.mtf.edumarine.service;
 
+import com.mtf.edumarine.dto.PopupDTO;
+
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public interface EduMarineService {
 
@@ -8,4 +11,5 @@ public interface EduMarineService {
 
     void processStatisticsAccessor();
 
+    List<PopupDTO> processSelectPopupList(PopupDTO popupDTO);
 }
