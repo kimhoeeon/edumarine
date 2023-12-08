@@ -73,11 +73,14 @@
                             <li>
                                 <div class="gubun">과정</div>
                                 <div class="input">
-                                    <select>
-                                        <option>전체</option>
-                                        <option>정규과정</option>
-                                        <option>단기과정</option>
-                                    </select>
+                                    <div class="select_box">
+                                        <div class="select_label">전체</div>
+                                        <ul class="option_list">
+                                            <li class="option_item">전체</li>
+                                            <li class="option_item">정규과정</li>
+                                            <li class="option_item">단기과정</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </li>
                             <li>
@@ -88,6 +91,15 @@
                         </ul>
                     </div>
                     <!-- //sked_top -->
+
+                    <!-- sked_list_none -->
+                    <%--<div class="sked_list_none">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육과정은 개설 예정입니다</div>
+                        </div>
+                    </div>--%>
+                    <!-- //sked_list_none -->
 
                     <!-- sked_list_wrap -->
                     <div class="sked_list_wrap">
@@ -241,6 +253,7 @@
                             </li>
                         </ul>
                         <!-- //sked_list -->
+
                         <!-- paging -->
                         <div class="paging">
                             <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>

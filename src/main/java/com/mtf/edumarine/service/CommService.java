@@ -12,4 +12,6 @@ public interface CommService {
 
     SmsResponseDTO smsSend(SmsDTO smsDTO);
 
+    String getSystemicSiteMap();
+
 }

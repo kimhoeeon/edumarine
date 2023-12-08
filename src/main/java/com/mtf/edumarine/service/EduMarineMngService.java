@@ -118,4 +118,64 @@ public interface EduMarineMngService {
     ResponseDTO processUpdateCommunity(CommunityDTO communityDTO);
 
     ResponseDTO processInsertCommunity(CommunityDTO communityDTO);
+
+    List<PopupDTO> processSelectPopupList(SearchDTO searchDTO);
+
+    ResponseDTO processDeletePopup(PopupDTO popupDTO);
+
+    PopupDTO processSelectPopupSingle(PopupDTO popupDTO);
+
+    ResponseDTO processUpdatePopup(PopupDTO popupDTO);
+
+    ResponseDTO processInsertPopup(PopupDTO popupDTO);
+
+    List<BannerDTO> processSelectBannerList(SearchDTO searchDTO);
+
+    BannerDTO processSelectBannerSingle(BannerDTO bannerDTO);
+
+    ResponseDTO processDeleteBanner(BannerDTO bannerDTO);
+
+    ResponseDTO processUpdateBanner(BannerDTO bannerDTO);
+
+    ResponseDTO processInsertBanner(BannerDTO bannerDTO);
+
+    List<MemberDTO> processSelectMemberList(SearchDTO searchDTO);
+
+    MemberDTO processSelectMemberSingle(MemberDTO memberDTO);
+
+    ResponseDTO processDeleteMember(MemberDTO memberDTO);
+
+    ResponseDTO processUpdateMember(MemberDTO memberDTO);
+
+    ResponseDTO processInsertMember(MemberDTO memberDTO);
+
+    List<RegularDTO> processSelectRegularList(SearchDTO searchDTO);
+
+    RegularDTO processSelectRegularSingle(RegularDTO regularDTO);
+
+    ResponseDTO processDeleteRegular(RegularDTO regularDTO);
+
+    ResponseDTO processUpdateRegular(RegularDTO regularDTO);
+
+    ResponseDTO processInsertRegular(RegularDTO regularDTO);
+
+    List<InboarderDTO> processSelectInboarderList(SearchDTO searchDTO);
+
+    InboarderDTO processSelectInboarderSingle(InboarderDTO inboarderDTO);
+
+    ResponseDTO processDeleteInboarder(InboarderDTO inboarderDTO);
+
+    ResponseDTO processUpdateInboarder(InboarderDTO inboarderDTO);
+
+    ResponseDTO processInsertInboarder(InboarderDTO inboarderDTO);
+
+    List<TrainDTO> processSelectTrainList(SearchDTO searchDTO);
+
+    TrainDTO processSelectTrainSingle(TrainDTO trainDTO);
+
+    ResponseDTO processDeleteTrain(TrainDTO trainDTO);
+
+    ResponseDTO processUpdateTrain(TrainDTO trainDTO);
+
+    ResponseDTO processInsertTrain(TrainDTO trainDTO);
 }

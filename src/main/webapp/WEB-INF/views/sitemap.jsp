@@ -62,26 +62,25 @@
                 <div class="sitemap_box">
                     <div class="title">센터소개</div>
                     <div class="list">
-                        <a href="">EDU marine 소개</a>
-                        <a href="">사업개요</a>
-                        <a href="">경기도 해양레저 현황</a>
-                        <a href="">해양레저 인력양성의 필요성</a>
-                        <a href="">협력 및 후원기관</a>
-                        <a href="">찾아오시는 길</a>
+                        <a href="/edumarine/introduce.do">EDU marine 소개</a>
+                        <a href="/edumarine/overview.do">사업개요</a>
+                        <a href="/edumarine/current.do">경기도 해양레저 현황</a>
+                        <a href="/edumarine/necessity.do">해양레저 인력양성의 필요성</a>
+                        <a href="/edumarine/sponsorship.do">협력 및 후원기관</a>
+                        <a href="/edumarine/way.do">찾아오시는 길</a>
                     </div>
                 </div>
                 <div class="sitemap_box">
                     <div class="title">교육안내</div>
                     <div class="list">
-                        <a href="">전체 교육과정 소개</a>
-                        <a href="">해상엔진 테크니션(선내기·선외기)</a>
-                        <a href="">마리나선박 정비사 실기교육</a>
-                        <a href="">해양레저 인력양성의 필요성</a>
-                        <a href="">FRP 레저보트 선체 정비 테크니션</a>
-                        <a href="">위탁교육</a>
-                        <a href="">해상엔진 자가정비(선외기)</a>
-                        <a href="">해상엔진 자가정비(선내기)</a>
-                        <a href="">해상엔진 자가정비(세일요트)</a>
+                        <a href="/guide/guide01.do">전체 교육과정 소개</a>
+                        <a href="/guide/guide02.do">해상엔진 테크니션(선내기·선외기)</a>
+                        <a href="/guide/guide03.do">마리나선박 정비사 실기교육</a>
+                        <a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a>
+                        <a href="/guide/guide05.do">위탁교육</a>
+                        <a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a>
+                        <a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a>
+                        <a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a>
                     </div>
                 </div>
                 <div class="sitemap_box">
@@ -103,7 +102,7 @@
                 <div class="sitemap_box">
                     <div class="title">취업·창업</div>
                     <div class="list">
-                        <a href="/job/announcement_list.do">채용공고</a>
+                        <%--<a href="/job/announcement_list.do">채용공고</a>--%>
                         <a href="/job/state01.do">취창업현황</a>
                         <a href="/job/review.do">취창업성공후기</a>
                         <a href="/job/community_list.do">커뮤니티</a>

@@ -154,7 +154,7 @@
                             <li>
                                 <div class="gubun req"><p>관심 키워드</p></div>
                                 <div class="naeyong">
-                                    <div class="input">
+                                    <div class="input form_keyword">
                                         <label><input type="checkbox">선내기</label>
                                         <label><input type="checkbox">선외기</label>
                                         <label><input type="checkbox">마리나선박</label>

@@ -62,7 +62,7 @@
             <div id="sidebar">
                 <div class="title">취업·창업</div>
                 <ul class="lnb">
-                    <li><a href="/job/announcement_list.do">채용공고</a></li>
+                    <!--<li><a href="/job/announcement_list.do">채용공고</a></li>-->
                     <li><a href="/job/state01.do">취창업현황</a></li>
                     <li><a href="/job/review.do">취창업성공후기</a></li>
                     <li class="on"><a href="/job/community_list.do">커뮤니티</a></li>

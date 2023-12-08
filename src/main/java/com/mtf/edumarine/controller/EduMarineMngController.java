@@ -965,14 +965,463 @@ public class EduMarineMngController {
         return mv;
     }
 
+    @RequestMapping(value = "/mng/pop/popup/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<PopupDTO>> mng_pop_popup_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_pop_popup_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<PopupDTO> responseList = eduMarineMngService.processSelectPopupList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/pop/popup/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_pop_popup_detail() {
+    public ModelAndView mng_pop_popup_detail(String seq) {
         System.out.println("EduMarineMngController > mng_pop_popup_detail");
         ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            PopupDTO popupDTO = new PopupDTO();
+            popupDTO.setSeq(seq);
+            PopupDTO info = eduMarineMngService.processSelectPopupSingle(popupDTO);
+            mv.addObject("info", info);
+        }
+
         mv.setViewName("/mng/pop/popup/detail");
         return mv;
     }
 
+    @RequestMapping(value = "/mng/pop/popup/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_popup_delete(@RequestBody PopupDTO popupDTO) {
+        System.out.println("EduMarineMngController > mng_pop_popup_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeletePopup(popupDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_popup_update(@RequestBody PopupDTO popupDTO) {
+        System.out.println("EduMarineMngController > mng_pop_popup_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdatePopup(popupDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_popup_insert(@RequestBody PopupDTO popupDTO) {
+        System.out.println("EduMarineMngController > mng_pop_popup_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertPopup(popupDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_banner() {
+        System.out.println("EduMarineMngController > mng_pop_banner");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/pop/banner");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<BannerDTO>> mng_pop_banner_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_pop_banner_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<BannerDTO> responseList = eduMarineMngService.processSelectBannerList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<BannerDTO> mng_pop_banner_selectSingle(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("EduMarineMngController > mng_pop_banner_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        BannerDTO response = eduMarineMngService.processSelectBannerSingle(bannerDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_banner_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_pop_banner_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            BannerDTO bannerDTO = new BannerDTO();
+            bannerDTO.setSeq(seq);
+            BannerDTO info = eduMarineMngService.processSelectBannerSingle(bannerDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/pop/banner/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_banner_delete(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("EduMarineMngController > mng_pop_banner_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteBanner(bannerDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_banner_update(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("EduMarineMngController > mng_pop_banner_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateBanner(bannerDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_banner_insert(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("EduMarineMngController > mng_pop_banner_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertBanner(bannerDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    //***************************************************************************
+    // customer Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/customer/member.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_member() {
+        System.out.println("EduMarineMngController > mng_customer_member");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/customer/member");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/member/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MemberDTO>> mng_customer_member_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_customer_member_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<MemberDTO> responseList = eduMarineMngService.processSelectMemberList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/member/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<MemberDTO> mng_customer_member_selectSingle(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineMngController > mng_customer_member_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        MemberDTO response = eduMarineMngService.processSelectMemberSingle(memberDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/member/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_member_delete(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineMngController > mng_customer_member_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteMember(memberDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/member/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_member_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_member_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            MemberDTO memberDTO = new MemberDTO();
+            memberDTO.setSeq(seq);
+            MemberDTO info = eduMarineMngService.processSelectMemberSingle(memberDTO);
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/mng/customer/member/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/member/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_member_update(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineMngController > mng_customer_member_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateMember(memberDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/member/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_member_insert(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineMngController > mng_customer_member_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertMember(memberDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/regular.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_regular() {
+        System.out.println("EduMarineMngController > mng_customer_regular");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/customer/regular");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<RegularDTO>> mng_customer_regular_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_customer_regular_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<RegularDTO> responseList = eduMarineMngService.processSelectRegularList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<RegularDTO> mng_customer_regular_selectSingle(@RequestBody RegularDTO regularDTO) {
+        System.out.println("EduMarineMngController > mng_customer_regular_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        RegularDTO response = eduMarineMngService.processSelectRegularSingle(regularDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_regular_delete(@RequestBody RegularDTO regularDTO) {
+        System.out.println("EduMarineMngController > mng_customer_regular_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteRegular(regularDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_regular_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_regular_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            RegularDTO regularDTO = new RegularDTO();
+            regularDTO.setSeq(seq);
+            RegularDTO info = eduMarineMngService.processSelectRegularSingle(regularDTO);
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/mng/customer/regular/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_regular_update(@RequestBody RegularDTO regularDTO) {
+        System.out.println("EduMarineMngController > mng_customer_regular_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateRegular(regularDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_regular_insert(@RequestBody RegularDTO regularDTO) {
+        System.out.println("EduMarineMngController > mng_customer_regular_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertRegular(regularDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_inboarder() {
+        System.out.println("EduMarineMngController > mng_customer_inboarder");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/customer/inboarder");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<InboarderDTO>> mng_customer_inboarder_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_customer_inboarder_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<InboarderDTO> responseList = eduMarineMngService.processSelectInboarderList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<InboarderDTO> mng_customer_inboarder_selectSingle(@RequestBody InboarderDTO inboarderDTO) {
+        System.out.println("EduMarineMngController > mng_customer_inboarder_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        InboarderDTO response = eduMarineMngService.processSelectInboarderSingle(inboarderDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_inboarder_delete(@RequestBody InboarderDTO inboarderDTO) {
+        System.out.println("EduMarineMngController > mng_customer_inboarder_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteInboarder(inboarderDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_inboarder_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_inboarder_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            InboarderDTO inboarderDTO = new InboarderDTO();
+            inboarderDTO.setSeq(seq);
+            InboarderDTO info = eduMarineMngService.processSelectInboarderSingle(inboarderDTO);
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/mng/customer/inboarder/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_inboarder_update(@RequestBody InboarderDTO inboarderDTO) {
+        System.out.println("EduMarineMngController > mng_customer_inboarder_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateInboarder(inboarderDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_inboarder_insert(@RequestBody InboarderDTO inboarderDTO) {
+        System.out.println("EduMarineMngController > mng_customer_inboarder_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertInboarder(inboarderDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/education/train.do", method = RequestMethod.GET)
+    public ModelAndView mng_education_train() {
+        System.out.println("EduMarineMngController > mng_education_train");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/education/train");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/education/train/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<TrainDTO>> mng_education_train_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<TrainDTO> responseList = eduMarineMngService.processSelectTrainList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/education/train/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<TrainDTO> mng_education_train_selectSingle(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        TrainDTO response = eduMarineMngService.processSelectTrainSingle(trainDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/education/train/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_education_train_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_education_train_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            TrainDTO trainDTO = new TrainDTO();
+            trainDTO.setSeq(seq);
+            TrainDTO info = eduMarineMngService.processSelectTrainSingle(trainDTO);
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/mng/education/train/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/education/train/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_education_train_delete(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteTrain(trainDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/education/train/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_education_train_update(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateTrain(trainDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/education/train/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_education_train_insert(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertTrain(trainDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 
     /*********************** file upload ***********************/
 

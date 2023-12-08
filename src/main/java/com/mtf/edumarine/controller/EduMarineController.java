@@ -1,6 +1,7 @@
 package com.mtf.edumarine.controller;
 
 import com.mtf.edumarine.constants.CommConstants;
+import com.mtf.edumarine.dto.PopupDTO;
 import com.mtf.edumarine.dto.ResponseDTO;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineService;
@@ -16,14 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.*;
 
 @Controller
 public class EduMarineController {
@@ -65,6 +65,15 @@ public class EduMarineController {
 
         /* 방문자 수 카운트 */
         eduMarineService.processStatisticsAccessor();
+
+        /* 팝업파일정보 */
+        PopupDTO popupDTO = new PopupDTO();
+        popupDTO.setUseYn("Y");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String today = dateFormat.format(new Date());
+        popupDTO.setToday(today);
+        List<PopupDTO> popupList = eduMarineService.processSelectPopupList(popupDTO);
+        mv.addObject("popupList", popupList);
 
         mv.setViewName("main");
         return mv;
@@ -339,6 +348,126 @@ public class EduMarineController {
     }
 
     //***************************************************************************
+    // edumarine Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/edumarine/introduce.do", method = RequestMethod.GET)
+    public ModelAndView edumarine_introduce() {
+        System.out.println("EduMarineController > edumarine_introduce");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/edumarine/introduce");
+        return mv;
+    }
+
+    @RequestMapping(value = "/edumarine/overview.do", method = RequestMethod.GET)
+    public ModelAndView edumarine_overview() {
+        System.out.println("EduMarineController > edumarine_overview");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/edumarine/overview");
+        return mv;
+    }
+
+    @RequestMapping(value = "/edumarine/current.do", method = RequestMethod.GET)
+    public ModelAndView edumarine_current() {
+        System.out.println("EduMarineController > edumarine_current");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/edumarine/current");
+        return mv;
+    }
+
+    @RequestMapping(value = "/edumarine/necessity.do", method = RequestMethod.GET)
+    public ModelAndView edumarine_necessity() {
+        System.out.println("EduMarineController > edumarine_necessity");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/edumarine/necessity");
+        return mv;
+    }
+
+    @RequestMapping(value = "/edumarine/sponsorship.do", method = RequestMethod.GET)
+    public ModelAndView edumarine_sponsorship() {
+        System.out.println("EduMarineController > edumarine_sponsorship");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/edumarine/sponsorship");
+        return mv;
+    }
+
+    @RequestMapping(value = "/edumarine/way.do", method = RequestMethod.GET)
+    public ModelAndView edumarine_way() {
+        System.out.println("EduMarineController > edumarine_way");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/edumarine/way");
+        return mv;
+    }
+
+    //***************************************************************************
+    // guide Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/guide/guide01.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide01() {
+        System.out.println("EduMarineController > guide_guide01");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide01");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide02.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide02() {
+        System.out.println("EduMarineController > guide_guide02");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide02");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide03.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide03() {
+        System.out.println("EduMarineController > guide_guide03");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide03");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide04.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide04() {
+        System.out.println("EduMarineController > guide_guide04");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide04");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide05.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide05() {
+        System.out.println("EduMarineController > guide_guide05");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide05");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide06.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide06() {
+        System.out.println("EduMarineController > guide_guide06");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide06");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide07.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide07() {
+        System.out.println("EduMarineController > guide_guide07");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide07");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide08.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide08() {
+        System.out.println("EduMarineController > guide_guide08");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide08");
+        return mv;
+    }
+
+    //***************************************************************************
     // Common
     //***************************************************************************
 
@@ -409,6 +538,12 @@ public class EduMarineController {
             }
         }
         return hm;
+    }
+
+    @RequestMapping(value="/sitemap.xml", produces= {"application/xml"})
+    @ResponseBody
+    public ResponseEntity<String> sitemap (HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.ok(commService.getSystemicSiteMap());
     }
 
     /**

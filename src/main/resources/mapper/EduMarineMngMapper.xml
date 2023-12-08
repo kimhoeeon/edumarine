@@ -849,14 +849,765 @@
             )
     </insert>
 
+    <select id="selectPopupList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PopupDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPopupList */
+        SELECT seq
+             , use_yn
+             , title
+             , published_date
+             , expiration_date
+             , width_px
+             , left_px
+             , top_px
+             , align
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM popup
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "title"'>
+                AND title LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='useYn != null and useYn != "" and useYn == "Y"'>
+            AND use_yn = #{useYn}
+        </if>
+        ORDER BY published_date DESC, expiration_date DESC
+    </select>
+
+    <select id="selectPopupSingle" parameterType="com.mtf.edumarine.dto.PopupDTO" resultType="com.mtf.edumarine.dto.PopupDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPopupSingle */
+        SELECT seq
+             , use_yn
+             , title
+             , published_date
+             , expiration_date
+             , width_px
+             , left_px
+             , top_px
+             , align
+             , writer
+             , content
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM popup
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deletePopup" parameterType="com.mtf.edumarine.dto.PopupDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deletePopup */
+        DELETE FROM popup
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updatePopup" parameterType="com.mtf.edumarine.dto.PopupDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePopup */
+        UPDATE popup
+        SET use_yn = #{useYn}
+          , title = #{title}
+          , published_date = #{publishedDate}
+          , expiration_date = #{expirationDate}
+          , width_px = #{widthPx}
+          , left_px = #{leftPx}
+          , top_px = #{topPx}
+          , align = #{align}
+          , writer = #{writer}
+          , content = <![CDATA[#{content}]]>
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getPopupSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getPopupSeq */
+        SELECT CONCAT('P', LPAD(nextval('popup_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertPopup" parameterType="com.mtf.edumarine.dto.PopupDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePopup */
+        INSERT INTO popup
+        ( seq
+        , use_yn
+        , title
+        , published_date
+        , expiration_date
+        , width_px
+        , left_px
+        , top_px
+        , align
+        , writer
+        , content
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{useYn}
+            , #{title}
+            , #{publishedDate}
+            , #{expirationDate}
+            , #{widthPx}
+            , #{leftPx}
+            , #{topPx}
+            , #{align}
+            , #{writer}
+            , <![CDATA[#{content}]]>
+            , 'N'
+            , #{note}
+            , 'POPUP'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'POPUP'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="getActivePopupCount" parameterType="com.mtf.edumarine.dto.PopupDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getActivePopupCount */
+        SELECT COUNT(*)
+        FROM popup
+        WHERE 1=1
+          AND del_yn = 'N'
+          AND use_yn = #{useYn}
+          AND (published_date <![CDATA[<=]]> #{today}
+            AND expiration_date <![CDATA[>=]]> #{today})
+    </select>
+
+    <select id="selectBannerList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.BannerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectBannerList */
+        SELECT seq
+             , title
+             , view_seq
+             , writer
+             , write_date
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM banner
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "title"'>
+                AND title LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY view_seq , write_date DESC
+    </select>
+
+    <select id="selectBannerSingle" parameterType="com.mtf.edumarine.dto.BannerDTO" resultType="com.mtf.edumarine.dto.BannerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectBannerSingle */
+        SELECT seq
+             , title
+             , view_seq
+             , writer
+             , write_date
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM banner
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteBanner" parameterType="com.mtf.edumarine.dto.BannerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteBanner */
+        DELETE FROM banner
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateBanner" parameterType="com.mtf.edumarine.dto.BannerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBanner */
+        UPDATE banner
+        SET title = #{title}
+          , view_seq = #{viewSeq}
+          , writer = #{writer}
+          , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getBannerSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getBannerSeq */
+        SELECT CONCAT('B', LPAD(nextval('banner_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertBanner" parameterType="com.mtf.edumarine.dto.BannerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertBanner */
+        INSERT INTO banner
+        ( seq
+        , title
+        , view_seq
+        , writer
+        , write_date
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{title}
+            , #{viewSeq}
+            , #{writer}
+            , #{writeDate}
+            , #{fileIdList}
+            , 'N'
+            , #{note}
+            , 'BANNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BANNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectMemberList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMemberList */
+        SELECT seq
+             , id
+             , password
+             , name
+             , phone
+             , email
+             , keyword
+             , sms_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM member
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "name"'>
+                AND name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectMemberSingle" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMemberSingle */
+        SELECT seq
+             , id
+             , password
+             , name
+             , phone
+             , email
+             , keyword
+             , sms_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM member
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteMember */
+        DELETE FROM member
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateMember */
+        UPDATE member
+        SET password = <![CDATA[#{password}]]>
+          , name = #{name}
+          , phone = #{phone}
+          , email = #{email}
+          , keyword = #{keyword}
+          , sms_yn = #{smsYn}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getMemberSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getMemberSeq */
+        SELECT CONCAT('V', LPAD(nextval('member_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertMember */
+        INSERT INTO member
+        ( seq
+        , id
+        , password
+        , name
+        , phone
+        , email
+        , keyword
+        , sms_yn
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{id}
+            , <![CDATA[#{password}]]>
+            , #{name}
+            , #{phone}
+            , #{email}
+            , #{keyword}
+            , #{smsYn}
+            , 'N'
+            , #{note}
+            , 'MEMBER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'MEMBER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectRegularList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularList */
+        SELECT seq
+             , name
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , region
+             , participation_path
+             , first_application_field
+             , second_application_field
+             , desired_education_time
+             , major
+             , experience_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM regular
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "name"'>
+                AND name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectRegularSingle" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularSingle */
+        SELECT seq
+             , name
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , region
+             , participation_path
+             , first_application_field
+             , second_application_field
+             , desired_education_time
+             , major
+             , experience_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM regular
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteRegular */
+        DELETE FROM regular
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateRegular */
+        UPDATE regular
+        SET name = #{name}
+          , phone = #{phone}
+          , email = #{email}
+          , birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , region = #{region}
+          , participation_path = #{participationPath}
+          , first_application_field = #{firstApplicationField}
+          , second_application_field = #{secondApplicationField}
+          , desired_education_time = #{desiredEducationTime}
+          , major = #{major}
+          , experience_yn = #{experienceYn}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getRegularSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getRegularSeq */
+        SELECT CONCAT('U', LPAD(nextval('regular_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertRegular */
+        INSERT INTO regular
+        ( seq
+        , name
+        , phone
+        , email
+        , birth_year
+        , birth_month
+        , birth_day
+        , region
+        , participation_path
+        , first_application_field
+        , second_application_field
+        , desired_education_time
+        , major
+        , experience_yn
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{name}
+            , #{phone}
+            , #{email}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{region}
+            , #{participationPath}
+            , #{firstApplicationField}
+            , #{secondApplicationField}
+            , #{desiredEducationTime}
+            , #{major}
+            , #{experienceYn}
+            , 'N'
+            , #{note}
+            , 'REGULAR'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'REGULAR'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectInboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectInboarderList */
+        SELECT seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , clothes_size
+             , participation_path
+             , pay_yn
+             , pay_sum
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM inboarder
+        WHERE 1=1
+          AND del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "name"'>
+            AND name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+          </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectInboarderSingle" parameterType="com.mtf.edumarine.dto.InboarderDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectInboarderSingle */
+        SELECT seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , clothes_size
+             , participation_path
+             , pay_yn
+             , pay_sum
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM inboarder
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteInboarder */
+        DELETE FROM inboarder
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateInboarder */
+        UPDATE inboarder
+        SET name_ko = #{nameKo}
+          , name_en = #{nameEn}
+          , phone = #{phone}
+          , email = #{email}
+          , birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , address = <![CDATA[#{address}]]>
+          , address_detail = <![CDATA[#{addressDetail}]]>
+          , clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getInboarderSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getInboarderSeq */
+        SELECT CONCAT('I', LPAD(nextval('inboarder_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertInboarder */
+        INSERT INTO inboarder
+        ( seq
+        , name_ko
+        , name_en
+        , phone
+        , email
+        , birth_year
+        , birth_month
+        , birth_day
+        , address
+        , address_detail
+        , clothes_size
+        , participation_path
+        , pay_yn
+        , pay_sum
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{nameKo}
+            , #{nameEn}
+            , #{phone}
+            , #{email}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{address}
+            , #{addressDetail}
+            , #{clothesSize}
+            , #{participationPath}
+            , 'N'
+            , 0
+            , 'N'
+            , #{note}
+            , 'INBOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'INBOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectTrainList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainList */
+        SELECT seq
+             , gbn
+             , train_start_dttm
+             , train_end_dttm
+             , apply_start_dttm
+             , apply_end_dttm
+             , pay_sum
+             , train_cnt
+             , train_apply_cnt
+             , train_note
+             , exposure_yn
+             , schedule_exposure_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM train
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "name"'>
+                AND gbn LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY train_start_dttm desc, init_regi_dttm DESC
+    </select>
+
+    <select id="selectTrainSingle" parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainSingle */
+        SELECT seq
+             , gbn
+             , train_start_dttm
+             , train_end_dttm
+             , apply_start_dttm
+             , apply_end_dttm
+             , pay_sum
+             , train_cnt
+             , train_apply_cnt
+             , train_note
+             , exposure_yn
+             , schedule_exposure_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM train
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteTrain" parameterType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteTrain */
+        DELETE FROM train
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateTrain" parameterType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrain */
+        UPDATE train
+        SET gbn = #{gbn}
+          , train_start_dttm = <![CDATA[#{trainStartDttm}]]>
+          , train_end_dttm = <![CDATA[#{trainEndDttm}]]>
+          , apply_start_dttm = <![CDATA[#{applyStartDttm}]]>
+          , apply_end_dttm = <![CDATA[#{applyEndDttm}]]>
+          , pay_sum = #{paySum}
+          , train_cnt = #{trainCnt}
+          , train_note = <![CDATA[#{trainNote}]]>
+          , exposure_yn = #{exposureYn}
+          , schedule_exposure_yn = #{scheduleExposureYn}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getTrainSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getTrainSeq */
+        SELECT CONCAT('T', LPAD(nextval('train_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertTrain" parameterType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertTrain */
+        INSERT INTO train
+        ( seq
+        , gbn
+        , train_start_dttm
+        , train_end_dttm
+        , apply_start_dttm
+        , apply_end_dttm
+        , pay_sum
+        , train_cnt
+        , train_apply_cnt
+        , train_note
+        , exposure_yn
+        , schedule_exposure_yn
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{gbn}
+            , <![CDATA[#{trainStartDttm}]]>
+            , <![CDATA[#{trainEndDttm}]]>
+            , <![CDATA[#{applyStartDttm}]]>
+            , <![CDATA[#{applyEndDttm}]]>
+            , #{paySum}
+            , #{trainCnt}
+            , 0
+            , <![CDATA[#{trainNote}]]>
+            , #{exposureYn}
+            , #{scheduleExposureYn}
+            , 'N'
+            , #{note}
+            , 'TRAIN'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'TRAIN'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
     <select id="getFileId" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.edumarineMapper.getFileId */
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getFileId */
         SELECT CONCAT('F', LPAD(nextval('file_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <insert id="insertFileInfo" parameterType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.edumarineMapper.insertFileInfo */
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertFileInfo */
         INSERT INTO file
         ( id
         , user_id
@@ -892,7 +1643,7 @@
     </insert>
 
     <select id="selectFileUserIdList" parameterType="com.mtf.edumarine.dto.FileDTO" resultType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.edumarineMapper.selectFileUserIdList */
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFileUserIdList */
         SELECT id
              , user_id
              , full_file_path
@@ -912,7 +1663,7 @@
     </select>
 
     <update id="updateFileUseN" parameterType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.edumarineMapper.updateFileUseN */
+        /* com.mtf.edumarine.mapper.EdumarineMapper.updateFileUseN */
         UPDATE file
         SET file_yn = 'N'
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -920,7 +1671,7 @@
     </update>
 
     <update id="updateFileUserId" parameterType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.edumarineMapper.updateFileUserId */
+        /* com.mtf.edumarine.mapper.EdumarineMapper.updateFileUserId */
         UPDATE file
         SET user_id = #{userId}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
