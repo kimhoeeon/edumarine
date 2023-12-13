@@ -192,4 +192,56 @@ public interface EduMarineMngMapper {
     String getTrainSeq();
 
     Integer insertTrain(TrainDTO trainDTO);
+
+    List<PaymentDTO> selectPaymentList(SearchDTO searchDTO);
+
+    PaymentDTO selectPaymentSingle(PaymentDTO paymentDTO);
+
+    Integer deletePayment(PaymentDTO paymentDTO);
+
+    Integer updatePayment(PaymentDTO paymentDTO);
+
+    String getPaymentSeq();
+
+    String selectMemberSeq(MemberDTO memberDTO);
+
+    String selectTrainSeq(TrainDTO trainDTO);
+
+    Integer insertPayment(PaymentDTO paymentDTO);
+
+    Integer updatePayStatus(PaymentDTO paymentInfo);
+
+    List<SubscriberDTO> selectSubscriberList(SearchDTO searchDTO);
+
+    SubscriberDTO selectSubscriberSingle(SubscriberDTO subscriberDTO);
+
+    Integer deleteSubscriber(SubscriberDTO subscriberDTO);
+
+    Integer updateSubscriber(SubscriberDTO subscriberDTO);
+
+    String getSubscriberSeq();
+
+    Integer insertSubscriber(SubscriberDTO subscriberDTO);
+
+    List<SmsDTO> selectSmsList(SearchDTO searchDTO);
+
+    List<TemplateDTO> selectSmsTemplateList();
+
+    TemplateDTO selectSmsTemplateSingle(TemplateDTO templateDTO);
+
+    String getSmsTemplateSeq();
+
+    Integer insertSmsTemplate(TemplateDTO templateDTO);
+
+    Integer updateSmsTemplate(TemplateDTO templateDTO);
+
+    Integer deleteSmsTemplate(TemplateDTO templateDTO);
+
+    String getSmsSeq();
+
+    Integer insertSms(SmsDTO smsDTO);
+
+    Integer deleteSms(SmsDTO smsDTO);
+
+    SmsDTO selectSmsSingle(SmsDTO smsDTO);
 }

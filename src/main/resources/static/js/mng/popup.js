@@ -155,7 +155,7 @@ function f_pop_popup_remove(rowId){
     //console.log('삭제버튼');
     if(nullToEmpty(rowId) !== ""){
         let jsonObj = {
-            id: rowId
+            seq: rowId
         }
         Swal.fire({
             title: '선택한 팝업을 삭제하시겠습니까?',

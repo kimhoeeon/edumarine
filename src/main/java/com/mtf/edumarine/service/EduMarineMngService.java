@@ -178,4 +178,42 @@ public interface EduMarineMngService {
     ResponseDTO processUpdateTrain(TrainDTO trainDTO);
 
     ResponseDTO processInsertTrain(TrainDTO trainDTO);
+
+    List<PaymentDTO> processSelectPaymentList(SearchDTO searchDTO);
+
+    PaymentDTO processSelectPaymentSingle(PaymentDTO paymentDTO);
+
+    ResponseDTO processDeletePayment(PaymentDTO paymentDTO);
+
+    ResponseDTO processUpdatePayment(PaymentDTO paymentDTO);
+
+    ResponseDTO processInsertPayment(PaymentDTO paymentDTO);
+
+    ResponseDTO processUpdatePayStatus(List<PaymentDTO> paymentList);
+
+    List<SubscriberDTO> processSelectSubscriberList(SearchDTO searchDTO);
+
+    SubscriberDTO processSelectSubscriberSingle(SubscriberDTO subscriberDTO);
+
+    ResponseDTO processDeleteSubscriber(SubscriberDTO subscriberDTO);
+
+    ResponseDTO processUpdateSubscriber(SubscriberDTO subscriberDTO);
+
+    ResponseDTO processInsertSubscriber(SubscriberDTO subscriberDTO);
+
+    List<SmsDTO> processSelectSmsList(SearchDTO searchDTO);
+
+    List<TemplateDTO> processSelectSmsTemplateList();
+
+    TemplateDTO processSelectSmsTemplateSingle(TemplateDTO templateDTO);
+
+    ResponseDTO processSaveSmsTemplate(TemplateDTO templateDTO);
+
+    ResponseDTO processDeleteSmsTemplate(TemplateDTO templateDTO);
+
+    ResponseDTO processInsertSms(SmsDTO smsDTO);
+
+    ResponseDTO processDeleteSms(SmsDTO smsDTO);
+
+    SmsDTO processSelectSmsSingle(SmsDTO smsDTO);
 }
