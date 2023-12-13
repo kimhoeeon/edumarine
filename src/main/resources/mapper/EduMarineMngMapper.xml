@@ -1600,6 +1600,415 @@
             )
     </insert>
 
+    <select id="selectPaymentList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPaymentList */
+        SELECT p.seq
+             , p.member_seq
+             , (select m.name
+                from member m
+                where m.seq = p.member_seq) as memberName
+             , (select m.phone
+                from member m
+                where m.seq = p.member_seq) as memberPhone
+             , p.train_seq
+             , (select t.gbn
+                from train t
+                where t.seq = p.train_seq) as trainName
+             , p.pay_sum
+             , p.pay_status
+             , p.del_yn
+             , p.note
+             , p.init_regi_pic
+             , p.init_regi_dttm
+             , p.final_regi_pic
+             , p.final_regi_dttm
+        FROM payment p
+        WHERE 1=1
+        AND p.del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "name"'>
+                /*AND gbn LIKE CONCAT('%',#{searchText},'%')*/
+            </if>
+        </if>
+        ORDER BY p.init_regi_dttm DESC
+    </select>
+
+    <select id="selectPaymentSingle" parameterType="com.mtf.edumarine.dto.PaymentDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPaymentSingle */
+        SELECT p.seq
+             , p.member_seq
+             , (select m.name
+                from member m
+                where m.seq = p.member_seq) as memberName
+             , (select m.phone
+                from member m
+                where m.seq = p.member_seq) as memberPhone
+             , p.train_seq
+             , (select t.gbn
+                from train t
+                where t.seq = p.train_seq) as trainName
+             , p.pay_sum
+             , p.pay_status
+             , p.refund_reason
+             , p.del_yn
+             , p.note
+             , p.init_regi_pic
+             , p.init_regi_dttm
+             , p.final_regi_pic
+             , p.final_regi_dttm
+        FROM payment p
+        WHERE p.seq = #{seq}
+    </select>
+
+    <delete id="deletePayment" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deletePayment */
+        DELETE FROM payment
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updatePayment" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePayment */
+        UPDATE payment
+        SET pay_status = #{payStatus}
+          , refund_reason = <![CDATA[#{refundReason}]]>
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getPaymentSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getPaymentSeq */
+        SELECT CONCAT('Y', LPAD(nextval('payment_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <select id="selectMemberSeq"  parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectMemberSeq */
+        SELECT seq
+        FROM member
+        WHERE name = #{name}
+        AND phone = #{phone}
+    </select>
+
+    <select id="selectTrainSeq"  parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectTrainSeq */
+        SELECT seq
+        FROM train
+        WHERE gbn = #{gbn}
+        AND apply_start_dttm <![CDATA[<=]]> #{today}
+        AND apply_end_dttm <![CDATA[>=]]> #{today}
+    </select>
+
+    <insert id="insertPayment" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertPayment */
+        INSERT INTO payment
+        ( seq
+        , member_seq
+        , train_seq
+        , pay_sum
+        , pay_status
+        , refund_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{paySum}
+            , #{payStatus}
+            , <![CDATA[#{refundReason}]]>
+            , 'N'
+            , #{note}
+            , 'PAYMENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'PAYMENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updatePayStatus" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePayStatus */
+        UPDATE payment
+        SET pay_status = #{payStatus}
+          , refund_reason = <![CDATA[#{refundReason}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectSubscriberList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SubscriberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSubscriberList */
+        SELECT seq
+             , email
+             , name
+             , phone
+             , send_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM subscriber
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "email"'>
+                AND email LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectSubscriberSingle" parameterType="com.mtf.edumarine.dto.SubscriberDTO" resultType="com.mtf.edumarine.dto.SubscriberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSubscriberSingle */
+        SELECT seq
+             , email
+             , name
+             , phone
+             , send_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM subscriber
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteSubscriber" parameterType="com.mtf.edumarine.dto.SubscriberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteSubscriber */
+        DELETE FROM subscriber
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateSubscriber" parameterType="com.mtf.edumarine.dto.SubscriberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSubscriber */
+        UPDATE subscriber
+        SET email = <![CDATA[#{email}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getSubscriberSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getSubscriberSeq */
+        SELECT CONCAT('S', LPAD(nextval('subscriber_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSubscriber" parameterType="com.mtf.edumarine.dto.SubscriberDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSubscriber */
+        INSERT INTO subscriber
+        ( seq
+        , email
+        , name
+        , phone
+        , send_yn
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , <![CDATA[#{email}]]>
+            , #{name}
+            , #{phone}
+            , #{sendYn}
+            , 'N'
+            , #{note}
+            , 'SUBSCRIBER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'SUBSCRIBER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectSmsList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SmsDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsList */
+        SELECT seq
+             , sms_group
+             , phone
+             , sender
+             , sender_phone
+             , send_date
+             , content
+             , send_result
+             , template_seq
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sms
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "phone"'>
+                AND phone LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSingle" parameterType="com.mtf.edumarine.dto.SmsDTO" resultType="com.mtf.edumarine.dto.SmsDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSingle */
+        SELECT seq
+             , sms_group
+             , phone
+             , sender
+             , sender_phone
+             , send_date
+             , content
+             , send_result
+             , template_seq
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sms
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="getSmsSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getSmsSeq */
+        SELECT CONCAT('D', LPAD(nextval('sms_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSms" parameterType="com.mtf.edumarine.dto.SmsDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSms */
+        INSERT INTO sms
+        ( seq
+        , sms_group
+        , phone
+        , sender
+        , sender_phone
+        , send_date
+        , content
+        , send_result
+        , template_seq
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{smsGroup}
+            , #{phone}
+            , #{sender}
+            , #{senderPhone}
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , <![CDATA[#{content}]]>
+            , #{sendResult}
+            , #{templateSeq}
+            , 'N'
+            , #{note}
+            , 'SMS'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'SMS'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <delete id="deleteSms" parameterType="com.mtf.edumarine.dto.SmsDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteSms */
+        DELETE FROM sms
+        WHERE seq = #{seq}
+    </delete>
+
+    <select id="selectSmsTemplateList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.TemplateDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsTemplateList */
+        SELECT seq
+             , title
+             , content
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM template
+        WHERE 1=1
+        AND del_yn = 'N'
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsTemplateSingle" parameterType="com.mtf.edumarine.dto.TemplateDTO" resultType="com.mtf.edumarine.dto.TemplateDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsTemplateSingle */
+        SELECT seq
+             , title
+             , content
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM template
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateSmsTemplate" parameterType="com.mtf.edumarine.dto.TemplateDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSmsTemplate */
+        UPDATE template
+        SET title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getSmsTemplateSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getSmsTemplateSeq */
+        SELECT CONCAT('T', LPAD(nextval('template_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSmsTemplate" parameterType="com.mtf.edumarine.dto.TemplateDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSmsTemplate */
+        INSERT INTO template
+        ( seq
+        , title
+        , content
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , 'N'
+            , #{note}
+            , 'TEMPLATE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'TEMPLATE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <delete id="deleteSmsTemplate" parameterType="com.mtf.edumarine.dto.TemplateDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteSmsTemplate */
+        DELETE FROM template
+        WHERE seq = #{seq}
+    </delete>
+
     <select id="getFileId" resultType="java.lang.String">
         /* com.mtf.edumarine.mapper.EdumarineMapper.getFileId */
         SELECT CONCAT('F', LPAD(nextval('file_seq'), '7', '0'))

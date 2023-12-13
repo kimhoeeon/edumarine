@@ -331,7 +331,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/press.do"
+                                                                        <a href="/mng/education/payment.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">결제/환불 현황</span>
                                                                         </a>
@@ -558,7 +558,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/notice.do"
+                                                                        <a href="/mng/newsletter/subscriber.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">뉴스레터 구독자 관리</span>
                                                                         </a>
@@ -588,7 +588,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/notice.do"
+                                                                        <a href="/mng/smsMng/sms.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">SMS 발송 관리</span>
                                                                         </a>
@@ -1041,7 +1041,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/press.do">
+                                            <a class="menu-link" href="/mng/education/payment.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1247,7 +1247,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/newsletter/subscriber.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1279,7 +1279,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/smsMng/sms.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>

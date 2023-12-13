@@ -55,7 +55,7 @@ public class CommServiceImpl implements CommService {
         if(senderParam.contains("-")){
             senderParam = senderParam.replaceAll("-","");
         }
-        String receiverParam = smsDTO.getReceiver();
+        String receiverParam = smsDTO.getPhone();
         if(receiverParam.contains("-")){
             receiverParam = receiverParam.replaceAll("-","");
         }
@@ -80,14 +80,14 @@ public class CommServiceImpl implements CommService {
             /******************** 인증정보 ********************/
 
             /******************** 전송정보 ********************/
-            sms.put("msg", smsDTO.getMessage()); // 메세지 내용
+            sms.put("msg", smsDTO.getContent()); // 메세지 내용
             sms.put("receiver", receiverParam); // 수신번호
             sms.put("destination", ""/*smsDTO.getReceiver()+"|"+smsDTO.getCustomerName()*/); // 수신인 %고객명% 치환
             sms.put("sender", senderParam); // 발신번호
             sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
             sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
             sms.put("testmode_yn", ""); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
-            sms.put("title", "찾아가는 양조장"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
+            sms.put("title", "해양레저인력양성센터"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
 
             String image = "";
             //image = "/tmp/pic_57f358af08cf7_sms_.jpg"; // MMS 이미지 파일 위치
@@ -121,7 +121,6 @@ public class CommServiceImpl implements CommService {
             post.setEntity(entity);
 
             HttpResponse res = client.execute(post);
-
 
             if(res != null){
                 BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent(), encodingType));

@@ -568,6 +568,176 @@ let DTEducationTrain = function () {
     };
 }();
 
+let DTEducationPayment = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderPaySumCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2,3,6] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'memberSeq'},
+                { data: 'memberName'},
+                { data: 'memberPhone'},
+                { data: 'trainSeq'},
+                { data: 'trainName'},
+                { data: 'paySum'},
+                { data: 'payStatus'},
+                { data: 'initRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="pay_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.memberName  + ' / ' + row.trainName + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderStatusCell(data, type, row){
+        let renderHTML = '';
+        let payStatus = row.payStatus;
+        // 결제대기
+        // 결제완료
+        // 결제취소
+        // 환불신청
+        // 환불완료
+        // 환불취소
+
+        if(nvl(payStatus,'') !== ''){
+            switch (payStatus){
+                case '결제대기':
+                    renderHTML += '<div class="badge badge-light-info fw-bold">';
+                    renderHTML += '결제대기';
+                    renderHTML += '</div>';
+                    break;
+                case '결제완료':
+                    renderHTML += '<div class="badge badge-light-primary fw-bold">';
+                    renderHTML += '결제완료';
+                    renderHTML += '</div>';
+                    break;
+                case '결제취소':
+                    renderHTML += '<div class="badge badge-light-info fw-bold">';
+                    renderHTML += '결제취소';
+                    renderHTML += '</div>';
+                    break;
+                case '환불신청':
+                    renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                    renderHTML += '환불신청';
+                    renderHTML += '</div>';
+                    break;
+                case '환불완료':
+                    renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                    renderHTML += '환불완료';
+                    renderHTML += '</div>';
+                    break;
+                case '환불취소':
+                    renderHTML += '<div class="badge badge-light-info fw-bold">';
+                    renderHTML += '환불취소';
+                    renderHTML += '</div>';
+                    break;
+                default:
+                    break;
+            }
+
+        }else{
+            renderHTML = '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderPaySumCell(data, type, row){
+        let renderHTML = Number(row.paySum);
+        return '￦ ' + renderHTML.toLocaleString();
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
+        renderHTML += '<a onclick="f_education_payment_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_education_payment_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_education_payment_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_education_payment_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_education_payment_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_education_payment_search();
+        }
+    };
+}();
+
 let DTBoardNotice = function () {
     // Shared variables
     let table;
@@ -1589,6 +1759,228 @@ let DTPopBanner = function () {
     };
 }();
 
+let DTNewsletterSubscriber = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderSendYnCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'email' },
+                { data: 'sendYn' },
+                { data: 'initRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderSendYnCell(data, type, row){
+        let renderHTML = '동의';
+        let sendYn = row.sendYn;
+        if(sendYn === 'N'){
+            renderHTML = '미동의';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_newsletter_subscriber_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_newsletter_subscriber_remove(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_newsletter_subscriber_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_newsletter_subscriber_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_newsletter_subscriber_search();
+        }
+    };
+}();
+
+let DTSmsMngSms = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderContentCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderSendResultCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'smsGroup' },
+                { data: 'phone' },
+                { data: 'sender' },
+                { data: 'senderPhone' },
+                { data: 'content' },
+                { data: 'sendResult' },
+                { data: 'sendDate' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderContentCell(data, type, row){
+        let content = row.content;
+        if(nvl(content,'') !== ''){
+            if(content.length > 30){
+                content = content.substring(0, 30) + '...';
+            }
+        }else{
+            content = '-';
+        }
+        return content;
+    }
+
+    function renderSendResultCell(data, type, row){
+        let renderHTML = '';
+
+        let sendResult = row.sendResult;
+        if(sendResult === '성공'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+        }else{
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+        }
+
+        renderHTML += sendResult;
+        renderHTML += '</div>';
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_smsMng_sms_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세보기</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_smsMng_sms_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_smsMng_sms_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_smsMng_sms_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_smsMng_sms_search();
+        }
+    };
+}();
+
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
 
@@ -1605,6 +1997,8 @@ KTUtil.onDOMContentLoaded(function () {
     // 교육>교육관리
     // 교육현황
     DTEducationTrain.init(); // /mng/education/train.do
+    // 결제/환불현황
+    DTEducationPayment.init(); // /mng/education/payment.do
 
     // 정보센터>게시판관리
     // 공지사항
@@ -1629,5 +2023,13 @@ KTUtil.onDOMContentLoaded(function () {
     DTPopPopup.init(); // /mng/pop/popup.do
     // 배너관리
     DTPopBanner.init(); // /mng/pop/banner.do
+
+    // 정보센터>뉴스레터관리
+    // 뉴스레터구독자관리
+    DTNewsletterSubscriber.init(); // /mng/newsletter/subscriber.do
+
+    // 정보센터>SMS관리
+    // SMS 발송 관리
+    DTSmsMngSms.init(); // /mng/smsMng/sms.do
 
 });

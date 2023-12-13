@@ -184,7 +184,7 @@ function showMessage(selector, icon, title, msg, confirmButtonColor) {
     Swal.fire({
         icon: icon,
         title: title,
-        text: msg,
+        html: msg,
         confirmButtonColor: confirmButtonColor
     })
         .then(() => {

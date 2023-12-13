@@ -7,17 +7,17 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SmsDTO {
+public class PaymentDTO {
     Integer rownum; //연번
     String seq; //순번
-    String smsGroup; //그룹코드
-    String phone; //수신번호
-    String sender; //발신자
-    String senderPhone; //발신번호
-    String sendDate; //발송일
-    String content; //내용
-    String sendResult; //발송결과
-    String templateSeq; //템플릿SEQ
+    String memberSeq; //회원SEQ
+    String memberName; //신청자명
+    String memberPhone; //신청자연락처
+    String trainSeq; //강의SEQ
+    String trainName; //과정명
+    Integer paySum; //교육비
+    String payStatus; //결제상태
+    String refundReason; //환불사유
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -1716,6 +1717,459 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertTrain ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<PaymentDTO> processSelectPaymentList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectPaymentList");
+        return eduMarineMngMapper.selectPaymentList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public PaymentDTO processSelectPaymentSingle(PaymentDTO paymentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectPaymentSingle");
+        return eduMarineMngMapper.selectPaymentSingle(paymentDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeletePayment(PaymentDTO paymentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processDeletePayment");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(paymentDTO.getSeq() != null){
+                result = eduMarineMngMapper.deletePayment(paymentDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + paymentDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeletePayment ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdatePayment(PaymentDTO paymentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processUpdatePayment");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(paymentDTO.getSeq())){
+
+                result = eduMarineMngMapper.updatePayment(paymentDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + paymentDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdatePayment ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertPayment(PaymentDTO paymentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processInsertPayment");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getPaymentSeq();
+            paymentDTO.setSeq(getSeq);
+
+            // 신청자 SEQ 추출
+            MemberDTO memberDTO = new MemberDTO();
+            memberDTO.setName(paymentDTO.getMemberName());
+            memberDTO.setPhone(paymentDTO.getMemberPhone());
+            String memberSeq = eduMarineMngMapper.selectMemberSeq(memberDTO);
+            if(memberSeq != null && !"".equals(memberSeq)){
+                paymentDTO.setMemberSeq(memberSeq);
+
+                // 교육 SEQ 추출
+                TrainDTO trainDTO = new TrainDTO();
+                trainDTO.setGbn(paymentDTO.getTrainName());
+
+                DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+                String today = dateFormat.format(new Date());
+                trainDTO.setToday(today);
+
+                String trainSeq = eduMarineMngMapper.selectTrainSeq(trainDTO);
+
+                if(trainSeq != null && !"".equals(trainSeq)){
+                    paymentDTO.setTrainSeq(trainSeq);
+
+                    result = eduMarineMngMapper.insertPayment(paymentDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }else{
+                    resultCode = "-2";
+                    resultMessage = "[등록 실패] 선택하신 교육과정은 등록되지 않았거나 금일이 접수일정에 포함되지 않는 교육과정입니다.";
+                }
+
+            }else{
+                resultCode = "-2";
+                resultMessage = "[등록 실패] 입력하신 신청자 정보는 등록되지 않은 회원입니다.";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertPayment ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdatePayStatus(List<PaymentDTO> paymentList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdatePayStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(PaymentDTO paymentInfo : paymentList){
+                if(!StringUtil.isEmpty(paymentInfo.getSeq())){
+
+                    result = eduMarineMngMapper.updatePayStatus(paymentInfo);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + paymentInfo.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdatePayStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<SubscriberDTO> processSelectSubscriberList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectSubscriberList");
+        return eduMarineMngMapper.selectSubscriberList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public SubscriberDTO processSelectSubscriberSingle(SubscriberDTO subscriberDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectSubscriberSingle");
+        return eduMarineMngMapper.selectSubscriberSingle(subscriberDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteSubscriber(SubscriberDTO subscriberDTO) {
+        System.out.println("EduMarineMngServiceImpl > processDeleteSubscriber");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(subscriberDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteSubscriber(subscriberDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + subscriberDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteSubscriber ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateSubscriber(SubscriberDTO subscriberDTO) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateSubscriber");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(subscriberDTO.getSeq())){
+
+                result = eduMarineMngMapper.updateSubscriber(subscriberDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + subscriberDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateSubscriber ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertSubscriber(SubscriberDTO subscriberDTO) {
+        System.out.println("EduMarineMngServiceImpl > processInsertSubscriber");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getSubscriberSeq();
+            subscriberDTO.setSeq(getSeq);
+
+            result = eduMarineMngMapper.insertSubscriber(subscriberDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertSubscriber ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<SmsDTO> processSelectSmsList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectSmsList");
+        return eduMarineMngMapper.selectSmsList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public SmsDTO processSelectSmsSingle(SmsDTO smsDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectSmsSingle");
+        return eduMarineMngMapper.selectSmsSingle(smsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertSms(SmsDTO smsDTO) {
+        System.out.println("EduMarineMngServiceImpl > processInsertSms");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getSmsSeq();
+            smsDTO.setSeq(getSeq);
+
+            result = eduMarineMngMapper.insertSms(smsDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertSms ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteSms(SmsDTO smsDTO) {
+        System.out.println("EduMarineMngServiceImpl > processDeleteSms");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(smsDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteSms(smsDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + smsDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteSms ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<TemplateDTO> processSelectSmsTemplateList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectSmsTemplateList");
+        return eduMarineMngMapper.selectSmsTemplateList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public TemplateDTO processSelectSmsTemplateSingle(TemplateDTO templateDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectSmsTemplateSingle");
+        return eduMarineMngMapper.selectSmsTemplateSingle(templateDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processSaveSmsTemplate(TemplateDTO templateDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSaveSmsTemplate");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(templateDTO.getSeq())){
+
+                if("신규등록".equals(templateDTO.getSeq())){
+                    String getSeq = eduMarineMngMapper.getSmsTemplateSeq();
+                    templateDTO.setSeq(getSeq);
+
+                    result = eduMarineMngMapper.insertSmsTemplate(templateDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }else{
+
+                    result = eduMarineMngMapper.updateSmsTemplate(templateDTO);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + templateDTO.getSeq();
+                    }
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processSaveSmsTemplate ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteSmsTemplate(TemplateDTO templateDTO) {
+        System.out.println("EduMarineMngServiceImpl > processDeleteSmsTemplate");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(templateDTO.getSeq() != null){
+                result = eduMarineMngMapper.deleteSmsTemplate(templateDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + templateDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteSmsTemplate ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 

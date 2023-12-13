@@ -137,7 +137,7 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_member">회원 관리</a>
                                                     </li>
@@ -274,7 +274,7 @@ if (document.documentElement) {
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                     data-kt-menu-placement="bottom-start" class="menu-item here">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">교육</span>
@@ -290,7 +290,7 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_education">교육 관리</a>
                                                     </li>
@@ -324,7 +324,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/education/payment.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">결제/환불 현황</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -350,7 +350,7 @@ if (document.documentElement) {
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item here">
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">정보센터</span>
@@ -398,7 +398,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-400px" id="kt_app_header_menu_pages_board">
+                                                <div class="tab-pane w-lg-400px active" id="kt_app_header_menu_pages_board">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -411,7 +411,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/notice.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">공지사항</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -1001,7 +1001,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1033,7 +1033,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/education/payment.do">
+                                            <a class="menu-link active" href="/mng/education/payment.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1056,7 +1056,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1074,7 +1074,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/board/notice.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1368,7 +1368,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        공지사항</h1>
+                                        결제/환불 현황</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1383,7 +1383,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">정보센터</li>
+                                        <li class="breadcrumb-item text-muted">교육</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1391,7 +1391,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">게시판 관리</li>
+                                        <li class="breadcrumb-item text-muted">교육 관리</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1399,7 +1399,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">공지사항</li>
+                                        <li class="breadcrumb-item text-muted">결제/환불 현황</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1427,7 +1427,7 @@ if (document.documentElement) {
                                 <div class="card mb-5 mb-xl-10">
                                     <!--begin::form-->
                                     <form id="dataForm" method="post" onsubmit="return false;">
-                                        <%--공지사항 ID 값--%>
+                                        <%-- SEQ 값--%>
                                         <input type="hidden" id="userSeq" name="seq" value="${info.seq}">
                                         <!--begin::Card header-->
                                         <div class="card-header border-0">
@@ -1440,143 +1440,100 @@ if (document.documentElement) {
                                         <!--end::Card header-->
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
+
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">언어</label>
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">신청자 성명</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <!--begin::Select2-->
-                                                    <select id="lang" name="lang" class="form-select form-select-solid" data-control="select2" aria-label="- 언어 -" data-placeholder="- 언어 -" data-hide-search="true">
-                                                        <option></option>
-                                                        <option disabled>- 언어 -</option>
-                                                        <c:if test="${info ne null}">
-                                                            <option value="KO" <c:if test="${info.lang eq 'KO'}">selected</c:if> >국문</option>
-                                                            <option value="EN" <c:if test="${info.lang eq 'EN'}">selected</c:if> >영문</option>
-                                                        </c:if>
-                                                        <c:if test="${info eq null}">
-                                                            <option value="KO" selected>국문</option>
-                                                            <option value="EN">영문</option>
-                                                        </c:if>
+                                                    <input class="form-control form-control-solid" id="memberName" name="memberName" placeholder="신청자 성명" value="${info.memberName}" <c:if test="${info ne null}">readonly</c:if>/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">신청자 연락처</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input class="form-control form-control-solid onlyTel" id="memberPhone" name="memberPhone" placeholder="신청자 연락처" value="${info.memberPhone}" <c:if test="${info ne null}">readonly</c:if>/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육과정명</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <select id="trainName" name="trainName" class="form-select form-control-solid-bg" <c:if test="${info ne null}">disabled</c:if>>
+                                                        <option value="해상엔진 테크니션 (선내기·선외기)" <c:if test="${info.trainName eq '해상엔진 테크니션 (선내기·선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기·선외기)</option>
+                                                        <option value="마리나선박 정비사 실기교육" <c:if test="${info.trainName eq '마리나선박 정비사 실기교육'}">selected</c:if> >마리나선박 정비사 실기교육</option>
+                                                        <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.trainName eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
+                                                        <option value="위탁교육" <c:if test="${info.trainName eq '위탁교육'}">selected</c:if> >위탁교육</option>
+                                                        <option value="해상엔진 자가정비 (선외기)" <c:if test="${info.trainName eq '해상엔진 자가정비 (선외기)'}">selected</c:if> >해상엔진 자가정비 (선외기)</option>
+                                                        <option value="해상엔진 자가정비 (선내기)" <c:if test="${info.trainName eq '해상엔진 자가정비 (선내기)'}">selected</c:if> >해상엔진 자가정비 (선내기)</option>
+                                                        <option value="해상엔진 자가정비 (세일요트)" <c:if test="${info.trainName eq '해상엔진 자가정비 (세일요트)'}">selected</c:if> >해상엔진 자가정비 (세일요트)</option>
                                                     </select>
-                                                    <!--end::Select2-->
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">제목</label>
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육비</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목" value="${info.title}"/>
+                                                    <input type="text" id="paySum" name="paySum" class="form-control form-control-lg form-control-solid-bg onlyNum" placeholder="교육비" value="${info.paySum}" <c:if test="${info ne null}">readonly</c:if>/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성자</label>
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">결제상태</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input type="text" id="writer" name="writer" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자" value="${info.writer eq null ? '관리자' : info.writer}"/>
+                                                    <select id="payStatus" name="payStatus" class="form-select form-control-solid-bg">
+                                                        <option value="결제대기" <c:if test="${info.payStatus eq '결제대기'}">selected</c:if> >결제대기</option>
+                                                        <option value="결제완료" <c:if test="${info.payStatus eq '결제완료'}">selected</c:if> >결제완료</option>
+                                                        <option value="결제취소" <c:if test="${info.payStatus eq '결제취소'}">selected</c:if> >결제취소</option>
+                                                        <option value="환불신청" <c:if test="${info.payStatus eq '환불신청'}">selected</c:if> >환불신청</option>
+                                                        <option value="환불완료" <c:if test="${info.payStatus eq '환불완료'}">selected</c:if> >환불완료</option>
+                                                        <option value="환불취소" <c:if test="${info.payStatus eq '환불취소'}">selected</c:if> >환불취소</option>
+                                                    </select>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성일</label>
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">환불사유</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
+                                                    <textarea id="refundReason" name="refundReason" class="form-control form-control-solid-bg resize-none h-200px" placeholder="환불사유">${info.refundReason}</textarea>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">중요 공지사항 설정</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex flex-wrap">
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="noticeGbn" name="noticeGbn"
-                                                               <c:if test="${info.noticeGbn eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary"
-                                                               for="noticeGbn">
-                                                            중요 공지사항
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6 h-375px">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <div id="quill_editor_content" class="h-325px">${info.content}</div>
-                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true"/>">
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <!--begin::Excel import-->
-                                                    <a href="" class="btn btn-primary btn-active-light-primary ms-auto" data-bs-toggle="modal" data-bs-target="#kt_modal_file_upload">
-                                                        <i class="ki-duotone ki-exit-up fs-2">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                        </i>첨부파일 업로드</a>
-                                                    <!--end::Excel import-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일 목록</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <ul id="uploadFileList">
-                                                        <c:forEach var="file" items="${fileList}">
-                                                            <li class="mb-4">
-                                                                <a href="/file/download.do?path=board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
-                                                                <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
-                                                                <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
-                                                                    <i class="ki-duotone ki-abstract-11">
-                                                                        <i class="path1"></i>
-                                                                        <i class="path2"></i>
-                                                                    </i>
-                                                                </button>
-                                                            </li>
-                                                        </c:forEach>
-                                                    </ul>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
+
                                         </div>
                                         <!--end::Card body-->
                                     </form>
@@ -1588,11 +1545,11 @@ if (document.documentElement) {
                                     <!--begin::Actions-->
                                     <div class="card-footer d-flex justify-content-between py-6 px-9">
                                         <div>
-                                            <a href="/mng/board/notice.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
+                                            <a href="/mng/education/payment.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>
                                         <div>
-                                            <button type="button" onclick="f_board_notice_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_board_notice_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
+                                            <button type="button" onclick="f_education_payment_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
+                                            <button type="button" onclick="f_education_payment_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
                                         </div>
                                     </div>
                                     <!--end::Actions-->
@@ -1628,89 +1585,6 @@ if (document.documentElement) {
     </div>
     <!--end::App-->
 
-    <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="kt_modal_file_upload" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">첨부파일 업로드</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="modalClose('attachFile')" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <!--begin::form-->
-                    <form id="modal_file_upload_form" method="post" onsubmit="return false;">
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">File</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8">
-                                <!--begin::Row-->
-                                <div class="row">
-                                    <!--begin::Col-->
-                                    <div class="col-lg-8 d-inline-block">
-                                        <input type="text" name="attachFile" class="form-control form-control-lg form-control-solid-bg upload_name" placeholder="파일명.확장자" disabled/>
-                                    </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-3 d-inline-block ms-3">
-                                        <input type="file" id="attachFileInput" name="file" class="d-none upload_hidden">
-                                        <label class="btn btn-primary" for="attachFileInput">파일선택</label>
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Row-->
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                    </form>
-                    <!--end::form-->
-                    <!--begin::Menu separator-->
-                    <div class="separator my-6"></div>
-                    <!--end::Menu separator-->
-                    <!--begin::Col-->
-                    <div class="col-lg-12 d-flex justify-content-center">
-                        <!--begin::Col-->
-                        <div>
-                            <!--begin::Cancel-->
-                            <a onclick="modalClose('attachFile')" class="btn btn-danger" data-bs-dismiss="modal">취소</a>
-                            <!--end::Cancel-->
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
-                        <div class="ms-10">
-                            <!--begin::File upload-->
-                            <a onclick="f_attach_file_upload('${info.seq}','modal_file_upload_form','board/notice')" class="btn btn-primary">업로드</a>
-                            <!--end::File upload-->
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 수정이력-->
-
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up">
@@ -1732,7 +1606,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
     <script src="<%request.getContextPath();%>/static/assets/js/widgets.bundle.js"></script>
     <script src="<%request.getContextPath();%>/static/assets/js/custom/widgets.js"></script>
     <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/chat/chat.js"></script>
@@ -1743,7 +1616,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/notice.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/payment.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->

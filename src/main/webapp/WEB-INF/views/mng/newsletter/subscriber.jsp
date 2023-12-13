@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -49,7 +48,9 @@
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
-      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
+      data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on"
+      class="app-default">
 <!--begin::Theme mode setup on page load-->
 <script>var defaultThemeMode = "light";
 var themeMode;
@@ -79,6 +80,13 @@ if (document.documentElement) {
 </c:if>
 
 <c:if test="${status eq 'logon'}">
+
+    <!--begin::Page loading(append to body)-->
+    <div class="page-loader flex-column bg-dark bg-opacity-25">
+        <span class="spinner-border text-primary" role="status"></span>
+        <span class="text-gray-800 fs-6 fw-semibold mt-5">Loading...</span>
+    </div>
+    <!--end::Page loading-->
 
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -366,7 +374,7 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_board">게시판 관리</a>
                                                     </li>
@@ -380,7 +388,7 @@ if (document.documentElement) {
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_news">뉴스레터 관리</a>
                                                     </li>
@@ -398,7 +406,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-400px" id="kt_app_header_menu_pages_board">
+                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_board">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -411,7 +419,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/notice.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">공지사항</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -538,7 +546,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_news">
+                                                <div class="tab-pane w-lg-400px active" id="kt_app_header_menu_pages_news">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -551,7 +559,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/newsletter/subscriber.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">뉴스레터 구독자 관리</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -1056,7 +1064,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1074,7 +1082,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/board/notice.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1219,7 +1227,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1239,7 +1247,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/newsletter/subscriber.do">
+                                            <a class="menu-link active" href="/mng/newsletter/subscriber.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1368,7 +1376,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        공지사항</h1>
+                                        뉴스레터 구독자 관리</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1391,7 +1399,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">게시판 관리</li>
+                                        <li class="breadcrumb-item text-muted">뉴스레터 관리</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1399,7 +1407,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">공지사항</li>
+                                        <li class="breadcrumb-item text-muted">뉴스레터 구독자 관리</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1407,14 +1415,19 @@ if (document.documentElement) {
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                                    <!--begin::Filter menu-->
-                                    <!--end::Filter menu-->
-                                    <!--begin::Secondary button-->
-                                    <!--end::Secondary button-->
-                                    <!--begin::Primary button-->
-                                    <!--end::Primary button-->
+                                    <!--begin::Export dropdown-->
+                                    <button type="button" onclick="f_excel_export('mng_newsletter_subscriber_table', '뉴스레터_구독자')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Export as Excel</button>
+                                    <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
+
+                                <!--begin::Hide default export buttons-->
+                                <div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>
+                                <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
                         </div>
@@ -1423,188 +1436,92 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-full">
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
-                                    <!--begin::form-->
-                                    <form id="dataForm" method="post" onsubmit="return false;">
-                                        <%--공지사항 ID 값--%>
-                                        <input type="hidden" id="userSeq" name="seq" value="${info.seq}">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0">
-                                            <!--begin::Card title-->
-                                            <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">상세 정보</h3>
+                                <!--begin::Products-->
+                                <div class="card card-flush">
+                                    <!--begin::Card header-->
+                                    <div class="card-header align-items-center py-5 gap-2">
+                                        <!--begin::Card title-->
+                                        <div class="card-title w-100">
+                                            <%--begin::검색구분--%>
+                                            <div class="w-100 mw-150px">
+                                                <!--begin::Select2-->
+                                                <select id="search_box" class="form-select form-select-solid" data-control="select2"
+                                                        aria-label="- 언어 -" data-placeholder="- 언어 -"
+                                                        data-allow-clear="true" data-hide-search="true" onchange="f_newsletter_subscriber_search()">
+                                                    <option></option>
+                                                    <option disabled>- 언어 -</option>
+                                                    <option value="" selected>전체</option>
+                                                    <option value="KO">국문</option>
+                                                    <option value="EN">영문</option>
+                                                </select>
+                                                <!--end::Select2-->
                                             </div>
-                                            <!--end::Card title-->
+                                            <%--end::검색구분--%>
+                                            <!--begin::Search-->
+                                            <div class="d-flex align-items-center position-relative my-1 ml15 mr15">
+                                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="글 제목 입력"/>
+                                            </div>
+                                            <!--end::Search-->
+                                            <!--begin:Action-->
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" onclick="f_newsletter_subscriber_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_newsletter_subscriber_search_condition_init()" class="btn btn-secondary me-5">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화</button>
+                                            </div>
+                                            <!--end:Action-->
+                                            <div class="ms-auto">
+                                                <!--begin::button-->
+                                                <a href="javascript:void(0);" onclick="f_newsletter_subscriber_modify_init_set('');" class="btn btn-primary ms-auto">등록</a>
+                                                <!--end::button-->
+                                            </div>
                                         </div>
-                                        <!--end::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">언어</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <!--begin::Select2-->
-                                                    <select id="lang" name="lang" class="form-select form-select-solid" data-control="select2" aria-label="- 언어 -" data-placeholder="- 언어 -" data-hide-search="true">
-                                                        <option></option>
-                                                        <option disabled>- 언어 -</option>
-                                                        <c:if test="${info ne null}">
-                                                            <option value="KO" <c:if test="${info.lang eq 'KO'}">selected</c:if> >국문</option>
-                                                            <option value="EN" <c:if test="${info.lang eq 'EN'}">selected</c:if> >영문</option>
-                                                        </c:if>
-                                                        <c:if test="${info eq null}">
-                                                            <option value="KO" selected>국문</option>
-                                                            <option value="EN">영문</option>
-                                                        </c:if>
-                                                    </select>
-                                                    <!--end::Select2-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">제목</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목" value="${info.title}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성자</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="writer" name="writer" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자" value="${info.writer eq null ? '관리자' : info.writer}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">중요 공지사항 설정</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex flex-wrap">
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="noticeGbn" name="noticeGbn"
-                                                               <c:if test="${info.noticeGbn eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary"
-                                                               for="noticeGbn">
-                                                            중요 공지사항
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6 h-375px">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <div id="quill_editor_content" class="h-325px">${info.content}</div>
-                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true"/>">
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <!--begin::Excel import-->
-                                                    <a href="" class="btn btn-primary btn-active-light-primary ms-auto" data-bs-toggle="modal" data-bs-target="#kt_modal_file_upload">
-                                                        <i class="ki-duotone ki-exit-up fs-2">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                        </i>첨부파일 업로드</a>
-                                                    <!--end::Excel import-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일 목록</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <ul id="uploadFileList">
-                                                        <c:forEach var="file" items="${fileList}">
-                                                            <li class="mb-4">
-                                                                <a href="/file/download.do?path=board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
-                                                                <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
-                                                                <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
-                                                                    <i class="ki-duotone ki-abstract-11">
-                                                                        <i class="path1"></i>
-                                                                        <i class="path2"></i>
-                                                                    </i>
-                                                                </button>
-                                                            </li>
-                                                        </c:forEach>
-                                                    </ul>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <!--end::Card body-->
-                                    </form>
-                                    <!--end::form-->
-                                </div>
-                                <!--end::Basic info-->
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
-                                    <!--begin::Actions-->
-                                    <div class="card-footer d-flex justify-content-between py-6 px-9">
-                                        <div>
-                                            <a href="/mng/board/notice.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
-                                        </div>
-                                        <div>
-                                            <button type="button" onclick="f_board_notice_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_board_notice_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
-                                        </div>
+                                        <!--end::Card title-->
                                     </div>
-                                    <!--end::Actions-->
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-0">
+                                        <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
+                                        <!--begin::Table-->
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_newsletter_subscriber_table">
+                                            <thead>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th class="text-center min-w-50px">번호</th>
+                                                    <th>SEQ</th>
+                                                    <th class="text-center min-w-150px">이메일</th>
+                                                    <th class="text-center max-w-75px">수신허용여부</th>
+                                                    <th class="text-center min-w-150px">등록일시</th>
+                                                    <th class="text-center min-w-100px">기능</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-gray-600">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--end::Table-->
+                                    </div>
+                                    <!--end::Card body-->
                                 </div>
-                                <!--end::Basic info-->
+                                <!--end::Products-->
                             </div>
                             <!--end::Content container-->
                         </div>
                         <!--end::Content-->
                     </div>
                     <!--end::Content wrapper-->
-
                     <!--begin::Footer-->
                     <div id="kt_app_footer" class="app-footer">
                         <!--begin::Footer container-->
@@ -1628,89 +1545,6 @@ if (document.documentElement) {
     </div>
     <!--end::App-->
 
-    <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="kt_modal_file_upload" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">첨부파일 업로드</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="modalClose('attachFile')" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <!--begin::form-->
-                    <form id="modal_file_upload_form" method="post" onsubmit="return false;">
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">File</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8">
-                                <!--begin::Row-->
-                                <div class="row">
-                                    <!--begin::Col-->
-                                    <div class="col-lg-8 d-inline-block">
-                                        <input type="text" name="attachFile" class="form-control form-control-lg form-control-solid-bg upload_name" placeholder="파일명.확장자" disabled/>
-                                    </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-3 d-inline-block ms-3">
-                                        <input type="file" id="attachFileInput" name="file" class="d-none upload_hidden">
-                                        <label class="btn btn-primary" for="attachFileInput">파일선택</label>
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Row-->
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                    </form>
-                    <!--end::form-->
-                    <!--begin::Menu separator-->
-                    <div class="separator my-6"></div>
-                    <!--end::Menu separator-->
-                    <!--begin::Col-->
-                    <div class="col-lg-12 d-flex justify-content-center">
-                        <!--begin::Col-->
-                        <div>
-                            <!--begin::Cancel-->
-                            <a onclick="modalClose('attachFile')" class="btn btn-danger" data-bs-dismiss="modal">취소</a>
-                            <!--end::Cancel-->
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
-                        <div class="ms-10">
-                            <!--begin::File upload-->
-                            <a onclick="f_attach_file_upload('${info.seq}','modal_file_upload_form','board/notice')" class="btn btn-primary">업로드</a>
-                            <!--end::File upload-->
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 수정이력-->
-
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up">
@@ -1732,7 +1566,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
     <script src="<%request.getContextPath();%>/static/assets/js/widgets.bundle.js"></script>
     <script src="<%request.getContextPath();%>/static/assets/js/custom/widgets.js"></script>
     <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/chat/chat.js"></script>
@@ -1742,8 +1575,18 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/notice.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/subscriber.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+    <script>
+        document.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                f_newsletter_subscriber_search();
+            }
+        });
+    </script>
+
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
