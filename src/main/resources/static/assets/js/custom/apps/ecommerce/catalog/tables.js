@@ -20,7 +20,7 @@ let DTCustomerMember = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 4,
+                    'targets': 6,
                     'render': function (data) {
                         if (data === '1') {
                             return 'O'
@@ -30,7 +30,7 @@ let DTCustomerMember = function () {
                     }
                 },
                 {
-                    'targets': 6,
+                    'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -39,8 +39,10 @@ let DTCustomerMember = function () {
             columns: [
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'grade'},
                 { data: 'id'},
                 { data: 'name'},
+                { data: 'phone'},
                 { data: 'smsYn'},
                 { data: 'initRegiDttm' },
                 { data: 'actions' }
@@ -365,27 +367,27 @@ let DTEducationTrain = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 3,
+                    'targets': 4,
                     'render': function (data, type, row) { return renderTrainScheduleCell(data, type, row); }
                 },
                 {
-                    'targets': 4,
+                    'targets': 5,
                     'render': function (data, type, row) { return renderApplyScheduleCell(data, type, row); }
                 },
                 {
-                    'targets': 5,
+                    'targets': 6,
                     'render': function (data, type, row) { return renderPaySumCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderTrainCntCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderStatusCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -395,6 +397,7 @@ let DTEducationTrain = function () {
                 { data: 'rownum' },
                 { data: 'seq'},
                 { data: 'gbn'},
+                { data: 'nextTime'},
                 { data: 'trainSchedule'},
                 { data: 'applySchedule'},
                 { data: 'paySum'},
@@ -1981,6 +1984,170 @@ let DTSmsMngSms = function () {
     };
 }();
 
+let DTFileDownload = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderTargetMenuCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'downloadFileName' },
+                { data: 'targetMenu' },
+                { data: 'initRegiDttm' },
+            ]
+        });
+    }
+
+    function renderTargetMenuCell(data, type, row){
+        return row.targetMenu.replaceAll('_', ' > ');
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_file_download_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_file_download_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_file_download_search();
+        }
+    };
+}();
+
+let DTFileTrash = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderTargetMenuCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'targetMenu' },
+                { data: 'deleteReason' },
+                { data: 'initRegiDttm' },
+                { data: 'actions' },
+            ]
+        });
+    }
+
+    function renderTargetMenuCell(data, type, row){
+        return row.targetMenu.replaceAll('_', ' > ');
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_file_trash_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_file_trash_restore(' + '\'' + seq + '\'' + ')" class="menu-link px-3">복구</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_file_trash_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">최종삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_file_trash_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_file_trash_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_file_trash_search();
+        }
+    };
+}();
+
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
 
@@ -2031,5 +2198,11 @@ KTUtil.onDOMContentLoaded(function () {
     // 정보센터>SMS관리
     // SMS 발송 관리
     DTSmsMngSms.init(); // /mng/smsMng/sms.do
+
+    // 파일>파일관리
+    // 다운로드 내역
+    DTFileDownload.init(); // /mng/file/download.do
+    // 임시휴지통
+    DTFileTrash.init(); // /mng/file/trash.do
 
 });

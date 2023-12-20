@@ -138,7 +138,38 @@ function f_board_community_detail_modal_set(seq){
 function f_board_community_remove(seq){
     //console.log('삭제버튼');
     if(nullToEmpty(seq) !== ""){
-        let jsonObj = {
+
+        Swal.fire({
+            title: "[삭제 사유]",
+            text: "사유 입력 후 삭제하기 버튼 클릭 시 데이터는 파일관리>임시휴지통 으로 이동됩니다.",
+            input: 'text',
+            inputPlaceholder: '삭제 사유를 입력해주세요.',
+            width: '70em',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '삭제하기',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.value) {
+
+                let jsonObj = {
+                    targetSeq: seq,
+                    targetTable: 'community',
+                    deleteReason: result.value,
+                    targetMenu: getTargetMenu('mng_board_community_table'),
+                    delYn: 'Y'
+                }
+                f_mng_trash_remove(jsonObj);
+
+                f_board_community_search(); // 재조회
+
+            }else{
+                alert('삭제 사유를 입력해주세요.');
+            }
+        });
+
+        /*let jsonObj = {
             seq: seq
         }
         Swal.fire({
@@ -161,7 +192,7 @@ function f_board_community_remove(seq){
                     showMessage('', 'error', '에러 발생', '커뮤니티 글 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }
             }
-        });
+        });*/
     }
 }
 

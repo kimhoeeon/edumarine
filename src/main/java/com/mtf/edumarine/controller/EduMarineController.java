@@ -1,8 +1,7 @@
 package com.mtf.edumarine.controller;
 
 import com.mtf.edumarine.constants.CommConstants;
-import com.mtf.edumarine.dto.PopupDTO;
-import com.mtf.edumarine.dto.ResponseDTO;
+import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineService;
 import org.json.simple.JSONObject;
@@ -10,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.lang.reflect.Member;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -75,6 +76,42 @@ public class EduMarineController {
         List<PopupDTO> popupList = eduMarineService.processSelectPopupList(popupDTO);
         mv.addObject("popupList", popupList);
 
+        /* 배너 */
+        BannerDTO bannerDTO = new BannerDTO();
+        List<BannerDTO> bannerList = eduMarineService.processSelectBannerList(bannerDTO);
+        List<FileDTO> bannerFileList = new ArrayList<>();
+        if(bannerList != null){
+            for(int i=0; i<bannerList.size(); i++){
+                String fileIdList = bannerList.get(i).getFileIdList();
+                if(fileIdList != null){
+                    String[] fileIdSplit = bannerList.get(i).getFileIdList().split(",");
+                    for(int j=0; j<fileIdSplit.length; j++){
+                        FileDTO fileReq = new FileDTO();
+                        fileReq.setId(fileIdSplit[j]);
+                        FileDTO fileDTO = eduMarineService.processSelectFileIdSingle(fileReq);
+                        bannerFileList.add(fileDTO);
+                    }
+                }
+            }
+        }
+        mv.addObject("bannerList", bannerFileList);
+
+        /* 교육과정 */
+        TrainDTO trainDTO = new TrainDTO();
+        trainDTO.setGbn("해상엔진 테크니션");
+        List<TrainDTO> trainList = eduMarineService.processSelectTrainList(trainDTO);
+        mv.addObject("trainList", trainList);
+
+        /* 공지사항 */
+        NoticeDTO noticeDTO = new NoticeDTO();
+        List<NoticeDTO> noticeList = eduMarineService.processSelectNoticeList(noticeDTO);
+        mv.addObject("noticeList", noticeList);
+
+        /* 보도자료 */
+        PressDTO pressDTO = new PressDTO();
+        List<PressDTO> pressList = eduMarineService.processSelectPressList(pressDTO);
+        mv.addObject("pressList", pressList);
+
         mv.setViewName("main");
         return mv;
     }
@@ -107,6 +144,19 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/member/login/submit.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> member_login_submit(@RequestBody MemberDTO memberDTO, HttpSession session) {
+        System.out.println("EduMarineController > member_login_submit");
+        //System.out.println(searchDTO.toString());
+        ResponseDTO response = eduMarineService.processCheckMemberSingle(memberDTO);
+        if(response.getResultCode().equals("0")){
+            session.setAttribute("status", "logon");
+            session.setAttribute("id", memberDTO.getId());
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/member/findpw.do", method = RequestMethod.GET)
     public ModelAndView member_findpw() {
         System.out.println("EduMarineController > member_findpw");
@@ -115,12 +165,56 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/member/getEmail.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> member_getEmail(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineController > member_getEmail");
+        String result = eduMarineService.getMemberEmail(memberDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/initPassword.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> member_initPassword(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineController > member_initPassword");
+        ResponseDTO response = eduMarineService.initMemberPassword(memberDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/member/join.do", method = RequestMethod.GET)
     public ModelAndView member_join() {
         System.out.println("EduMarineController > member_join");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/join");
         return mv;
+    }
+
+    @RequestMapping(value = "/member/join/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> member_join_insert(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineController > member_join_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertMember(memberDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/complete.do", method = RequestMethod.GET)
+    public ModelAndView member_complete() {
+        System.out.println("EduMarineController > member_complete");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/member/complete");
+        return mv;
+    }
+
+    @RequestMapping(value = "/checkDuplicateId.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> checkDuplicateId(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineController > checkDuplicateId");
+        //System.out.println(searchDTO.toString());
+        Integer result = eduMarineService.checkDuplicateId(memberDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     //***************************************************************************
@@ -143,11 +237,43 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/apply/eduApply02.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply02() {
+        System.out.println("EduMarineController > apply_eduApply02");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/apply/eduApply02");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply03.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply03() {
+        System.out.println("EduMarineController > apply_eduApply03");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/apply/eduApply03");
+        return mv;
+    }
+
     @RequestMapping(value = "/apply/eduApply04.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply04() {
         System.out.println("EduMarineController > apply_eduApply04");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/apply/eduApply04");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply05.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply05() {
+        System.out.println("EduMarineController > apply_eduApply05");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/apply/eduApply05");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply06.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply06() {
+        System.out.println("EduMarineController > apply_eduApply06");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/apply/eduApply06");
         return mv;
     }
 
@@ -163,10 +289,38 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/board/notice/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<NoticeDTO>> board_notice_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineController > board_notice_selectList");
+
+        List<NoticeDTO> responseList = eduMarineService.processSelectBoardNoticeList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/board/notice_view.do", method = RequestMethod.GET)
-    public ModelAndView board_notice_view() {
+    public ModelAndView board_notice_view(String seq) {
         System.out.println("EduMarineController > board_notice_view");
         ModelAndView mv = new ModelAndView();
+
+        /* 조회 카운트 Update */
+        eduMarineService.processUpdateBoardNoticeViewCnt(seq);
+
+        /* 데이터 조회 후 Set */
+        NoticeDTO noticeInfo = eduMarineService.processSelectBoardNoticeSingle(seq);
+
+        if(noticeInfo != null){
+
+            mv.addObject("noticeInfo", noticeInfo);
+
+            /* 첨부파일 정보 Set */
+            List<FileDTO> fileList = eduMarineService.processSelectFileList(noticeInfo.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                mv.addObject("fileList", fileList);
+            }
+        }
+
         mv.setViewName("/board/notice_view");
         return mv;
     }
@@ -179,10 +333,38 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/board/press/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<PressDTO>> board_press_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineController > board_press_selectList");
+
+        List<PressDTO> responseList = eduMarineService.processSelectBoardPressList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/board/press_view.do", method = RequestMethod.GET)
-    public ModelAndView board_press_view() {
+    public ModelAndView board_press_view(String seq) {
         System.out.println("EduMarineController > board_press_view");
         ModelAndView mv = new ModelAndView();
+
+        /* 조회 카운트 Update */
+        eduMarineService.processUpdateBoardPressViewCnt(seq);
+
+        /* 데이터 조회 후 Set */
+        PressDTO pressInfo = eduMarineService.processSelectBoardPressSingle(seq);
+
+        if(pressInfo != null){
+
+            mv.addObject("pressInfo", pressInfo);
+
+            /* 첨부파일 정보 Set */
+            List<FileDTO> fileList = eduMarineService.processSelectFileList(pressInfo.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                mv.addObject("fileList", fileList);
+            }
+        }
+
         mv.setViewName("/board/press_view");
         return mv;
     }
@@ -195,12 +377,41 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/board/gallery/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<GalleryDTO>> board_gallery_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineController > board_gallery_selectList");
+
+        List<GalleryDTO> responseList = eduMarineService.processSelectBoardGalleryList(searchDTO);
+
+        for(GalleryDTO response : responseList){
+            List<String> fullFilePathList = new ArrayList<>();
+            List<FileDTO> fileList = eduMarineService.processSelectFileList(response.getSeq());
+            for(FileDTO file : fileList){
+                fullFilePathList.add(file.getFullFilePath());
+            }
+            response.setFullFilePathList(fullFilePathList);
+        }
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/board/media.do", method = RequestMethod.GET)
     public ModelAndView board_media() {
         System.out.println("EduMarineController > board_media");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/media");
         return mv;
+    }
+
+    @RequestMapping(value = "/board/media/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MediaDTO>> board_media_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineController > board_media_selectList");
+
+        List<MediaDTO> responseList = eduMarineService.processSelectBoardMediaList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/board/news_list.do", method = RequestMethod.GET)
@@ -211,10 +422,37 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/board/news/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<NewsletterDTO>> board_news_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineController > board_news_selectList");
+
+        List<NewsletterDTO> responseList = eduMarineService.processSelectBoardNewsList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/board/news_view.do", method = RequestMethod.GET)
-    public ModelAndView board_news_view() {
+    public ModelAndView board_news_view(String seq) {
         System.out.println("EduMarineController > board_news_view");
         ModelAndView mv = new ModelAndView();
+
+        /* 조회 카운트 Update */
+        eduMarineService.processUpdateBoardNewsViewCnt(seq);
+
+        /* 데이터 조회 후 Set */
+        NewsletterDTO newsInfo = eduMarineService.processSelectBoardNewsSingle(seq);
+
+        if(newsInfo != null){
+
+            mv.addObject("newsInfo", newsInfo);
+
+            /* 첨부파일 정보 Set */
+            List<FileDTO> fileList = eduMarineService.processSelectFileList(newsInfo.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                mv.addObject("fileList", fileList);
+            }
+        }
         mv.setViewName("/board/news_view");
         return mv;
     }
@@ -263,6 +501,25 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/job/review/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<JobDTO>> job_review_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineController > job_review_selectList");
+
+        List<JobDTO> responseList = eduMarineService.processSelectJobReviewList(searchDTO);
+
+        for(JobDTO response : responseList){
+            List<String> fullFilePathList = new ArrayList<>();
+            List<FileDTO> fileList = eduMarineService.processSelectFileList(response.getSeq());
+            for(FileDTO file : fileList){
+                fullFilePathList.add(file.getFullFilePath());
+            }
+            response.setFullFilePathList(fullFilePathList);
+        }
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/job/community_list.do", method = RequestMethod.GET)
     public ModelAndView job_community_list() {
         System.out.println("EduMarineController > job_community_list");
@@ -299,10 +556,11 @@ public class EduMarineController {
     // mypage Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/mypage/eduApplyInfo.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApplyInfo() {
+    @RequestMapping(value = "/mypage/eduApplyInfo.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView mypage_eduApplyInfo(HttpSession session) {
         System.out.println("EduMarineController > mypage_eduApplyInfo");
         ModelAndView mv = new ModelAndView();
+        String id = String.valueOf(session.getAttribute("id"));
         mv.setViewName("/mypage/eduApplyInfo");
         return mv;
     }
@@ -315,12 +573,42 @@ public class EduMarineController {
         return mv;
     }
 
-    @RequestMapping(value = "/mypage/resume.do", method = RequestMethod.GET)
-    public ModelAndView mypage_resume() {
+    @RequestMapping(value = "/mypage/resume.do", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView mypage_resume(HttpSession session) {
         System.out.println("EduMarineController > mypage_resume");
         ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            String id = session.getAttribute("id").toString();
+            ResumeDTO info = eduMarineService.processSelectResumeSingle(id);
+            mv.addObject("info", info);
+
+            if(info != null){
+                /* 첨부파일 정보 Set */
+                List<FileDTO> bodyPhotoFile = eduMarineService.processSelectFileList(info.getSeq());
+                if(bodyPhotoFile != null  && !bodyPhotoFile.isEmpty()){
+                    for (FileDTO fileDTO : bodyPhotoFile) {
+                        if ("bodyPhoto".equals(fileDTO.getNote())) {
+                            mv.addObject("bodyPhotoFile", fileDTO);
+                        }
+                    }
+                }
+            }
+        }
+
         mv.setViewName("/mypage/resume");
         return mv;
+    }
+
+    @RequestMapping(value = "/mypage/resume/save.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_resume_save(@RequestBody ResumeDTO resumeDTO) {
+        System.out.println("EduMarineController > mypage_resume_save");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processSaveResume(resumeDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/post.do", method = RequestMethod.GET)
@@ -331,12 +619,30 @@ public class EduMarineController {
         return mv;
     }
 
-    @RequestMapping(value = "/mypage/modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_modify() {
+    @RequestMapping(value = "/mypage/modify.do", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView mypage_modify(HttpSession session) {
         System.out.println("EduMarineController > mypage_modify");
         ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+        }
+
         mv.setViewName("/mypage/modify");
         return mv;
+    }
+
+    @RequestMapping(value = "/member/modify/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> member_modify_update(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineController > member_modify_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateMember(memberDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/eduApply01_modify.do", method = RequestMethod.GET)

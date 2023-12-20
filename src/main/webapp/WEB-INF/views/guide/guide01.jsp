@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -65,7 +65,7 @@
                     <li class="on"><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
                     <li><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 정비 테크니션</a></li>
+                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -92,7 +92,7 @@
                                         <div class="gubun">교육명</div>
                                         <div class="naeyong">
                                             <div class="item">해상엔진 테크니션 <span class="small">(선내기 및 선외기 통합과정)</span></div>
-                                            <div class="item">FRP 레저보트 선체장비 테크니션</div>
+                                            <div class="item">FRP 레저보트 선체정비 테크니션</div>
                                         </div>
                                     </li>
                                     <li>

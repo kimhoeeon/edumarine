@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -655,7 +655,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/notice.do"
+                                                                        <a href="/mng/file/download.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">다운로드 내역</span>
                                                                         </a>
@@ -665,7 +665,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/press.do"
+                                                                        <a href="/mng/file/trash.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">임시 휴지통</span>
                                                                         </a>
@@ -1321,7 +1321,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/file/download.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1333,7 +1333,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/file/trash.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>

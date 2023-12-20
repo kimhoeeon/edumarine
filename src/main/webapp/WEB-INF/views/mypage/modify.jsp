@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -37,6 +37,15 @@
 </head>
 
 <body>
+
+<c:if test="${status ne 'logon'}">
+    <script>
+        alert("로그인해 주세요.");
+        location.href = '/member/login.do';
+    </script>
+</c:if>
+
+<c:if test="${status eq 'logon'}">
 
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
@@ -75,101 +84,108 @@
                 <div class="join_wrap form_wrap">
 
                     <!-- form box -->
-                    <div class="form_box">
-                        <div class="form_tit">
-                            <div class="big">회원정보 수정</div>
+                    <form id="joinForm" method="post" onsubmit="return false;">
+                        <div class="form_box">
+                            <div class="form_tit">
+                                <div class="big">회원정보 수정</div>
+                            </div>
+                            <ul class="form_list">
+
+                                <li>
+                                    <div class="gubun req"><p>아이디</p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="id" name="id" class="w50" value="${info.id}" readonly>
+                                        </div>
+                                        <div class="cmnt">영문, 숫자 혼용 가능(5~12자리) 이내</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>비밀번호</p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="password" id="password" name="password" value="${info.password}" maxlength="16" onchange="f_pw_status_change(this)" placeholder="비밀번호 입력" class="w50">
+                                            <button onclick="f_pw_check(this)">비밀번호 검사</button>
+                                            <span class="pw_valid_result_cmnt"><%--비밀번호 검사 버튼을 클릭해 주세요.--%></span>
+                                            <input type="hidden" id="pwCheck" value="true">
+                                        </div>
+                                        <div class="cmnt">9~16자의 영문, 숫자, 특수문자를 사용해주세요. </div>
+                                        <div class="cmnt">비밀번호 유효성 검사 버튼을 클릭해주세요.</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>비밀번호 확인</p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="password" id="passwordCheck" maxlength="16" placeholder="비밀번호 입력" class="w50">
+                                            <span class="pw_check_valid_result_cmnt" style="color: #AD1D1D">비밀번호가 일치하지 않습니다.</span>
+                                            <input type="hidden" id="pwConfirmCheck" value="false">
+                                        </div>
+                                        <div class="cmnt">비밀번호를 다시 입력해주세요.</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>이름</p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="name" name="name" value="${info.name}" placeholder="이름 입력" class="w50">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>연락처</p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="phone" name="phone" value="${info.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>이메일 주소</p></div>
+                                    <div class="naeyong">
+                                        <div class="input form_email">
+                                            <input type="text" id="email" name="email" value="${fn:split(info.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1">
+                                            <span>@</span>
+                                            <input type="text" id="domain" name="domain" value="${fn:split(info.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2">
+                                            <select class="email_select">
+                                                <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
+                                                <option selected>직접입력</option>
+                                                <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> >daum.net</option>
+                                                <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
+                                                <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
+                                                <option value="naver.com" <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
+                                                <option value="hotmail.com" <c:if test="${domain eq 'hotmail.com'}">selected</c:if> >hotmail.com</option>
+                                                <option value="yahoo.co.kr" <c:if test="${domain eq 'yahoo.co.kr'}">selected</c:if> >yahoo.co.kr</option>
+                                                <option value="empal.com" <c:if test="${domain eq 'empal.com'}">selected</c:if> >empal.com</option>
+                                                <option value="korea.com" <c:if test="${domain eq 'korea.com'}">selected</c:if> >korea.com</option>
+                                                <option value="hanmir.com" <c:if test="${domain eq 'hanmir.com'}">selected</c:if> >hanmir.com</option>
+                                                <option value="dreamwiz.com" <c:if test="${domain eq 'dreamwiz.com'}">selected</c:if> >dreamwiz.com</option>
+                                                <option value="orgio.net" <c:if test="${domain eq 'orgio.net'}">selected</c:if> >orgio.net</option>
+                                                <option value="korea.com" <c:if test="${domain eq 'korea.com'}">selected</c:if> >korea.com</option>
+                                                <option value="hitel.net" <c:if test="${domain eq 'hitel.net'}">selected</c:if> >hitel.net</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>관심 키워드</p></div>
+                                    <div class="naeyong">
+                                        <div class="input form_keyword">
+                                            <label><input type="checkbox" name="keyword" value="선내기" <c:if test="${fn:contains(info.keyword, '선내기')}">checked</c:if> />선내기</label>
+                                            <label><input type="checkbox" name="keyword" value="선외기" <c:if test="${fn:contains(info.keyword, '선외기')}">checked</c:if> />선외기</label>
+                                            <label><input type="checkbox" name="keyword" value="마리나선박" <c:if test="${fn:contains(info.keyword, '마리나선박')}">checked</c:if> />마리나선박</label>
+                                            <label><input type="checkbox" name="keyword" value="정비" <c:if test="${fn:contains(info.keyword, '정비')}">checked</c:if> />정비</label>
+                                            <label><input type="checkbox" name="keyword" value="이직/커리어" <c:if test="${fn:contains(info.keyword, '이직/커리어')}">checked</c:if> />이직/커리어</label>
+                                            <label><input type="checkbox" name="keyword" value="여행" <c:if test="${fn:contains(info.keyword, '여행')}">checked</c:if> />여행</label>
+                                            <label><input type="checkbox" name="keyword" value="해양레저이슈" <c:if test="${fn:contains(info.keyword, '해양레저이슈')}">checked</c:if> />해양레저이슈</label>
+                                            <label><input type="checkbox" name="keyword" value="취미" <c:if test="${fn:contains(info.keyword, '취미')}">checked</c:if> />취미</label>
+                                            <label><input type="checkbox" name="keyword" value="취업" <c:if test="${fn:contains(info.keyword, '취업')}">checked</c:if> />취업</label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="form_list">
-                            <li>
-                                <div class="gubun req"><p>아이디</p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <input type="text" class="w50" value="cmn4820" readonly>
-                                    </div>
-                                    <div class="cmnt">영문, 숫자 혼용 가능(5~12자리) 이내</div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>비밀번호</p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <input type="password" placeholder="비밀번호 입력" class="w50">
-                                        <button>비밀번호 변경</button>
-                                    </div>
-                                    <div class="cmnt">9~16자의 영문, 숫자, 특수문자를 사용해주세요. </div>
-                                    <div class="cmnt">비밀번호 유효성 검사 버튼을 클릭해주세요.</div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>비밀번호 확인</p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <input type="password" placeholder="비밀번호 입력" class="w50">
-                                    </div>
-                                    <div class="cmnt">비밀번호를 다시 입력해주세요.</div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>이름</p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <input type="text" placeholder="이름 입력" class="w50">
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>연락처</p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <input type="tel" placeholder="하이픈(-) 없이 입력" class="onlyNum w50">
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>이메일 주소</p></div>
-                                <div class="naeyong">
-                                    <div class="input form_email">
-                                        <input type="email" placeholder="이메일 입력" class="email_input_1">
-                                        <span>@</span>
-                                        <input type="email" class="email_input_2">
-                                        <select class="email_select">
-                                            <option selected>직접입력</option>
-                                            <option value="daum.net">daum.net</option>
-                                            <option value="nate.com">nate.com</option>
-                                            <option value="hanmail.net">hanmail.net</option>
-                                            <option value="naver.com">naver.com</option>
-                                            <option value="hotmail.com">hotmail.com</option>
-                                            <option value="yahoo.co.kr">yahoo.co.kr</option>
-                                            <option value="empal.com">empal.com</option>
-                                            <option value="korea.com">korea.com</option>
-                                            <option value="hanmir.com">hanmir.com</option>
-                                            <option value="dreamwiz.com">dreamwiz.com</option>
-                                            <option value="orgio.net">orgio.net</option>
-                                            <option value="korea.com">korea.com</option>
-                                            <option value="hitel.net">hitel.net</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>관심 키워드</p></div>
-                                <div class="naeyong">
-                                    <div class="input form_keyword">
-                                        <label><input type="checkbox">선내기</label>
-                                        <label><input type="checkbox">선외기</label>
-                                        <label><input type="checkbox">마리나선박</label>
-                                        <label><input type="checkbox">정비</label>
-                                        <label><input type="checkbox">이직/커리어</label>
-                                        <label><input type="checkbox">여행</label>
-                                        <label><input type="checkbox">해양레저이슈</label>
-                                        <label><input type="checkbox">취미</label>
-                                        <label><input type="checkbox">취업</label>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- //form box -->
+                    </form>
                     <!-- form box -->
                     <div class="form_box">
                         <div class="form_tit">
@@ -264,15 +280,28 @@
                             </div>
                         </div>
                         <div class="form_privacy_check">
-                            <p><label><input type="checkbox" class="f_privcy_chk_all" checked>개인정보수집 및 선택 사항에 모두 동의합니다.</label></p>
-                            <p><label><input type="checkbox" class="f_privcy_chk" checked><span style="color: #C00000;">(필수)</span> 개인정보수집
-                                    동의</label></p>
-                            <p><label><input type="checkbox" class="f_privcy_chk" checked>(선택) SMS 알림서비스 동의</label></p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="f_privcy_chk_all" <c:if test="${info.smsYn eq '1'}">checked</c:if> />개인정보수집 및 선택 사항에 모두 동의합니다.
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" id="f_privcy_essential" class="f_privcy_chk" checked />
+                                    <span style="color: #C00000;">(필수)</span> 개인정보수집 동의
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input type="checkbox" id="smsYn" name="smsYn" class="f_privcy_chk" <c:if test="${info.smsYn eq '1'}">checked</c:if> />
+                                    (선택) SMS 알림서비스 동의
+                                </label>
+                            </p>
                         </div>
                     </div>
                     <!-- //form box -->
                     <div class="form_btn_box">
-                        <a href="javascript:void(0);" class="btnSt01">저장하기</a>
+                        <a href="javascript:void(0);" onclick="f_main_member_modify();" class="btnSt01">저장하기</a>
                     </div>
 
                     <div class="form_delete_id">
@@ -321,6 +350,6 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
-
+</c:if>
 </body>
 </html>

@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -77,16 +77,16 @@
 
                     <!-- board_top -->
                     <div class="board_top">
-                        <div class="post_number">총 <span class="number">5</span>개의 게시글이 있습니다.</div>
+                        <div class="post_number">총 <span class="number"></span>개의 게시글이 있습니다.</div>
                         <div class="board_search">
-                            <select>
-                                <option>제목</option>
-                                <option>내용</option>
-                                <option>제목+내용</option>
+                            <select id="search_box">
+                                <option value="title" selected>제목</option>
+                                <%--<option value="content">내용</option>
+                                <option value="all">내용+제목</option>--%>
                             </select>
                             <div class="search_bar">
-                                <input type="text">
-                                <a href="" class="search_btn"></a>
+                                <input type="text" id="search_text" placeholder="검색어 입력">
+                                <a href="javascript:void(0);" onclick="mediaList(1);" class="search_btn"></a>
                             </div>
                         </div>
                     </div>
@@ -96,77 +96,27 @@
                     <div class="gallery_list_wrap">
 
                         <ul class="gallery_list">
-                            <li class="video_view">
+                            <%--<li class="video_view">
                                 <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
                                 <div class="subject">게시물 제목</div>
                                 <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="video_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
+                            </li>--%>
                         </ul>
 
                         <!-- paging -->
                         <div class="paging">
-                            <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                            <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                            <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                             <ol>
-                                <li><a href="" class="this">1</a></li>
-                                <li><a href="" class="other">2</a></li>
-                                <li><a href="" class="other">3</a></li>
+                                <%--<li>
+                                  <a class="this">1</a>
+                                </li>
+                                <li>
+                                  <a class="other">2</a>
+                                </li>--%>
                             </ol>
-                            <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                            <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                            <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
                         </div>
                         <!-- //paging -->
                     </div>
@@ -180,7 +130,7 @@
                             <div class="popup_tit">게시글 제목</div>
                             <div class="popup_box">
                                 <div class="embed-container">
-                                    <iframe src='https://www.youtube.com/embed/i1OVSZ1npzs?enablejsapi=1&version=3&playerapiid=ytplayer&ecver=2&vq=hd720&rel=0' frameborder='0' allowfullscreen></iframe>
+                                    <iframe src='' frameborder='0' allowfullscreen></iframe>
                                 </div>
                             </div>
                         </div>
@@ -212,6 +162,16 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/media.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+    <script>
+        document.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                mediaList(1);
+            }
+        });
+    </script>
 
 </body>
 </html>

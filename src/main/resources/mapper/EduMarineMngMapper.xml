@@ -1089,6 +1089,7 @@
         SELECT seq
              , id
              , password
+             , grade
              , name
              , phone
              , email
@@ -1116,6 +1117,7 @@
         SELECT seq
              , id
              , password
+             , grade
              , name
              , phone
              , email
@@ -1141,6 +1143,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateMember */
         UPDATE member
         SET password = <![CDATA[#{password}]]>
+          , grade = #{grade}
           , name = #{name}
           , phone = #{phone}
           , email = #{email}
@@ -1152,7 +1155,7 @@
     </update>
 
     <select id="getMemberSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getMemberSeq */
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getMemberSeq */
         SELECT CONCAT('V', LPAD(nextval('member_seq'), '7', '0'))
         FROM DUAL
     </select>
@@ -1163,6 +1166,7 @@
         ( seq
         , id
         , password
+        , grade
         , name
         , phone
         , email
@@ -1179,6 +1183,7 @@
             ( #{seq}
             , #{id}
             , <![CDATA[#{password}]]>
+            , #{grade}
             , #{name}
             , #{phone}
             , #{email}
@@ -1482,6 +1487,7 @@
              , pay_sum
              , train_cnt
              , train_apply_cnt
+             , next_time
              , train_note
              , exposure_yn
              , schedule_exposure_yn
@@ -1513,6 +1519,7 @@
              , pay_sum
              , train_cnt
              , train_apply_cnt
+             , next_time
              , train_note
              , exposure_yn
              , schedule_exposure_yn
@@ -1536,6 +1543,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrain */
         UPDATE train
         SET gbn = #{gbn}
+          , next_time = #{nextTime}
           , train_start_dttm = <![CDATA[#{trainStartDttm}]]>
           , train_end_dttm = <![CDATA[#{trainEndDttm}]]>
           , apply_start_dttm = <![CDATA[#{applyStartDttm}]]>
@@ -1568,6 +1576,7 @@
         , pay_sum
         , train_cnt
         , train_apply_cnt
+        , next_time
         , train_note
         , exposure_yn
         , schedule_exposure_yn
@@ -1588,6 +1597,7 @@
             , #{paySum}
             , #{trainCnt}
             , 0
+            , #{nextTime}
             , <![CDATA[#{trainNote}]]>
             , #{exposureYn}
             , #{scheduleExposureYn}
@@ -2007,6 +2017,147 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteSmsTemplate */
         DELETE FROM template
         WHERE seq = #{seq}
+    </delete>
+
+    <select id="selectDownloadList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.DownloadDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectDownloadList */
+        SELECT seq
+             , download_file_name
+             , target_menu
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM download
+        WHERE 1=1
+        <!--<if test='searchText != null and searchText != ""'>
+            <if test='condition eq "phone"'>
+                AND phone LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>-->
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="getDownloadSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getDownloadSeq */
+        SELECT CONCAT('W', LPAD(nextval('download_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertDownload" parameterType="com.mtf.edumarine.dto.DownloadDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertDownload */
+        INSERT INTO download
+        ( seq
+        , download_file_name
+        , target_menu
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , <![CDATA[#{downloadFileName}]]>
+            , <![CDATA[#{targetMenu}]]>
+            , #{note}
+            , 'DOWNLOAD'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'DOWNLOAD'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectTrashList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.TrashDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrashList */
+        SELECT seq
+             , target_seq
+             , target_table
+             , target_menu
+             , delete_reason
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM trash
+        WHERE 1=1
+        <!--<if test='searchText != null and searchText != ""'>
+            <if test='condition eq "phone"'>
+                AND phone LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>-->
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectTrashSingle" parameterType="com.mtf.edumarine.dto.TrashDTO" resultType="com.mtf.edumarine.dto.TrashDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrashSingle */
+        SELECT seq
+             , target_seq
+             , target_table
+             , target_menu
+             , delete_reason
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM trash
+        WHERE seq = #{seq}
+    </select>
+    
+    <update id="updateTargetTableTrash" parameterType="com.mtf.edumarine.dto.TrashDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.updateTargetTableTrash */
+        UPDATE ${targetTable}
+        SET del_yn = #{delYn}
+        WHERE seq = #{targetSeq}
+    </update>
+
+    <select id="getTrashSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getTrashSeq */
+        SELECT CONCAT('H', LPAD(nextval('trash_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertTrash" parameterType="com.mtf.edumarine.dto.TrashDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertTrash */
+        INSERT INTO trash
+        ( seq
+        , target_seq
+        , target_table
+        , target_menu
+        , delete_reason
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{targetSeq}
+            , #{targetTable}
+            , <![CDATA[#{targetMenu}]]>
+            , <![CDATA[#{deleteReason}]]>
+            , #{note}
+            , 'TRASH'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'TRASH'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <delete id="deleteTrash" parameterType="com.mtf.edumarine.dto.TrashDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteTrash */
+        DELETE FROM trash
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteTargetTableTrash" parameterType="com.mtf.edumarine.dto.TrashDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteTargetTableTrash */
+        DELETE FROM ${targetTable}
+        WHERE seq = #{targetSeq}
     </delete>
 
     <select id="getFileId" resultType="java.lang.String">

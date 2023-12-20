@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -93,7 +93,7 @@
                                         교육과정 필요
                                     </div>
                                     <div class="text">
-                                        현장에서 필요로 하는 전문 양성인력으로
+                                        산업현장에서 필요로 하는 전문 양성인력으로
                                         일자리 창출에 부응
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                         <!-- center_tit_box -->
                         <div class="center_tit_box">
                             <div class="big">해양레저 전문 커리어 진로 다양성</div>
-                            <div class="small"><div class="small">해양레저산업 성장추세에 맞춰 산업현장에 적합한 인력 양성 필요</div></div>
+                            <div class="small"><div class="small">해양레저 엔진 제작 및 정비, 선체정비, 판매관련 기업, 교육기관, 해양레저 산업체 등</div></div>
                         </div>
                         <!-- //center_tit_box -->
                         <!-- guide_info_4 -->
@@ -137,7 +137,7 @@
                             <ul class="info_list">
                                 <li>
                                     <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_01.png"></div>
-                                    <div class="text_box">엔진 수리점<br>유지보수</div>
+                                    <div class="text_box">엔진수리점/<br>유지보수</div>
                                 </li>
                                 <li>
                                     <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_02.png"></div>

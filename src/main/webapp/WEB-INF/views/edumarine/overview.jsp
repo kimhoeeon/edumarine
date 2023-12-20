@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -96,7 +96,7 @@
                                         <div class="small">
                                             해양 엔진 테크니션<br>
                                             입문 교육을 통한<br>
-                                            고용 진출
+                                            고용 창출
                                         </div>
                                     </div>
                                 </li>

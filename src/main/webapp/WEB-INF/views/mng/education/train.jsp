@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -654,7 +654,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/notice.do"
+                                                                        <a href="/mng/file/download.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">다운로드 내역</span>
                                                                         </a>
@@ -664,7 +664,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/press.do"
+                                                                        <a href="/mng/file/trash.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">임시 휴지통</span>
                                                                         </a>
@@ -1320,7 +1320,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/file/download.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1332,7 +1332,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/file/trash.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1495,6 +1495,7 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
                                                     <th class="text-center min-w-200px">교육과정명</th>
+                                                    <th class="text-center min-w-50px">차시</th>
                                                     <th class="text-center min-w-150px">교육일정</th>
                                                     <th class="text-center min-w-150px">접수일정</th>
                                                     <th class="text-center min-w-75px">교육비</th>
@@ -1506,6 +1507,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1587,6 +1589,17 @@ if (document.documentElement) {
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_gbn" placeholder="교육과정명" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">차시</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_next_time" placeholder="차시" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->

@@ -216,4 +216,16 @@ public interface EduMarineMngService {
     ResponseDTO processDeleteSms(SmsDTO smsDTO);
 
     SmsDTO processSelectSmsSingle(SmsDTO smsDTO);
+
+    List<DownloadDTO> processSelectDownloadList(SearchDTO searchDTO);
+
+    ResponseDTO processInsertDownload(DownloadDTO downloadDTO);
+
+    List<TrashDTO> processSelectTrashList(SearchDTO searchDTO);
+
+    ResponseDTO processSaveTrash(TrashDTO trashDTO);
+
+    ResponseDTO processDeleteTrash(TrashDTO trashDTO);
+
+    ResponseDTO processRestoreTrash(TrashDTO trashDTO);
 }

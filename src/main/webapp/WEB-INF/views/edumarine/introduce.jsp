@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -97,7 +97,7 @@
                                         <div class="small">
                                             해양 엔진 테크니션<br>
                                             입문 교육을 통한<br>
-                                            고용 진출
+                                            고용 창출
                                         </div>
                                     </div>
                                 </li>
@@ -126,6 +126,37 @@
                         <!-- //center_info_1 -->
                     </div>
                     <!-- //edu marine 소개 -->
+
+                    <!-- 지원개요 -->
+                    <div class="center_sec">
+                        <!-- center_tit_box -->
+                        <div class="center_tit_box">
+                            <div class="big">지원개요</div>
+                        </div>
+                        <!-- //center_tit_box -->
+                        <!-- guide_info_1 -->
+                        <ul class="guide_info_1">
+                            <li>
+                                <div class="gubun">지원대상</div>
+                                <div class="naeyong">
+                                    <div class="text">해양레저 테크니션 교육을 통한 취·창업을 희망하는 자</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="gubun">프로그램</div>
+                                <div class="naeyong">
+                                    <ul class="list">
+                                        <li>(선외기) 아웃보드 엔진 정비 교육</li>
+                                        <li>(선내기) 디젤 엔진 정비 교육</li>
+                                        <li>(선체) 선체 유지보수 교육</li>
+                                        <li>기타 해양레저산업에 필요한 소양 교육 및 취·창업 지원</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- guide_info_1 -->
+                    </div>
+                    <!-- //지원개요 -->
 
                     <!-- 추친 체계 -->
                     <div class="center_sec">

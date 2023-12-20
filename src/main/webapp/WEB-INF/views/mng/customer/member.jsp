@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -654,7 +654,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/notice.do"
+                                                                        <a href="/mng/file/download.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">다운로드 내역</span>
                                                                         </a>
@@ -664,7 +664,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/board/press.do"
+                                                                        <a href="/mng/file/trash.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">임시 휴지통</span>
                                                                         </a>
@@ -1320,7 +1320,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/file/download.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1332,7 +1332,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/board/notice.do">
+                                            <a class="menu-link" href="/mng/file/trash.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1494,8 +1494,10 @@ if (document.documentElement) {
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
+                                                    <th class="text-center min-w-75px">등급</th>
                                                     <th class="text-center min-w-100px">아이디</th>
                                                     <th class="text-center min-w-100px">이름</th>
+                                                    <th class="text-center min-w-100px">연락처</th>
                                                     <th class="text-center min-w-75px">SMS알림동의</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
                                                     <th class="text-center min-w-100px">기능</th>
@@ -1503,6 +1505,8 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1574,6 +1578,18 @@ if (document.documentElement) {
 
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">회원등급</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_grade" placeholder="회원등급" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
                             <!--begin::Input group-->
                             <div class="mb-6">
                                 <!--begin::Label-->

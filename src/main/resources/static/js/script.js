@@ -50,16 +50,43 @@ $(document).ready(function () {
 
     // 팝업 - 댣기
     $('.popup_close').on('click', function () {
-        $(this).parents('.popup').removeClass('on')
+        $(this).parents('.popup').removeClass('on');
         $('body').removeClass('lock_scroll');
     });
+
     // 팝업 - 갤러리
-    $('.gallery_view').on('click', function () {
+    $(document).on("click", ".gallery_view", function() {
+        let slideTitle = $(this).find('.subject').text();
+        let slideImgList = $(this).find('input[type=hidden][name=slideImg]');
+
+        let str = '';
+        $.each(slideImgList , function(i) {
+            let slideImgPath = slideImgList[i].value.toString().replace('./usr/local/tomcat/webapps', '../../../../..');
+            str += '<li class="swiper-slide img_box">';
+            str += '<img src="' + slideImgPath + '">';
+            str += '</li>';
+        });
+
+        $('#popupGallery .popup_inner .popup_tit').text(slideTitle);
+        $('#popupGallery .gallery_swiper .swiper_box ul').empty();
+        $('#popupGallery .gallery_swiper .swiper_box ul').html(str);
+
         $('#popupGallery').addClass('on');
         $('body').addClass('lock_scroll');
     });
     // 팝업 - 비디오
-    $('.video_view').on('click', function () {
+    $(document).on("click", ".video_view", function() {
+        //console.log($(this).find('img').attr('src')); // https://img.youtube.com/vi/WMaA84_cixo/mqdefault.jpg
+        let youtubeTitle = $(this).find('.subject').text();
+        let youtubeUrl = $(this).find('img').attr('src');
+        let youtubeSeq = '';
+        youtubeSeq = youtubeUrl.toString()
+            .replace('https://img.youtube.com/vi/','')
+            .replace('/mqdefault.jpg',''); // WMaA84_cixo
+        let youtubeIframeUrl = 'https://www.youtube.com/embed/' + youtubeSeq;
+        $('#popupVideo').find('.popup_tit').text(youtubeTitle);
+        $('#popupVideo').find('iframe').attr('src', youtubeIframeUrl);
+
         $('#popupVideo').addClass('on');
         $('body').addClass('lock_scroll');
     });
@@ -70,7 +97,22 @@ $(document).ready(function () {
     });
 
     // 팝업 - 취창업후기
-    $('.job_review_view').on('click', function () {
+    $(document).on("click", ".job_review_view", function() {
+        let slideTitle = $(this).find('.subject').text();
+        let slideImgList = $(this).find('input[type=hidden][name=slideImg]');
+
+        let str = '';
+        $.each(slideImgList , function(i) {
+            let slideImgPath = slideImgList[i].value.toString().replace('./usr/local/tomcat/webapps', '../../../../..');
+            str += '<li class="swiper-slide img_box">';
+            str += '<img src="' + slideImgPath + '">';
+            str += '</li>';
+        });
+
+        $('#popupJobReview .popup_inner .popup_tit').text(slideTitle);
+        $('#popupJobReview .review_swiper .swiper_box ul').empty();
+        $('#popupJobReview .review_swiper .swiper_box ul').html(str);
+
         $('#popupJobReview').addClass('on');
         $('body').addClass('lock_scroll');
     });

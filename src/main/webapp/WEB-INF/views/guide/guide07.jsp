@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -65,7 +65,7 @@
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
                     <li><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 정비 테크니션</a></li>
+                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li class="on"><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -153,7 +153,7 @@
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>Volvo Penta D6 370마력 (4-Stroke Cycle 디젤엔진</li>
+                                                        <li>Volvo Penta D6 370마력 (4-Stroke Cycle 디젤엔진)</li>
                                                         <li>Yanmar 700마력 (4-Stroke Cycle 디젤엔진)</li>
                                                     </ul>
                                                 </div>
@@ -172,7 +172,7 @@
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>1차: 2023.03.18(토)~03.19(일)</li>
+                                                        <li>1차 : 2023.03.18(토)~03.19(일)</li>
                                                         <li>2차 : 2023.06.10(토)~06.11(일)</li>
                                                         <li>3차 : 2023.08.05(토)~08.06(일)</li>
                                                         <li>4차 : 2023.10.14(토)~10.15(일)</li>
@@ -201,7 +201,7 @@
                                             <td>교육인원</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">최소정원(4명)</div>
+                                                    <div class="text">최소정원(5명)</div>
                                                     <ul class="list small">
                                                         <li>주1) 교육 신청 현황에 따라 조정 가능합니다.</li>
                                                         <li>주2) 교육신청자가 최소 인원에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</li>
@@ -273,7 +273,7 @@
                         <!-- guide_info_1 -->
                         <ul class="guide_info_1">
                             <li>
-                                <div class="gubun">교육인원</div>
+                                <div class="gubun">입금계좌</div>
                                 <div class="naeyong">
                                     <div class="text">국민은행 642201-04-092183 / 수자원환경산업진흥㈜</div>
                                 </div>

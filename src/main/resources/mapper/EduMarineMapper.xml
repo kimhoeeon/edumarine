@@ -23,7 +23,7 @@
     </update>
 
     <insert id="insertStatisticsAccessor" parameterType="com.mtf.edumarine.dto.StatisticsDTO">
-        <!-- com.mtf.edumarine.mapper.EduMarineMapper.insertStatisticsAccessor -->
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertStatisticsAccessor */
         INSERT INTO statistics
         ( seq
         , join_year
@@ -69,9 +69,670 @@
              , final_regi_dttm
         FROM popup
         WHERE 1=1
+          AND del_yn = 'N'
           AND use_yn = #{useYn}
           AND published_date <![CDATA[<=]]> #{today}
           AND expiration_date <![CDATA[>=]]> #{today}
+    </select>
+
+    <select id="selectBannerList" parameterType="com.mtf.edumarine.dto.BannerDTO" resultType="com.mtf.edumarine.dto.BannerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBannerList */
+        SELECT seq
+             , title
+             , view_seq
+             , writer
+             , write_date
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM banner
+        WHERE 1=1
+        AND del_yn = 'N'
+        ORDER BY view_seq
+    </select>
+
+    <select id="selectTrainList" parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainList */
+        SELECT seq
+             , gbn
+             , train_start_dttm
+             , train_end_dttm
+             , apply_start_dttm
+             , apply_end_dttm
+             , pay_sum
+             , train_cnt
+             , train_apply_cnt
+             , next_time
+             , train_note
+             , exposure_yn
+             , schedule_exposure_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM train
+        WHERE 1=1
+          AND gbn LIKE CONCAT('%',#{gbn},'%')
+          AND exposure_yn = 'Y'
+          AND del_yn = 'N'
+        ORDER BY train_start_dttm DESC
+    </select>
+
+    <select id="selectNoticeList" parameterType="com.mtf.edumarine.dto.NoticeDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectNoticeList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             /*, content*/
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM notice
+        WHERE 1=1
+          AND del_yn = 'N'
+        ORDER BY notice_gbn DESC, write_date DESC
+        LIMIT 5
+    </select>
+
+    <select id="selectPressList" parameterType="com.mtf.edumarine.dto.PressDTO" resultType="com.mtf.edumarine.dto.PressDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectPressList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             /*, content*/
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM press
+        WHERE 1=1
+          AND del_yn = 'N'
+        ORDER BY notice_gbn DESC, write_date DESC
+        LIMIT 5
+    </select>
+
+    <select id="checkDuplicateId" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.checkDuplicateId */
+        SELECT COUNT(1)
+        FROM member
+        WHERE id = #{id}
+        AND del_yn = 'N'
+    </select>
+
+    <select id="getMemberSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getMemberSeq */
+        SELECT CONCAT('V', LPAD(nextval('member_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertMember */
+        INSERT INTO member
+        ( seq
+        , id
+        , password
+        , grade
+        , name
+        , phone
+        , email
+        , keyword
+        , sms_yn
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{id}
+            , <![CDATA[#{password}]]>
+            , #{grade}
+            , #{name}
+            , #{phone}
+            , #{email}
+            , #{keyword}
+            , #{smsYn}
+            , 'N'
+            , #{note}
+            , 'MEMBER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'MEMBER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="checkMemberSingle" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.checkMemberSingle */
+        SELECT COUNT(1)
+        FROM member
+        WHERE id = #{id}
+          AND password = <![CDATA[#{password}]]>
+          AND del_yn = 'N'
+    </select>
+
+    <select id="getMemberEmail" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.getMemberEmail */
+        SELECT email
+        FROM member
+        WHERE id = #{id}
+    </select>
+
+    <update id="initMemberPassword" parameterType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.initMemberPassword */
+        UPDATE member
+        SET password = <![CDATA[#{password}]]>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectMemberSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectMemberSingle */
+        SELECT seq
+             , id
+             , password
+             , grade
+             , name
+             , phone
+             , email
+             , keyword
+             , sms_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM member
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateMember */
+        UPDATE member
+        SET grade = #{grade}
+        , name = #{name}
+        , phone = #{phone}
+        , email = #{email}
+        , keyword = #{keyword}
+        , sms_yn = #{smsYn}
+        <if test='passwordChangeYn != null and !passwordChangeYn.equals("")'>
+            , password = <![CDATA[#{password}]]>
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectResumeSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.ResumeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectResumeSingle */
+        SELECT seq
+             , id
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , rrn
+             , age
+             , address
+             , address_detail
+             , top_clothes_size
+             , bottom_clothes_size
+             , shoes_size
+             , participation_path
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM resume
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateResume" parameterType="com.mtf.edumarine.dto.ResumeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateResume */
+        UPDATE resume
+        SET name_ko = #{nameKo}
+          , name_en = #{nameEn}
+          , phone = #{phone}
+          , email = #{email}
+          , rrn = #{rrn}
+          , age = #{age}
+          , address = <![CDATA[#{address}]]>
+          , address_detail = <![CDATA[#{addressDetail}]]>
+          , top_clothes_size = #{topClothesSize}
+          , bottom_clothes_size = #{bottomClothesSize}
+          , shoes_size = #{shoesSize}
+          , participation_path = #{participationPath}
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getResumeSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getResumeSeq */
+        SELECT CONCAT('E', LPAD(nextval('resume_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertResume" parameterType="com.mtf.edumarine.dto.ResumeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertResume */
+        INSERT INTO resume
+        ( seq
+        , id
+        , name_ko
+        , name_en
+        , phone
+        , email
+        , rrn
+        , age
+        , address
+        , address_detail
+        , top_clothes_size
+        , bottom_clothes_size
+        , shoes_size
+        , participation_path
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{id}
+            , #{nameKo}
+            , #{nameEn}
+            , #{phone}
+            , #{email}
+            , #{rrn}
+            , #{age}
+            , <![CDATA[#{address}]]>
+            , <![CDATA[#{addressDetail}]]>
+            , #{topClothesSize}
+            , #{bottomClothesSize}
+            , #{shoesSize}
+            , #{participationPath}
+            , 'N'
+            , #{note}
+            , 'RESUME'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'RESUME'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectBoardNoticeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardNoticeList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT seq
+                            , notice_gbn
+                            , title
+                            , writer
+                            , write_date
+                            , view_cnt
+                            , ( SELECT COUNT(*)
+                                FROM notice
+                                WHERE del_yn = 'N'
+                                  AND title LIKE CONCAT('%',#{searchText},'%')
+                                  <if test='searchText != null and searchText != ""'>
+                                      <if test='condition == "title"'>
+                                      AND title LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "content"'>
+                                      AND content LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "all"'>
+                                      AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                                OR content LIKE CONCAT('%',#{searchText},'%') )
+                                      </if>
+                                  </if>
+                                ) AS totalRecords
+                       FROM notice
+                       WHERE del_yn = 'N'
+                         <if test='searchText != null and searchText != ""'>
+                             <if test='condition == "title"'>
+                             AND title LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "content"'>
+                             AND content LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "all"'>
+                             AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                       OR content LIKE CONCAT('%',#{searchText},'%') )
+                           </if>
+                       </if>
+                       ) LISTA
+                ORDER BY LISTA.notice_gbn asc, LISTA.write_date asc
+                ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <update id="updateBoardNoticeViewCnt" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoardNoticeViewCnt */
+        UPDATE notice
+        SET view_cnt = view_cnt + 1
+        WHERE seq = #{value}
+    </update>
+
+    <select id="selectBoardNoticeSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.NoticeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardNoticeSingle */
+        SELECT seq
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM notice
+        WHERE seq = #{value}
+    </select>
+
+    <select id="selectBoardPressList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PressDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardPressList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT seq
+                            , notice_gbn
+                            , title
+                            , writer
+                            , write_date
+                            , view_cnt
+                            , ( SELECT COUNT(*)
+                                FROM press
+                                WHERE del_yn = 'N'
+                                  AND title LIKE CONCAT('%',#{searchText},'%')
+                                  <if test='searchText != null and searchText != ""'>
+                                      <if test='condition == "title"'>
+                                      AND title LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "content"'>
+                                      AND content LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "all"'>
+                                      AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                                OR content LIKE CONCAT('%',#{searchText},'%') )
+                                      </if>
+                                  </if>
+                                ) AS totalRecords
+                       FROM press
+                       WHERE del_yn = 'N'
+                         <if test='searchText != null and searchText != ""'>
+                             <if test='condition == "title"'>
+                             AND title LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "content"'>
+                             AND content LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "all"'>
+                             AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                       OR content LIKE CONCAT('%',#{searchText},'%') )
+                           </if>
+                       </if>
+                       ) LISTA
+                ORDER BY LISTA.notice_gbn asc, LISTA.write_date asc
+                ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <update id="updateBoardPressViewCnt" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoardPressViewCnt */
+        UPDATE press
+        SET view_cnt = view_cnt + 1
+        WHERE seq = #{value}
+    </update>
+
+    <select id="selectBoardPressSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.PressDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardPressSingle */
+        SELECT seq
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM press
+        WHERE seq = #{value}
+    </select>
+
+    <select id="selectBoardGalleryList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.GalleryDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardGalleryList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT seq
+                            , title
+                            , writer
+                            , write_date
+                            , view_cnt
+                            , ( SELECT COUNT(*)
+                                FROM gallery
+                                WHERE del_yn = 'N'
+                                  AND title LIKE CONCAT('%',#{searchText},'%')
+                                  <if test='searchText != null and searchText != ""'>
+                                      <if test='condition == "title"'>
+                                      AND title LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                  </if>
+                                ) AS totalRecords
+                       FROM gallery
+                       WHERE del_yn = 'N'
+                         <if test='searchText != null and searchText != ""'>
+                             <if test='condition == "title"'>
+                             AND title LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                       </if>
+                       ) LISTA
+                ORDER BY LISTA.write_date asc
+                ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectBoardMediaList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.MediaDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardMediaList */
+        SELECT seq
+             , title
+             , writer
+             , write_date
+             , media_url
+             , media_key
+        , ( SELECT COUNT(*)
+                 FROM media
+                 WHERE del_yn = 'N'
+                   <if test='searchText != null and searchText != ""'>
+                       <if test='condition == "title"'>
+                       AND title LIKE CONCAT('%',#{searchText},'%')
+                       </if>
+                   </if>
+                 ) AS totalRecords
+        FROM media
+        WHERE del_yn = 'N'
+            <if test='searchText != null and searchText != ""'>
+                <if test='condition == "title"'>
+                    AND title LIKE CONCAT('%',#{searchText},'%')
+                </if>
+            </if>
+        ORDER BY write_date DESC, final_regi_dttm DESC
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectBoardNewsList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NewsletterDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardNewsList */
+        SELECT seq
+             , title
+             , write_date
+             , content
+        , ( SELECT COUNT(*)
+                 FROM newsletter
+                 WHERE del_yn = 'N'
+                   <if test='searchText != null and searchText != ""'>
+                       <if test='condition == "title"'>
+                       AND title LIKE CONCAT('%',#{searchText},'%')
+                       </if>
+                   </if>
+                 ) AS totalRecords
+        FROM newsletter
+        WHERE del_yn = 'N'
+            <if test='searchText != null and searchText != ""'>
+                <if test='condition == "title"'>
+                    AND title LIKE CONCAT('%',#{searchText},'%')
+                </if>
+            </if>
+        ORDER BY write_date DESC, final_regi_dttm DESC
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectBoardNewsSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.NewsletterDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardNewsSingle */
+        SELECT seq
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM newsletter
+        WHERE seq = #{value}
+    </select>
+
+    <update id="updateBoardNewsViewCnt" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoardNewsViewCnt */
+        UPDATE newsletter
+        SET view_cnt = view_cnt + 1
+        WHERE seq = #{value}
+    </update>
+
+    <select id="selectJobReviewList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.JobDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectJobReviewList */
+        SELECT seq
+             , title
+             , writer
+             , write_date
+             , ( SELECT COUNT(*)
+                 FROM job
+                 WHERE del_yn = 'N'
+                   AND title LIKE CONCAT('%',#{searchText},'%')
+                   <if test='searchText != null and searchText != ""'>
+                       <if test='condition == "title"'>
+                       AND title LIKE CONCAT('%',#{searchText},'%')
+                       </if>
+                   </if>
+                 ) AS totalRecords
+        FROM job
+        WHERE del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition == "title"'>
+              AND title LIKE CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        ORDER BY write_date desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectFileIdSingle" parameterType="com.mtf.edumarine.dto.FileDTO" resultType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectFileIdSingle */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM file
+        WHERE 1=1
+          AND id = #{id}
+          AND file_yn = 'Y'
+        LIMIT 1
+    </select>
+
+    <select id="selectFileList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectFileIdSingle */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM file
+        WHERE user_id = #{value}
+        AND file_yn = 'Y'
+        ORDER BY LENGTH(note) ASC, note ASC
     </select>
 
 </mapper>

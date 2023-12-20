@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -61,15 +61,18 @@
             <div id="content" class="sub_login">
                 <div class="login_wrap">
                     <div class="login_top_txt">
-                        가입 시, 입력했던 성함/이메일주소를 입력해주세요.<br>
-                        해당 이메일주소로 초기화 링크를 보내드립니다.
+                        아이디를 입력해주세요.<br>
+                        가입 시 입력했던 E-mail 주소로<br>
+                        비밀번호 초기화 정보를 보내드립니다.
                     </div>
                     <div class="login_form">
                         <div class="login_info">
-                            <p>이메일</p>
-                            <input type="email" placeholder="이메일을 입력해주세요.">
+                            <p>아이디</p>
+                            <input type="text" id="init_id" placeholder="이메일을 입력해주세요.">
                         </div>
-                        <div class="btn_login"><a href="" class="btnSt01">초기화 요청하기</a></div>
+                        <div class="btn_login">
+                            <a href="javascript:void(0);" onclick="f_pw_init();" class="btnSt01">초기화 요청하기</a>
+                        </div>
                     </div>
                 </div>
             </div>

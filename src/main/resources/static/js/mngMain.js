@@ -215,6 +215,17 @@ function ajaxConnect(url, method, jsonStr) {
     return result;
 }
 
+function f_mng_trash_remove(jsonObj){
+
+    let resData = ajaxConnect('/mng/file/trash/save.do', 'post', jsonObj);
+
+    if (resData.resultCode === "0") {
+        showMessage('', 'info', '삭제', '해당 데이터가 임시휴지통으로 이동되었습니다.', '');
+    } else {
+        showMessage('', 'error', '에러 발생', '삭제 처리를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+    }
+}
+
 function getCurrentDate() {
     let date = new Date(); // Data 객체 생성
     let year = date.getFullYear().toString(); // 년도 구하기
@@ -285,20 +296,190 @@ function f_excel_export(tableId , name){
     let dataTbl = $('#' + tableId).DataTable();
     let dataCount = dataTbl.rows().count();
     if(dataCount > 0){
-        let buttons = new $.fn.dataTable.Buttons(dataTbl, {
-            buttons:[
-                {
-                    extend: 'excelHtml5',
-                    title: name + '_목록_excel_' + getCurrentDate(),
-                    autoFilter: true,
-                    text: 'Export as Excel',
-                    className: 'btn btn-success btn-active-light-success'
-                }
-            ]
-        }).container().appendTo($('#kt_datatable_excel_hidden_buttons'));
+
+        let downloadFileName = name + '_목록_excel_' + getCurrentDate();
+
+        let jsonObj = {
+            downloadFileName: downloadFileName,
+            targetMenu: getTargetMenu(tableId)
+        }
+        let resData = ajaxConnect('/mng/file/download/insert.do', 'post', jsonObj);
+
+        if (resData.resultCode === "0") {
+            let buttons = new $.fn.dataTable.Buttons(dataTbl, {
+                buttons:[
+                    {
+                        extend: 'excelHtml5',
+                        title: downloadFileName,
+                        autoFilter: true,
+                        text: 'Export as Excel',
+                        className: 'btn btn-success btn-active-light-success'
+                    }
+                ]
+            }).container().appendTo($('#kt_datatable_excel_hidden_buttons'));
+        }else{
+            showMessage('', 'error', '에러 발생', '엑셀 다운로드 내역 저장에 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+        }
     }else{
         showMessage('', 'info', 'Export as Excel', '엑셀로 추출할 데이터가 없습니다.', '');
     }
+}
+
+function getTargetMenu(tableId){
+    let targetMenu = '';
+    let menu = tableId.toString().split('_');
+    let menuTop = menu[1];
+    switch (menuTop){
+        case 'customer':
+            targetMenu += '회원/신청';
+            break;
+        case 'education':
+            targetMenu += '교육';
+            break;
+        case 'board':
+        case 'pop':
+        case 'newsletter':
+        case 'smsMng':
+            targetMenu += '정보센터';
+            break;
+        case 'file':
+            targetMenu += '파일';
+            break;
+        default:
+            break;
+    }
+
+    targetMenu += '_';
+
+    let menuMid = menu[2];
+    switch (menuMid){
+        case 'member':
+        case 'regular':
+        case 'inboarder':
+            targetMenu += '회원관리';
+            break;
+        case 'train':
+        case 'payment':
+            targetMenu += '교육관리';
+            break;
+        case 'notice':
+        case 'press':
+        case 'gallery':
+        case 'media':
+        case 'newsletter':
+        case 'job':
+        case 'community':
+            targetMenu += '게시판관리';
+            break;
+        case 'popup':
+        case 'banner':
+            targetMenu += '팝업/배너관리';
+            break;
+        case 'subscriber':
+            targetMenu += '뉴스레터관리';
+            break;
+        case 'sms':
+            targetMenu += 'SMS관리';
+            break;
+        case 'download':
+            targetMenu += '파일관리';
+            break;
+        default:
+            break;
+    }
+
+    targetMenu += '_';
+
+    let menuBot = menu[3];
+    switch (menuMid){
+        case 'member':
+            targetMenu += '전체회원목록';
+            break;
+        case 'regular':
+            targetMenu += '상시사전신청';
+            break;
+        case 'inboarder':
+            targetMenu += '자가정비(선내기)';
+            break;
+        case 'train':
+            targetMenu += '교육현황';
+            break;
+        case 'payment':
+            targetMenu += '결제/환불현황';
+            break;
+        case 'notice':
+            targetMenu += '공지사항';
+            break;
+        case 'press':
+            targetMenu += '보도자료';
+            break;
+        case 'gallery':
+            targetMenu += '사진자료';
+            break;
+        case 'media':
+            targetMenu += '영상자료';
+            break;
+        case 'newsletter':
+            targetMenu += '뉴스레터';
+            break;
+        case 'job':
+            targetMenu += '취창업성공후기';
+            break;
+        case 'community':
+            targetMenu += '커뮤니티';
+            break;
+        case 'popup':
+            targetMenu += '팝업관리';
+            break;
+        case 'banner':
+            targetMenu += '배너관리';
+            break;
+        case 'subscriber':
+            targetMenu += '뉴스레터구독자관리';
+            break;
+        case 'sms':
+            targetMenu += 'SMS발송관리';
+            break;
+        case 'download':
+            targetMenu += '다운로드내역';
+            break;
+        case 'trash':
+            targetMenu += '임시휴지통';
+            break;
+        default:
+            break;
+    }
+
+    //mng_customer_member_table // 회원/신청_회원관리_전체회원목록
+
+    //mng_customer_regular_table // 회원/신청_회원관리_상시사전신청
+    //mng_customer_inboarder_table // 회원/신청_회원관리_자가정비(선내기)
+
+    //mng_education_train_table // 교육_교육관리_교육현황
+    //mng_education_payment_table 교육_교육관리_결제/환불현황
+
+    //mng_board_notice_table // 정보센터_게시판관리_공지사항
+    //mng_board_press_table // 정보센터_게시판관리_보도자료
+    //mng_board_gallery_table // 정보센터_게시판관리_사진자료
+    //mng_board_media_table // 정보센터_게시판관리_영상자료
+    //mng_board_newsletter_table // 정보센터_게시판관리_뉴스레터
+    //mng_board_job_table // 정보센터_게시판관리_취창업성공후기
+    //mng_board_community_table // 정보센터_게시판관리_커뮤니티
+
+    //mng_pop_popup_table // 정보센터_팝업/배너관리_팝업관리
+    //mng_pop_banner_table // 정보센터_팝업/배너관리_배너관리
+
+    //mng_newsletter_subscriber_table // 정보센터_뉴스레터관리_뉴스레터구독자관리
+
+    //mng_smsMng_sms_table // 정보센터_SMS관리_SMS발송관리
+
+    //mng_file_download_table // 파일_파일관리_다운로드내역
+
+    return targetMenu;
+}
+
+function f_mng_temporary_trash_save(){
+
 }
 
 function f_mng_uploadFile(formId, path) {

@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -65,7 +65,7 @@
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
                     <li class="on"><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 정비 테크니션</a></li>
+                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -137,113 +137,113 @@
                                         <col>
                                     </colgroup>
                                     <thead>
-                                    <tr>
-                                        <th>구분</th>
-                                        <th>선외기 정비사 실무과정</th>
-                                        <th>선내기 정비사 실무과정</th>
-                                    </tr>
+                                        <tr>
+                                            <th>구분</th>
+                                            <th>선외기 정비사 실무과정</th>
+                                            <th>선내기 정비사 실무과정</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>교육내용</td>
-                                        <td>
-                                            <div class="box">
-                                                <ul class="list">
-                                                    <li>해양레저산업 현황</li>
-                                                    <li>선외기 해상엔진 이해</li>
-                                                    <li>선외기 시스템 이해</li>
-                                                    <li>2-Stroke 선외기 실습</li>
-                                                    <li>4-Stroke 선외기 실습</li>
-                                                    <li>선외기 설치 및 유지관리</li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="box">
-                                                <ul class="list">
-                                                    <li>해양레저산업 현황</li>
-                                                    <li>선내기 해상엔진 이해</li>
-                                                    <li>선외기 시스템 이해</li>
-                                                    <li>4-Stroke 디젤엔진 시스템 이해</li>
-                                                    <li>4-Stroke 디젤엔진 실습</li>
-                                                    <li>선내기 유지관리</li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>교육기간</td>
-                                        <td>
-                                            <div class="box">
-                                                <div class="text">2023.11.06.(월)~2023.12.01(금)</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="box">
-                                                <div class="text">2023.10.30.(월)~2023.11.24(금)</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>교육일수</td>
-                                        <td colspan="2">
-                                            <div class="box">
-                                                <div class="text">20일 140시간 (4주, 1일 7시간)</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>교육시간</td>
-                                        <td colspan="2">
-                                            <div class="box">
-                                                <div class="text">09:30 ~ 17:30 (단, 금요일 08:00 ~ 16:00)</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>교육장소</td>
-                                        <td>
-                                            <div class="box">
-                                                <ul class="list">
-                                                    <li>경기테크노파크(안산)</li>
-                                                    <li>경기해양레저인력양성센터</li>
-                                                    <li>선외기교육장</li>
-                                                </ul>
-                                                <div class="small">경기도 안산시 상록구 해안로 705</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="box">
-                                                <ul class="list">
-                                                    <li>아라마리나(김포)</li>
-                                                    <li>경기해양레저인력양성센터</li>
-                                                    <li>선내기교육장</li>
-                                                </ul>
-                                                <div class="small">경기도 김포시 고촌읍 아라육로152번길 210</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>교육인원</td>
-                                        <td>
-                                            <div class="box">
-                                                <div class="text">15명 내외</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="box">
-                                                <div class="text">15명 내외</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>교육시간</td>
-                                        <td colspan="2">
-                                            <div class="box">
-                                                <div class="text">700,000원</div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>교육내용</td>
+                                            <td>
+                                                <div class="box">
+                                                    <ul class="list">
+                                                        <li>해양레저산업 현황</li>
+                                                        <li>선외기 해상엔진 이해</li>
+                                                        <li>선외기 시스템 이해</li>
+                                                        <li>2-Stroke 선외기 실습</li>
+                                                        <li>4-Stroke 선외기 실습</li>
+                                                        <li>선외기 설치 및 유지관리</li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <ul class="list">
+                                                        <li>해양레저산업 현황</li>
+                                                        <li>선내기 해상엔진 이해</li>
+                                                        <li>선외기 시스템 이해</li>
+                                                        <li>4-Stroke 디젤엔진 시스템 이해</li>
+                                                        <li>4-Stroke 디젤엔진 실습</li>
+                                                        <li>선내기 유지관리</li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>교육기간</td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">2023.11.06.(월)~2023.12.01(금)</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">2023.10.30.(월)~2023.11.24(금)</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>교육일수</td>
+                                            <td colspan="2">
+                                                <div class="box">
+                                                    <div class="text">20일 140시간 (4주, 1일 7시간)</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>교육시간</td>
+                                            <td colspan="2">
+                                                <div class="box">
+                                                    <div class="text">09:30 ~ 17:30 (단, 금요일 08:00 ~ 16:00)</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>교육장소</td>
+                                            <td>
+                                                <div class="box">
+                                                    <ul class="list">
+                                                        <li>경기테크노파크(안산)</li>
+                                                        <li>경기해양레저인력양성센터</li>
+                                                        <li>선외기교육장</li>
+                                                    </ul>
+                                                    <div class="small">경기도 안산시 상록구 해안로 705</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <ul class="list">
+                                                        <li>아라마리나(김포)</li>
+                                                        <li>경기해양레저인력양성센터</li>
+                                                        <li>선내기교육장</li>
+                                                    </ul>
+                                                    <div class="small">경기도 김포시 고촌읍 아라육로152번길 210</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>교육인원</td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">15명 내외</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">15명 내외</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>교육비</td>
+                                            <td colspan="2">
+                                                <div class="box">
+                                                    <div class="text">700,000원</div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -293,7 +293,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="gubun">지원조건</div>
+                                <div class="gubun">수료조건</div>
                                 <div class="naeyong">
                                     <ul class="list">
                                         <li>출석률 85% 이상 (총 20일 중 17일 이상 출석)</li>
@@ -321,14 +321,14 @@
                         <!-- guide_info_3 -->
                         <div class="guide_info_3">
                             <ul class="info_list">
-                                <li>
+                                <li class="w100">
                                     <div class="tit_box">
                                         <div class="small">혜택.1</div>
                                         <div class="big">전문교육 강사</div>
                                     </div>
                                     <div class="text_box">
-                                        영국 SOUTH DEVON COLLEGE의<br>
-                                        ‘Marine Technician’ 전문강사<br>
+                                        영국 SOUTH DEVON COLLEGE의
+                                        ‘Marine Technician’ 전문강사
                                         교육을 수료한 교육강사가 직접 교육
                                     </div>
                                 </li>
@@ -338,23 +338,14 @@
                                         <div class="big">교육 수료자 취업 지원</div>
                                     </div>
                                     <div class="text_box">
-                                        커리어 코칭 프로그램 운영<br>
-                                        취업 알선 및 사후관리
+                                        해양레저관련 주요 업체에 취업 알선 및 사후관리
                                     </div>
                                 </li>
                                 <li>
                                     <div class="tit_box">
                                         <div class="small">혜택.3</div>
-                                        <div class="big">교육비 전액 지원</div>
-                                    </div>
-                                    <div class="text_box">교육 수료의 경우 해당함</div>
-                                </li>
-                                <li>
-                                    <div class="tit_box">
-                                        <div class="small">혜택.4</div>
                                         <div class="big">
-                                            FRP 선체 정비 테크니션<br>
-                                            양성교육 수료증 발급 등
+                                            마리나선박정비사 실무과정 수료증 발급
                                         </div>
                                     </div>
                                     <div class="text_box">
@@ -384,7 +375,7 @@
                                     <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_01.png"></div>
                                     <div class="text_box">
                                         <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_01.png"></div>
-                                        <div class="text">엔진 수리점<br>유지보수</div>
+                                        <div class="text">엔진수리점/<br>유지보수</div>
                                     </div>
                                 </li>
                                 <li>

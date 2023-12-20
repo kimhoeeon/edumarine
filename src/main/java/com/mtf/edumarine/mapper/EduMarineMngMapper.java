@@ -244,4 +244,24 @@ public interface EduMarineMngMapper {
     Integer deleteSms(SmsDTO smsDTO);
 
     SmsDTO selectSmsSingle(SmsDTO smsDTO);
+
+    List<DownloadDTO> selectDownloadList(SearchDTO searchDTO);
+
+    String getDownloadSeq();
+
+    Integer insertDownload(DownloadDTO downloadDTO);
+
+    List<TrashDTO> selectTrashList(SearchDTO searchDTO);
+
+    Integer updateTargetTableTrash(TrashDTO trashDTO);
+
+    String getTrashSeq();
+
+    Integer insertTrash(TrashDTO trashDTO);
+
+    Integer deleteTrash(TrashDTO trashDTO);
+
+    Integer deleteTargetTableTrash(TrashDTO trashDTO);
+
+    TrashDTO selectTrashSingle(TrashDTO trashDTO);
 }
