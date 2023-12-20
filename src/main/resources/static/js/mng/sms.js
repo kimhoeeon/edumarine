@@ -198,6 +198,37 @@ function f_smsMng_sms_modify_init_set(seq){
 function f_smsMng_sms_remove(seq){
     //console.log('삭제버튼');
     if(nullToEmpty(seq) !== ""){
+        Swal.fire({
+            title: "[삭제 사유]",
+            text: "사유 입력 후 삭제하기 버튼 클릭 시 데이터는 파일관리>임시휴지통 으로 이동됩니다.",
+            input: 'text',
+            inputPlaceholder: '삭제 사유를 입력해주세요.',
+            width: '70em',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '삭제하기',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.value) {
+
+                let jsonObj = {
+                    targetSeq: seq,
+                    targetTable: 'sms',
+                    deleteReason: result.value,
+                    targetMenu: getTargetMenu('mng_smsMng_sms_table'),
+                    delYn: 'Y'
+                }
+                f_mng_trash_remove(jsonObj);
+                
+                f_smsMng_sms_search(); // 재조회
+
+            }else{
+                alert('삭제 사유를 입력해주세요.');
+            }
+        });
+
+        /*
         let jsonObj = {
             seq: seq
         }
@@ -212,6 +243,7 @@ function f_smsMng_sms_remove(seq){
         }).then((result) => {
             if (result.isConfirmed) {
 
+                /!*
                 let resData = ajaxConnect('/mng/smsMng/sms/delete.do', 'post', jsonObj);
 
                 if (resData.resultCode === "0") {
@@ -221,7 +253,7 @@ function f_smsMng_sms_remove(seq){
                     showMessage('', 'error', '에러 발생', 'SMS 발송 내역 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }
             }
-        });
+        });*/
     }
 }
 

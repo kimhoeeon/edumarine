@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // 메인 슬라이드
-    var swiper = new Swiper('.main_swiper_wrap .swiper', {
+    var swiper1 = new Swiper('.main_swiper_wrap .swiper', {
         slidesPerView: 1,
         spaceBetween: 0,
         direction: getDirection(),
@@ -20,18 +20,18 @@ $(document).ready(function () {
         },
         on: {
             resize: function () {
-                swiper.changeDirection(getDirection());
+                swiper1.changeDirection(getDirection());
             },
         },
     });
 
     // 갤러리
-    var swiper = new Swiper('.gallery_swiper .swiper', {
+    var swiper2 = new Swiper('.gallery_swiper .swiper', {
         slidesPerView: 1,
         spaceBetween: 0,
         direction: getDirection(),
-        loop: true,
-        pagination: { 
+        watchOverflow: true,
+        pagination: {
             el: ".gallery_swiper .swiper-pagination",
             clickable: true, 
         },
@@ -41,9 +41,40 @@ $(document).ready(function () {
         },
         on: {
             resize: function () {
-                swiper.changeDirection(getDirection());
+                swiper2.changeDirection(getDirection());
             },
+            observerUpdate: function () {
+                swiper2.slideTo(0, 0, false);
+            }
         },
+        observer: true,
+        observeSlideChildren: true
+    });
+
+    // 취창업후기
+    var swiper3 = new Swiper('.review_swiper .swiper', {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        direction: getDirection(),
+        watchOverflow: true,
+        pagination: {
+            el: ".review_swiper .swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.review_swiper .swiper-button-next',
+            prevEl: '.review_swiper .swiper-button-prev',
+        },
+        on: {
+            resize: function () {
+                swiper3.changeDirection(getDirection());
+            },
+            observerUpdate: function () {
+                swiper3.slideTo(0, 0, false);
+            }
+        },
+        observer: true,
+        observeSlideChildren: true
     });
 
 

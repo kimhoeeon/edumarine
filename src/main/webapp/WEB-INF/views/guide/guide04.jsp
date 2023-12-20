@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -47,11 +47,11 @@
         <div class="sub_top sub_top_guide">
             <div class="inner">
                 <div class="sub_top_nav">
-                    <span class="home"><img src="<%request.getContextPath();%>/static/img/icon_home_mini.png" alt="홈 아이콘"></span>
+                    <span class="home"><img src="../img/icon_home_mini.png" alt="홈 아이콘"></span>
                     <span>교육 안내</span>
-                    <span>FRP 정비 테크니션</span>
+                    <span>FRP 레저보트 선체 정비 테크니션</span>
                 </div>
-                <h2 class="sub_top_title">FRP 정비 테크니션</h2>
+                <h2 class="sub_top_title">FRP 레저보트 선체 정비 테크니션</h2>
             </div>
         </div>
         <!-- //sub_top -->
@@ -65,7 +65,7 @@
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
                     <li><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
-                    <li class="on"><a href="/guide/guide04.do">FRP 정비 테크니션</a></li>
+                    <li class="on"><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -84,7 +84,7 @@
                             <div class="big">FRP 레저보트 선체 정비 테크니션</div>
                             <div class="eng">FRP Leisure Boat Hull Maintenance Technology</div>
                             <div class="text">
-                                해양레저 유지보수 분야의 기술인력 수요 증가에 따라, 현장 실무인재를 양성하고 취업 연계를 위한 FRP 레저보트 선체 정비 테크니션 양성을 위해<br>
+                                해양레저 유지보수 분야의 기술인력 수요 증가에 따라, 현장 실무인재를 양성하고 취업 연계를 위한 FRP 레저보트 선체 정비 테크니션 양성을 위해
                                 교육생을 모집하오니 관심 있는 분들의 많은 지원을 바랍니다.
                             </div>
                         </div>
@@ -156,12 +156,12 @@
                                             <td>교육과정</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="underlineSkyBlue">RP 레저보트 선체 정비 테크니션(BD1)양성 과정</div>
+                                                    <div class="underlineSkyBlue">FRP 레저보트 선체 정비 테크니션(BD1)양성 과정</div>
                                                     <div class="small">
-                                                        ※ 세계 최고 수준의 해양레저전문 대학인 영국 SOUTH DEVON COLLEGE의 직업교육과정(마린 테크니션 교육) 국내 도입
+                                                        ※ 세계 최고 수준의 해양레저전문 대학인 영국 SOUTH DEVON COLLEGE의 직업교육과정(Principle in Hull Repair) 국내 도입
                                                     </div>
                                                     <div class="small">
-                                                        ※ (SOUTH DEVON COLLEGE) 영국 잉글랜드 남서부 데본주 소재 대학으로 영국에서 승인한 해양레저 관련<br>
+                                                        ※ (SOUTH DEVON COLLEGE) 영국 잉글랜드 남서부 데본주 소재 대학으로 영국에서 승인한 해양레저 관련
                                                         직업학교와 영국왕립요트협회 소속 노스 마린아카데미 운영
                                                     </div>
                                                 </div>
@@ -265,7 +265,7 @@
                                         </li>
                                         <li>
                                             <div class="number">4</div>
-                                            교육시작일 기준 고용보험 자격상실자
+                                            교육시작 전 고용보험 자격상실자(확인서 제출)
                                         </li>
                                     </ul>
                                 </div>
@@ -326,8 +326,10 @@
                                             <td>해당자</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="list"><div class="text">관련분야 자격증</div></div>
-                                                    <div class="list"><div class="text">관련분야 경력증명서</div></div>
+                                                    <ul class="list">
+                                                        <li>관련분야 자격증</li>
+                                                        <li>관련분야 경력증명서</li>
+                                                    </ul>
                                                 </div>
                                             </td>
                                             <td style="text-align: center;">1부</td>
@@ -344,7 +346,7 @@
                                 <ul class="pros_list">
                                     <li class="box">
                                         <div class="text">신청/접수</div>
-                                        <div class="date">23. 6. 12(월)~ 6. 30(금)</div>
+                                        <div class="date">23. 6. 12(월)<br>~ 6. 30(금)</div>
                                     </li>
                                     <li class="icon"></li>
                                     <li class="box">
@@ -446,7 +448,7 @@
                                     <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_01.png"></div>
                                     <div class="text_box">
                                         <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_01.png"></div>
-                                        <div class="text">엔진 수리점<br>유지보수</div>
+                                        <div class="text">엔진수리점/<br>유지보수</div>
                                     </div>
                                 </li>
                                 <li>

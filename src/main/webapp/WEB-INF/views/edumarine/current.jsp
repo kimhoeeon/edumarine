@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -123,7 +123,7 @@
                         <div class="center_tit_box">
                             <div class="big">경기만의 마리나 시설</div>
                             <div class="small">
-                                기도는 전곡, 김포 마리나와 함께 제부, 홀곶, 방아머리 등 대규모 마리나 3곳 개발을 추진하고 있습니다.<br>
+                                경기도는 전곡, 김포 마리나와 함께 제부, 홀곶, 방아머리 등 대규모 마리나 3곳 개발을 추진하고 있습니다.<br>
                                 이 마리나들은 바다와 육지 계류 시설을 함께 갖추고 있어 조수간만의 차, 태풍 등<br>
                                 자연재해로부터 최대한 보호되는 안전한 요·보트 계류가 가능합니다.<br>
                                 이 다섯 마리나를 이용한 항해코스개발과 해양관광인프라로 활용될 마리나를 거점으로<br>

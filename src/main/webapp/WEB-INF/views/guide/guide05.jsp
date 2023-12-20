@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -65,7 +65,7 @@
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
                     <li><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 정비 테크니션</a></li>
+                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li class="on"><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -82,7 +82,7 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">위탁교육</div>
-                            <div class="eng">FRP Leisure Boat Hull Maintenance Technology</div>
+                            <div class="eng">Commissioned education</div>
                         </div>
                         <div class="guide_top_bnr">
                             <div class="bnr_box">
@@ -126,7 +126,7 @@
                                             <td>
                                                 <div class="box">
                                                     <div class="number">1) 중급 이론교육</div>
-                                                    <div class="number">2) 엔진 점검, 분석 능력</div>
+                                                    <div class="number">2) 엔진 점검, 진단, 분석 능력</div>
                                                     <div class="number">3) 엔진 성능시험 등</div>
                                                     <div class="small">※ 기관별 맞춤형 프로그램 구성 가능 (별도 문의)</div>
                                                 </div>
@@ -166,50 +166,6 @@
                         <!-- //guide_table -->
                     </div>
                     <!-- //과정안내 -->
-
-                    <!-- 교육문의 -->
-                    <div class="guide_inquiry">
-                        <!-- guide_tit_box -->
-                        <div class="guide_tit_box">
-                            <div class="num">02</div>
-                            <div class="name">교육문의</div>
-                        </div>
-                        <!-- //guide_tit_box -->
-                        <div class="cont_box">
-                            <div class="box_1">
-                                <div class="tit">지원서 허위기재 등 부정행위를 한 자는 즉시 불합격 처리</div>
-                            </div>
-                            <div class="box_2">
-                                <div class="tit">교육문의</div>
-                                <ul>
-                                    <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_tel.png"></div>
-                                        <div class="text">Tel. 1811-7891</div>
-                                    </li>
-                                    <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_talk.png"></div>
-                                        <div class="text">카카오톡 [경기 해양레저인력양성센터] 검색</div>
-                                    </li>
-                                    <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
-                                        <div class="text">E-mail. <span class="underline">edu@edumarine.org</span> 또는
-                                            https://yachtmnr.or.kr
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="box_cmnt">
-                                상기 교육일정 및 교육내용은 변경될 수 있습니다.<br>
-                                변경시 경기해양레저인력양성센터 홈페이지 (<span class="underline">www.edumarine.org</span>)에 게시
-                            </div>
-                        </div>
-                        <!-- guide_btn_box -->
-                        <div class="guide_btn_box">
-                            <div class="btn_box"><a href="">교육신청 바로가기</a></div>
-                        </div>
-                        <!-- //guide_btn_box -->
-                    </div>
-                    <!-- //교육문의 -->
 
                 </div>
             </div>

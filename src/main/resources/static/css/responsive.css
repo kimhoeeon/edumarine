@@ -164,7 +164,7 @@
     .center_current_3 .box .list li {width: calc(25% - 20px)}
     .center_current_3 .box .list .text {font-size: 1.4rem;}
     
-    
+    .form_wrap .form_box .form_list > li.w50 {width: 100%;}
     
 
 }
@@ -546,14 +546,17 @@
     .form_wrap .form_box .form_tit {word-break: keep-all;}
     .form_wrap .form_box .form_tit .big {font-size: 1.8rem;}
     .form_wrap .form_box .form_tit .small {font-size: 1.4rem;}
-    .form_wrap .form_box .form_list > li {flex-direction: column; gap: 10px; align-items: flex-start; padding: 20px 0; font-size: 1.4rem;}
-    .form_wrap .form_box .form_list > li .gubun {flex-basis: auto; background:none; padding: 0; font-size: 1.4rem;}
+    .form_wrap .form_box .form_list > li {flex-direction: column; gap: 10px; align-items: flex-start; font-size: 1.4rem;}
+    .form_wrap .form_box .form_list > li .gubun {flex-basis: auto; font-size: 1.4rem; text-align: left; width: 100%;}
     .form_wrap .form_box .form_list > li .gubun p span {display: inline-block; margin-left: 3px; color: #555;}
-    .form_wrap .form_box .form_list > li .naeyong {padding: 0;width: 100%;}
-    .form_wrap .form_box .form_list > li .naeyong .input .w50 {flex: 1; width: 100%; max-width: 400px;}
+    .form_wrap .form_box .form_list > li .naeyong {padding: 10px 0 15px;width: 100%;}
+    .form_wrap .form_box .form_list > li .naeyong .input input.w50 {flex: 1; width: 100%; max-width: 400px;}
     .form_wrap .form_box .form_list > li .cmnt {font-size: 1.2rem;}
     .form_wrap .form_box .form_list > li .cmnt::before {font-size: 8px; width: 14px; height: 14px; line-height: 14px;}
 
+    .form_wrap .form_box .form_list .form_list_tit {flex-direction: row; gap: 0;}
+    .form_wrap .form_box .form_list .form_list_tit .del_btn {font-size: 1.3rem;}
+    .form_wrap .form_box .formAddBtn span {font-size: 1.3rem;}
 
     .form_wrap .form_box .form_keyword label {width: calc(50% - 5px);}
 

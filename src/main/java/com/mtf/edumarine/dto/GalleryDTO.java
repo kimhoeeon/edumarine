@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -24,6 +26,8 @@ public class GalleryDTO extends AbstractPagingRequestVo {
     String initRegiDttm; //최초 등록 일시
     String finalRegiPic; //최종 변경 담당자
     String finalRegiDttm; //최종 변경 일시
+
+    List<String> fullFilePathList;
 
     String prevId;
     String nextId;

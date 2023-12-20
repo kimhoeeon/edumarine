@@ -87,7 +87,7 @@ function f_customer_member_detail_modal_set(seq){
 
     /* 상세보기 Modal form Set */
     //console.log(resData);
-
+    document.querySelector('#md_grade').value = resData.grade;
     document.querySelector('#md_id').value = resData.id;
     document.querySelector('#md_name').value = resData.name;
     document.querySelector('#md_phone').value = resData.phone;
@@ -109,7 +109,37 @@ function f_customer_member_detail_modal_set(seq){
 function f_customer_member_remove(seq){
     //console.log('삭제버튼');
     if(nullToEmpty(seq) !== ""){
-        let jsonObj = {
+        Swal.fire({
+            title: "[삭제 사유]",
+            text: "사유 입력 후 삭제하기 버튼 클릭 시 데이터는 파일관리>임시휴지통 으로 이동됩니다.",
+            input: 'text',
+            inputPlaceholder: '삭제 사유를 입력해주세요.',
+            width: '70em',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '삭제하기',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.value) {
+
+                let jsonObj = {
+                    targetSeq: seq,
+                    targetTable: 'member',
+                    deleteReason: result.value,
+                    targetMenu: getTargetMenu('mng_customer_member_table'),
+                    delYn: 'Y'
+                }
+                f_mng_trash_remove(jsonObj);
+
+                f_customer_member_search(); // 재조회
+
+            }else{
+                alert('삭제 사유를 입력해주세요.');
+            }
+        });
+
+        /*let jsonObj = {
             seq: seq
         }
         Swal.fire({
@@ -132,7 +162,7 @@ function f_customer_member_remove(seq){
                     showMessage('', 'error', '에러 발생', '회원 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }
             }
-        });
+        });*/
     }
 }
 
@@ -248,6 +278,20 @@ function f_customer_member_form_data_setting(){
     }
     form.keyword = keyword;
 
+    // 회원등급
+    form.grade = '일반회원';
+
+    // SMS 알림서비스 동의
+    let smsYn = $('input[type=radio][name=smsYn]:checked').val();
+    if(smsYn === '1'){
+        form.smsYn = '1';
+
+        // SMS 동의 시 일반 -> 관심 등급 업그레이드
+        form.grade = '관심사용자';
+    }else{
+        form.smsYn = '0';
+    }
+
     return JSON.stringify(form);
 }
 
@@ -260,13 +304,13 @@ function f_customer_member_valid(){
     let domain = document.querySelector('#domain').value;
     let keywordArr = $('input[type=checkbox][name=keyword]:checked');
 
-    if(nvl(id,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '아이디를 입력해 주세요.', ''); return false; }
-    if(nvl(password,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '비밀번호를 입력해 주세요.', ''); return false; }
-    if(nvl(name,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '이름을 입력해 주세요.', ''); return false; }
-    if(nvl(phone,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '연락처를 입력해 주세요.', ''); return false; }
-    if(nvl(email,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '이메일을 입력해 주세요.', ''); return false; }
-    if(nvl(domain,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '이메일 도메인을 입력해 주세요.', ''); return false; }
-    if(keywordArr.length === 0){ showMessage('', 'error', '[글 등록 정보]', '관심 키워드를 하나 이상 선택해 주세요.', ''); return false; }
+    if(nvl(id,"") === ""){ showMessage('', 'error', '[등록 정보]', '아이디를 입력해 주세요.', ''); return false; }
+    if(nvl(password,"") === ""){ showMessage('', 'error', '[등록 정보]', '비밀번호를 입력해 주세요.', ''); return false; }
+    if(nvl(name,"") === ""){ showMessage('', 'error', '[등록 정보]', '이름을 입력해 주세요.', ''); return false; }
+    if(nvl(phone,"") === ""){ showMessage('', 'error', '[등록 정보]', '연락처를 입력해 주세요.', ''); return false; }
+    if(nvl(email,"") === ""){ showMessage('', 'error', '[등록 정보]', '이메일을 입력해 주세요.', ''); return false; }
+    if(nvl(domain,"") === ""){ showMessage('', 'error', '[등록 정보]', '이메일 도메인을 입력해 주세요.', ''); return false; }
+    if(keywordArr.length === 0){ showMessage('', 'error', '[등록 정보]', '관심 키워드를 하나 이상 선택해 주세요.', ''); return false; }
 
     return true;
 }

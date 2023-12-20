@@ -1,0 +1,32 @@
+package com.mtf.edumarine.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class ResumeDTO {
+    Integer rownum; //연번
+    String id;
+    String seq; //순번
+    String nameKo; //이름
+    String nameEn; //이름
+    String phone; //연락처
+    String email; //이메일
+    String rrn; //주민등록번호
+    Integer age; //나이
+    String address; //주소
+    String addressDetail; //상세주소
+    String topClothesSize; //상의사이즈
+    String bottomClothesSize; //하의사이즈
+    String shoesSize; //안전화사이즈
+    String participationPath; //참여경로
+    String delYn; //임시휴지통여부
+    String note; //비고
+    String initRegiPic; //최초 등록 담당자
+    String initRegiDttm; //최초 등록 일시
+    String finalRegiPic; //최종 변경 담당자
+    String finalRegiDttm; //최종 변경 일시
+}

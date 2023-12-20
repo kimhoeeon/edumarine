@@ -2178,6 +2178,187 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         return responseDTO;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<DownloadDTO> processSelectDownloadList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectDownloadList");
+        return eduMarineMngMapper.selectDownloadList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertDownload(DownloadDTO downloadDTO) {
+        System.out.println("EduMarineMngServiceImpl > processInsertDownload");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getDownloadSeq();
+            downloadDTO.setSeq(getSeq);
+
+            result = eduMarineMngMapper.insertDownload(downloadDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertDownload ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<TrashDTO> processSelectTrashList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectTrashList");
+        return eduMarineMngMapper.selectTrashList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processSaveTrash(TrashDTO trashDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSaveTrash");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if (!StringUtil.isEmpty(trashDTO.getTargetSeq())) {
+
+                // 대상 테이블 삭제 여부 update
+                result = eduMarineMngMapper.updateTargetTableTrash(trashDTO);
+
+                if (result == 0) {
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail]";
+                } else {
+                    String getSeq = eduMarineMngMapper.getTrashSeq();
+                    trashDTO.setSeq(getSeq);
+
+                    result = eduMarineMngMapper.insertTrash(trashDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if (result == 0) {
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }
+
+            } else {
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Target Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processSaveTrash ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteTrash(TrashDTO trashDTO) {
+        System.out.println("EduMarineMngServiceImpl > processDeleteTrash");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(trashDTO.getSeq() != null){
+                // 조회
+                trashDTO = eduMarineMngMapper.selectTrashSingle(trashDTO);
+
+                // Trash Table Delete
+                result = eduMarineMngMapper.deleteTrash(trashDTO);
+
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + trashDTO.getSeq();
+                }else{
+
+                    // 대상 테이블 삭제 DELETE
+                    result = eduMarineMngMapper.deleteTargetTableTrash(trashDTO);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Delete Fail] Seq : " + trashDTO.getTargetSeq();
+                    }
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteTrash ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processRestoreTrash(TrashDTO trashDTO) {
+        System.out.println("EduMarineMngServiceImpl > processRestoreTrash");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if (!StringUtil.isEmpty(trashDTO.getSeq())) {
+
+                trashDTO = eduMarineMngMapper.selectTrashSingle(trashDTO);
+
+                // 대상 테이블 삭제 여부 - 복구 update
+                trashDTO.setDelYn("N");
+                result = eduMarineMngMapper.updateTargetTableTrash(trashDTO);
+
+                if (result == 0) {
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail]";
+                } else {
+                    result = eduMarineMngMapper.deleteTrash(trashDTO);
+
+                    if (result == 0) {
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Delete Fail]";
+                    }
+
+                }
+
+            } else {
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Target Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processRestoreTrash ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
     /*******************************************
      * File
      * *****************************************/

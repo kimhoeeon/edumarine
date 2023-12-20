@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -77,25 +77,36 @@
 
                     <!-- board_view -->
                     <div class="board_view_wrap">
-                        <div class="subject">게시물 제목</div>
+                        <div class="subject">${noticeInfo.title}</div>
                         <div class="info_box">
                             <div class="box write">
                                 <div class="gubun">작성자</div>
-                                <div class="naeyong">관리자</div>
+                                <div class="naeyong">${noticeInfo.writer}</div>
                             </div>
                             <div class="box date">
                                 <div class="gubun">작성일</div>
-                                <div class="naeyong">2023.10.11</div>
+                                <div class="naeyong">
+                                    <c:set var="writeDate" value="${fn:replace(fn:split(noticeInfo.writeDate,' ')[0],'-','.')}" />
+                                    ${writeDate}
+                                </div>
                             </div>
                             <div class="box views">
                                 <div class="gubun">조회</div>
-                                <div class="naeyong">1234</div>
+                                <div class="naeyong">${noticeInfo.viewCnt}</div>
                             </div>
                         </div>
-                        <div class="cont_box">게시물 내용</div>
+                        <div class="cont_box">
+                            ${noticeInfo.content}
+                        </div>
                         <div class="file_box">
-                            <a href="#" class="file">첨부파일</a>
-                            <a href="#" class="file">첨부파일</a>
+                            <c:if test="${not empty fileList}">
+                                <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
+                                    <a href="/file/download.do?path=board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}" class="file">${fileInfo.fileName}</a>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty fileList}">
+                                첨부파일 없음
+                            </c:if>
                         </div>
                         <div class="btn_box">
                             <a href="/board/notice_list.do" class="btnSt01">목록으로</a>

@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -85,9 +85,12 @@
                     <div class="swiper_box">
                         <div class="swiper">
                             <ul class="swiper-wrapper">
-                                <li class="swiper-slide img_box"><img src="<%request.getContextPath();%>/static/img/img_main_slide_01.png" alt="메인 슬라이드"></li>
-                                <li class="swiper-slide img_box"><img src="<%request.getContextPath();%>/static/img/img_main_slide_01.png" alt="메인 슬라이드"></li>
-                                <li class="swiper-slide img_box"><img src="<%request.getContextPath();%>/static/img/img_main_slide_01.png" alt="메인 슬라이드"></li>
+                                <c:forEach var="mainBanner" items="${bannerList}" begin="0" end="${bannerList.size()}" step="1" varStatus="status">
+                                    <c:set var="bannerFilePathSrc" value="${fn:replace(mainBanner.fullFilePath, './usr/local/tomcat/webapps', '../../../../..')}" />
+                                <li class="swiper-slide img_box">
+                                    <img src="${bannerFilePathSrc}" alt="메인 슬라이드_${status.index+1}">
+                                </li>
+                                </c:forEach>
                             </ul>
                         </div>
                         <div class="swiper-button-prev"></div>
@@ -178,46 +181,16 @@
                         </li>
                     </ul>
                     <ul class="list_body">
+                        <c:forEach var="mainTrain" items="${trainList}" begin="0" end="${trainList.size()}" step="1" varStatus="status">
                         <li>
-                            <div class="name"><a href="">해상엔진테크니션 (선외기 및 선내기 통합)</a></div>
-                            <div class="chasi">8</div>
-                            <div class="peopleRecruit">21</div>
-                            <div class="peopleApp">1234</div>
-                            <div class="periodApp">23.10.10 ~ 23.11.03</div>
-                            <div class="periodTng">23.11.10 ~ 23.12.03</div>
+                            <div class="name"><a href="">${mainTrain.gbn}</a></div>
+                            <div class="chasi">${mainTrain.nextTime}</div>
+                            <div class="peopleRecruit">${mainTrain.trainCnt}</div>
+                            <div class="peopleApp">${mainTrain.trainApplyCnt}</div>
+                            <div class="periodApp">${fn:substring(mainTrain.applyStartDttm,2, mainTrain.applyStartDttm.length())} ~ ${fn:substring(mainTrain.applyEndDttm,2, mainTrain.applyEndDttm.length())}</div>
+                            <div class="periodTng">${fn:substring(mainTrain.trainStartDttm,2, mainTrain.trainStartDttm.length())} ~ ${fn:substring(mainTrain.trainEndDttm,2, mainTrain.trainEndDttm.length())}</div>
                         </li>
-                        <li>
-                            <div class="name"><a href="">해상엔진테크니션 (선외기 및 선내기 통합)</a></div>
-                            <div class="chasi">8</div>
-                            <div class="peopleRecruit">21</div>
-                            <div class="peopleApp">1234</div>
-                            <div class="periodApp">23.10.10 ~ 23.11.03</div>
-                            <div class="periodTng">23.11.10 ~ 23.12.03</div>
-                        </li>
-                        <li>
-                            <div class="name"><a href="">해상엔진테크니션 (선외기 및 선내기 통합)</a></div>
-                            <div class="chasi">8</div>
-                            <div class="peopleRecruit">21</div>
-                            <div class="peopleApp">1234</div>
-                            <div class="periodApp">23.10.10 ~ 23.11.03</div>
-                            <div class="periodTng">23.11.10 ~ 23.12.03</div>
-                        </li>
-                        <li>
-                            <div class="name"><a href="">해상엔진테크니션 (선외기 및 선내기 통합)</a></div>
-                            <div class="chasi">8</div>
-                            <div class="peopleRecruit">21</div>
-                            <div class="peopleApp">1234</div>
-                            <div class="periodApp">23.10.10 ~ 23.11.03</div>
-                            <div class="periodTng">23.11.10 ~ 23.12.03</div>
-                        </li>
-                        <li>
-                            <div class="name"><a href="">해상엔진테크니션 (선외기 및 선내기 통합)</a></div>
-                            <div class="chasi">8</div>
-                            <div class="peopleRecruit">21</div>
-                            <div class="peopleApp">1234</div>
-                            <div class="periodApp">23.10.10 ~ 23.11.03</div>
-                            <div class="periodTng">23.11.10 ~ 23.12.03</div>
-                        </li>
+                        </c:forEach>
                     </ul>
                 </div>
                 <!-- //list -->
@@ -272,29 +245,15 @@
                     <div class="main_board_list">
                         <div class="title">
                             <h4 class="text">공지사항</h4>
-                            <a href="" class="more">더보기</a>
+                            <a href="/board/notice_list.do" class="more">더보기</a>
                         </div>
                         <ul class="list">
+                            <c:forEach var="mainNotice" items="${noticeList}" begin="0" end="${noticeList.size()}" step="1" varStatus="status">
                             <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
+                                <div class="subject"><a href="/board/notice_view.do?seq=${mainNotice.seq}">${mainNotice.title}</a></div>
+                                <div class="date">${fn:split(mainNotice.writeDate,' ')[0]}</div>
                             </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
+                            </c:forEach>
                         </ul>
                     </div>
                     <!-- //notice -->
@@ -302,29 +261,15 @@
                     <div class="main_board_list">
                         <div class="title">
                             <h4 class="text">보도자료</h4>
-                            <a href="" class="more">더보기</a>
+                            <a href="/board/press_list.do" class="more">더보기</a>
                         </div>
                         <ul class="list">
+                            <c:forEach var="mainPress" items="${pressList}" begin="0" end="${pressList.size()}" step="1" varStatus="status">
                             <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
+                                <div class="subject"><a href="/board/press_view.do?seq=${mainPress.seq}">${mainPress.title}</a></div>
+                                <div class="date">${fn:split(mainPress.writeDate,' ')[0]}</div>
                             </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
-                            <li>
-                                <div class="subject"><a href="">마리나 선박 정비사 신규과정 안내</a></div>
-                                <div class="date">2023.10.16</div>
-                            </li>
+                            </c:forEach>
                         </ul>
                     </div>
                     <!-- //press -->
@@ -342,8 +287,8 @@
                     뉴스레터로 받아보세요.
                 </div>
                 <div class="subscribe_bar">
-                    <input type="email" placeholder="e-mail">
-                    <a href="" class="btn">구독하기</a>
+                    <input type="email" id="subscriber_email" placeholder="e-mail">
+                    <a href="javascript:void(0);" onclick="main_newsletter_subscriber_btn(this);" class="btn">구독하기</a>
                 </div>
             </div>
         </div>
@@ -429,7 +374,7 @@
             let id_today_name	= 'id_today_' + pop_id;
             let cookie_name		= cookie_first_name + pop_id;
 
-            if( $(":input:checkbox[id='" + id_today_name + "']:checked").size() > 0 ){
+            if( $(":input:checkbox[id='" + id_today_name + "']:checked").length > 0 ){
                 setStorage(cookie_name, 1);
             }
 

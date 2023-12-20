@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- swiper 외부 라이브러리 -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />

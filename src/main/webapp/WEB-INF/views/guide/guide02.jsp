@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -65,7 +65,7 @@
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <li class="on"><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
                     <li><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 정비 테크니션</a></li>
+                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -146,72 +146,72 @@
                                         <col>
                                     </colgroup>
                                     <thead>
-                                        <tr>
-                                            <th>구분</th>
-                                            <th>내용</th>
-                                        </tr>
+                                    <tr>
+                                        <th>구분</th>
+                                        <th>내용</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>교육과정</td>
-                                            <td>
-                                                <div class="box">
-                                                    <div class="underlineSkyBlue">해상엔진 테크니션 양성과정</div>
-                                                    <div class="small">
-                                                        ※ 세계 최고 수준의 해양레저전문 대학인 영국 SOUTH DEVON COLLEGE의 직업교육과정(마린 테크니션
-                                                        교육) 국내 도입
-                                                    </div>
-                                                    <div class="small">
-                                                        ※ (SOUTH DEVON COLLEGE) 영국 잉글랜드 남서부 데본주 소재 대학으로 영국에서 승인한 해양레저 관련<br>
-                                                        직업학교와 영국왕립요트협회 소속 노스 마린아카데미 운영
-                                                    </div>
+                                    <tr>
+                                        <td>교육과정</td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="underlineSkyBlue">해상엔진 테크니션 양성과정</div>
+                                                <div class="small">
+                                                    ※ 세계 최고 수준의 해양레저전문 대학인 영국 SOUTH DEVON COLLEGE의 직업교육과정(마린 테크니션
+                                                    교육) 국내 도입
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>교육내용</td>
-                                            <td>
-                                                <div class="box">
-                                                    <div class="number">1) 해양레저산업의 이해</div>
-                                                    <div class="number">2) 해양 엔지니어링의 이해</div>
-                                                    <div class="number">3) 선박 엔진 유지보수 및 서비스</div>
-                                                    <div class="number">4) 선박 추진장치 유지보수 및 서비스</div>
-                                                    <div class="number">5) 선박 전기시스템의 이해 등</div>
+                                                <div class="small">
+                                                    ※ (SOUTH DEVON COLLEGE) 영국 잉글랜드 남서부 데본주 소재 대학으로 영국에서 승인한 해양레저 관련<br>
+                                                    직업학교와 영국왕립요트협회 소속 노스 마린아카데미 운영
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>교육일수</td>
-                                            <td>
-                                                <div class="box">
-                                                    <div class="text">3개월: (선외기 1.5개월, 선내기 1.5개월) / 14주, 443시간</div>
-                                                    <div class="small">※ 공휴일, 연휴 등을 고려 연장교육 등 탄력적 운영하며 교육일정은 일부 변경될 수 있음</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>교육시간</td>
-                                            <td>주5일, 09:30 ~ 17:30 (점심시간 12:30 ~ 13:30)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>교육장소</td>
-                                            <td>
-                                                <div class="box">
-                                                    <ul class="list">
-                                                        <li>
-                                                            선외기 교육: 경기테크노파크(안산)
-                                                            <div class="small">경기도 안산시 상록구 해안로 705</div>
-                                                        </li>
-                                                        <li>
-                                                            선내기 교육: 아라마리나(김포)
-                                                            <div class="small">경기도 김포시 고촌읍 아라육로 270번길 73</div>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="small">※ 선외기 교육 후 선내기 교육 실시</div>
-                                                    <div class="small">※ 교육과목에 따라 교육장 (경기테크노파크, 김포아라마리나) 교차사용</div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>교육내용</td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="number">1) 해양레저산업의 이해</div>
+                                                <div class="number">2) 해양 엔지니어링의 이해</div>
+                                                <div class="number">3) 선박 엔진 유지보수 및 서비스</div>
+                                                <div class="number">4) 선박 추진장치 유지보수 및 서비스</div>
+                                                <div class="number">5) 선박 전기시스템의 이해 등</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>교육일수</td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="text">3개월: (선외기 1.5개월, 선내기 1.5개월) / 14주, 443시간</div>
+                                                <div class="small">※ 공휴일, 연휴 등을 고려 연장교육 등 탄력적 운영하며 교육일정은 일부 변경될 수 있음</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>교육시간</td>
+                                        <td>주5일, 09:30 ~ 17:30 (점심시간 12:30 ~ 13:30)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>교육장소</td>
+                                        <td>
+                                            <div class="box">
+                                                <ul class="list">
+                                                    <li>
+                                                        선외기 교육: 경기테크노파크(안산)
+                                                        <div class="small">경기도 안산시 상록구 해안로 705</div>
+                                                    </li>
+                                                    <li>
+                                                        선내기 교육: 아라마리나(김포)
+                                                        <div class="small">경기도 김포시 고촌읍 아라육로 270번길 73</div>
+                                                    </li>
+                                                </ul>
+                                                <div class="small">※ 선외기 교육 후 선내기 교육 실시</div>
+                                                <div class="small">※ 교육과목에 따라 교육장 (경기테크노파크, 김포아라마리나) 교차사용</div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -330,44 +330,44 @@
                                         <col>
                                     </colgroup>
                                     <thead>
-                                        <tr>
-                                            <th>구분</th>
-                                            <th colspan="2">주요내용</th>
-                                        </tr>
+                                    <tr>
+                                        <th>구분</th>
+                                        <th colspan="2">주요내용</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>응시원서</td>
-                                            <td colspan="2">
-                                                <div class="box">
-                                                    <div class="text" style="text-align: center;">응시원서 및 자기소개서 (사진첨부)
-                                                    </div>
+                                    <tr>
+                                        <td>응시원서</td>
+                                        <td colspan="2">
+                                            <div class="box">
+                                                <div class="text" style="text-align: center;">응시원서 및 자기소개서 (사진첨부)
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td rowspan="2">첨부서류</td>
-                                            <td style="text-align: center;">공통</td>
-                                            <td>
-                                                <div class="box">
-                                                    <ul class="list">
-                                                        <li>개인정보의 수집·이용에 관한 동의서</li>
-                                                        <li>최종학교 졸업(졸업예정)증명서</li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>해당자</td>
-                                            <td>
-                                                <div class="box">
-                                                    <ul class="list">
-                                                        <li>관련분야 자격증</li>
-                                                        <li>관련분야 경력증명서</li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">첨부서류</td>
+                                        <td style="text-align: center;">공통</td>
+                                        <td>
+                                            <div class="box">
+                                                <ul class="list">
+                                                    <li>개인정보의 수집·이용에 관한 동의서</li>
+                                                    <li>최종학교 졸업(졸업예정)증명서</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>해당자</td>
+                                        <td>
+                                            <div class="box">
+                                                <ul class="list">
+                                                    <li>관련분야 자격증</li>
+                                                    <li>관련분야 경력증명서</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -439,7 +439,7 @@
                                     <div class="tit_box">
                                         <div class="small">혜택.4</div>
                                         <div class="big">
-                                            FRP 선체 정비 테크니션<br>
+                                            해상 엔진 테크니션<br>
                                             양성교육 수료증 발급 등
                                         </div>
                                     </div>
@@ -470,7 +470,7 @@
                                     <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_01.png"></div>
                                     <div class="text_box">
                                         <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_01.png"></div>
-                                        <div class="text">엔진 수리점<br>유지보수</div>
+                                        <div class="text">엔진수리점/<br>유지보수</div>
                                     </div>
                                 </li>
                                 <li>

@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -76,16 +76,16 @@
 
                     <!-- board_top -->
                     <div class="board_top">
-                        <div class="post_number">총 <span class="number">5</span>개의 게시글이 있습니다.</div>
+                        <div class="post_number">총 <span class="number"></span>개의 게시글이 있습니다.</div>
                         <div class="board_search">
-                            <select>
-                                <option>제목</option>
-                                <option>내용</option>
-                                <option>제목+내용</option>
+                            <select id="search_box">
+                                <option value="title" selected>제목</option>
+                                <%--<option value="content">내용</option>
+                                <option value="all">내용+제목</option>--%>
                             </select>
                             <div class="search_bar">
-                                <input type="text">
-                                <a href="" class="search_btn"></a>
+                                <input type="text" id="search_text" placeholder="검색어 입력">
+                                <a href="javascript:void(0);" onclick="reviewList(1);" class="search_btn"></a>
                             </div>
                         </div>
                     </div>
@@ -95,77 +95,27 @@
                     <div class="gallery_list_wrap">
 
                         <ul class="gallery_list">
-                            <li class="job_review_view">
+                            <%--<li class="job_review_view">
                                 <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
                                 <div class="subject">게시물 제목</div>
                                 <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
-                            <li class="job_review_view">
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="subject">게시물 제목</div>
-                                <div class="date">2023.03.04</div>
-                            </li>
+                            </li>--%>
                         </ul>
 
                         <!-- paging -->
                         <div class="paging">
-                            <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                            <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                            <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                             <ol>
-                                <li><a href="" class="this">1</a></li>
-                                <li><a href="" class="other">2</a></li>
-                                <li><a href="" class="other">3</a></li>
+                                <%--<li>
+                                  <a class="this">1</a>
+                                </li>
+                                <li>
+                                  <a class="other">2</a>
+                                </li>--%>
                             </ol>
-                            <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                            <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                            <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
                         </div>
                         <!-- //paging -->
                     </div>
@@ -173,12 +123,34 @@
 
 
                     <!-- gallery view -->
-                    <div class="popup" id="popupJobReview">
+                    <%--<div class="popup" id="popupJobReview">
                         <div class="popup_inner">
                             <span class="popup_close"><img src="<%request.getContextPath();%>/static/img/icon_close_white.png" alt="닫기 아이콘"></span>
                             <div class="popup_tit">게시글 제목</div>
                             <div class="popup_box">
                                 <div class="img_box"><img src="<%request.getContextPath();%>/static/img/edumarine_brochure_low_8.jpg"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>--%>
+                    <!-- //gallery view -->
+
+                    <!-- gallery view -->
+                    <div class="popup" id="popupJobReview">
+                        <div class="popup_inner">
+                            <span class="popup_close"><img src="<%request.getContextPath();%>/static/img/icon_close_white.png" alt="닫기 아이콘"></span>
+                            <div class="popup_tit">게시글 제목</div>
+                            <div class="popup_box review_swiper">
+                                <div class="swiper_box">
+                                    <div class="swiper">
+                                        <ul class="swiper-wrapper">
+                                            <%--<li class="swiper-slide img_box">
+                                                <img src="<%request.getContextPath();%>/static/img/img_sample.jpg">
+                                            </li>--%>
+                                        </ul>
+                                    </div>
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +182,16 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/review.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+    <script>
+        document.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                reviewList(1);
+            }
+        });
+    </script>
 
 </body>
 </html>

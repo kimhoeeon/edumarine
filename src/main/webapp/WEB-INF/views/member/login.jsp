@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
-    <title>해양레저인력양성센터</title>
+    <title>경기해양레저 인력양성센터</title>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -65,19 +65,21 @@
                         환영합니다.
                     </div>
                     <div class="login_form">
-                        <div class="login_info">
-                            <p>아이디</p>
-                            <input type="text" placeholder="아이디를 입력해주세요.">
-                        </div>
-                        <div class="login_info">
-                            <p>비밀번호</p>
-                            <input type="password" placeholder="비밀번호를 입력해주세요.">
-                        </div>
-                        <div class="btn_login"><a href="" class="btnSt01">로그인</a></div>
-                        <div class="btn_join"><a href="/member/join.do" class="btnSt02">회원가입</a></div>
-                        <div class="find_pw">
-                            비밀번호가 기억나지 않습니다. <a href="/member/findpw.do">비밀번호 찾기</a>
-                        </div>
+                        <form id="login_form" action="/" method="post" onsubmit="return false;">
+                            <div class="login_info">
+                                <p>아이디</p>
+                                <input type="text" id="login_id" maxlength="12" placeholder="아이디를 입력해주세요.">
+                            </div>
+                            <div class="login_info">
+                                <p>비밀번호</p>
+                                <input type="password" id="login_password" placeholder="비밀번호를 입력해주세요.">
+                            </div>
+                            <div class="btn_login"><a href="javascript:void(0);" onclick="loginFormSubmit();" class="btnSt01">로그인</a></div>
+                            <div class="btn_join"><a href="/member/join.do" class="btnSt02">회원가입</a></div>
+                            <div class="find_pw">
+                                비밀번호가 기억나지 않습니다. <a href="/member/findpw.do">비밀번호 찾기</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

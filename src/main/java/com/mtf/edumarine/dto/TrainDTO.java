@@ -18,6 +18,7 @@ public class TrainDTO {
     Integer paySum; //교육비
     Integer trainCnt; //교육인원
     Integer trainApplyCnt; //교육신청인원
+    Integer nextTime; //차시
     String trainNote; //교육비고
     String exposureYn; //홈페이지 노출여부
     String scheduleExposureYn; // 연간일정표 등록여부

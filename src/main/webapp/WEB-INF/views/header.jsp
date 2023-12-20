@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!-- header -->
@@ -5,8 +6,14 @@
     <!-- header_top -->
     <div class="header_top">
         <div class="inner">
-            <a href="/member/login.do">로그인</a>
-            <a href="/member/join.do">회원가입</a>
+            <c:if test="${empty status}">
+                <a href="/member/login.do">로그인</a>
+                <a href="/member/join.do">회원가입</a>
+            </c:if>
+            <c:if test="${not empty status}">
+                <a href="/logout.do">로그아웃</a>
+                <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${sessionScope.id}' })" class="mypage">마이페이지</a>
+            </c:if>
             <a href="/sitemap.do" class="sitemap"><img src="<%request.getContextPath();%>/static/img/icon_menu_white.png" alt="메뉴 아이콘"></a>
         </div>
     </div>
@@ -20,8 +27,14 @@
             </a>
             <div class="nav">
                 <div class="mobile_top">
-                    <a href="/member/login.do">로그인</a>
-                    <a href="/member/join.do">회원가입</a>
+                    <c:if test="${empty status}">
+                        <a href="/member/login.do">로그인</a>
+                        <a href="/member/join.do">회원가입</a>
+                    </c:if>
+                    <c:if test="${not empty status}">
+                        <a href="/logout.do">로그아웃</a>
+                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${sessionScope.id}' })" class="mypage">마이페이지</a>
+                    </c:if>
                 </div>
                 <ul class="dept1">
                     <li>
