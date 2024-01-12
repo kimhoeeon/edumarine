@@ -10,7 +10,7 @@ $(document).ready(function () {
         $(".select_label").text(selectedValue);
         $(".option_list").hide();
         // 선택된 값을 콘솔에 출력
-        console.log("선택된 값: " + selectedValue);
+        /*console.log("선택된 값: " + selectedValue);*/
     });
 
     // 다른 부분을 클릭하면 옵션 목록을 닫음
@@ -96,10 +96,21 @@ $(document).ready(function () {
     // 마이페이지 교육취소 팝업 - 오픈
     $('.form_cancel_edu_btn').on('click', function () {
         $('#popupCancelEdu').addClass('on');
+
+        let trainName = $(this).parent().siblings('.subject').find('a').text();
+        if(nvl(trainName,'') !== ''){
+            $('#popupCancelEdu').find('.train_name').text(trainName);
+
+            let seq = $(this).attr('value');
+            let payStatus = $(this).parent().siblings('.state').text();
+
+            $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "')");
+        }
+
     });
 
     // 마이페이지 교육취소 팝업 - 10자 이상 입력 시 alert창 노출
-    $("#popupCancelEdu .btn_next").on("click", function () {
+    /*$("#popupCancelEdu .btn_next").on("click", function () {
         var inputValue = $(".cancel_edu_reason").val().trim();
 
         if (inputValue.length <= 10) {
@@ -108,8 +119,10 @@ $(document).ready(function () {
             $("#popupCancelEdu .cmnt_box").css("display", "none");
             $("#popupCancelEdu .box_1").css("display", "none");
             $("#popupCancelEdu .box_2").css("display", "block");
+
+
         }
-    });
+    });*/
 
     // 마이페이지 교육취소 팝업 - 취소버튼 클릭 시, input 값 초기화 및 닫힘
     $("#popupCancelEdu .btn_prev").on("click", function () {
@@ -228,45 +241,69 @@ $(document).ready(function () {
 
     // 선택 시 input[type="text"] 활성화
     $('input[type="radio"]').on('change', function () {
-        // 모든 .check_etc_input을 비활성화하고 초기화
-        $('.check_etc_input').prop('disabled', true).val('');
-
-        // .check_etc 클래스를 가진 라디오 버튼 중 선택된 것을 찾음
-        $('.check_etc:checked').each(function () {
-            // 선택된 .check_etc의 하위 요소인 .check_etc_input을 활성화
-            $(this).closest('label').find('.check_etc_input').prop('disabled', false);
-        });
+        let flag = $(this).hasClass('check_etc');
+        if(flag){
+            $(this).next('span').find('.check_etc_input').prop('disabled', false);
+        }else{
+            $(this).parent().siblings('label').find('.check_etc_input').prop('disabled', true).val('');
+        }
     });
 
     // 페이지 로드시 초기 설정
-    $('input[type="radio"]').on('change', function () {});
+    //$('input[type="radio"]').on('change', function () {});
 
 
     ///////////////// 경력사항 추가 /////////////////
-    let formCareerCount = 1;
+    let formCareerCount = $('.formCareerBox:last .formCareerNum').text();
 
     // .formCareerBox를 추가하는 이벤트 핸들러 추가
     $('.formCareerAdd').on('click', function () {
-        let newformCareerBox = $('.formCareerBox:first').clone();
+        let newformCareerBox = $('.formCareerBox:first').clone(true);
         formCareerCount++;
         newformCareerBox.find('.formCareerNum').text(formCareerCount);
         newformCareerBox.find('input[type="text"]').val('');
+        newformCareerBox.find('input[type="hidden"]').val('');
 
         // 복제된 .formCareerBox 내의 삭제 버튼 보이기
         newformCareerBox.find('.formCareerDel').show();
 
-        newformCareerBox.find('.formCareerDel').click(deleteformCareerBox);
+        newformCareerBox.find('.formCareerDel').on('click', function () {
+            deleteformCareerBox(this);
+        });
         $('.formCareerBox:last').after(newformCareerBox);
         updateformCareerNum();
     });
 
     // .formCareerBox를 삭제하는 이벤트 핸들러
-    function deleteformCareerBox() {
-        $(this).closest('.formCareerBox').remove();
-        formCareerCount--; // 개수를 감소시킴
-        updateformCareerNum();
-    }
+    function deleteformCareerBox(el) {
+        Swal.fire({
+            title: '[경력사항 정보]',
+            html: '해당 경력사항 정보를 삭제하시겠습니까?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '삭제하기',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let seq = $(el).siblings('input[type=hidden]').val();
+                if(nvl(seq,'') !== ''){
+                    let jsonObj = {
+                        seq: seq
+                    };
+                    let resData = ajaxConnect('/mypage/eduApply02/career/delete.do','post',jsonObj);
+                    if(resData.resultCode !== "0"){
+                        showMessage('', 'error', '에러 발생', '경력사항 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    }
+                }
 
+                $(el).closest('.formCareerBox').remove();
+                formCareerCount--; // 개수를 감소시킴
+                updateformCareerNum();
+            }//isConfirmed
+        }); //swal
+    }
 
     // 각 .formCareerBox의 .formCareerNum 번호 업데이트
     function updateformCareerNum() {
@@ -280,34 +317,60 @@ $(document).ready(function () {
 
     // 첫 번째 .formCareerBox의 삭제 버튼에 대한 초기 이벤트 핸들러 추가
     $('.formCareerDel').on('click', function(){
-        deleteformCareerBox();
+        deleteformCareerBox(this);
     });
 
     ///////////////// 자격면허 추가 /////////////////
-    let formLicenseCount = 1;
+    let formLicenseCount = $('.formLicenseBox:last .formLicenseNum').text();
 
     // .formLicenseBox를 추가하는 이벤트 핸들러 추가
     $('.formLicenseAdd').on('click', function () {
-        let newformLicenseBox = $('.formLicenseBox:first').clone();
+        let newformLicenseBox = $('.formLicenseBox:first').clone(true);
         formLicenseCount++;
         newformLicenseBox.find('.formLicenseNum').text(formLicenseCount);
         newformLicenseBox.find('input[type="text"]').val('');
+        newformLicenseBox.find('input[type="hidden"]').val('');
 
         // 복제된 .formLicenseBox 내의 삭제 버튼 보이기
         newformLicenseBox.find('.formLicenseDel').show();
 
-        newformLicenseBox.find('.formLicenseDel').click(deleteformLicenseBox);
+        newformLicenseBox.find('.formLicenseDel').on('click', function () {
+            deleteformLicenseBox(this);
+        });
         $('.formLicenseBox:last').after(newformLicenseBox);
         updateformLicenseNum();
     });
 
     // .formLicenseBox를 삭제하는 이벤트 핸들러
-    function deleteformLicenseBox() {
-        $(this).closest('.formLicenseBox').remove();
-        formLicenseCount--; // 개수를 감소시킴
-        updateformLicenseNum();
-    }
+    function deleteformLicenseBox(el) {
+        Swal.fire({
+            title: '[자격면허 정보]',
+            html: '해당 자격면허 정보를 삭제하시겠습니까?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '삭제하기',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let seq = $(el).siblings('input[type=hidden]').val();
+                if(nvl(seq,'') !== ''){
+                    let jsonObj = {
+                        seq: seq
+                    };
+                    let resData = ajaxConnect('/mypage/eduApply02/license/delete.do','post',jsonObj);
+                    if(resData.resultCode !== "0"){
+                        showMessage('', 'error', '에러 발생', '자격면허 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    }
+                }
 
+                $(el).closest('.formLicenseBox').remove();
+                formLicenseCount--; // 개수를 감소시킴
+                updateformLicenseNum();
+            }//isConfirmed
+        }); //swal
+    }
 
     // 각 .formLicenseBox의 .formLicenseNum 번호 업데이트
     function updateformLicenseNum() {
@@ -321,7 +384,7 @@ $(document).ready(function () {
 
     // 첫 번째 .formLicenseBox의 삭제 버튼에 대한 초기 이벤트 핸들러 추가
     $('.formLicenseDel').on('click', function (){
-        deleteformLicenseBox();
+        deleteformLicenseBox(this);
     });
 
 

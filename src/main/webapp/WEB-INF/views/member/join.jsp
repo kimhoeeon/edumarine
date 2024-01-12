@@ -59,6 +59,38 @@
 
             <!-- content -->
             <div id="content" class="sub_join">
+
+                <div class="join_wrap form_wrap">
+                    <div class="form_box">
+                        <div class="form_tit">
+                            <div class="big">상시 신청 - 사전 신청자 안내</div>
+                        </div>
+                        <ul class="form_list" style="background-color: #ebf3ff;">
+                            <li style="display: flex">
+                                <div class="naeyong" style="padding: 30px;">
+                                    (구) 홈페이지에서 상시 신청을 접수하신 회원님은 신청 정보 연동을 위해 반드시 아래 버튼을 클릭해 주세요.<br>
+                                    사전 상시 신청 시 접수하신 이름, 연락처를 입력하셔야 정보가 연동됩니다.<br>
+                                    ※ 사전 상시 신청 이후 이름, 연락처가 변경되었을 경우, 연동없이 신규로 가입해 주셔야 합니다.
+                                    <button id="pre_apply_btn">~ 2023년 사전 상시 신청 접수 내역 조회</button>
+                                </div>
+                            </li>
+                            <li id="preApplyBox" style="display: none;">
+                                <div class="naeyong" style="padding: 15px 30px;">
+                                    <div class="input" style="justify-content: center;">
+                                        <input type="text" id="preApplyName" maxlength="5" placeholder="이름 입력" style="width: 70%;">
+                                    </div>
+                                    <div class="input" style="justify-content: center;">
+                                        <input type="text" id="preApplyPhone" maxlength="13" placeholder="연락처 입력 , 하이픈 자동 입력" class="onlyTel" style="width: 70%;">
+                                    </div>
+                                    <div class="input" style="justify-content: center;">
+                                        <button onclick="f_main_pre_apply_btn();" style="width: 70%;">정보 불러오기</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="join_wrap form_wrap">
 
                     <!-- form box -->
@@ -72,7 +104,7 @@
                                 <div class="gubun req"><p>아이디</p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <input type="text" id="id" name="id" maxlength="12" placeholder="아이디 입력" class="w50">
+                                        <input type="text" id="id" name="id" maxlength="12" onchange="f_id_status_change(this)"  placeholder="아이디 입력" class="w50">
                                         <button onclick="f_id_duplicate_check(this);">중복체크</button>
                                         <span class="id_valid_result_cmnt">중복체크 버튼을 클릭해 주세요.</span>
                                         <input type="hidden" id="idCheck" value="false">
@@ -128,11 +160,12 @@
                                         <span>@</span>
                                         <input type="text" id="domain" name="domain" placeholder="도메인 입력" class="email_input_2">
                                         <select class="email_select">
-                                            <option selected>직접입력</option>
+                                            <option value="" selected>직접입력</option>
                                             <option value="daum.net">daum.net</option>
                                             <option value="nate.com">nate.com</option>
                                             <option value="hanmail.net">hanmail.net</option>
                                             <option value="naver.com">naver.com</option>
+                                            <option value="gmail.com">gmail.com</option>
                                             <option value="hotmail.com">hotmail.com</option>
                                             <option value="yahoo.co.kr">yahoo.co.kr</option>
                                             <option value="empal.com">empal.com</option>

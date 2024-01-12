@@ -68,7 +68,8 @@
                         <ul class="sked_search_wrap">
                             <li>
                                 <div class="gubun">교육연도</div>
-                                <div class="input"><input type="text" value="2023" readonly></div>
+                                <c:set var="now" value="<%=new java.util.Date()%>"/>
+                                <div class="input"><input type="text" id="trainYear" value="<fmt:formatDate value="${now}" pattern="yyyy" />" <%--readonly--%>></div>
                             </li>
                             <li>
                                 <div class="gubun">과정</div>
@@ -76,17 +77,17 @@
                                     <div class="select_box">
                                         <div class="select_label">전체</div>
                                         <ul class="option_list">
-                                            <li class="option_item">전체</li>
-                                            <li class="option_item">정규과정</li>
-                                            <li class="option_item">단기과정</li>
+                                            <li class="option_item" data-value="전체">전체</li>
+                                            <li class="option_item" data-value="정규과정">정규과정</li>
+                                            <li class="option_item" data-value="단기과정">단기과정</li>
                                         </ul>
                                     </div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">교육 과정명</div>
-                                <div class="input"><input type="text" placeholder="교육 과정명을 입력해주세요."></div>
-                                <a href="#" class="search_btn"></a>
+                                <div class="input"><input type="text" id="search_text" value="${searchText}" placeholder="교육 과정명을 입력해주세요."></div>
+                                <a href="javascript:void(0);" onclick="scheduleList(1 , '');" class="search_btn"></a>
                             </li>
                         </ul>
                     </div>
@@ -103,10 +104,10 @@
 
                     <!-- sked_list_wrap -->
                     <div class="sked_list_wrap">
-                        <div class="post_number">총 <span class="number">5</span>개의 게시글이 있습니다.</div>
+                        <div class="post_number">총 <span class="number"></span>개의 게시글이 있습니다.</div>
                         <!-- sked_list -->
                         <ul class="sked_list">
-                            <li>
+                            <%--<li>
                                 <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
                                 <div class="info">
                                     <div class="subject">해양엔진테크니션(선외기 및 선내기 통합)</div>
@@ -134,135 +135,24 @@
                                     </ul>
                                 </div>
                                 <div class="btn"><a href="/apply/eduApply01.do">교육신청</a></div>
-                            </li>
-                            <li>
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="info">
-                                    <div class="subject">해양엔진테크니션(선외기 및 선내기 통합)</div>
-                                    <ul class="description">
-                                        <li>
-                                            <div class="gubun">교육일정</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">접수기간</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육비</div>
-                                            <div class="naeyong">100,000원</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육인원(현 신청인원)</div>
-                                            <div class="naeyong"><span class="color">32</span>(2)</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">기타</div>
-                                            <div class="naeyong">수료 시, 전액 환급</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="btn"><a href="/apply/eduApply01.do">교육신청</a></div>
-                            </li>
-                            <li>
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="info">
-                                    <div class="subject">해양엔진테크니션(선외기 및 선내기 통합)</div>
-                                    <ul class="description">
-                                        <li>
-                                            <div class="gubun">교육일정</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">접수기간</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육비</div>
-                                            <div class="naeyong">100,000원</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육인원(현 신청인원)</div>
-                                            <div class="naeyong"><span class="color">32</span>(2)</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">기타</div>
-                                            <div class="naeyong">수료 시, 전액 환급</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="btn"><a href="/apply/eduApply01.do">교육신청</a></div>
-                            </li>
-                            <li>
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="info">
-                                    <div class="subject">해양엔진테크니션(선외기 및 선내기 통합)</div>
-                                    <ul class="description">
-                                        <li>
-                                            <div class="gubun">교육일정</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">접수기간</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육비</div>
-                                            <div class="naeyong">100,000원</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육인원(현 신청인원)</div>
-                                            <div class="naeyong"><span class="color">32</span>(2)</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">기타</div>
-                                            <div class="naeyong">수료 시, 전액 환급</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="btn"><a href="/apply/eduApply01.do">교육신청</a></div>
-                            </li>
-                            <li>
-                                <div class="thumb"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg"></div>
-                                <div class="info">
-                                    <div class="subject">해양엔진테크니션(선외기 및 선내기 통합)</div>
-                                    <ul class="description">
-                                        <li>
-                                            <div class="gubun">교육일정</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">접수기간</div>
-                                            <div class="naeyong">23.11.10 ~ 23.12.03</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육비</div>
-                                            <div class="naeyong">100,000원</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">교육인원(현 신청인원)</div>
-                                            <div class="naeyong"><span class="color">32</span>(2)</div>
-                                        </li>
-                                        <li>
-                                            <div class="gubun">기타</div>
-                                            <div class="naeyong">수료 시, 전액 환급</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="btn"><a href="/apply/eduApply01.do">교육신청</a></div>
-                            </li>
+                            </li>--%>
                         </ul>
                         <!-- //sked_list -->
 
                         <!-- paging -->
                         <div class="paging">
-                            <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                            <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                            <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                             <ol>
-                                <li><a href="" class="this">1</a></li>
-                                <li><a href="" class="other">2</a></li>
-                                <li><a href="" class="other">3</a></li>
+                                <%--<li>
+                                  <a class="this">1</a>
+                                </li>
+                                <li>
+                                  <a class="other">2</a>
+                                </li>--%>
                             </ol>
-                            <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                            <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                            <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
                         </div>
                         <!-- //paging -->
                     </div>
@@ -289,10 +179,9 @@
                                             </span>
                                         </div>
                                         <div class="calRadio">
-                                            <label><input type="radio" name="calendar_edu_cc" value="전체"
-                                                    checked>전체</label>
-                                            <label><input type="radio" name="calendar_edu_cc" value="정규">정규과정</label>
-                                            <label><input type="radio" name="calendar_edu_cc" value="단기">단기과정</label>
+                                            <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('전체')" value="전체" checked>전체</label>
+                                            <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('정규과정')" value="정규">정규과정</label>
+                                            <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('단기과정')" value="단기">단기과정</label>
                                         </div>
                                         <div class="calTable">
                                             <table class="calendar">
@@ -320,7 +209,7 @@
                                 </div>
                                 <!-- //calendar_box -->
 
-                                <a href="#" class="close_btn btnSt01">닫기</a>
+                                <a href="javascript:void(0);" class="close_btn btnSt01">닫기</a>
 
                             </div>
                         </div>
@@ -352,6 +241,22 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/schedule.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script>
+    $(function(){
+        let payResInfo_resultCode = '${payResInfo.resultCode}';
+        if(nvl(payResInfo_resultCode,'') !== ''){
+
+            if(payResInfo_resultCode === "0000"){
+                showMessage('', 'info', '교육 신청 결제 완료', '교육 신청 결제가 완료되었습니다.<br>상세 내역은 마이페이지에서 확인 가능합니다.', '');
+                return false;
+            }
+
+        }
+    })
+</script>
 
 </body>
 </html>

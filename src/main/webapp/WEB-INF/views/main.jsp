@@ -69,14 +69,14 @@
                 <!-- main_search_wrap -->
                 <div class="main_search_wrap">
                     <div class="search_bar">
-                        <input type="text" placeholder="원하시는 교육과정을 검색해보세요.">
-                        <a href="/search.do" class="btn">검색</a>
+                        <input type="text" id="trainSearchText" placeholder="원하시는 교육과정을 검색해보세요.">
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('S', '')" class="btn">검색</a>
                     </div>
                     <div class="hashtag">
-                        <a href="">#선내기</a>
-                        <a href="">#선외기</a>
-                        <a href="">#세일요트</a>
-                        <a href="">#마리나선박 정비사</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU07')">#선내기</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU06')">#선외기</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU08')">#세일요트</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU04')">#FRP</a>
                     </div>
                 </div>
                 <!-- //main_search_wrap -->
@@ -162,68 +162,180 @@
                 <!-- tab_menu -->
                 <ul class="main_edu_tab tab_menu">
                     <li class="on" data-tab="tab-1">해상엔진 테크니션</li>
-                    <li data-tab="tab-2">선외기 자가정비과정</li>
-                    <li data-tab="tab-3">선내기 자가정비과정</li>
-                    <li data-tab="tab-4">세일요트 자가정비과정</li>
-                    <li data-tab="tab-5">마리나선박 정비사 실기교육</li>
+                    <li data-tab="tab-2">FRP 정비 테크니션</li>
+                    <li data-tab="tab-3">선외기 자가정비과정</li>
+                    <li data-tab="tab-4">선내기 자가정비과정</li>
+                    <li data-tab="tab-5">세일요트 자가정비과정</li>
                 </ul>
                 <!-- tab_menu -->
                 <!-- list -->
                 <div class="main_edu_list tab_content on" id="tab-1">
-                    <ul class="list_head">
-                        <li>
-                            <div class="name">과정명</div>
-                            <div class="chasi">차시</div>
-                            <div class="peopleRecruit">인원</div>
-                            <div class="peopleApp">신청인원</div>
-                            <div class="periodApp">신청기간</div>
-                            <div class="periodTng">교육기간</div>
-                        </li>
-                    </ul>
-                    <ul class="list_body">
-                        <c:forEach var="mainTrain" items="${trainList}" begin="0" end="${trainList.size()}" step="1" varStatus="status">
-                        <li>
-                            <div class="name"><a href="">${mainTrain.gbn}</a></div>
-                            <div class="chasi">${mainTrain.nextTime}</div>
-                            <div class="peopleRecruit">${mainTrain.trainCnt}</div>
-                            <div class="peopleApp">${mainTrain.trainApplyCnt}</div>
-                            <div class="periodApp">${fn:substring(mainTrain.applyStartDttm,2, mainTrain.applyStartDttm.length())} ~ ${fn:substring(mainTrain.applyEndDttm,2, mainTrain.applyEndDttm.length())}</div>
-                            <div class="periodTng">${fn:substring(mainTrain.trainStartDttm,2, mainTrain.trainStartDttm.length())} ~ ${fn:substring(mainTrain.trainEndDttm,2, mainTrain.trainEndDttm.length())}</div>
-                        </li>
-                        </c:forEach>
-                    </ul>
+                    <c:if test="${not empty engineList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainEngine" items="${engineList}" begin="0" end="${engineList.size()}" step="1" varStatus="status">
+                            <li>
+                                <div class="name"><a href="">${mainEngine.gbn}</a></div>
+                                <div class="chasi">${mainEngine.nextTime}</div>
+                                <div class="peopleRecruit">${mainEngine.trainCnt}</div>
+                                <div class="peopleApp">${mainEngine.trainApplyCnt}</div>
+                                <div class="periodApp">${fn:substring(mainEngine.applyStartDttm,2, mainEngine.applyStartDttm.length())} ~ ${fn:substring(mainEngine.applyEndDttm,2, mainEngine.applyEndDttm.length())}</div>
+                                <div class="periodTng">${fn:substring(mainEngine.trainStartDttm,2, mainEngine.trainStartDttm.length())} ~ ${fn:substring(mainEngine.trainEndDttm,2, mainEngine.trainEndDttm.length())}</div>
+                            </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty engineList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
                 </div>
                 <!-- //list -->
                 <!-- list -->
                 <div class="main_edu_list tab_content" id="tab-2">
-                    <div class="edu_none">
-                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
-                        <div class="text">해당 교육과정은 개설 예정입니다</div>
-                    </div>
+                    <c:if test="${not empty frpList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainFrp" items="${frpList}" begin="0" end="${frpList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="">${mainFrp.gbn}</a></div>
+                                    <div class="chasi">${mainFrp.nextTime}</div>
+                                    <div class="peopleRecruit">${mainFrp.trainCnt}</div>
+                                    <div class="peopleApp">${mainFrp.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainFrp.applyStartDttm,2, mainFrp.applyStartDttm.length())} ~ ${fn:substring(mainFrp.applyEndDttm,2, mainFrp.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainFrp.trainStartDttm,2, mainFrp.trainStartDttm.length())} ~ ${fn:substring(mainFrp.trainEndDttm,2, mainFrp.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty frpList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
                 </div>
                 <!-- //list -->
                 <!-- list -->
                 <div class="main_edu_list tab_content" id="tab-3">
-                    <div class="edu_none">
-                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
-                        <div class="text">해당 교육과정은 개설 예정입니다</div>
-                    </div>
+                    <c:if test="${not empty outBoarderList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainOutBoarder" items="${outBoarderList}" begin="0" end="${outBoarderList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="">${mainOutBoarder.gbn}</a></div>
+                                    <div class="chasi">${mainOutBoarder.nextTime}</div>
+                                    <div class="peopleRecruit">${mainOutBoarder.trainCnt}</div>
+                                    <div class="peopleApp">${mainOutBoarder.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainOutBoarder.applyStartDttm,2, mainOutBoarder.applyStartDttm.length())} ~ ${fn:substring(mainOutBoarder.applyEndDttm,2, mainOutBoarder.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainOutBoarder.trainStartDttm,2, mainOutBoarder.trainStartDttm.length())} ~ ${fn:substring(mainOutBoarder.trainEndDttm,2, mainOutBoarder.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty outBoarderList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
                 </div>
                 <!-- //list -->
                 <!-- list -->
                 <div class="main_edu_list tab_content" id="tab-4">
-                    <div class="edu_none">
-                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
-                        <div class="text">해당 교육과정은 개설 예정입니다</div>
-                    </div>
+                    <c:if test="${not empty inBoarderList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainInBoarder" items="${inBoarderList}" begin="0" end="${inBoarderList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="">${mainInBoarder.gbn}</a></div>
+                                    <div class="chasi">${mainInBoarder.nextTime}</div>
+                                    <div class="peopleRecruit">${mainInBoarder.trainCnt}</div>
+                                    <div class="peopleApp">${mainInBoarder.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainInBoarder.applyStartDttm,2, mainInBoarder.applyStartDttm.length())} ~ ${fn:substring(mainInBoarder.applyEndDttm,2, mainInBoarder.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainInBoarder.trainStartDttm,2, mainInBoarder.trainStartDttm.length())} ~ ${fn:substring(mainInBoarder.trainEndDttm,2, mainInBoarder.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty inBoarderList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
                 </div>
                 <!-- //list -->
                 <!-- list -->
                 <div class="main_edu_list tab_content" id="tab-5">
-                    <div class="edu_none">
-                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
-                        <div class="text">해당 교육과정은 개설 예정입니다</div>
-                    </div>
+                    <c:if test="${not empty saleList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainSale" items="${saleList}" begin="0" end="${saleList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="">${mainSale.gbn}</a></div>
+                                    <div class="chasi">${mainSale.nextTime}</div>
+                                    <div class="peopleRecruit">${mainSale.trainCnt}</div>
+                                    <div class="peopleApp">${mainSale.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainSale.applyStartDttm,2, mainSale.applyStartDttm.length())} ~ ${fn:substring(mainSale.applyEndDttm,2, mainSale.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainSale.trainStartDttm,2, mainSale.trainStartDttm.length())} ~ ${fn:substring(mainSale.trainEndDttm,2, mainSale.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty saleList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
                 </div>
                 <!-- //list -->
             </div>
@@ -287,7 +399,7 @@
                     뉴스레터로 받아보세요.
                 </div>
                 <div class="subscribe_bar">
-                    <input type="email" id="subscriber_email" placeholder="e-mail">
+                    <input type="email" id="subscriber_email" class="onlyNumEng" placeholder="e-mail">
                     <a href="javascript:void(0);" onclick="main_newsletter_subscriber_btn(this);" class="btn">구독하기</a>
                 </div>
             </div>

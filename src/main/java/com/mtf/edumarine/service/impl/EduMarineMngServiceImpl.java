@@ -55,7 +55,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
             session.setAttribute("status", "logon");
             session.setAttribute("id", admin.getId());
         }
-        return new AdminDTO();
+        return admin;
     }
 
     @Override
@@ -1242,6 +1242,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                     resultMessage = "[Data Update Fail] Seq : " + bannerDTO.getSeq();
                 }
                 //System.out.println(result);
+                responseDTO.setCustomValue(bannerDTO.getSeq());
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";

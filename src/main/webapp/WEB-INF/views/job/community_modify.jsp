@@ -30,6 +30,9 @@
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+
     <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
@@ -37,6 +40,15 @@
 </head>
 
 <body>
+
+<c:if test="${status ne 'logon'}">
+    <script>
+        alert("로그인해 주세요.");
+        location.href = '/member/login.do';
+    </script>
+</c:if>
+
+<c:if test="${status eq 'logon'}">
 
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
@@ -78,29 +90,36 @@
                     <!-- community_write -->
                     <div class="community_write_wrap">
 
-                        <div class="subject"><input type="text" placeholder="제목을 입력하세요."></div>
-                        <div class="cont_box">
-                            여기에 에디터 삽입
-                        </div>
-                        <div class="tag_box">
-                            <div class="gubun">키워드 선택 <span class="cmnt">(1개 이상 필수 선택)</span></div>
-                            <div class="tag">
-                                <label><input type="checkbox">선내기</label>
-                                <label><input type="checkbox">선외기</label>
-                                <label><input type="checkbox">마리나선박</label>
-                                <label><input type="checkbox">정비</label>
-                                <label><input type="checkbox">이직/커리어</label>
-                                <label><input type="checkbox">여행</label>
-                                <label><input type="checkbox">해양레저이슈</label>
-                                <label><input type="checkbox">취미</label>
-                                <label><input type="checkbox">취업</label>
+                        <!--begin::form-->
+                        <form id="dataForm" method="post" onsubmit="return false;">
+                            <input type="hidden" name="seq" value="${info.seq}">
+                            <div class="subject">
+                                <input type="text" id="title" name="title" value="${info.title}" placeholder="제목을 입력하세요.">
                             </div>
-                        </div>
-                        <div class="btn_box">
-                            <a href="/job/community_view.do" class="btnSt03">취소</a>
-                            <a href="/job/community_view.do" class="btnSt01">수정</a>
-                        </div>
-
+                            <div class="cont_box">
+                                <div id="quill_editor_content" style="height: 450px;">${info.content}</div>
+                                <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
+                            </div>
+                            <div class="tag_box">
+                                <div class="gubun">키워드 선택 <span class="cmnt">(1개 이상 필수 선택)</span></div>
+                                <div class="tag">
+                                    <label><input type="checkbox" name="hashtag" value="선내기" <c:if test="${fn:contains(info.hashtag, '선내기')}">checked</c:if> />선내기</label>
+                                    <label><input type="checkbox" name="hashtag" value="선외기" <c:if test="${fn:contains(info.hashtag, '선외기')}">checked</c:if> />선외기</label>
+                                    <label><input type="checkbox" name="hashtag" value="마리나선박" <c:if test="${fn:contains(info.hashtag, '마리나선박')}">checked</c:if> />마리나선박</label>
+                                    <label><input type="checkbox" name="hashtag" value="정비" <c:if test="${fn:contains(info.hashtag, '정비')}">checked</c:if> />정비</label>
+                                    <label><input type="checkbox" name="hashtag" value="이직/커리어" <c:if test="${fn:contains(info.hashtag, '이직/커리어')}">checked</c:if> />이직/커리어</label>
+                                    <label><input type="checkbox" name="hashtag" value="여행" <c:if test="${fn:contains(info.hashtag, '여행')}">checked</c:if> />여행</label>
+                                    <label><input type="checkbox" name="hashtag" value="해양레저이슈" <c:if test="${fn:contains(info.hashtag, '해양레저이슈')}">checked</c:if> />해양레저이슈</label>
+                                    <label><input type="checkbox" name="hashtag" value="취미" <c:if test="${fn:contains(info.hashtag, '취미')}">checked</c:if> />취미</label>
+                                    <label><input type="checkbox" name="hashtag" value="취업" <c:if test="${fn:contains(info.hashtag, '취업')}">checked</c:if> />취업</label>
+                                </div>
+                            </div>
+                            <div class="btn_box">
+                                <a href="javascript:void(0);" onclick="f_login_check_page_move('${id}','${info.seq}','/job/community_view.do')" class="btnSt03">취소</a>
+                                <a href="javascript:void(0);" onclick="f_main_community_modify('${id}','${info.seq}','/job/community_view.do')" class="btnSt01">수정</a>
+                            </div>
+                        </form>
+                        <!--end::form-->
                     </div>
                     <!-- //community_write -->
 
@@ -120,6 +139,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
+<script src="<%request.getContextPath();%>/static/assets/plugins/global/plugins.bundle.js"></script>
+<script src="<%request.getContextPath();%>/static/assets/js/scripts.bundle.js"></script>
+<script src="<%request.getContextPath();%>/static/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
+
 <script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
@@ -129,5 +152,7 @@
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
+<script src="<%request.getContextPath();%>/static/js/front/community.js?ver=<%=System.currentTimeMillis()%>"></script>
+</c:if>
 </body>
 </html>

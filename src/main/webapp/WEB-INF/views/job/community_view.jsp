@@ -76,44 +76,126 @@
 
                     <!-- board_view -->
                     <div class="board_view_wrap">
-                        <div class="subject">게시물 제목</div>
+                        <div class="subject">${info.title}</div>
                         <div class="info_box">
                             <div class="box write">
                                 <div class="gubun">작성자</div>
-                                <div class="naeyong">나는야작성자</div>
+                                <div class="naeyong">${info.writer}</div>
                             </div>
                             <div class="box date">
                                 <div class="gubun">작성일</div>
-                                <div class="naeyong">2023.10.11</div>
+                                <div class="naeyong">
+                                    <c:set var="writeDate" value="${fn:replace(fn:split(info.writeDate,' ')[0],'-','.')}" />
+                                    ${writeDate}
+                                </div>
                             </div>
                             <div class="box views">
                                 <div class="gubun">조회</div>
-                                <div class="naeyong">1234</div>
+                                <div class="naeyong">${info.viewCnt}</div>
                             </div>
                         </div>
-                        <div class="cont_box">게시물 내용</div>
+                        <div class="cont_box">
+                            ${info.content}
+                        </div>
                         <div class="tag_box">
-                            <p>#선내기</p>
-                            <p>#선외기</p>
-                            <p>#마리나선박</p>
-                            <p>#장비</p>
-                            <p>#이직/커리어</p>
-                            <p>#여행</p>
-                            <p>#해양레저이슈</p>
-                            <p>#취미</p>
-                            <p>#취업</p>
+                            <c:forTokens items="${info.hashtag}" delims="," var="item">
+                                <p>#${item}</p>
+                            </c:forTokens>
+                        </div>
+                        <div class="file_box">
+                            <c:if test="${not empty fileList}">
+                                <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
+                                    <a href="/file/download.do?path=board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}" class="file">${fileInfo.fileName}</a>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty fileList}">
+                                첨부파일 없음
+                            </c:if>
                         </div>
                         <!-- 댓글 wrap -->
                         <div class="reply_wrap">
                             <!-- 댓글 상단 -->
                             <div class="reply_top">
-                                <div class="repley_number">댓글 2</div>
-                                <div href="#" class="recommend_btn">추천 2</div>
+                                <div class="repley_number">댓글 ${replyList.size()}
+                                    <c:if test="${id eq null}">
+                                        <span style="font-size: 1.4rem; color: #777; margin-left: 1.2rem;">댓글을 작성하시려면 로그인 해주세요.</span>
+                                    </c:if>
+                                </div>
+                                <div href="javascript:void(0);" onclick="f_main_community_recommend_btn('${id}', '${info.seq}', this)"
+                                     class="recommend_btn <c:if test="${not empty recommendInfo}">on</c:if>">추천 ${info.recommendCnt}</div>
                             </div>
                             <!-- //댓글 상단 -->
                             <!-- 댓글 리스트 -->
                             <div class="reply_list">
-                                <!-- 댓글 -->
+                                <c:if test="${not empty replyList}">
+                                    <c:forEach var="reply" items="${replyList}" begin="0" end="${replyList.size()}" step="1" varStatus="status">
+                                        <c:if test="${reply.depthReplyNo eq '0'}">
+                                            <div class="reply_box">
+                                                <div class="user_id">${reply.writer} <c:if test="${id eq info.writerKey}"><span class="icon_writer"></span></c:if></div>
+                                                <div class="reply_cont"><c:out value="${reply.content}" escapeXml="true"/></div>
+                                                <div class="reply_info">
+                                                    <div class="date">
+                                                        <c:set var="writeDate" value="${fn:replace(reply.writeDate,'-','.')}" />
+                                                        ${writeDate}
+                                                    </div>
+                                                    <c:if test="${id ne null}">
+                                                        <a href="javascript:void(0);" data-value="${reply.seq}" class="comment">답글작성</a>
+                                                        <c:if test="${id eq reply.writer}">
+                                                            <a href="javascript:void(0);" onclick="f_main_community_reply_remove('C','${reply.depthReplyNo}','${info.seq}', '${reply.seq}')" class="delete">삭제</a>
+                                                        </c:if>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                            <div class="reply_write replyToReply">
+                                                <div class="reply_write_inner">
+                                                    <div class="user_id"><c:out value="${id}"/></div>
+                                                    <textarea id="replyToReplyContent" placeholder="댓글을 남겨보세요"></textarea>
+                                                    <div class="btn">
+                                                        <a href="javascript:void(0);" class="btn_cancel">취소</a>
+                                                        <a href="javascript:void(0);" onclick="f_main_community_reply_add('${info.seq}', '1', '${reply.seq}', '${id}', this);" class="btn_reg">등록</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <c:forEach var="reReply" items="${replyList}" begin="0" end="${replyList.size()}" step="1" varStatus="status">
+                                            <c:if test="${reply.seq eq reReply.moReplySeq}">
+                                                <div class="reply_box replyToReply">
+                                                    <div class="user_id">${reReply.writer} <c:if test="${id eq info.writerKey}"><span class="icon_writer"></span></c:if></div>
+                                                    <div class="reply_cont"><c:out value="${reReply.content}" escapeXml="true"/></div>
+                                                    <div class="reply_info">
+                                                        <div class="date">
+                                                            <c:set var="writeDate" value="${fn:replace(reReply.writeDate,'-','.')}" />
+                                                            ${writeDate}
+                                                        </div>
+                                                        <c:if test="${id ne null}">
+                                                            <c:if test="${id eq reReply.writer}">
+                                                                <a href="javascript:void(0);" onclick="f_main_community_reply_remove('C','${reReply.depthReplyNo}','${info.seq}', '${reReply.seq}')" class="delete">삭제</a>
+                                                            </c:if>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:forEach>
+                                </c:if>
+
+                                <c:if test="${id ne null}">
+                                    <!-- 댓글 작성 -->
+                                    <div class="reply_write">
+                                        <div class="reply_write_inner">
+                                            <div class="user_id">
+                                                <c:out value="${id}"/>
+                                            </div>
+                                            <textarea id="replyContent" placeholder="댓글을 남겨보세요"></textarea>
+                                            <div class="btn">
+                                                <a href="javascript:void(0);" onclick="f_main_community_reply_add('${info.seq}', '0', '', '${id}', this);" class="btn_reg">등록</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- //댓글 작성 -->
+                                </c:if>
+
+                                <%--<!-- 댓글 -->
                                 <div class="reply_box">
                                     <div class="user_id">나는야댓글쓴이</div>
                                     <div class="reply_cont">내용내용내용 댓글 내용</div>
@@ -142,16 +224,8 @@
                                         <div class="btn"><a href="#" class="btn_cancel">취소</a><a href="#" class="btn_reg">등록</a></div>
                                     </div>
                                 </div>
-                                <!-- //답글 작성 -->
-                                <!-- 댓글 작성 -->
-                                <div class="reply_write">
-                                    <div class="reply_write_inner">
-                                        <div class="user_id">나는야댓글쓴이</div>
-                                        <textarea placeholder="댓글을 남겨보세요"></textarea>
-                                        <div class="btn"><a href="#" class="btn_reg">등록</a></div>
-                                    </div>
-                                </div>
-                                <!-- //댓글 작성 -->
+                                <!-- //답글 작성 -->--%>
+
                             </div>
                             <!-- //댓글 리스트 -->
                         </div>
@@ -161,8 +235,10 @@
 
                     <div class="community_btn_box">
                         <div class="left">
-                            <a href="/job/community_modify.do" class="btnSt03">수정</a>
-                            <a href="#" class="btnSt03">삭제</a>
+                            <c:if test="${id eq info.writerKey}">
+                                <a href="javascript:void(0);" onclick="f_login_check_page_move('${id}','${info.seq}','/job/community_modify.do')" class="btnSt03">수정</a>
+                                <a href="javascript:void(0);" onclick="f_main_community_remove('${id}','${info.seq}')" class="btnSt03">삭제</a>
+                            </c:if>
                         </div>
                         <div class="right"><a href="/job/community_list.do" class="btnSt01">목록으로</a></div>
                     </div>
@@ -191,6 +267,8 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/community.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

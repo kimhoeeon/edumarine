@@ -75,4 +75,142 @@ public interface EduMarineMapper {
     String getResumeSeq();
 
     Integer insertResume(ResumeDTO resumeDTO);
+
+    List<TrainDTO> selectTrainScheduleList(SearchDTO searchDTO);
+
+    List<TrainDTO> selectTrainScheduleCalendarList(TrainDTO trainDTO);
+
+    String getRegularSeq();
+
+    Integer insertRegular(RegularDTO regularDTO);
+
+    TrainDTO selectTrainSingle(String trainSeq);
+
+    Integer updateTrainApplyCnt(String trainSeq);
+
+    List<CommunityDTO> selectCommunityList(SearchDTO searchDTO);
+
+    CommunityDTO selectCommunitySingle(String seq);
+
+    Integer updateCommunityViewCnt(String seq);
+
+    RecommendDTO selectRecommendSingle(RecommendDTO recommendReqDTO);
+
+    Integer deleteRecommend(String seq);
+
+    Integer insertRecommend(RecommendDTO recommendDTO);
+
+    List<ReplyDTO> selectReplyList(ReplyDTO replyReqDTO);
+
+    String getReplySeq();
+
+    Integer insertReply(ReplyDTO replyDTO);
+
+    Integer deleteReply(ReplyDTO replyDTO);
+
+    String getCommunitySeq();
+
+    Integer insertCommunity(CommunityDTO communityDTO);
+
+    Integer deleteCommunity(CommunityDTO communityDTO);
+
+    List<CommunityDTO> selectPostCommunityList(String id);
+
+    List<ReplyDTO> selectPostReplyList(String id);
+
+    Integer updateCommunity(CommunityDTO communityDTO);
+
+    Integer deleteReplyToReply(ReplyDTO replyDTO);
+
+    RegularDTO selectPreRegularSingle(RegularDTO regularDTO);
+
+    MemberDTO selectMemberSeqSingle(String seq);
+
+    Integer updatePreRegularInfo(RegularDTO regularDTO);
+
+    String getPaymentSeq();
+
+    String selectMemberSeq(MemberDTO memberDTO);
+
+    String selectTrainSeq(TrainDTO trainDTO);
+
+    Integer insertPayment(PaymentDTO paymentDTO);
+
+    Integer updateRegularPayStatus(RegularDTO regularDTO);
+
+    List<EduApplyInfoDTO> selectEduApplyInfoList(String memberSeq);
+
+    List<EduApplyInfoDTO> selectEduApplyInfoCancelList(String memberSeq);
+
+    RegularDTO selectRegularSingle(String seq);
+
+    Integer updateRegular(RegularDTO regularDTO);
+
+    List<PaymentDTO> selectPaymentList(String memberSeq);
+
+    String getBoarderSeq();
+
+    Integer insertBoarder(BoarderDTO boarderDTO);
+
+    Integer insertCareer(CareerDTO careerDTO);
+
+    Integer insertLicense(LicenseDTO licenseDTO);
+
+    Integer updateBoarderPayStatus(BoarderDTO boarderDTO);
+
+    BoarderDTO selectBoarderSingle(String seq);
+
+    List<CareerDTO> selectCareerList(CareerDTO careerDTO);
+
+    List<LicenseDTO> selectLicenseList(LicenseDTO licenseDTO);
+
+    Integer updateBoarder(BoarderDTO boarderDTO);
+
+    Integer updateCareer(CareerDTO request);
+
+    Integer updateLicense(LicenseDTO request);
+
+    Integer deleteCareer(CareerDTO careerDTO);
+
+    Integer deleteLicense(LicenseDTO licenseDTO);
+
+    String getFrpSeq();
+
+    Integer insertFrp(FrpDTO frpDTO);
+
+    Integer updateFrpPayStatus(FrpDTO frpDTO);
+
+    FrpDTO selectFrpSingle(String seq);
+
+    Integer updateFrp(FrpDTO frpDTO);
+
+    String getInboarderSeq();
+
+    Integer insertInboarder(InboarderDTO inboarderDTO);
+
+    Integer updateInboarderPayStatus(InboarderDTO inboarderDTO);
+
+    InboarderDTO selectInboarderSingle(String seq);
+
+    Integer updateInboarder(InboarderDTO inboarderDTO);
+
+    String getOutboarderSeq();
+
+    Integer insertOutboarder(OutboarderDTO outboarderDTO);
+
+    String getSailyachtSeq();
+
+    Integer insertSailyacht(SailyachtDTO sailyachtDTO);
+
+    OutboarderDTO selectOutboarderSingle(String seq);
+
+    SailyachtDTO selectSailyachtSingle(String seq);
+
+    Integer updateOutboarder(OutboarderDTO outboarderDTO);
+
+    Integer updateSailyacht(SailyachtDTO sailyachtDTO);
+
+    Integer updateOutboarderPayStatus(OutboarderDTO outboarderDTO);
+
+    Integer updateSailyachtPayStatus(SailyachtDTO sailyachtDTO);
 }

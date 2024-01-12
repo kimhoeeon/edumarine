@@ -154,6 +154,7 @@
                                                 <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
                                                 <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
                                                 <option value="naver.com" <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
+                                                <option value="gmail.com" <c:if test="${domain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
                                                 <option value="hotmail.com" <c:if test="${domain eq 'hotmail.com'}">selected</c:if> >hotmail.com</option>
                                                 <option value="yahoo.co.kr" <c:if test="${domain eq 'yahoo.co.kr'}">selected</c:if> >yahoo.co.kr</option>
                                                 <option value="empal.com" <c:if test="${domain eq 'empal.com'}">selected</c:if> >empal.com</option>

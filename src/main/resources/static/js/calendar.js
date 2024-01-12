@@ -1,11 +1,16 @@
-window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
+window.onload = function () {
+
+    f_train_calendar_select('전체');
+
+    //buildCalendar();
+}    // 웹 페이지가 로드되면 buildCalendar 실행
 
 let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
 let today = new Date();     // 페이지를 로드한 날짜를 저장
 today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
 
 // 날짜와 이벤트 배열을 저장하는 객체
-let events = {
+/*let events = {
     "2023-11-01": [
         { text: "[장기]해상엔진테크니션(선외기 및 선내기 통합)", className: "edu01", link: "/apply/eduApply01.do"},
         { text: "[단기]해상엔진 자가정비(선외기)", className: "edu03" }
@@ -22,11 +27,98 @@ let events = {
     "2023-11-05": [
         { text: "[단기]해상엔진 자가정비(세일요트)", className: "edu05" }
     ]
-};
+};*/
 
+let events = {};
+
+function f_train_calendar_select(category){
+
+    let jsonObj = {
+        category: category
+    }
+
+    $.ajax({
+        url: '/apply/schedule/calendar/selectList.do',
+        method: 'post',
+        data: JSON.stringify(jsonObj),
+        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+    })
+    .done(function (data, status){
+        let results = data;
+        let str = '';
+        let eventsObj = {};
+        $.each(results , function(i){
+            let seq = results[i].seq;
+            let gbn = results[i].gbn;
+            let category = results[i].category;
+            category = category.toString().replaceAll('과정','');
+            let trainStartDttm = results[i].trainStartDttm;
+            trainStartDttm = trainStartDttm.toString().replaceAll('.','-');
+            let trainEndDttm = results[i].trainEndDttm;
+            trainEndDttm = trainEndDttm.toString().replaceAll('.','-');
+
+            let className = '';
+            let link = '';
+            switch (gbn){
+                case '해상엔진 테크니션 (선내기/선외기)':
+                    className = 'edu01';
+                    link = '/apply/eduApply02.do';
+                    break;
+                case 'FRP 레저보트 선체 정비 테크니션':
+                    className = 'edu02';
+                    link = '/apply/eduApply03.do';
+                    break;
+                case '해상엔진 자가정비 (선외기)':
+                    className = 'edu03';
+                    link = '/apply/eduApply05.do';
+                    break;
+                case '해상엔진 자가정비 (선내기)':
+                    className = 'edu04';
+                    link = '/apply/eduApply04.do';
+                    break;
+                case '해상엔진 자가정비 (세일요트)':
+                    className = 'edu05';
+                    link = '/apply/eduApply06.do';
+                    break;
+                default:
+                    break;
+            }
+
+            let eventsObjContent = {
+                text: '[' + category + ']' + gbn,
+                className: className,
+                link: link
+            };
+
+            if(eventsObj.hasOwnProperty(trainStartDttm)){
+                let newArr = [];
+                for(let i=0; i<eventsObj[trainStartDttm].length; i++){
+                    newArr.push(eventsObj[trainStartDttm][i]);
+                }
+                newArr.push(eventsObjContent);
+                eventsObj[trainStartDttm] = newArr;
+            }else{
+                let eventsArr = [];
+                eventsArr.push(eventsObjContent);
+                eventsObj[trainStartDttm] = eventsArr;
+            }
+
+            events = eventsObj;
+        });
+    })
+    .fail(function(xhr, status, errorThrown) {
+        $('body').html("오류가 발생했습니다.")
+            .append("<br>오류명: " + errorThrown)
+            .append("<br>상태: " + status);
+    }).always(function() {
+        /*console.log(JSON.stringify(events));*/
+        buildCalendar(events);
+    });
+}
 
 // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-function buildCalendar() {
+function buildCalendar(eventsObj) {
+    //console.log(eventsObj);
 
     let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
     let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
@@ -38,9 +130,7 @@ function buildCalendar() {
     while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
         tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
     }
-    
 
-    
     let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
 
     for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
@@ -61,13 +151,13 @@ function buildCalendar() {
     
         if (nowDay < today) {
             dateWrapper.className = "pastDay";
-            dateWrapper.onclick = function () { choiceDate(newDIV); }
+            dateWrapper.onclick = function () { choiceDate(newDIV, eventsObj); }
         } else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) {
             dateWrapper.className = "today";
-            dateWrapper.onclick = function () { choiceDate(newDIV); }
+            dateWrapper.onclick = function () { choiceDate(newDIV, eventsObj); }
         } else {
             dateWrapper.className = "futureDay";
-            dateWrapper.onclick = function () { choiceDate(newDIV); }
+            dateWrapper.onclick = function () { choiceDate(newDIV, eventsObj); }
         }
     
         dateWrapper.appendChild(newDIV); // 날짜를 감싸는 div에 날짜 div 추가
@@ -77,11 +167,11 @@ function buildCalendar() {
         let dateString = nowDay.getFullYear() + '-' + (nowDay.getMonth() + 1).toString().padStart(2, '0') + '-' + nowDay.getDate().toString().padStart(2, '0');
     
         // 이벤트 정보가 있는 경우 해당 날짜에 이벤트를 추가
-        if (events[dateString]) {
-            for (let i = 0; i < events[dateString].length; i++) {
+        if (eventsObj[dateString]) {
+            for (let i = 0; i < eventsObj[dateString].length; i++) {
                 let scheduleParagraph = document.createElement("p");
-                scheduleParagraph.innerText = events[dateString][i].text;
-                scheduleParagraph.className = events[dateString][i].className; // 클래스 추가
+                scheduleParagraph.innerText = eventsObj[dateString][i].text;
+                scheduleParagraph.className = eventsObj[dateString][i].className; // 클래스 추가
                 dateWrapper.appendChild(scheduleParagraph); // p 태그를 날짜를 감싸는 div에 추가
             }
         }
@@ -89,10 +179,8 @@ function buildCalendar() {
 
 }
 
-
-
 // 날짜 선택
-function choiceDate(newDIV) {
+function choiceDate(newDIV, eventsObj) {
     // 이전에 선택된 날짜가 있다면 클래스 제거
     let previousChoiceDay = document.querySelector(".choiceDay");
     if (previousChoiceDay) {
@@ -113,7 +201,7 @@ function choiceDate(newDIV) {
 
     // 선택한 날짜의 이벤트 가져오기
     let dateString = nowMonth.getFullYear() + "-" + (nowMonth.getMonth() + 1) + "-" + selectedDateText.padStart(2, '0');
-    let selectedEvents = events[dateString];
+    let selectedEvents = eventsObj[dateString];
 
     // 이벤트 목록을 노출하는 요소 가져오기
     let calList = document.querySelector(".calList");
@@ -151,11 +239,11 @@ function choiceDate(newDIV) {
 // 이전달 버튼 클릭
 function prevCalendar() {
     nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
-    buildCalendar();    // 달력 다시 생성
+    buildCalendar(events);    // 달력 다시 생성
 }
 // 다음달 버튼 클릭
 function nextCalendar() {
     nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
-    buildCalendar();    // 달력 다시 생성
+    buildCalendar(events);    // 달력 다시 생성
 }
 

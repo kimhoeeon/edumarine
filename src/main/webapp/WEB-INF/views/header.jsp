@@ -11,8 +11,8 @@
                 <a href="/member/join.do">회원가입</a>
             </c:if>
             <c:if test="${not empty status}">
-                <a href="/logout.do">로그아웃</a>
-                <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${sessionScope.id}' })" class="mypage">마이페이지</a>
+                <a href="/logout.do" onclick="sessionStorage.clear();">로그아웃</a>
+                <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${id}' })" class="mypage">마이페이지</a>
             </c:if>
             <a href="/sitemap.do" class="sitemap"><img src="<%request.getContextPath();%>/static/img/icon_menu_white.png" alt="메뉴 아이콘"></a>
         </div>
@@ -32,8 +32,8 @@
                         <a href="/member/join.do">회원가입</a>
                     </c:if>
                     <c:if test="${not empty status}">
-                        <a href="/logout.do">로그아웃</a>
-                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${sessionScope.id}' })" class="mypage">마이페이지</a>
+                        <a href="/logout.do" onclick="sessionStorage.clear();">로그아웃</a>
+                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${id}' })" class="mypage">마이페이지</a>
                     </c:if>
                 </div>
                 <ul class="dept1">
@@ -52,7 +52,7 @@
                         <a href="/guide/guide01.do">교육안내</a>
                         <ul class="dept2">
                             <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
-                            <li><a href="/guide/guide02.do">해상엔진테크니션 (선내기·선외기)</a></li>
+                            <li><a href="/guide/guide02.do">해상엔진 테크니션 (선내기/선외기)</a></li>
                             <li><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
                             <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                             <li><a href="/guide/guide05.do">위탁교육</a></li>

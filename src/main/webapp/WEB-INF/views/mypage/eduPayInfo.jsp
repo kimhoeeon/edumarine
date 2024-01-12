@@ -38,6 +38,15 @@
 
 <body>
 
+<c:if test="${status ne 'logon'}">
+    <script>
+        alert("로그인해 주세요.");
+        location.href = '/member/login.do';
+    </script>
+</c:if>
+
+<c:if test="${status eq 'logon'}">
+
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <!-- container -->
@@ -97,26 +106,30 @@
                                 </li>
                             </ul>
                             <ul class="list_body">
-                                <li>
-                                    <div class="number">2</div>
-                                    <div class="subject">
-                                        <a href="">교육명</a>
-                                        <div class="payment">500,000원</div>
-                                    </div>
-                                    <div class="date">2023.11.03</div>
-                                    <div class="method">카드결제</div>
-                                    <div class="state">결제완료</div>
-                                </li>
-                                <li>
-                                    <div class="number">1</div>
-                                    <div class="subject">
-                                        <a href="">교육명</a>
-                                        <div class="payment">500,000원</div>
-                                    </div>
-                                    <div class="date">2023.11.03</div>
-                                    <div class="method">카드결제</div>
-                                    <div class="state">결제완료</div>
-                                </li>
+                                <c:if test="${not empty paymentList}">
+                                    <c:forEach var="info" items="${paymentList}" begin="0" end="${paymentList.size()}" step="1" varStatus="status">
+                                        <li>
+                                            <div class="number">${info.rownum}</div>
+                                            <div class="subject">
+                                                <a href="">${info.trainName}</a>
+                                                <div class="payment">
+                                                    <fmt:formatNumber value="${info.totPrice}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/> 원
+                                                </div>
+                                            </div>
+                                            <div class="date">
+                                                <fmt:parseDate var="dateString" value="${fn:split(info.finalRegiDttm,' ')[0]}" pattern="yyyy-MM-dd" />
+                                                <fmt:formatDate value="${dateString}" pattern="yyyy.MM.dd" />
+                                            </div>
+                                            <div class="method">${info.cardPurchaseName} (${info.cardNum})</div>
+                                            <div class="state">${info.payStatus}</div>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${empty paymentList}">
+                                    <li>
+                                        결제내역 없음
+                                    </li>
+                                </c:if>
                             </ul>
                         </div>
                     </div>
@@ -146,6 +159,6 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
-
+</c:if>
 </body>
 </html>

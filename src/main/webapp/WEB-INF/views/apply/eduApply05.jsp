@@ -38,6 +38,15 @@
 
 <body>
 
+<c:if test="${status ne 'logon'}">
+    <script>
+        alert("로그인해 주세요.");
+        location.href = '/member/login.do';
+    </script>
+</c:if>
+
+<c:if test="${status eq 'logon'}">
+
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <!-- container -->
@@ -62,127 +71,138 @@
                 <div class="join_wrap form_wrap">
 
                     <!-- form box -->
-                    <div class="form_box">
-                        <div class="form_tit">
-                            <div class="big">기본정보</div>
-                            <div class="small">(선착순 모집) 15명까지 개별연락드립니다.</div>
-                        </div>
-                        <ul class="form_list">
-                            <li>
-                                <div class="gubun req">
-                                    <p>이름</p>
-                                </div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <input type="text" placeholder="국문" class="w50"><input type="text" placeholder="영문" class="w50">
+                    <form id="joinForm" method="post" onsubmit="return false;">
+                        <input type="hidden" name="memberSeq" value="${info.seq}">
+
+                        <!-- form box -->
+                        <div class="form_box">
+                            <div class="form_tit">
+                                <div class="big">기본정보</div>
+                                <div class="small">(선착순 모집) 15명까지 개별연락드립니다.</div>
+                                <div class="small">이름, 연락처, 이메일 주소는 <span style="font-weight: bold;">'마이페이지>회원정보'</span> 에서 수정 가능합니다.</div>
+                            </div>
+                            <ul class="form_list">
+                                <li>
+                                    <div class="gubun req">
+                                        <p>이름</p>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req">
-                                    <p>이메일 주소</p>
-                                </div>
-                                <div class="naeyong">
-                                    <div class="input form_email">
-                                        <input type="email" placeholder="이메일 입력" class="email_input_1">
-                                        <span>@</span>
-                                        <input type="email" class="email_input_2">
-                                        <select class="email_select">
-                                            <option selected>직접입력</option>
-                                            <option value="daum.net">daum.net</option>
-                                            <option value="nate.com">nate.com</option>
-                                            <option value="hanmail.net">hanmail.net</option>
-                                            <option value="naver.com">naver.com</option>
-                                            <option value="hotmail.com">hotmail.com</option>
-                                            <option value="yahoo.co.kr">yahoo.co.kr</option>
-                                            <option value="empal.com">empal.com</option>
-                                            <option value="korea.com">korea.com</option>
-                                            <option value="hanmir.com">hanmir.com</option>
-                                            <option value="dreamwiz.com">dreamwiz.com</option>
-                                            <option value="orgio.net">orgio.net</option>
-                                            <option value="korea.com">korea.com</option>
-                                            <option value="choi.com">choi.com</option>
-                                            <option value="hitel.net">hitel.net</option>
-                                        </select>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="nameKo" name="nameKo" value="${info.name}" placeholder="이름 입력" class="w50" readonly>
+                                            <input type="text" id="nameEn" name="nameEn" placeholder="영문" class="w50">
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req">
-                                    <p>연락처</p>
-                                </div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <input type="tel" placeholder="하이픈(-) 없이 입력" class="onlyNum w50">
+                                </li>
+                                <li>
+                                    <div class="gubun req">
+                                        <p>연락처</p>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req">
-                                    <p>생년월일</p>
-                                </div>
-                                <div class="naeyong">
-                                    <div class="input form_birth">
-                                        <select class="box" id="birth-year">
-                                            <option disabled selected>출생 연도</option>
-                                        </select>
-                                        <select class="box" id="birth-month">
-                                            <option disabled selected>월</option>
-                                        </select>
-                                        <select class="box" id="birth-day">
-                                            <option disabled selected>일</option>
-                                        </select>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="phone" name="phone" value="${info.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50" readonly>
+                                        </div>
                                     </div>
-                                    <div class="cmnt">수료증 발급에 필요한 자료이므로 정확한 기재 부탁 드립니다.</div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>주소</p></div>
-                                <div class="naeyong">
-                                    <div class="input form_address">
-                                        <div class="address_box">
-                                            <input type="text" id="sample5_address" placeholder="주소">
-                                            <input type="button" onclick="execDaumPostcode()" value="주소 검색">
-                                            <div id="map" style="width:300px;height:300px;margin-top:10px;display:none">
+                                </li>
+                                <li>
+                                    <div class="gubun req">
+                                        <p>이메일 주소</p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input form_email">
+                                            <input type="text" id="email" name="email" value="${fn:split(info.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1" readonly>
+                                            <span>@</span>
+                                            <input type="text" id="domain" name="domain" value="${fn:split(info.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2" readonly>
+                                            <select class="email_select">
+                                                <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
+                                                <option selected disabled>직접입력</option>
+                                                <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> disabled>daum.net</option>
+                                                <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> disabled>nate.com</option>
+                                                <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> disabled>hanmail.net</option>
+                                                <option value="naver.com" <c:if test="${domain eq 'naver.com'}">selected</c:if> disabled>naver.com</option>
+                                                <option value="gmail.com" <c:if test="${domain eq 'gmail.com'}">selected</c:if> disabled>gmail.com</option>
+                                                <option value="hotmail.com" <c:if test="${domain eq 'hotmail.com'}">selected</c:if> disabled>hotmail.com</option>
+                                                <option value="yahoo.co.kr" <c:if test="${domain eq 'yahoo.co.kr'}">selected</c:if> disabled>yahoo.co.kr</option>
+                                                <option value="empal.com" <c:if test="${domain eq 'empal.com'}">selected</c:if> disabled>empal.com</option>
+                                                <option value="korea.com" <c:if test="${domain eq 'korea.com'}">selected</c:if> disabled>korea.com</option>
+                                                <option value="hanmir.com" <c:if test="${domain eq 'hanmir.com'}">selected</c:if> disabled>hanmir.com</option>
+                                                <option value="dreamwiz.com" <c:if test="${domain eq 'dreamwiz.com'}">selected</c:if> disabled>dreamwiz.com</option>
+                                                <option value="orgio.net" <c:if test="${domain eq 'orgio.net'}">selected</c:if> disabled>orgio.net</option>
+                                                <option value="korea.com" <c:if test="${domain eq 'korea.com'}">selected</c:if> disabled>korea.com</option>
+                                                <option value="hitel.net" <c:if test="${domain eq 'hitel.net'}">selected</c:if> disabled>hitel.net</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req">
+                                        <p>생년월일</p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input form_birth">
+                                            <select class="box" id="birth-year" name="birthYear">
+                                                <option disabled selected>출생 연도</option>
+                                            </select>
+                                            <select class="box" id="birth-month" name="birthMonth">
+                                                <option disabled selected>월</option>
+                                            </select>
+                                            <select class="box" id="birth-day" name="birthDay">
+                                                <option disabled selected>일</option>
+                                            </select>
+                                        </div>
+                                        <div class="cmnt">수료증 발급에 필요한 자료이므로 정확한 기재 부탁 드립니다.</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>주소</p></div>
+                                    <div class="naeyong">
+                                        <div class="input form_address">
+                                            <div class="address_box">
+                                                <input type="text" id="address" name="address" placeholder="주소">
+                                                <input type="button" onclick="execDaumPostcode('address','addressDetail')" value="주소 검색">
+                                                <div id="map" style="width:300px;height:300px;margin-top:10px;display:none">
+                                                </div>
+                                            </div>
+                                            <div class="address_box">
+                                                <input type="text" id="addressDetail" name="addressDetail" placeholder="상세주소">
                                             </div>
                                         </div>
-                                        <div class="address_box">
-                                            <input type="text" placeholder="상세주소">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>작업복 사이즈<span>(남여공용)</span></p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <label><input type="radio" name="clothesSize" value="S">S (90)</label>
+                                            <label><input type="radio" name="clothesSize" value="M">M (95)</label>
+                                            <label><input type="radio" name="clothesSize" value="L">L (100)</label>
+                                            <label><input type="radio" name="clothesSize" value="XL">XL (105)</label>
+                                            <label><input type="radio" name="clothesSize" value="XXL">XXL (110)</label>
+                                            <label><input type="radio" name="clothesSize" value="기타">기타</label>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>작업복 사이즈<span>(남여공용)</span></p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <label><input type="radio" name="f_edu_smock">S (90)</label>
-                                        <label><input type="radio" name="f_edu_smock">M (95)</label>
-                                        <label><input type="radio" name="f_edu_smock">L (100)</label>
-                                        <label><input type="radio" name="f_edu_smock">XL (150)</label>
-                                        <label><input type="radio" name="f_edu_smock">기타</label>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>참여 경로</p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <label><input type="radio" name="participationPath" value="인터넷">인터넷</label>
+                                            <label><input type="radio" name="participationPath" value="홈페이지">홈페이지</label>
+                                            <label><input type="radio" name="participationPath" value="홍보물">홍보물</label>
+                                            <label><input type="radio" name="participationPath" value="지인추천">지인추천</label>
+                                            <label><input type="radio" name="participationPath" value="기타">기타</label>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun req"><p>참여 경로</p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        <label><input type="radio" name="f_edu_route">인터넷</label>
-                                        <label><input type="radio" name="f_edu_route">홈페이지</label>
-                                        <label><input type="radio" name="f_edu_route">홍보물</label>
-                                        <label><input type="radio" name="f_edu_route">지인추천</label>
-                                        <label><input type="radio" name="f_edu_route">기타</label>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- //form box -->
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- //form box -->
+
+                    </form>
+                    <!-- form box -->
 
                     <div class="form_btn_box">
-                        <a href="javascript:void(0);" class="btnSt03 apply_cancel_edu_btn">취소</a>
-                        <a href="/mypage/eduApplyInfo.do" class="btnSt01">신청하기</a>
+                        <a href="/apply/eduApply05.do?seq=${seq}" class="btnSt03">초기화</a>
+                        <a href="javascript:void(0);" onclick="f_main_apply_eduApply05_submit('${seq}');" class="btnSt01">신청하기</a>
                     </div>
 
                     <!-- form_notice -->
@@ -233,10 +253,13 @@
 <script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
+</c:if>
 </body>
 </html>

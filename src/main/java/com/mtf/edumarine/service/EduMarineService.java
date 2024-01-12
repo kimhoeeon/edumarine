@@ -66,4 +66,104 @@ public interface EduMarineService {
     ResumeDTO processSelectResumeSingle(String id);
 
     ResponseDTO processSaveResume(ResumeDTO resumeDTO);
+
+    List<TrainDTO> processSelectTrainScheduleList(SearchDTO searchDTO);
+
+    List<TrainDTO> processSelectTrainScheduleCalendarList(TrainDTO trainDTO);
+
+    ResponseDTO processInsertRegular(RegularDTO regularDTO);
+
+    List<CommunityDTO> processSelectCommunityList(SearchDTO searchDTO);
+
+    CommunityDTO processSelectCommunitySingle(String seq);
+
+    ResponseDTO processUpdateCommunityViewCnt(String seq);
+
+    RecommendDTO processSelectRecommendSingle(RecommendDTO recommendReqDTO);
+
+    ResponseDTO processUpdateRecommend(RecommendDTO recommendDTO);
+
+    List<ReplyDTO> processSelectReplyList(ReplyDTO replyReqDTO);
+
+    ResponseDTO processInsertReply(ReplyDTO replyDTO);
+
+    ResponseDTO processDeleteReply(ReplyDTO replyDTO);
+
+    ResponseDTO processInsertCommunity(CommunityDTO communityDTO);
+
+    ResponseDTO processDeleteCommunity(CommunityDTO communityDTO);
+
+    List<CommunityDTO> processSelectPostCommunityList(String id);
+
+    List<ReplyDTO> processSelectPostReplyList(String id);
+
+    ResponseDTO processUpdateCommunity(CommunityDTO communityDTO);
+
+    RegularDTO processSelectPreRegularSingle(RegularDTO regularDTO);
+
+    MemberDTO processSelectMemberSeqSingle(String seq);
+
+    TrainDTO processSelectTrainSingle(String trainSeq);
+
+    ResponseDTO processInsertPayment(PaymentDTO paymentDTO);
+
+    ResponseDTO processUpdateRegularPayStatus(RegularDTO regularDTO);
+
+    List<EduApplyInfoDTO> processSelectEduApplyInfoList(String memberSeq);
+
+    List<EduApplyInfoDTO> processSelectEduApplyInfoCancelList(String memberSeq);
+
+    RegularDTO processSelectRegularSingle(String seq);
+
+    ResponseDTO processUpdateRegular(RegularDTO regularDTO);
+
+    List<PaymentDTO> processSelectPaymentList(String memberSeq);
+
+    ResponseDTO processInsertBoarder(BoarderDTO boarderDTO);
+
+    ResponseDTO processUpdateBoarderPayStatus(BoarderDTO boarderDTO);
+
+    BoarderDTO processSelectBoarderSingle(String seq);
+
+    List<CareerDTO> processSelectCareerList(CareerDTO careerDTO);
+
+    List<LicenseDTO> processSelectLicenseList(LicenseDTO licenseDTO);
+
+    ResponseDTO processUpdateBoarder(BoarderDTO boarderDTO);
+
+    ResponseDTO processDeleteCareer(CareerDTO careerDTO);
+
+    ResponseDTO processDeleteLicense(LicenseDTO licenseDTO);
+
+    ResponseDTO processInsertFrp(FrpDTO frpDTO);
+
+    ResponseDTO processUpdateFrpPayStatus(FrpDTO frpDTO);
+
+    FrpDTO processSelectFrpSingle(String seq);
+
+    ResponseDTO processUpdateFrp(FrpDTO frpDTO);
+
+    ResponseDTO processInsertInboarder(InboarderDTO inboarderDTO);
+
+    ResponseDTO processUpdateInboarderPayStatus(InboarderDTO inboarderDTO);
+
+    InboarderDTO processSelectInboarderSingle(String seq);
+
+    ResponseDTO processUpdateInboarder(InboarderDTO inboarderDTO);
+
+    ResponseDTO processInsertOutboarder(OutboarderDTO outboarderDTO);
+
+    ResponseDTO processInsertSailyacht(SailyachtDTO sailyachtDTO);
+
+    OutboarderDTO processSelectOutboarderSingle(String seq);
+
+    SailyachtDTO processSelectSailyachtSingle(String seq);
+
+    ResponseDTO processUpdateOutboarder(OutboarderDTO outboarderDTO);
+
+    ResponseDTO processUpdateSailyacht(SailyachtDTO sailyachtDTO);
+
+    ResponseDTO processUpdateOutboarderPayStatus(OutboarderDTO outboarderDTO);
+
+    ResponseDTO processUpdateSailyachtPayStatus(SailyachtDTO sailyachtDTO);
 }

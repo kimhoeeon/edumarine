@@ -21,14 +21,12 @@
     --%>
 </head>
 
-<body>
-<%-- 페이지 뒤로가기 막기 --%>
-<script>
-    history.pushState(null, null, location.href);
-    window.onpopstate = function (event) {
-        history.go(1);
-    };
+<script type="text/javascript">
+    window.history.forward();
+    function noBack(){window.history.forward();}
 </script>
+
+<body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 
     <div id="main_container">
         <div id="login">
@@ -66,7 +64,12 @@
 
     function getIP(json) {
         let myIp = json.ip;
-        let ipArr = ['118.36.143.89'];
+        let ipArr = [
+            '211.208.232.85',
+            '58.239.97.142',
+            '175.210.117.1', /* 수자원 */
+            '118.36.143.89' /* 미팅팬 */
+        ];
         let pass = false;
         for(let i=0; i<ipArr.length; i++){
             if(myIp === ipArr[i]){

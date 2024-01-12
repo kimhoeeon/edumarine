@@ -20,20 +20,6 @@ $(function(){
         $(this).val($(this).val().replaceAll(exp, ''));
     });
 
-    // 숫자, 소수점 입력
-    $('.onlyNumDec').on("blur keyup", function () {
-        var sanitizedValue = $(this).val().replace(/[^0-9.]/g, ''); // 숫자와 소수점 이외의 문자 제거
-        var decimalParts = sanitizedValue.split("."); // 소수점을 기준으로 분할
-
-        // 소수점이 하나 이상일 경우 마지막 소수점만 남기고 제거
-        if (decimalParts.length > 2) {
-            decimalParts.pop(); // 마지막 요소(소수점 이후 내용) 제거
-            sanitizedValue = decimalParts.join(".");
-        }
-
-        $(this).val(sanitizedValue); // 처리된 값을 다시 입력 필드에 설정
-    });
-
     // 파일 입력 변경에 대한 이벤트 핸들러 추가
     $(document).on('change', '.upload_hidden', function () {
         let fileName = $(this).val().split('\\').pop();
@@ -128,11 +114,11 @@ function loginFormSubmit() {
         contentType: 'application/json; charset=utf-8' //server charset 확인 필요
     })
         .done(function (data) {
-            /*if (data !== "") {*/
+            if (data !== '') {
                 form.submit(); // /mng/main.do
-            /*} else {
+            } else {
                 showMessage('', 'info', '로그인 실패', '관리자 아이디와 비밀번호를 확인해주세요.', '');
-            }*/
+            }
         })
         .fail(function (xhr, status, errorThrown) {
             /*$('body').html("오류가 발생했습니다.")
@@ -625,6 +611,7 @@ async function f_attach_file_upload(userId, formId, path) {
                         fileName: fileName,
                         fileYn: 'Y'
                     };
+
                     let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
                     if (resData.resultCode === "0") {
                         let ul_el = document.getElementById('uploadFileList');

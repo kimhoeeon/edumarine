@@ -1,7 +1,7 @@
 "use strict";
 
 // specify the fonts you would
-var fonts = ['Arial', 'Courier', 'Garamond', 'Tahoma', 'Times New Roman', 'Verdana', 'Dotum', 'Roboto'];
+var fonts = ['Arial', 'Courier', 'Garamond', 'Tahoma', 'Verdana', 'Dotum', 'Roboto'];
 // generate code friendly names
 function getFontName(font) {
     return font.toLowerCase().replace(/\s/g, "-");
@@ -53,7 +53,7 @@ var KTQuillEditor = function () {
             modules: {
                 toolbar: toolbarOptions
             },
-            placeholder: '내용',
+            placeholder: '내용을 입력하세요.',
             theme: 'snow' // or 'bubble'
         });
 

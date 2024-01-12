@@ -1,5 +1,6 @@
 package com.mtf.edumarine.dto;
 
+import com.mtf.edumarine.entity.AbstractPagingRequestVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,10 +8,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TrainDTO {
+public class TrainDTO extends AbstractPagingRequestVo {
+    Integer totalRecords;
     Integer rownum; //연번
     String seq; //순번
     String gbn; //구분
+    String category; //카테고리(과정)
     String trainStartDttm; //교육시작일시
     String trainEndDttm; //교육종료일시
     String applyStartDttm; //접수시작일시

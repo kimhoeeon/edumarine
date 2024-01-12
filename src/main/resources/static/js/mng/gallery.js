@@ -209,7 +209,7 @@ function f_board_gallery_save(seq){
                 let uploadFileList = document.getElementById('uploadFileList').children;
                 let uploadFileListLen = uploadFileList.length;
                 for(let i=0; i<uploadFileListLen; i++){
-                    let fileId = uploadFileList[i].children[2].id;
+                    let fileId = uploadFileList[i].querySelector('input[type=hidden]').id;
                     fileIdList += fileId;
                     if((i+1) !== uploadFileListLen){
                         fileIdList += ',';

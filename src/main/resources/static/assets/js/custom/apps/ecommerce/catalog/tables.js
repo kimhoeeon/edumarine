@@ -183,6 +183,13 @@ let DTCustomerRegular = function () {
         }else{
             renderHTML += '<br>2순위) -';
         }
+        let thirdApplicationField = row.thirdApplicationField;
+        if(nvl(thirdApplicationField,'') !== ''){
+            renderHTML += '<br>3순위) ';
+            renderHTML += thirdApplicationField;
+        }else{
+            renderHTML += '<br>3순위) -';
+        }
         return renderHTML;
     }
 

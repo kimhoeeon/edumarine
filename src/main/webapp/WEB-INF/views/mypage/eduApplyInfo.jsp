@@ -38,6 +38,15 @@
 
 <body>
 
+<c:if test="${status ne 'logon'}">
+    <script>
+        alert("로그인해 주세요.");
+        location.href = '/member/login.do';
+    </script>
+</c:if>
+
+<c:if test="${status eq 'logon'}">
+
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <!-- container -->
@@ -97,47 +106,29 @@
                                 </li>
                             </ul>
                             <ul class="list_body">
-                                <li>
-                                    <div class="number">3</div>
-                                    <div class="subject">
-                                        <a href="">교육명</a>
-                                        <div class="edu_period">2023.11.03 ~ 2023.11.11</div>
-                                        <div class="edu_time">00:00 ~ 00:00</div>
-                                    </div>
-                                    <div class="venue">경기테크노파크(안산)</div>
-                                    <div class="state">교육예정</div>
-                                    <div class="modify">
-                                        <a href="javascript:void(0);" class="btn_cancel form_cancel_edu_btn">취소</a>
-                                        <a href="/mypage/eduApply01_modify.do" class="btn_modify">수정</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="number">2</div>
-                                    <div class="subject">
-                                        <a href="">교육명</a>
-                                        <div class="edu_period">2023.11.03 ~ 2023.11.11</div>
-                                        <div class="edu_time">00:00 ~ 00:00</div>
-                                    </div>
-                                    <div class="venue">경기테크노파크(안산)</div>
-                                    <div class="state">신청완료</div>
-                                    <div class="modify">
-                                        <a href="javascript:void(0);" class="btn_cancel form_cancel_edu_btn">취소</a>
-                                        <a href="/mypage/eduApply01_modify.do" class="btn_modify">수정</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="number">1</div>
-                                    <div class="subject">
-                                        <a href="">교육명</a>
-                                        <div class="edu_period">2023.11.03 ~ 2023.11.11</div>
-                                        <div class="edu_time">00:00 ~ 00:00</div>
-                                    </div>
-                                    <div class="venue">경기테크노파크(안산)</div>
-                                    <div class="state">교육중</div>
-                                    <div class="modify">
-                                        <a href="/mypage/eduApply01_modify.do" class="btn_modify">수정</a>
-                                    </div>
-                                </li>
+                                <c:if test="${not empty eduApplyInfoList}">
+                                    <c:forEach var="eduApplyInfo" items="${eduApplyInfoList}" begin="0" end="${eduApplyInfoList.size()}" step="1" varStatus="status">
+                                        <li>
+                                            <div class="number">${eduApplyInfo.rownum}</div>
+                                            <div class="subject">
+                                                <a href="">${eduApplyInfo.trainName}</a>
+                                                <div class="edu_period">${eduApplyInfo.trainStartDttm} ~ ${eduApplyInfo.trainEndDttm}</div>
+                                                <%--<div class="edu_time">00:00 ~ 00:00</div>--%>
+                                            </div>
+                                            <%--<div class="venue">경기테크노파크(안산)</div>--%>
+                                            <div class="state">${eduApplyInfo.payStatus}</div>
+                                            <div class="modify">
+                                                <a href="javascript:void(0);" value="${eduApplyInfo.seq}" class="btn_cancel form_cancel_edu_btn">취소</a>
+                                                <a href="javascript:void(0);" onclick="f_edu_apply_modify_btn('${eduApplyInfo.trainName}', '${eduApplyInfo.seq}')" class="btn_modify">수정</a>
+                                            </div>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${empty eduApplyInfoList}">
+                                    <li>
+                                        신청한 교육 없음
+                                    </li>
+                                </c:if>
                             </ul>
                         </div>
                     </div>
@@ -158,26 +149,25 @@
                                 </li>
                             </ul>
                             <ul class="list_body">
-                                <li>
-                                    <div class="number">2</div>
-                                    <div class="subject">
-                                        <a href="">교육명</a>
-                                        <div class="edu_period">2023.11.03 ~ 2023.11.11</div>
-                                        <div class="edu_time">00:00 ~ 00:00</div>
-                                    </div>
-                                    <div class="venue">경기테크노파크(안산)</div>
-                                    <div class="state">취소불가<p>(관리자문의)</p></div>
-                                </li>
-                                <li>
-                                    <div class="number">1</div>
-                                    <div class="subject">
-                                        <a href="">교육명</a>
-                                        <div class="edu_period">2023.11.03 ~ 2023.11.11</div>
-                                        <div class="edu_time">00:00 ~ 00:00</div>
-                                    </div>
-                                    <div class="venue">경기테크노파크(안산)</div>
-                                    <div class="state">신청취소</div>
-                                </li>
+                                <c:if test="${not empty eduApplyInfoCancelList}">
+                                    <c:forEach var="eduApplyInfoCancel" items="${eduApplyInfoCancelList}" begin="0" end="${eduApplyInfoCancelList.size()}" step="1" varStatus="status">
+                                        <li>
+                                            <div class="number">${eduApplyInfoCancel.rownum}</div>
+                                            <div class="subject">
+                                                <a href="">${eduApplyInfoCancel.trainName}</a>
+                                                <div class="edu_period">${eduApplyInfoCancel.trainStartDttm} ~ ${eduApplyInfoCancel.trainEndDttm}</div>
+                                                    <%--<div class="edu_time">00:00 ~ 00:00</div>--%>
+                                            </div>
+                                                <%--<div class="venue">경기테크노파크(안산)</div>--%>
+                                            <div class="state">${eduApplyInfoCancel.payStatus}</div>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${empty eduApplyInfoCancelList}">
+                                    <li>
+                                        취소한 교육 없음
+                                    </li>
+                                </c:if>
                             </ul>
                         </div>
                     </div>
@@ -189,13 +179,13 @@
                             <div class="popup_box popup_form">
                                 <div class="box_1">
                                     <div class="tit_box">교육 취소</div>
-                                    <div class="text_box">[교육명]을 신청하셨습니다.<br>정말로 취소하시겠습니까?</div>
-                                    <div class="cmnt_box"><span style="color: #C00000">10자 이상 입력해 주세요!</span></div>
-                                    <div class="input_box"><input type="text" placeholder="10자 이상 입력" class="cancel_edu_reason">
+                                    <div class="text_box">[ <span class="train_name"></span> ]을 신청하셨습니다.<br>정말로 취소하시겠습니까?</div>
+                                    <div class="cmnt_box"><span style="color: #C00000">취소 사유를 10자 이상 입력해 주세요!</span></div>
+                                    <div class="input_box"><input type="text" placeholder="취소 사유 10자 이상 입력" class="cancel_edu_reason">
                                     </div>
                                     <div class="btn_box">
                                         <a href="javascript:void(0);" class="btnSt03 btn_prev">이전</a>
-                                        <a href="javascript:void(0);" class="btnSt04 btn_next">확인</a>
+                                        <a href="javascript:void(0);" class="btnSt04 btn_next edu_cancel_btn">확인</a>
                                     </div>
                                 </div>
                                 <div class="box_2">
@@ -238,6 +228,6 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
-
+</c:if>
 </body>
 </html>

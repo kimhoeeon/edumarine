@@ -298,6 +298,26 @@ function f_education_train_form_data_setting(){
     // 교육과정명
     form.gbn = $('#gbn').val();
 
+    // 카테고리
+    let category = '전체';
+    if(nvl(form.gbn,'') !== ''){
+        switch (form.gbn){
+            case '해상엔진 테크니션 (선내기/선외기)':
+            case 'FRP 레저보트 선체 정비 테크니션':
+                category = '정규과정';
+                break;
+            case '해상엔진 자가정비 (선외기)':
+            case '해상엔진 자가정비 (선내기)':
+            case '해상엔진 자가정비 (세일요트)':
+                category = '단기과정';
+                break;
+            default:
+                break;
+        }
+    }
+
+    form.category = category;
+
     return JSON.stringify(form);
 }
 

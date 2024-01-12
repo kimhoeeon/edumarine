@@ -18,6 +18,16 @@ function galleryList(pageNum) {
         searchPosts(1);
     });*/
 
+    // 페이지 번호 클릭
+    $(document).on('click', '.paging>ol>li>a', function() {
+        if (!$(this).hasClass('this')) {
+            $(this).parent().find('a.this').removeClass('this');
+            $(this).addClass('this');
+
+            searchPosts(Number($(this).text()));
+        }
+    });
+
     // 페이징 Icon(<<, <, >, >>) 클릭
     $(document).on('click', '.paging>span', function() {
         const totalCnt = parseInt($('span.number').text());
@@ -57,8 +67,6 @@ function searchPosts(pageNum) {
     const countPerPage = 12; // 페이지당 노출 개수
     const start = (pageNum - 1) * countPerPage;
     let flag = true;
-
-    let link =  document.location.href;
 
     /* 검색조건 */
     let searchText = $('#search_text').val();

@@ -4,6 +4,7 @@ import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineMngService;
+import com.mtf.edumarine.util.SHA512;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import org.apache.poi.ss.usermodel.*;
@@ -29,8 +30,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -1781,6 +1785,86 @@ public class EduMarineMngController {
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineMngService.processRestoreTrash(trashDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/payment/cancel.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_payment_cancel(@RequestBody RegularDTO regularDTO) {
+        System.out.println("EduMarineMngController > apply_payment_cancel");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        /* 이니시스 취소 API CALL */
+
+        SHA512 sha512 = new SHA512();
+        Date date_now = new Date(System.currentTimeMillis());
+        SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMddHHmmss");
+
+        //step1. 요청을 위한 파라미터 설정
+        String key = "ItEQKi3rY7uvDS8l";
+        String mid = "INIpayTest";
+        String type = "refund";
+        String timestamp = fourteen_format.format(date_now);
+        String clientIp = "127.0.0.1";
+
+
+        Map<String, Object> data1 = new HashMap<String, Object>();
+        data1.put("tid", "");
+        data1.put("msg", "환불 요청합니다. 사유 : ");
+
+        JSONObject data = new JSONObject(data1);
+
+
+        // Hash Encryption
+        String plainTxt = key + mid + type + timestamp + data ;
+        plainTxt = plainTxt.replaceAll("\\\\", "");
+        String hashData = sha512.hash(plainTxt);
+
+
+        // reqeust URL
+        String apiUrl = "https://iniapi.inicis.com/v2/pg/refund";
+
+        JSONObject respJson = new JSONObject();
+        respJson.put("mid", mid);
+        respJson.put("type", type);
+        respJson.put("timestamp",timestamp);
+        respJson.put("clientIp",clientIp);
+        respJson.put("data",data);
+        respJson.put("hashData",hashData);
+
+
+        //step2. key=value 로 post 요청
+        try {
+            URL reqUrl = new URL(apiUrl);
+            HttpURLConnection conn = (HttpURLConnection) reqUrl.openConnection();
+
+            if (conn != null) {
+                conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                conn.setRequestMethod("POST");
+                conn.setDefaultUseCaches(false);
+                conn.setDoOutput(true);
+
+                if (conn.getDoOutput()) {
+                    conn.getOutputStream().write(respJson.toString().getBytes(StandardCharsets.UTF_8));
+                    conn.getOutputStream().flush();
+                    conn.getOutputStream().close();
+                }
+
+                conn.connect();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+
+                //step3. 요청 결과
+                System.out.println(br.readLine());
+                br.close();
+            }
+
+        }catch(Exception e ) {
+            e.printStackTrace();
+        }
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
