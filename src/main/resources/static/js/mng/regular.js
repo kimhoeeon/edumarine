@@ -127,6 +127,7 @@ function f_customer_regular_detail_modal_set(seq){
 
     document.querySelector('#md_first_application_field').value = resData.firstApplicationField;
     document.querySelector('#md_second_application_field').value = resData.secondApplicationField;
+    document.querySelector('#md_third_application_field').value = resData.thirdApplicationField;
     document.querySelector('#md_desired_education_time').value = resData.desiredEducationTime;
     document.querySelector('#md_major').value = resData.major;
 
@@ -308,6 +309,7 @@ function f_customer_regular_valid(){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let first_field_select = $('#first_field_select').val();
     let second_field_select = $('#second_field_select').val();
+    let third_field_select = $('#third_field_select').val();
 
     if(nvl(name,'') === ''){ showMessage('', 'error', '[등록 정보]', '이름을 입력해 주세요.', ''); return false; }
     if(nvl(phone,'') === ''){ showMessage('', 'error', '[등록 정보]', '연락처를 입력해 주세요.', ''); return false; }
@@ -320,6 +322,7 @@ function f_customer_regular_valid(){
     if(participationPathArr.length === 0){ showMessage('', 'error', '[등록 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
     if(nvl(first_field_select,'') === ''){ showMessage('', 'error', '[등록 정보]', '1순위 신청분야를 선택해 주세요.', ''); return false; }
     if(nvl(second_field_select,'') === ''){ showMessage('', 'error', '[등록 정보]', '2순위 신청분야를 선택해 주세요.', ''); return false; }
+    if(nvl(third_field_select,'') === ''){ showMessage('', 'error', '[등록 정보]', '3순위 신청분야를 선택해 주세요.', ''); return false; }
 
     return true;
 }

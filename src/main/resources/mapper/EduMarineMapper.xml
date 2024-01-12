@@ -124,6 +124,106 @@
         ORDER BY train_start_dttm DESC
     </select>
 
+    <select id="selectTrainSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainSingle */
+        SELECT seq
+             , gbn
+             , train_start_dttm
+             , train_end_dttm
+             , apply_start_dttm
+             , apply_end_dttm
+             , pay_sum
+             , train_cnt
+             , train_apply_cnt
+             , next_time
+             , train_note
+             , exposure_yn
+             , schedule_exposure_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM train
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateTrainApplyCnt" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateTrainApplyCnt */
+        UPDATE train
+        SET train_apply_cnt = train_apply_cnt + 1
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectTrainScheduleList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainScheduleList */
+        SELECT seq
+             , gbn
+             , category
+             , train_start_dttm
+             , train_end_dttm
+             , apply_start_dttm
+             , apply_end_dttm
+             , pay_sum
+             , train_cnt
+             , train_apply_cnt
+             , next_time
+             , train_note
+             , exposure_yn
+             , schedule_exposure_yn
+             , ( SELECT COUNT(*)
+                 FROM train
+                 WHERE del_yn = 'N'
+                 AND exposure_yn = 'Y'
+                 <if test='category != null and category != "" and !category.equals("전체")'>
+                    AND category = #{category}
+                 </if>
+                 <if test='searchText != null and searchText != ""'>
+                    AND gbn LIKE CONCAT('%',#{searchText},'%')
+                 </if>
+                 <if test='year != null and year != ""'>
+                    AND train_start_dttm LIKE CONCAT('%',#{year},'%')
+                 </if>
+                 ) AS totalRecords
+        FROM train
+        WHERE del_yn = 'N'
+        AND exposure_yn = 'Y'
+        <if test='category != null and category != "" and !category.equals("전체")'>
+            AND category = #{category}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            AND gbn LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='year != null and year != ""'>
+            AND train_start_dttm LIKE CONCAT('%',#{year},'%')
+        </if>
+        ORDER BY gbn = '상시신청' DESC, train_start_dttm DESC, train_end_dttm DESC, final_regi_dttm DESC
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectTrainScheduleCalendarList" parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainScheduleCalendarList */
+        SELECT seq
+             , gbn
+             , category
+             , train_start_dttm
+             , train_end_dttm
+             , apply_start_dttm
+             , apply_end_dttm
+        FROM train
+        WHERE 1=1
+        <if test='category != null and category != "" and !category.equals("전체")'>
+            AND category = #{category}
+        </if>
+          AND category != '전체'
+          AND del_yn = 'N'
+          AND schedule_exposure_yn = 'Y'
+        ORDER BY category DESC
+    </select>
+
     <select id="selectNoticeList" parameterType="com.mtf.edumarine.dto.NoticeDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectNoticeList */
         SELECT seq
@@ -254,6 +354,7 @@
              , password
              , grade
              , name
+             , name_en
              , phone
              , email
              , keyword
@@ -266,6 +367,27 @@
              , final_regi_dttm
         FROM member
         WHERE id = #{id}
+    </select>
+
+    <select id="selectMemberSeqSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectMemberSeqSingle */
+        SELECT seq
+             , id
+             , password
+             , grade
+             , name
+             , phone
+             , email
+             , keyword
+             , sms_yn
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM member
+        WHERE seq = #{seq}
     </select>
 
     <update id="updateMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
@@ -396,7 +518,6 @@
                             , ( SELECT COUNT(*)
                                 FROM notice
                                 WHERE del_yn = 'N'
-                                  AND title LIKE CONCAT('%',#{searchText},'%')
                                   <if test='searchText != null and searchText != ""'>
                                       <if test='condition == "title"'>
                                       AND title LIKE CONCAT('%',#{searchText},'%')
@@ -475,7 +596,6 @@
                             , ( SELECT COUNT(*)
                                 FROM press
                                 WHERE del_yn = 'N'
-                                  AND title LIKE CONCAT('%',#{searchText},'%')
                                   <if test='searchText != null and searchText != ""'>
                                       <if test='condition == "title"'>
                                       AND title LIKE CONCAT('%',#{searchText},'%')
@@ -553,7 +673,6 @@
                             , ( SELECT COUNT(*)
                                 FROM gallery
                                 WHERE del_yn = 'N'
-                                  AND title LIKE CONCAT('%',#{searchText},'%')
                                   <if test='searchText != null and searchText != ""'>
                                       <if test='condition == "title"'>
                                       AND title LIKE CONCAT('%',#{searchText},'%')
@@ -670,7 +789,6 @@
              , ( SELECT COUNT(*)
                  FROM job
                  WHERE del_yn = 'N'
-                   AND title LIKE CONCAT('%',#{searchText},'%')
                    <if test='searchText != null and searchText != ""'>
                        <if test='condition == "title"'>
                        AND title LIKE CONCAT('%',#{searchText},'%')
@@ -688,6 +806,414 @@
         <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
             LIMIT #{pageNum} , #{rows}
         </if>
+    </select>
+
+    <select id="getRegularSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getRegularSeq */
+        SELECT CONCAT('U', LPAD(nextval('regular_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertRegular */
+        INSERT INTO regular
+        ( seq
+        , member_seq
+        , train_seq
+        , name
+        , phone
+        , email
+        , birth_year
+        , birth_month
+        , birth_day
+        , age_group
+        , region
+        , participation_path
+        , first_application_field
+        , second_application_field
+        , third_application_field
+        , desired_education_time
+        , major
+        , experience_yn
+        , apply_status
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{name}
+            , #{phone}
+            , #{email}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{ageGroup}
+            , #{region}
+            , #{participationPath}
+            , #{firstApplicationField}
+            , #{secondApplicationField}
+            , #{thirdApplicationField}
+            , #{desiredEducationTime}
+            , #{major}
+            , #{experienceYn}
+            , #{applyStatus}
+            , 'N'
+            , #{note}
+            , 'REGULAR'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'REGULAR'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updatePreRegularInfo" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updatePreRegularInfo */
+        UPDATE regular
+        SET member_seq = #{memberSeq}
+          , email = #{email}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE name = #{name}
+        AND phone = #{phone}
+    </update>
+
+    <select id="selectPreRegularSingle" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectPreRegularSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , age_group
+             , region
+             , participation_path
+             , first_application_field
+             , second_application_field
+             , third_application_field
+             , desired_education_time
+             , major
+             , experience_yn
+             , apply_status
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM regular
+        WHERE name = #{name}
+        AND phone = #{phone}
+        LIMIT 1
+    </select>
+
+    <select id="selectCommunityList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectCommunityList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT seq
+                            , gbn
+                            , title
+                            , writer
+                            , writer_key
+                            , write_date
+                            , recommend_cnt
+                            , view_cnt
+                            , ( SELECT COUNT(*)
+                                FROM community
+                                WHERE del_yn = 'N'
+                                  <if test='searchText != null and searchText != ""'>
+                                      <if test='condition == "title"'>
+                                      AND title LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "content"'>
+                                      AND content LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "all"'>
+                                      AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                                OR content LIKE CONCAT('%',#{searchText},'%') )
+                                      </if>
+                                  </if>
+                                ) AS totalRecords
+                       FROM community
+                       WHERE del_yn = 'N'
+                         <if test='searchText != null and searchText != ""'>
+                             <if test='condition == "title"'>
+                             AND title LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "content"'>
+                             AND content LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "all"'>
+                             AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                       OR content LIKE CONCAT('%',#{searchText},'%') )
+                           </if>
+                       </if>
+                       ) LISTA
+                ORDER BY LISTA.gbn asc, LISTA.write_date asc
+                ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectCommunitySingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectCommunitySingle */
+        SELECT seq
+             , gbn
+             , title
+             , content
+             , hashtag
+             , writer
+             , writer_key
+             , write_date
+             , recommend_cnt
+             , view_cnt
+             , file_id_list
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM community
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateCommunityViewCnt" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateCommunityViewCnt */
+        UPDATE community
+        SET view_cnt = view_cnt + 1
+        WHERE seq = #{value}
+    </update>
+
+    <select id="selectRecommendSingle" parameterType="com.mtf.edumarine.dto.RecommendDTO" resultType="com.mtf.edumarine.dto.RecommendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectRecommendSingle */
+        SELECT seq
+             , member_id
+             , community_seq
+        FROM recommend
+        WHERE member_id = #{memberId}
+        AND community_seq = #{communitySeq}
+    </select>
+
+    <delete id="deleteRecommend" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.deleteRecommend */
+        DELETE FROM recommend
+        WHERE seq = #{seq}
+    </delete>
+
+    <insert id="insertRecommend" parameterType="com.mtf.edumarine.dto.RecommendDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertRecommend */
+        INSERT INTO recommend
+        ( seq
+        , member_id
+        , community_seq
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( CONCAT('R',LPAD(nextval('recommend_seq'),'7','0'))
+            , #{memberId}
+            , #{communitySeq}
+            , #{note}
+            , 'RECOMMEND'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'RECOMMEND'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectReplyList" parameterType="com.mtf.edumarine.dto.ReplyDTO" resultType="com.mtf.edumarine.dto.ReplyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectReplyList */
+        SELECT seq
+             , community_seq
+             , depth_reply_no
+             , mo_reply_seq
+             , writer
+             , content
+             , write_date
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM reply
+        WHERE community_seq = #{communitySeq}
+        order by write_date
+    </select>
+
+    <select id="getReplySeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getReplySeq */
+        SELECT CONCAT('R', LPAD(nextval('reply_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertReply" parameterType="com.mtf.edumarine.dto.ReplyDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertReply */
+        INSERT INTO reply
+        ( seq
+        , community_seq
+        , depth_reply_no
+        , mo_reply_seq
+        , writer
+        , content
+        , write_date
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{communitySeq}
+            , #{depthReplyNo}
+            , #{moReplySeq}
+            , #{writer}
+            , <![CDATA[#{content}]]>
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , #{note}
+            , 'REPLY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'REPLY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <delete id="deleteReply" parameterType="com.mtf.edumarine.dto.ReplyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.deleteReply */
+        DELETE FROM reply
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteReplyToReply" parameterType="com.mtf.edumarine.dto.ReplyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.deleteReplyToReply */
+        DELETE FROM reply
+        WHERE mo_reply_seq = #{moReplySeq}
+    </delete>
+
+    <select id="getCommunitySeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.getCommunitySeq */
+        SELECT CONCAT('C', LPAD(nextval('community_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertCommunity" parameterType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertCommunity */
+        INSERT INTO community
+        ( seq
+        , gbn
+        , title
+        , content
+        , hashtag
+        , writer
+        , writer_key
+        , write_date
+        , recommend_cnt
+        , view_cnt
+        , file_id_list
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , '0'
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , <![CDATA[#{hashtag}]]>
+            , #{writer}
+            , #{writerKey}
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 0
+            , 0
+            , null
+            , 'N'
+            , #{note}
+            , 'COMMUNITY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'COMMUNITY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <delete id="deleteCommunity" parameterType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.deleteCommunity */
+        DELETE FROM community
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateCommunity" parameterType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateCommunity */
+        UPDATE community
+        SET title = <![CDATA[#{title}]]>
+        , content = <![CDATA[#{content}]]>
+        , write_date = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        , hashtag = <![CDATA[#{hashtag}]]>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectPostCommunityList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.CommunityDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectPostCommunityList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT seq
+                            , title
+                            , writer
+                            , writer_key
+                            , write_date
+                            , recommend_cnt
+                            , view_cnt
+                       FROM community
+                       WHERE writer_key = #{writerKey}
+                       ) LISTA
+                ORDER BY LISTA.write_date asc
+                ) LISTB
+        ORDER BY LISTB.rownum desc
+    </select>
+
+    <select id="selectPostReplyList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.ReplyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectPostReplyList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT p.seq
+                            , (SELECT c.title
+                               FROM community c
+                               WHERE c.seq = p.community_seq) as communityTitle
+                            , p.depth_reply_no
+                            , p.mo_reply_seq
+                            , p.writer
+                            , p.content
+                            , p.write_date
+                       FROM reply p
+                       WHERE p.writer = #{writer}
+                       ) LISTA
+                ORDER BY LISTA.write_date asc
+                ) LISTB
+        ORDER BY LISTB.rownum desc
     </select>
 
     <select id="selectFileIdSingle" parameterType="com.mtf.edumarine.dto.FileDTO" resultType="com.mtf.edumarine.dto.FileDTO">
@@ -734,6 +1260,1212 @@
         AND file_yn = 'Y'
         ORDER BY LENGTH(note) ASC, note ASC
     </select>
+
+    <select id="getPaymentSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getPaymentSeq */
+        SELECT CONCAT('Y', LPAD(nextval('payment_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <select id="selectMemberSeq"  parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectMemberSeq */
+        SELECT seq
+        FROM member
+        WHERE name = #{name}
+          AND phone = #{phone}
+    </select>
+
+    <select id="selectTrainSeq"  parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectTrainSeq */
+        SELECT seq
+        FROM train
+        WHERE gbn = #{gbn}
+          AND apply_start_dttm <![CDATA[<=]]> #{today}
+          AND apply_end_dttm <![CDATA[>=]]> #{today}
+    </select>
+
+    <insert id="insertPayment" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertPayment */
+        INSERT INTO payment
+            ( seq
+            , member_seq
+            , member_name
+            , member_phone
+            , table_seq
+            , train_seq
+            , train_name
+            , buyer_name
+            , buyer_tel
+            , buyer_email
+            , cust_email
+            , pay_sum
+            , tot_price
+            , good_name
+            , goods_name
+            , pay_status
+            , appl_date
+            , appl_time
+            , moid
+            , mid
+            , tid
+            , appl_num
+            , auth_signature
+            , event_code
+            , pay_method
+            , currency
+            , p_fn_nm
+            , card_num
+            , card_code
+            , card_corp_flag
+            , card_member_num
+            , card_appl_price
+            , card_point
+            , card_quota
+            , card_purchase_code
+            , card_prtc_code
+            , card_check_flag
+            , card_bank_code
+            , card_terminal_num
+            , card_use_point
+            , card_interest
+            , card_src_code
+            , card_gwcode
+            , card_purchase_name
+            , pay_device
+            , result_code
+            , result_msg
+            , refund_reason
+            , del_yn
+            , note
+            , init_regi_pic
+            , init_regi_dttm
+            , final_regi_pic
+            , final_regi_dttm
+            )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{memberName}
+            , #{memberPhone}
+            , #{tableSeq}
+            , #{trainSeq}
+            , #{trainName}
+            , #{buyerName}
+            , #{buyerTel}
+            , #{buyerEmail}
+            , #{custEmail}
+            , #{paySum}
+            , #{totPrice}
+            , #{goodName}
+            , #{goodsName}
+            , #{payStatus}
+            , #{applDate}
+            , #{applTime}
+            , #{moid}
+            , #{mid}
+            , #{tid}
+            , #{applNum}
+            , #{authSignature}
+            , #{eventCode}
+            , #{payMethod}
+            , #{currency}
+            , #{pFnNm}
+            , #{cardNum}
+            , #{cardCode}
+            , #{cardCorpFlag}
+            , #{cardMemberNum}
+            , #{cardApplPrice}
+            , #{cardPoint}
+            , #{cardQuota}
+            , #{cardPurchaseCode}
+            , #{cardPrtcCode}
+            , #{cardCheckFlag}
+            , #{cardBankCode}
+            , #{cardTerminalNum}
+            , #{cardUsePoint}
+            , #{cardInterest}
+            , #{cardSrcCode}
+            , #{cardGwcode}
+            , #{cardPurchaseName}
+            , #{payDevice}
+            , #{resultCode}
+            , #{resultMsg}
+            , <![CDATA[#{refundReason}]]>
+            , 'N'
+            , #{note}
+            , 'PAYMENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'PAYMENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updateRegularPayStatus" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateRegularPayStatus */
+        UPDATE regular
+        SET apply_status = #{applyStatus}
+          <if test='cancelReason != null and cancelReason != ""'>
+          , cancel_reason = #{cancelReason}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateBoarderPayStatus" parameterType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoarderPayStatus */
+        UPDATE boarder
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateFrpPayStatus" parameterType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateFrpPayStatus */
+        UPDATE frp
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInboarderPayStatus" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateInboarderPayStatus */
+        UPDATE inboarder
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateOutboarderPayStatus" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateOutboarderPayStatus */
+        UPDATE outboarder
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSailyachtPayStatus" parameterType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateSailyachtPayStatus */
+        UPDATE sailyacht
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectEduApplyInfoList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EduApplyInfoDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                   , LISTA.*
+              FROM ( SELECT @ROWNUM := 0) R
+                 , ( SELECT '상시신청' AS trainName
+                          , r.train_seq
+                          , r.apply_status AS payStatus
+                          , r.seq
+                          , r.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = r.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = r.train_seq) AS trainEndDttm
+                     FROM regular r
+	                 WHERE r.member_seq = #{memberSeq}
+	                 AND r.apply_status NOT LIKE CONCAT('%','취소','%')
+	                 UNION ALL
+                     SELECT '해상엔진 테크니션 (선내기/선외기)' AS trainName
+                          , b.train_seq
+                          , b.apply_status AS payStatus
+                          , b.seq
+                          , b.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = b.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = b.train_seq) AS trainEndDttm
+                     FROM boarder b
+                     WHERE b.member_seq = #{memberSeq}
+                       AND b.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT 'FRP 레저보트 선체 정비 테크니션' AS trainName
+                          , f.train_seq
+                          , f.apply_status AS payStatus
+                          , f.seq
+                          , f.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = f.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = f.train_seq) AS trainEndDttm
+                     FROM frp f
+                     WHERE f.member_seq = #{memberSeq}
+                       AND f.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+	                 SELECT '해상엔진 자가정비 (선내기)' AS trainName
+	                      , i.train_seq
+	                      , i.apply_status AS payStatus
+	                      , i.seq
+	                      , i.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = i.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = i.train_seq) AS trainEndDttm
+	                 FROM inboarder i
+	                 WHERE i.member_seq = #{memberSeq}
+	                 AND i.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '해상엔진 자가정비 (선외기)' AS trainName
+                          , o.train_seq
+                          , o.apply_status AS payStatus
+                          , o.seq
+                          , o.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = o.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = o.train_seq) AS trainEndDttm
+                     FROM outboarder o
+                     WHERE o.member_seq = #{memberSeq}
+                       AND o.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '해상엔진 자가정비 (세일요트)' AS trainName
+                          , s.train_seq
+                          , s.apply_status AS payStatus
+                          , s.seq
+                          , s.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = s.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = s.train_seq) AS trainEndDttm
+                     FROM sailyacht s
+                     WHERE s.member_seq = #{memberSeq}
+                       AND s.apply_status NOT LIKE CONCAT('%','취소','%')
+	              ) LISTA
+              ORDER BY LISTA.final_regi_dttm ASC
+             ) LISTB
+        ORDER BY LISTB.rownum DESC
+    </select>
+
+    <select id="selectEduApplyInfoCancelList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EduApplyInfoDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoCancelList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                   , LISTA.*
+              FROM ( SELECT @ROWNUM := 0) R
+                 , ( SELECT '상시신청' AS trainName
+                          , r.train_seq
+                          , r.apply_status AS payStatus
+                          , r.seq
+                          , r.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = r.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = r.train_seq) AS trainEndDttm
+                     FROM regular r
+	                 WHERE r.member_seq = #{memberSeq}
+	                 AND r.apply_status LIKE CONCAT('%','취소','%')
+	                 UNION ALL
+                     SELECT '해상엔진 테크니션 (선내기/선외기)' AS trainName
+                          , b.train_seq
+                          , b.apply_status AS payStatus
+                          , b.seq
+                          , b.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = b.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = b.train_seq) AS trainEndDttm
+                     FROM boarder b
+                     WHERE b.member_seq = #{memberSeq}
+                       AND b.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT 'FRP 레저보트 선체 정비 테크니션' AS trainName
+                          , f.train_seq
+                          , f.apply_status AS payStatus
+                          , f.seq
+                          , f.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = f.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = f.train_seq) AS trainEndDttm
+                     FROM frp f
+                     WHERE f.member_seq = #{memberSeq}
+                       AND f.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+	                 SELECT '해상엔진 자가정비 (선내기)' AS trainName
+	                      , i.train_seq
+	                      , i.apply_status AS payStatus
+	                      , i.seq
+	                      , i.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = i.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = i.train_seq) AS trainEndDttm
+	                 FROM inboarder i
+	                 WHERE i.member_seq = #{memberSeq}
+	                 AND i.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '해상엔진 자가정비 (선외기)' AS trainName
+                          , o.train_seq
+                          , o.apply_status AS payStatus
+                          , o.seq
+                          , o.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = o.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = o.train_seq) AS trainEndDttm
+                     FROM outboarder o
+                     WHERE o.member_seq = #{memberSeq}
+                       AND o.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '해상엔진 자가정비 (세일요트)' AS trainName
+                          , s.train_seq
+                          , s.apply_status AS payStatus
+                          , s.seq
+                          , s.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = s.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = s.train_seq) AS trainEndDttm
+                     FROM sailyacht s
+                     WHERE s.member_seq = #{memberSeq}
+                       AND s.apply_status LIKE CONCAT('%','취소','%')
+	              ) LISTA
+              ORDER BY LISTA.final_regi_dttm ASC
+             ) LISTB
+        ORDER BY LISTB.rownum DESC
+    </select>
+
+    <select id="selectRegularSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectRegularSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , age_group
+             , region
+             , participation_path
+             , first_application_field
+             , second_application_field
+             , third_application_field
+             , desired_education_time
+             , major
+             , experience_yn
+             , apply_status
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM regular
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateRegular */
+        UPDATE regular
+        SET birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , age_group = #{ageGroup}
+          , region = #{region}
+          , participation_path = #{participationPath}
+          , first_application_field = #{firstApplicationField}
+          , second_application_field = #{secondApplicationField}
+          , third_application_field = #{thirdApplicationField}
+          , desired_education_time = #{desiredEducationTime}
+          , major = #{major}
+          , experience_yn = #{experienceYn}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectCareerList" parameterType="com.mtf.edumarine.dto.CareerDTO" resultType="com.mtf.edumarine.dto.CareerDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectCareerList */
+        SELECT seq
+             , boarder_seq
+             , member_seq
+             , train_seq
+             , career_place
+             , career_date
+             , career_position
+             , career_task
+             , career_location
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM career
+        WHERE boarder_seq = #{boarderSeq}
+    </select>
+
+    <select id="selectLicenseList" parameterType="com.mtf.edumarine.dto.LicenseDTO" resultType="com.mtf.edumarine.dto.LicenseDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectLicenseList */
+        SELECT seq
+             , boarder_seq
+             , member_seq
+             , train_seq
+             , license_name
+             , license_date
+             , license_org
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM license
+        WHERE boarder_seq = #{boarderSeq}
+    </select>
+
+    <select id="selectBoarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectBoarderSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , id
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , rrn
+             , age
+             , address
+             , address_detail
+             , top_clothes_size
+             , bottom_clothes_size
+             , shoes_size
+             , participation_path
+             , grade_gbn
+             , school_name
+             , major
+             , military_gbn
+             , military_reason
+             , disabled_gbn
+             , job_support_gbn
+             , tech_edu_gbn
+             , tech_edu_name
+             , apply_reason
+             , tech_reason
+             , activity_reason
+             , plan_reason
+             , etc_reason
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM boarder
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectFrpSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFrpSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , id
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , rrn
+             , age
+             , address
+             , address_detail
+             , top_clothes_size
+             , bottom_clothes_size
+             , shoes_size
+             , participation_path
+             , grade_gbn
+             , school_name
+             , major
+             , military_gbn
+             , military_reason
+             , disabled_gbn
+             , job_support_gbn
+             , know_path
+             , know_path_reason
+             , apply_reason
+             , tech_reason
+             , activity_reason
+             , plan_reason
+             , etc_reason
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM frp
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectPaymentList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectPaymentList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                   , LISTA.*
+              FROM ( SELECT @ROWNUM := 0) R
+                 , ( SELECT seq
+                          , member_seq
+                          , table_seq
+                          , train_seq
+                          , train_name
+                          , tot_price
+                          , final_regi_dttm
+                          , card_purchase_name
+                          , card_num
+                          , pay_status
+                     FROM payment
+                     WHERE member_seq = #{memberSeq}
+	              ) LISTA
+              ORDER BY LISTA.final_regi_dttm ASC
+             ) LISTB
+        ORDER BY LISTB.rownum DESC
+    </select>
+
+    <select id="getBoarderSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getBoarderSeq */
+        SELECT CONCAT('F', LPAD(nextval('boarder_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertBoarder" parameterType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertBoarder */
+        INSERT INTO boarder
+        ( seq
+        , member_seq
+        , train_seq
+        , id
+        , name_ko
+        , name_en
+        , phone
+        , email
+        , rrn
+        , age
+        , address
+        , address_detail
+        , top_clothes_size
+        , bottom_clothes_size
+        , shoes_size
+        , participation_path
+        , grade_gbn
+        , school_name
+        , major
+        , military_gbn
+        , military_reason
+        , disabled_gbn
+        , job_support_gbn
+        , tech_edu_gbn
+        , tech_edu_name
+        , apply_reason
+        , tech_reason
+        , activity_reason
+        , plan_reason
+        , etc_reason
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{id}
+            , #{nameKo}
+            , #{nameEn}
+            , #{phone}
+            , #{email}
+            , #{rrn}
+            , #{age}
+            , #{address}
+            , #{addressDetail}
+            , #{topClothesSize}
+            , #{bottomClothesSize}
+            , #{shoesSize}
+            , #{participationPath}
+            , #{gradeGbn}
+            , #{schoolName}
+            , #{major}
+            , #{militaryGbn}
+            , #{militaryReason}
+            , #{disabledGbn}
+            , #{jobSupportGbn}
+            , #{techEduGbn}
+            , #{techEduName}
+            , #{applyReason}
+            , #{techReason}
+            , #{activityReason}
+            , #{planReason}
+            , #{etcReason}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'BOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <insert id="insertCareer" parameterType="com.mtf.edumarine.dto.CareerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertCareer */
+        INSERT INTO career
+        ( seq
+        , boarder_seq
+        , member_seq
+        , train_seq
+        , career_place
+        , career_date
+        , career_position
+        , career_task
+        , career_location
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        ) VALUES
+            ( CONCAT('CA', LPAD(nextval('career_seq'), '7', '0'))
+            , #{boarderSeq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{careerPlace}
+            , #{careerDate}
+            , #{careerPosition}
+            , #{careerTask}
+            , #{careerLocation}
+            , #{note}
+            , 'CAREER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'CAREER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <insert id="insertLicense" parameterType="com.mtf.edumarine.dto.LicenseDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertLicense */
+        INSERT INTO license
+        ( seq
+        , boarder_seq
+        , member_seq
+        , train_seq
+        , license_name
+        , license_date
+        , license_org
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        ) VALUES
+            ( CONCAT('LI', LPAD(nextval('license_seq'), '7', '0'))
+            , #{boarderSeq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{licenseName}
+            , #{licenseDate}
+            , #{licenseOrg}
+            , #{note}
+            , 'LICENSE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'LICENSE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updateBoarder" parameterType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoarder */
+        UPDATE boarder
+        SET name_en = #{nameEn}
+          , rrn = #{rrn}
+          , age = #{age}
+          , address = <![CDATA[#{address}]]>
+          , address_detail = <![CDATA[#{addressDetail}]]>
+          , top_clothes_size = #{topClothesSize}
+          , bottom_clothes_size = #{bottomClothesSize}
+          , shoes_size = #{shoesSize}
+          , participation_path = #{participationPath}
+          , grade_gbn = #{gradeGbn}
+          , school_name = #{schoolName}
+          , major = #{major}
+          , military_gbn = #{militaryGbn}
+          , military_reason = #{militaryReason}
+          , disabled_gbn = #{disabledGbn}
+          , job_support_gbn = #{jobSupportGbn}
+          , tech_edu_gbn = #{techEduGbn}
+          , tech_edu_name = #{techEduName}
+          , apply_reason = #{applyReason}
+          , tech_reason = #{techReason}
+          , activity_reason = #{activityReason}
+          , plan_reason = #{planReason}
+          , etc_reason = #{etcReason}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateCareer" parameterType="com.mtf.edumarine.dto.CareerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateCareer */
+        UPDATE career
+        SET career_place = #{careerPlace}
+          , career_date = #{careerDate}
+          , career_position = #{careerPosition}
+          , career_task = #{careerTask}
+          , career_location = #{careerLocation}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateLicense" parameterType="com.mtf.edumarine.dto.LicenseDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateLicense */
+        UPDATE license
+        SET license_name = #{licenseName}
+          , license_date = #{licenseDate}
+          , license_org = #{licenseOrg}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <delete id="deleteCareer" parameterType="com.mtf.edumarine.dto.CareerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.deleteCareer */
+        DELETE FROM career
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteLicense" parameterType="com.mtf.edumarine.dto.LicenseDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.deleteLicense */
+        DELETE FROM license
+        WHERE seq = #{seq}
+    </delete>
+
+    <select id="getFrpSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getFrpSeq */
+        SELECT CONCAT('FR', LPAD(nextval('frp_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertFrp" parameterType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.insertFrp */
+        INSERT INTO frp
+        ( seq
+        , member_seq
+        , train_seq
+        , id
+        , name_ko
+        , name_en
+        , phone
+        , email
+        , rrn
+        , age
+        , address
+        , address_detail
+        , top_clothes_size
+        , bottom_clothes_size
+        , shoes_size
+        , participation_path
+        , grade_gbn
+        , school_name
+        , major
+        , military_gbn
+        , military_reason
+        , disabled_gbn
+        , job_support_gbn
+        , know_path
+        , know_path_reason
+        , apply_reason
+        , tech_reason
+        , activity_reason
+        , plan_reason
+        , etc_reason
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{id}
+            , #{nameKo}
+            , #{nameEn}
+            , #{phone}
+            , #{email}
+            , #{rrn}
+            , #{age}
+            , #{address}
+            , #{addressDetail}
+            , #{topClothesSize}
+            , #{bottomClothesSize}
+            , #{shoesSize}
+            , #{participationPath}
+            , #{gradeGbn}
+            , #{schoolName}
+            , #{major}
+            , #{militaryGbn}
+            , #{militaryReason}
+            , #{disabledGbn}
+            , #{jobSupportGbn}
+            , #{knowPath}
+            , #{knowPathReason}
+            , #{applyReason}
+            , #{techReason}
+            , #{activityReason}
+            , #{planReason}
+            , #{etcReason}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'BOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updateFrp" parameterType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateFrp */
+        UPDATE frp
+        SET name_en = #{nameEn}
+          , rrn = #{rrn}
+          , age = #{age}
+          , address = <![CDATA[#{address}]]>
+          , address_detail = <![CDATA[#{addressDetail}]]>
+          , top_clothes_size = #{topClothesSize}
+          , bottom_clothes_size = #{bottomClothesSize}
+          , shoes_size = #{shoesSize}
+          , participation_path = #{participationPath}
+          , grade_gbn = #{gradeGbn}
+          , school_name = #{schoolName}
+          , major = #{major}
+          , military_gbn = #{militaryGbn}
+          , military_reason = #{militaryReason}
+          , disabled_gbn = #{disabledGbn}
+          , job_support_gbn = #{jobSupportGbn}
+          , know_path = #{knowPath}
+          , know_path_reason = #{knowPathReason}
+          , apply_reason = #{applyReason}
+          , tech_reason = #{techReason}
+          , activity_reason = #{activityReason}
+          , plan_reason = #{planReason}
+          , etc_reason = #{etcReason}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getInboarderSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getInboarderSeq */
+        SELECT CONCAT('I', LPAD(nextval('inboarder_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertInboarder */
+        INSERT INTO inboarder
+        ( seq
+        , member_seq
+        , train_seq
+        , name_ko
+        , name_en
+        , phone
+        , email
+        , birth_year
+        , birth_month
+        , birth_day
+        , address
+        , address_detail
+        , clothes_size
+        , participation_path
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{nameKo}
+            , #{nameEn}
+            , #{phone}
+            , #{email}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{address}
+            , #{addressDetail}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'INBOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'INBOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectInboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectInboarderSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , clothes_size
+             , participation_path
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM inboarder
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateInboarder */
+        UPDATE inboarder
+        SET name_en = #{nameEn}
+          , birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , address = #{address}
+          , address_detail = #{addressDetail}
+          , clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getOutboarderSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getOutboarderSeq */
+        SELECT CONCAT('O', LPAD(nextval('outboarder_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertOutboarder" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertOutboarder */
+        INSERT INTO outboarder
+        ( seq
+        , member_seq
+        , train_seq
+        , name_ko
+        , name_en
+        , phone
+        , email
+        , birth_year
+        , birth_month
+        , birth_day
+        , address
+        , address_detail
+        , clothes_size
+        , participation_path
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{nameKo}
+            , #{nameEn}
+            , #{phone}
+            , #{email}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{address}
+            , #{addressDetail}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'OUTBOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'OUTBOARDER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="getSailyachtSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getSailyachtSeq */
+        SELECT CONCAT('SA', LPAD(nextval('sailyacht_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSailyacht" parameterType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSailyacht */
+        INSERT INTO sailyacht
+        ( seq
+        , member_seq
+        , train_seq
+        , name_ko
+        , name_en
+        , phone
+        , email
+        , birth_year
+        , birth_month
+        , birth_day
+        , address
+        , address_detail
+        , clothes_size
+        , participation_path
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{nameKo}
+            , #{nameEn}
+            , #{phone}
+            , #{email}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{address}
+            , #{addressDetail}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'SAILYACHT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'SAILYACHT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectOutboarderSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , clothes_size
+             , participation_path
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM outboarder
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectSailyachtSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectSailyachtSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , clothes_size
+             , participation_path
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sailyacht
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateOutboarder" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateOutboarder */
+        UPDATE outboarder
+        SET name_en = #{nameEn}
+          , birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , address = #{address}
+          , address_detail = #{addressDetail}
+          , clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSailyacht" parameterType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateSailyacht */
+        UPDATE sailyacht
+        SET name_en = #{nameEn}
+          , birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , address = #{address}
+          , address_detail = #{addressDetail}
+          , clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
 
 </mapper>
 

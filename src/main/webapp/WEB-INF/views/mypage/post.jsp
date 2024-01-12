@@ -38,6 +38,15 @@
 
 <body>
 
+<c:if test="${status ne 'logon'}">
+    <script>
+        alert("로그인해 주세요.");
+        location.href = '/member/login.do';
+    </script>
+</c:if>
+
+<c:if test="${status eq 'logon'}">
+
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <!-- container -->
@@ -79,42 +88,58 @@
                         <div class="big">내 게시글</div>
                     </div>
                     <ul class="my_post_list">
-                        <li>
-                            <div class="check"><input type="checkbox" class="my_post_chk"></div>
-                            <div class="number">2</div>
-                            <div class="info">
-                                <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                <div class="description">
-                                    <div>2023.06.11</div>
-                                    <div><span class="color">조회</span>123</div>
-                                    <div><span class="color">추천</span>2</div>
+                        <c:if test="${not empty communityList}">
+                            <c:forEach var="community" items="${communityList}" begin="0" end="${communityList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="check">
+                                        <input type="checkbox" name="postCheck" value="${community.seq}" class="my_post_chk">
+                                    </div>
+                                    <div class="number">${community.rownum}</div>
+                                    <div class="info">
+                                        <div class="subject">
+                                            <a href="javascript:void(0);" onclick="f_login_check_page_move('${id}','${info.seq}','/job/community_view.do')">${community.title}</a>
+                                        </div>
+                                        <div class="description">
+                                            <div>
+                                                <c:set var="writeDate" value="${fn:replace(community.writeDate,'-','.')}"/>
+                                                ${writeDate}
+                                            </div>
+                                            <div><span class="color">조회</span> ${community.viewCnt}</div>
+                                            <div><span class="color">추천</span> ${community.recommendCnt}</div>
+                                        </div>
+                                    </div>
+                                    <div class="btn">
+                                        <a href="javascript:void(0);" onclick="f_login_check_page_move('${id}','${community.seq}','/job/community_modify.do')" class="btn_modify btnSt04">수정</a>
+                                        <a href="javascript:void(0);" onclick="f_main_community_remove('${id}','${community.seq}')" class="btn_delete btnSt04">삭제</a>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${empty communityList}">
+                            <li>
+                                내 게시글 없음
+                            </li>
+                        </c:if>
+                            <%--<li>
+                                <div class="check"><input type="checkbox" class="my_post_chk"></div>
+                                <div class="number">2</div>
+                                <div class="info">
+                                    <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
+                                    <div class="description">
+                                        <div>2023.06.11</div>
+                                        <div><span class="color">조회</span>123</div>
+                                        <div><span class="color">추천</span>2</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="btn">
-                                <a href="/job/community_modify.do" class="btn_modify btnSt04">수정</a>
-                                <a href="" class="btn_delete btnSt04">삭제</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="check"><input type="checkbox" class="my_post_chk"></div>
-                            <div class="number">1</div>
-                            <div class="info">
-                                <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                <div class="description">
-                                    <div>2023.06.11</div>
-                                    <div><span class="color">조회</span>123</div>
-                                    <div><span class="color">추천</span>2</div>
+                                <div class="btn">
+                                    <a href="/job/community_modify.do" class="btn_modify btnSt04">수정</a>
+                                    <a href="" class="btn_delete btnSt04">삭제</a>
                                 </div>
-                            </div>
-                            <div class="btn">
-                                <a href="/job/community_modify.do" class="btn_modify btnSt04">수정</a>
-                                <a href="" class="btn_delete btnSt04">삭제</a>
-                            </div>
-                        </li>
+                            </li>--%>
                     </ul>
                     <div class="my_post_list_bot">
-                        <div class="check"><label><input type="checkbox" class="my_post_chk_all">전체 선택</label></div>
-                        <div class="btn"><a href="" class="btnSt04">삭제</a></div>
+                        <div class="check"><label><input type="checkbox" id="postCheckAll" class="my_post_chk_all">전체 선택</label></div>
+                        <div class="btn"><a href="javascript:void(0);" onclick="f_main_community_all_remove('${id}')" class="btnSt04">삭제</a></div>
                     </div>
                 </div>
                 <!-- //my_post_list_wrap -->
@@ -125,7 +150,37 @@
                         <div class="big">내 댓글</div>
                     </div>
                     <ul class="my_reply_list">
-                        <li>
+                        <c:if test="${not empty replyList}">
+                            <c:forEach var="reply" items="${replyList}" begin="0" end="${replyList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="check">
+                                        <input type="checkbox" name="replyCheck" value="${reply.seq}" class="my_reply_chk">
+                                    </div>
+                                    <div class="number">${reply.rownum}</div>
+                                    <div class="info">
+                                        <div class="subject">
+                                            <a href="javascript:void(0);" onclick="f_login_check_page_move('${id}','${reply.communitySeq}','/job/community_view.do')"><c:out value="${reply.content}" escapeXml="true"/></a>
+                                        </div>
+                                        <div class="description">
+                                            <div>
+                                                <c:set var="writeDate" value="${fn:replace(reply.writeDate,'-','.')}"/>
+                                                ${writeDate}
+                                            </div>
+                                            <div>${reply.communityTitle}</div>
+                                        </div>
+                                    </div>
+                                    <div class="btn">
+                                        <a href="javascript:void(0);" onclick="f_main_community_reply_remove('P','${reply.depthReplyNo}','${reply.communitySeq}','${reply.seq}')" class="btn_delete btnSt04">삭제</a>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${empty replyList}">
+                            <li>
+                                내 댓글 없음
+                            </li>
+                        </c:if>
+                        <%--<li>
                             <div class="check"><input type="checkbox" class="my_reply_chk"></div>
                             <div class="number">2</div>
                             <div class="info">
@@ -138,25 +193,11 @@
                             <div class="btn">
                                 <a href="" class="btn_delete btnSt04">삭제</a>
                             </div>
-                        </li>
-                        <li>
-                            <div class="check"><input type="checkbox" class="my_reply_chk"></div>
-                            <div class="number">1</div>
-                            <div class="info">
-                                <div class="subject"><a href="/job/community_view.do">댓글 내용</a></div>
-                                <div class="description">
-                                    <div>2023.06.11</div>
-                                    <div>게시물 제목</div>
-                                </div>
-                            </div>
-                            <div class="btn">
-                                <a href="" class="btn_delete btnSt04">삭제</a>
-                            </div>
-                        </li>
+                        </li>--%>
                     </ul>
                     <div class="my_reply_list_bot">
-                        <div class="check"><label><input type="checkbox" class="my_reply_chk_all">전체 선택</label></div>
-                        <div class="btn"><a href="" class="btnSt04">삭제</a></div>
+                        <div class="check"><label><input type="checkbox" id="replyCheckAll" class="my_reply_chk_all">전체 선택</label></div>
+                        <div class="btn"><a href="javascript:void(0);" onclick="f_main_community_reply_all_remove('${id}')" class="btnSt04">삭제</a></div>
                     </div>
                 </div>
                 <!-- //my_reply_list_wrap -->
@@ -185,5 +226,7 @@
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
+<script src="<%request.getContextPath();%>/static/js/front/community.js?ver=<%=System.currentTimeMillis()%>"></script>
+</c:if>
 </body>
 </html>

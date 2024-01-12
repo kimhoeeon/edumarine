@@ -207,7 +207,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/popup/popup.do"
+                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
                                                                            class="menu-link">
                                                                             <span class="menu-title">해상 엔진 테크니션</span>
                                                                         </a>
@@ -217,7 +217,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/popup/popup.do"
+                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
                                                                            class="menu-link">
                                                                             <span class="menu-title">FRP 정비 테크니션</span>
                                                                         </a>
@@ -227,7 +227,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/popup/popup.do"
+                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (선외기)</span>
                                                                         </a>
@@ -247,7 +247,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/popup/popup.do"
+                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (세일요트)</span>
                                                                         </a>
@@ -930,7 +930,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -942,7 +942,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -954,7 +954,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -978,7 +978,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1475,7 +1475,7 @@ if (document.documentElement) {
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
                                                     <select id="trainName" name="trainName" class="form-select form-control-solid-bg" <c:if test="${info ne null}">disabled</c:if>>
-                                                        <option value="해상엔진 테크니션 (선내기·선외기)" <c:if test="${info.trainName eq '해상엔진 테크니션 (선내기·선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기·선외기)</option>
+                                                        <option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.trainName eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>
                                                         <option value="마리나선박 정비사 실기교육" <c:if test="${info.trainName eq '마리나선박 정비사 실기교육'}">selected</c:if> >마리나선박 정비사 실기교육</option>
                                                         <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.trainName eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
                                                         <option value="위탁교육" <c:if test="${info.trainName eq '위탁교육'}">selected</c:if> >위탁교육</option>

@@ -76,16 +76,16 @@
 
                     <!-- board_top -->
                     <div class="board_top">
-                        <div class="post_number">총 <span class="number">5</span>개의 게시글이 있습니다.</div>
+                        <div class="post_number">총 <span class="number"></span>개의 게시글이 있습니다.</div>
                         <div class="board_search">
-                            <select>
-                                <option>제목</option>
-                                <option>내용</option>
-                                <option>제목+내용</option>
+                            <select id="search_box">
+                                <option value="title" selected>제목</option>
+                                <option value="content">내용</option>
+                                <option value="all">내용+제목</option>
                             </select>
                             <div class="search_bar">
-                                <input type="text">
-                                <a href="" class="search_btn"></a>
+                                <input type="text" id="search_text" placeholder="검색어 입력">
+                                <a href="javascript:void(0);" onclick="communityList(1);" class="search_btn"></a>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                     <div class="community_list_wrap">
 
                         <ul class="community_list">
-                            <li class="important">
+                            <%--<li class="important">
                                 <div class="number">8</div>
                                 <div class="info">
                                     <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
@@ -134,142 +134,27 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li>
-                                <div class="number">6</div>
-                                <div class="info">
-                                    <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                    <div class="description">
-                                        <div class="left">
-                                            <div class="wirte">작성자</div>
-                                            <div class="date">2023.06.11</div>
-                                        </div>
-                                        <div class="right">
-                                            <div class="views">
-                                                <span class="gubun">조회</span>123
-                                            </div>
-                                            <div class="recommend">
-                                                <span class="gubun">추천</span>2
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="number">5</div>
-                                <div class="info">
-                                    <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                    <div class="description">
-                                        <div class="left">
-                                            <div class="wirte">작성자</div>
-                                            <div class="date">2023.06.11</div>
-                                        </div>
-                                        <div class="right">
-                                            <div class="views">
-                                                <span class="gubun">조회</span>123
-                                            </div>
-                                            <div class="recommend">
-                                                <span class="gubun">추천</span>2
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="number">4</div>
-                                <div class="info">
-                                    <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                    <div class="description">
-                                        <div class="left">
-                                            <div class="wirte">작성자</div>
-                                            <div class="date">2023.06.11</div>
-                                        </div>
-                                        <div class="right">
-                                            <div class="views">
-                                                <span class="gubun">조회</span>123
-                                            </div>
-                                            <div class="recommend">
-                                                <span class="gubun">추천</span>2
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="number">3</div>
-                                <div class="info">
-                                    <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                    <div class="description">
-                                        <div class="left">
-                                            <div class="wirte">작성자</div>
-                                            <div class="date">2023.06.11</div>
-                                        </div>
-                                        <div class="right">
-                                            <div class="views">
-                                                <span class="gubun">조회</span>123
-                                            </div>
-                                            <div class="recommend">
-                                                <span class="gubun">추천</span>2
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="number">2</div>
-                                <div class="info">
-                                    <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                    <div class="description">
-                                        <div class="left">
-                                            <div class="wirte">작성자</div>
-                                            <div class="date">2023.06.11</div>
-                                        </div>
-                                        <div class="right">
-                                            <div class="views">
-                                                <span class="gubun">조회</span>123
-                                            </div>
-                                            <div class="recommend">
-                                                <span class="gubun">추천</span>2
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="number">1</div>
-                                <div class="info">
-                                    <div class="subject"><a href="/job/community_view.do">게시물 제목</a></div>
-                                    <div class="description">
-                                        <div class="left">
-                                            <div class="wirte">작성자</div>
-                                            <div class="date">2023.06.11</div>
-                                        </div>
-                                        <div class="right">
-                                            <div class="views">
-                                                <span class="gubun">조회</span>123
-                                            </div>
-                                            <div class="recommend">
-                                                <span class="gubun">추천</span>2
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                            </li>--%>
                         </ul>
 
                         <div class="community_btn_box">
-                            <div class="right"><a href="/job/community_write.do" class="btnSt01">글작성</a></div>
+                            <div class="right"><a href="javascript:void(0);" onclick="f_login_check_page_move('${id}','','/job/community_write.do')" class="btnSt01">글작성</a></div>
                         </div>
 
                         <!-- paging -->
                         <div class="paging">
-                            <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                            <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                            <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                             <ol>
-                                <li><a href="" class="this">1</a></li>
-                                <li><a href="" class="other">2</a></li>
-                                <li><a href="" class="other">3</a></li>
+                                <%--<li>
+                                  <a class="this">1</a>
+                                </li>
+                                <li>
+                                  <a class="other">2</a>
+                                </li>--%>
                             </ol>
-                            <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                            <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                            <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
                         </div>
                         <!-- //paging -->
 
@@ -300,6 +185,8 @@
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/community.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

@@ -122,6 +122,7 @@
                                             <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
                                             <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
                                             <option value="naver.com" <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
+                                            <option value="gmail.com" <c:if test="${domain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
                                             <option value="hotmail.com" <c:if test="${domain eq 'hotmail.com'}">selected</c:if> >hotmail.com</option>
                                             <option value="yahoo.co.kr" <c:if test="${domain eq 'yahoo.co.kr'}">selected</c:if> >yahoo.co.kr</option>
                                             <option value="empal.com" <c:if test="${domain eq 'empal.com'}">selected</c:if> >empal.com</option>
@@ -167,8 +168,8 @@
                                     <div class="img_replace_cmnt">
                                         <div class="btn">사진교체 방법</div>
                                         <div class="text">
-                                            이미지를 수정(교체) 업로드 하신 후 하단의 [저장] 버튼을 눌러주세요. <br>
-                                            반드시 저장하셔야, 미리보기 이미지가 수정된 이미지로 보입니다.
+                                            교체할 이미지를 업로드 하신 후 하단의 [수정하기] 버튼을 눌러주세요.<br>
+                                            이전 등록하신 이미지가 업로드하신 이미지로 교체됩니다.
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +179,7 @@
                                     <div class="gubun"><p>저장된 상반신 사진</p></div>
                                     <div class="naeyong">
                                         <ul>
-                                            <li class="bodyPhotoFile_li" style="align-items: center;">
+                                            <li class="bodyPhotoFile_li" style="display: flex; align-items: center;">
                                                 <c:set var="bodyPhotoFileSrc" value="${fn:replace(bodyPhotoFile.fullFilePath, './usr/local/tomcat/webapps', '../../../../..')}" />
                                                 <img src="${bodyPhotoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                 <a href="/file/download.do?path=member/resume/${bodyPhotoFile.folderPath}&fileName=${bodyPhotoFile.fullFileName}">${bodyPhotoFile.fileName}</a>
@@ -212,7 +213,8 @@
                                         <label><input type="radio" name="topClothesSize" value="S" <c:if test="${info.topClothesSize eq 'S'}">checked</c:if> >S (90)</label>
                                         <label><input type="radio" name="topClothesSize" value="M" <c:if test="${info.topClothesSize eq 'M'}">checked</c:if> >M (95)</label>
                                         <label><input type="radio" name="topClothesSize" value="L" <c:if test="${info.topClothesSize eq 'L'}">checked</c:if> >L (100)</label>
-                                        <label><input type="radio" name="topClothesSize" value="XL" <c:if test="${info.topClothesSize eq 'XL'}">checked</c:if> >XL (150)</label>
+                                        <label><input type="radio" name="topClothesSize" value="XL" <c:if test="${info.topClothesSize eq 'XL'}">checked</c:if> >XL (105)</label>
+                                        <label><input type="radio" name="topClothesSize" value="XXL" <c:if test="${info.topClothesSize eq 'XXL'}">checked</c:if> >XXL (110)</label>
                                         <label><input type="radio" name="topClothesSize" value="기타" <c:if test="${info.topClothesSize eq '기타'}">checked</c:if> >기타</label>
                                     </div>
                                 </div>

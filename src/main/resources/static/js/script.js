@@ -1,5 +1,26 @@
 $(document).ready(function () {
 
+    // 숫자만 입력
+    $('.onlyNum').on("blur keyup", function () {
+        $(this).val($(this).val().replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'));
+    });
+
+    // 숫자랑 - 만 입력
+    $('.onlyNumh').on("blur keyup", function () {
+        $(this).val($(this).val().replace(/[^0-9-]/g, ''));
+    });
+
+    // 연락처 입력 시 자동으로 - 삽입과 숫자만 입력
+    $('.onlyTel').on("blur keyup", function () {
+        $(this).val($(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
+    });
+
+    // 영문, 숫자만 입력
+    $('.onlyNumEng').on("blur keyup", function () {
+        let exp = /[^A-Za-z0-9_\`\~\!\@\#\$\%\^\&\*\(\)\-\=\+\\\{\}\[\]\'\"\;\:\<\,\>\.\?\/\s]/gm;
+        $(this).val($(this).val().replaceAll(exp, ''));
+    });
+
     // 뷰포트 너비가 769px 이상일 경우
     if (window.innerWidth >= 769) {
 
@@ -74,6 +95,7 @@ $(document).ready(function () {
         $('#popupGallery').addClass('on');
         $('body').addClass('lock_scroll');
     });
+
     // 팝업 - 비디오
     $(document).on("click", ".video_view", function() {
         //console.log($(this).find('img').attr('src')); // https://img.youtube.com/vi/WMaA84_cixo/mqdefault.jpg
@@ -128,9 +150,9 @@ $(document).ready(function () {
     });
 
 
-    $('.reply_wrap .recommend_btn').on('click', function () {
+    /*$('.reply_wrap .recommend_btn').on('click', function () {
         $(this).toggleClass('on');
-    });
+    });*/
 
 });
 

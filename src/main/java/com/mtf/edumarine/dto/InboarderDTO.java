@@ -10,6 +10,9 @@ import lombok.ToString;
 public class InboarderDTO {
     Integer rownum; //연번
     String seq; //순번
+    String id;
+    String memberSeq;
+    String trainSeq;
     String nameKo; //이름
     String nameEn; //이름
     String phone; //연락처
@@ -23,6 +26,8 @@ public class InboarderDTO {
     String participationPath; //참여경로
     String payYn; //결제여부
     Integer paySum; //결제금액
+    String applyStatus;
+    String cancelReason;
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

@@ -9,20 +9,27 @@ import lombok.ToString;
 @ToString
 public class RegularDTO {
     Integer rownum; //연번
+    String id;
     String seq; //순번
+    String memberSeq; //회원SEQ
+    String trainSeq; //교육SEQ
     String name; //이름
     String phone; //연락처
     String email; //이메일
     String birthYear; //출생년도
     String birthMonth; //출생월
     String birthDay; //출생일
+    String ageGroup; //연령대
     String region; //거주지역
     String participationPath; //참여경로
     String firstApplicationField; //1순위 신청분야
     String secondApplicationField; //2순위 신청분야
+    String thirdApplicationField; //2순위 신청분야
     String desiredEducationTime; //희망교육시기
     String major; //전공
     String experienceYn; //경험유무
+    String applyStatus; //신청상태
+    String cancelReason; //취소사유
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

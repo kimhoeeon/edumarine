@@ -417,7 +417,7 @@
                                     <div class="tit_box">
                                         <div class="small">혜택.4</div>
                                         <div class="big">
-                                            FRP 선체 정비 테크니션<br>
+                                            FRP 레저보트 선체 정비 테크니션<br>
                                             양성교육 수료증 발급 등
                                         </div>
                                     </div>
@@ -530,7 +530,9 @@
                         </div>
                         <!-- guide_btn_box -->
                         <div class="guide_btn_box">
-                            <div class="btn_box"><a href="">교육신청 바로가기</a></div>
+                            <div class="btn_box">
+                                <a href="javascript:void(0);" onclick="window.location.href='/apply/schedule.do?searchText=EDU04'">교육신청 바로가기</a>
+                            </div>
                         </div>
                         <!-- //guide_btn_box -->
                     </div>

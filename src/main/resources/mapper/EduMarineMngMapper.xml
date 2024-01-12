@@ -68,7 +68,7 @@
         , content = <![CDATA[#{content}]]>
         , writer = #{writer}
         , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
         , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -174,7 +174,7 @@
         , content = <![CDATA[#{content}]]>
         , writer = #{writer}
         , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
         , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -275,7 +275,7 @@
         , title = <![CDATA[#{title}]]>
         , writer = #{writer}
         , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
         , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -376,7 +376,7 @@
           , write_date = #{writeDate}
           , media_url = <![CDATA[#{mediaUrl}]]>
           , media_key = #{mediaKey}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
         , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -482,7 +482,7 @@
         , content = <![CDATA[#{content}]]>
         , writer = #{writer}
         , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
         , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -588,7 +588,7 @@
           , content = <![CDATA[#{content}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -688,7 +688,7 @@
           , content = <![CDATA[#{content}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -794,7 +794,7 @@
           , write_date = #{writeDate}
           , hashtag = <![CDATA[#{hashtag}]]>
           , recommend_cnt = #{recommendCnt}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
         , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -1038,7 +1038,7 @@
           , view_seq = #{viewSeq}
           , writer = #{writer}
           , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
           , note = #{note}
@@ -1201,6 +1201,8 @@
     <select id="selectRegularList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularList */
         SELECT seq
+             , member_seq
+             , train_seq
              , name
              , phone
              , email
@@ -1214,6 +1216,7 @@
              , desired_education_time
              , major
              , experience_yn
+             , apply_status
              , del_yn
              , note
              , init_regi_pic
@@ -1234,6 +1237,8 @@
     <select id="selectRegularSingle" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularSingle */
         SELECT seq
+             , member_seq
+             , train_seq
              , name
              , phone
              , email
@@ -1247,6 +1252,7 @@
              , desired_education_time
              , major
              , experience_yn
+             , apply_status
              , del_yn
              , note
              , init_regi_pic
@@ -1272,20 +1278,23 @@
           , birth_year = #{birthYear}
           , birth_month = #{birthMonth}
           , birth_day = #{birthDay}
+          , age_group = #{ageGroup}
           , region = #{region}
           , participation_path = #{participationPath}
           , first_application_field = #{firstApplicationField}
           , second_application_field = #{secondApplicationField}
+          , third_application_field = #{thirdApplicationField}
           , desired_education_time = #{desiredEducationTime}
           , major = #{major}
           , experience_yn = #{experienceYn}
+          , apply_status = #{applyStatus}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
     <select id="getRegularSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getRegularSeq */
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getRegularSeq */
         SELECT CONCAT('U', LPAD(nextval('regular_seq'), '7', '0'))
         FROM DUAL
     </select>
@@ -1294,19 +1303,24 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertRegular */
         INSERT INTO regular
         ( seq
+        , member_seq
+        , train_seq
         , name
         , phone
         , email
         , birth_year
         , birth_month
         , birth_day
+        , age_group
         , region
         , participation_path
         , first_application_field
         , second_application_field
+        , third_application_field
         , desired_education_time
         , major
         , experience_yn
+        , apply_status
         , del_yn
         , note
         , init_regi_pic
@@ -1316,19 +1330,24 @@
         )
         VALUES
             ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
             , #{name}
             , #{phone}
             , #{email}
             , #{birthYear}
             , #{birthMonth}
             , #{birthDay}
+            , #{ageGroup}
             , #{region}
             , #{participationPath}
             , #{firstApplicationField}
             , #{secondApplicationField}
+            , #{thirdApplicationField}
             , #{desiredEducationTime}
             , #{major}
             , #{experienceYn}
+            , #{applyStatus}
             , 'N'
             , #{note}
             , 'REGULAR'
@@ -1352,8 +1371,6 @@
              , address_detail
              , clothes_size
              , participation_path
-             , pay_yn
-             , pay_sum
              , del_yn
              , note
              , init_regi_pic
@@ -1385,8 +1402,6 @@
              , address_detail
              , clothes_size
              , participation_path
-             , pay_yn
-             , pay_sum
              , del_yn
              , note
              , init_regi_pic
@@ -1443,8 +1458,6 @@
         , address_detail
         , clothes_size
         , participation_path
-        , pay_yn
-        , pay_sum
         , del_yn
         , note
         , init_regi_pic
@@ -1465,8 +1478,6 @@
             , #{addressDetail}
             , #{clothesSize}
             , #{participationPath}
-            , 'N'
-            , 0
             , 'N'
             , #{note}
             , 'INBOARDER'
@@ -1543,6 +1554,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrain */
         UPDATE train
         SET gbn = #{gbn}
+          , category = #{category}
           , next_time = #{nextTime}
           , train_start_dttm = <![CDATA[#{trainStartDttm}]]>
           , train_end_dttm = <![CDATA[#{trainEndDttm}]]>
@@ -1569,6 +1581,7 @@
         INSERT INTO train
         ( seq
         , gbn
+        , category
         , train_start_dttm
         , train_end_dttm
         , apply_start_dttm
@@ -1590,6 +1603,7 @@
         VALUES
             ( #{seq}
             , #{gbn}
+            , #{category}
             , <![CDATA[#{trainStartDttm}]]>
             , <![CDATA[#{trainEndDttm}]]>
             , <![CDATA[#{applyStartDttm}]]>

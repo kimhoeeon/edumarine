@@ -15,6 +15,7 @@ public class MemberDTO {
     String password; //비밀번호
     String grade; //등급
     String name; //이름
+    String nameEn; //이름(영문)
     String phone; //연락처
     String email; //이메일
     String keyword; //관심키워드

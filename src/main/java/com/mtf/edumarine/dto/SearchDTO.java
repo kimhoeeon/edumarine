@@ -14,4 +14,6 @@ public class SearchDTO extends AbstractPagingRequestVo {
     String lang; //언어
     String gbn; //구분
     String useYn; //사용여부
+    String year; //년도
+    String category; //카테고리
 }

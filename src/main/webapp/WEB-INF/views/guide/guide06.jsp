@@ -345,7 +345,9 @@
                         </div>
                         <!-- guide_btn_box -->
                         <div class="guide_btn_box">
-                            <div class="btn_box"><a href="">교육신청 바로가기</a></div>
+                            <div class="btn_box">
+                                <a href="javascript:void(0);" onclick="window.location.href='/apply/schedule.do?searchText=EDU06'">교육신청 바로가기</a>
+                            </div>
                         </div>
                         <!-- //guide_btn_box -->
                     </div>

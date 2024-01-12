@@ -74,7 +74,7 @@
                     <div class="title">교육안내</div>
                     <div class="list">
                         <a href="/guide/guide01.do">전체 교육과정 소개</a>
-                        <a href="/guide/guide02.do">해상엔진 테크니션(선내기·선외기)</a>
+                        <a href="/guide/guide02.do">해상엔진 테크니션(선내기/선외기)</a>
                         <a href="/guide/guide03.do">마리나선박 정비사 실기교육</a>
                         <a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a>
                         <a href="/guide/guide05.do">위탁교육</a>

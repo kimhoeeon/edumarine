@@ -81,15 +81,6 @@ if (document.documentElement) {
 
 <c:if test="${status eq 'logon'}">
 
-<!-- 페이지 뒤로가기 막기 -->
-<script>
-    history.pushState(null, null, location.href);
-    window.onpopstate = function (event) {
-        history.go(1);
-    };
-</script>
-<!-- 페이지 뒤로가기 막기 -->
-
 <!--begin::App-->
 <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
     <!--begin::Page-->
@@ -217,7 +208,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/popup/popup.do"
+                                                                    <a href="javascript:alert('서비스 준비중입니다.');"
                                                                        class="menu-link">
                                                                         <span class="menu-title">해상 엔진 테크니션</span>
                                                                     </a>
@@ -227,7 +218,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/popup/popup.do"
+                                                                    <a href="javascript:alert('서비스 준비중입니다.');"
                                                                        class="menu-link">
                                                                         <span class="menu-title">FRP 정비 테크니션</span>
                                                                     </a>
@@ -237,7 +228,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/popup/popup.do"
+                                                                    <a href="javascript:alert('서비스 준비중입니다.');"
                                                                        class="menu-link">
                                                                         <span class="menu-title">자가정비 (선외기)</span>
                                                                     </a>
@@ -257,7 +248,7 @@ if (document.documentElement) {
                                                                 <!--begin:Menu item-->
                                                                 <div class="menu-item p-0 m-0">
                                                                     <!--begin:Menu link-->
-                                                                    <a href="/mng/popup/popup.do"
+                                                                    <a href="javascript:alert('서비스 준비중입니다.');"
                                                                        class="menu-link">
                                                                         <span class="menu-title">자가정비 (세일요트)</span>
                                                                     </a>
@@ -940,7 +931,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/popup/popup.do">
+                                        <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -952,7 +943,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/popup/popup.do">
+                                        <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -964,7 +955,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/popup/popup.do">
+                                        <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -988,7 +979,7 @@ if (document.documentElement) {
                                     <!--begin:Menu item-->
                                     <div class="menu-item">
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="/mng/popup/popup.do">
+                                        <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
