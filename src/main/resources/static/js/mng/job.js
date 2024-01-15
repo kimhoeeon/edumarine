@@ -130,21 +130,24 @@ function f_board_job_remove(seq){
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then((result) => {
-            if (result.value) {
 
-                let jsonObj = {
-                    targetSeq: seq,
-                    targetTable: 'job',
-                    deleteReason: result.value,
-                    targetMenu: getTargetMenu('mng_board_job_table'),
-                    delYn: 'Y'
+            if (result.isConfirmed) {
+                if (result.value) {
+
+                    let jsonObj = {
+                        targetSeq: seq,
+                        targetTable: 'job',
+                        deleteReason: result.value,
+                        targetMenu: getTargetMenu('mng_board_job_table'),
+                        delYn: 'Y'
+                    }
+                    f_mng_trash_remove(jsonObj);
+
+                    f_board_job_search(); // 재조회
+
+                } else {
+                    alert('삭제 사유를 입력해주세요.');
                 }
-                f_mng_trash_remove(jsonObj);
-
-                f_board_job_search(); // 재조회
-
-            }else{
-                alert('삭제 사유를 입력해주세요.');
             }
         });
 

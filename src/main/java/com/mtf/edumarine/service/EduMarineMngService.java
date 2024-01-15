@@ -228,4 +228,30 @@ public interface EduMarineMngService {
     ResponseDTO processDeleteTrash(TrashDTO trashDTO);
 
     ResponseDTO processRestoreTrash(TrashDTO trashDTO);
+
+    List<EmploymentDTO> processSelectEmploymentList(SearchDTO searchDTO);
+
+    EmploymentDTO processSelectEmploymentSingle(EmploymentDTO employmentDTO);
+
+    ResponseDTO processUpdateEmployment(EmploymentDTO employmentDTO);
+
+    ResponseDTO processInsertEmployment(EmploymentDTO employmentDTO);
+
+    List<BoarderDTO> processSelectBoarderList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateBoarderApplyStatus(List<BoarderDTO> boarderList);
+
+    List<FrpDTO> processSelectFrpList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateFrpApplyStatus(List<FrpDTO> frpList);
+
+    List<OutboarderDTO> processSelectOutboarderList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateOutboarderApplyStatus(List<OutboarderDTO> outboarderList);
+
+    List<SailyachtDTO> processSelectSailyachtList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateSailyachtApplyStatus(List<SailyachtDTO> sailyachtList);
+
+    ResponseDTO processUpdateInboarderApplyStatus(List<InboarderDTO> inboarderList);
 }

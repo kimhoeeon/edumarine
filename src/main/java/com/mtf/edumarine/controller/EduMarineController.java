@@ -807,6 +807,10 @@ public class EduMarineController {
     public ModelAndView job_state01() {
         System.out.println("EduMarineController > job_state01");
         ModelAndView mv = new ModelAndView();
+
+        String gbn = "창업자";
+        List<EmploymentDTO> employmentList = eduMarineService.processSelectEmploymentList(gbn);
+        mv.addObject("employmentList", employmentList);
         mv.setViewName("/job/state01");
         return mv;
     }
@@ -815,6 +819,10 @@ public class EduMarineController {
     public ModelAndView job_state02() {
         System.out.println("EduMarineController > job_state02");
         ModelAndView mv = new ModelAndView();
+
+        String gbn = "취업자";
+        List<EmploymentDTO> employmentList = eduMarineService.processSelectEmploymentList(gbn);
+        mv.addObject("employmentList", employmentList);
         mv.setViewName("/job/state02");
         return mv;
     }

@@ -1,7 +1,5 @@
 $(function(){
 
-    /*document.cookie = "crossCookie=bar; SameSite=None; Secure";*/
-
     $('#id').on('blur keyup', function(event){
 
         if (!(event.keyCode >=37 && event.keyCode<=40)) {

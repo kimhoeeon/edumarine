@@ -51,4 +51,6 @@ public class BoarderDTO {
     String initRegiDttm; //최초 등록 일시
     String finalRegiPic; //최종 변경 담당자
     String finalRegiDttm; //최종 변경 일시
+
+    String preApplyStatus;
 }

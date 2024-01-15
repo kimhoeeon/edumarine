@@ -213,4 +213,6 @@ public interface EduMarineMapper {
     Integer updateOutboarderPayStatus(OutboarderDTO outboarderDTO);
 
     Integer updateSailyachtPayStatus(SailyachtDTO sailyachtDTO);
+
+    List<EmploymentDTO> selectEmploymentList(String gbn);
 }
