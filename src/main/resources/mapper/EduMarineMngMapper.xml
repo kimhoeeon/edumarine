@@ -733,6 +733,112 @@
             )
     </insert>
 
+    <select id="selectEmploymentList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.EmploymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectEmploymentList */
+        SELECT seq
+             , gbn
+             , employ_name
+             , employ_ceo
+             , employ_year
+             , employ_field
+             , employ_address
+             , employ_address_detail
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM employment
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "employmentName"'>
+                AND employ_name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='gbn != null and gbn != ""'>
+            AND gbn = #{gbn}
+        </if>
+        ORDER BY gbn, init_regi_dttm desc
+    </select>
+
+    <select id="selectEmploymentSingle" parameterType="com.mtf.edumarine.dto.EmploymentDTO" resultType="com.mtf.edumarine.dto.EmploymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectEmploymentSingle */
+        SELECT seq
+             , gbn
+             , employ_name
+             , employ_ceo
+             , employ_year
+             , employ_field
+             , employ_address
+             , employ_address_detail
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM employment
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateEmployment" parameterType="com.mtf.edumarine.dto.EmploymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateEmployment */
+        UPDATE employment
+        SET gbn = #{gbn}
+          , employ_name = <![CDATA[#{employName}]]>
+          , employ_ceo = #{employCeo}
+          , employ_year = #{employYear}
+          , employ_field = #{employField}
+          , employ_address = <![CDATA[#{employAddress}]]>
+          , employ_address_detail = <![CDATA[#{employAddressDetail}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getEmploymentSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getEmploymentSeq */
+        SELECT CONCAT('EP', LPAD(nextval('employment_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertEmployment" parameterType="com.mtf.edumarine.dto.EmploymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertEmployment */
+        INSERT INTO employment
+        ( seq
+        , gbn
+        , employ_name
+        , employ_ceo
+        , employ_year
+        , employ_field
+        , employ_address
+        , employ_address_detail
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{gbn}
+            , <![CDATA[#{employName}]]>
+            , #{employCeo}
+            , #{employYear}
+            , #{employField}
+            , <![CDATA[#{employAddress}]]>
+            , <![CDATA[#{employAddressDetail}]]>
+            , 'N'
+            , #{note}
+            , 'EMPLOYMENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'EMPLOYMENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
     <select id="selectCommunityList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.CommunityDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectCommunityList */
         SELECT seq
@@ -1357,9 +1463,141 @@
             )
     </insert>
 
-    <select id="selectInboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
-        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectInboarderList */
+    <select id="selectBoarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectBoarderList */
         SELECT seq
+             , member_seq
+             , train_seq
+             , id
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , rrn
+             , age
+             , address
+             , address_detail
+             , top_clothes_size
+             , bottom_clothes_size
+             , shoes_size
+             , participation_path
+             , grade_gbn
+             , school_name
+             , major
+             , military_gbn
+             , military_reason
+             , disabled_gbn
+             , job_support_gbn
+             , tech_edu_gbn
+             , tech_edu_name
+             , apply_reason
+             , tech_reason
+             , activity_reason
+             , plan_reason
+             , etc_reason
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM boarder
+        WHERE 1=1
+          AND del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "nameKo"'>
+            AND name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "nameEn"'>
+            AND name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+          </if>
+          <if test='applyStatus != null and applyStatus != ""'>
+          AND apply_status = #{applyStatus}
+          </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <update id="updateBoarderApplyStatus" parameterType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBoarderApplyStatus */
+        UPDATE boarder
+        SET apply_status = #{applyStatus}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectFrpList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFrpList */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , id
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , rrn
+             , age
+             , address
+             , address_detail
+             , top_clothes_size
+             , bottom_clothes_size
+             , shoes_size
+             , participation_path
+             , grade_gbn
+             , school_name
+             , major
+             , military_gbn
+             , military_reason
+             , disabled_gbn
+             , job_support_gbn
+             , know_path
+             , know_path_reason
+             , apply_reason
+             , tech_reason
+             , activity_reason
+             , plan_reason
+             , etc_reason
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM frp
+        WHERE 1=1
+          AND del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "nameKo"'>
+            AND name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "nameEn"'>
+            AND name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+          </if>
+          <if test='applyStatus != null and applyStatus != ""'>
+          AND apply_status = #{applyStatus}
+          </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <update id="updateFrpApplyStatus" parameterType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFrpApplyStatus */
+        UPDATE frp
+        SET apply_status = #{applyStatus}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectOutboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectOutboarderList */
+        SELECT seq
+             , member_seq
+             , train_seq
              , name_ko
              , name_en
              , phone
@@ -1371,6 +1609,57 @@
              , address_detail
              , clothes_size
              , participation_path
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM outboarder
+        WHERE 1=1
+          AND del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "nameKo"'>
+            AND name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "nameEn"'>
+            AND name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+          </if>
+          <if test='applyStatus != null and applyStatus != ""'>
+          AND apply_status = #{applyStatus}
+          </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <update id="updateOutboarderApplyStatus" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateOutboarderApplyStatus */
+        UPDATE outboarder
+        SET apply_status = #{applyStatus}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectInboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectInboarderList */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , clothes_size
+             , participation_path
+             , apply_status
+             , cancel_reason
              , del_yn
              , note
              , init_regi_pic
@@ -1381,9 +1670,15 @@
         WHERE 1=1
           AND del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "name"'>
+            <if test='condition eq "nameKo"'>
             AND name_ko LIKE CONCAT('%',#{searchText},'%')
             </if>
+            <if test='condition eq "nameEn"'>
+            AND name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+          </if>
+          <if test='applyStatus != null and applyStatus != ""'>
+          AND apply_status = #{applyStatus}
           </if>
         ORDER BY init_regi_dttm DESC
     </select>
@@ -1486,6 +1781,63 @@
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
             )
     </insert>
+
+    <update id="updateInboarderApplyStatus" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateInboarderApplyStatus */
+        UPDATE inboarder
+        SET apply_status = #{applyStatus}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectSailyachtList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSailyachtList */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , clothes_size
+             , participation_path
+             , apply_status
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sailyacht
+        WHERE 1=1
+          AND del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "nameKo"'>
+            AND name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "nameEn"'>
+            AND name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+          </if>
+          <if test='applyStatus != null and applyStatus != ""'>
+          AND apply_status = #{applyStatus}
+          </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <update id="updateSailyachtApplyStatus" parameterType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSailyachtApplyStatus */
+        UPDATE sailyacht
+        SET apply_status = #{applyStatus}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
 
     <select id="selectTrainList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainList */

@@ -166,4 +166,6 @@ public interface EduMarineService {
     ResponseDTO processUpdateOutboarderPayStatus(OutboarderDTO outboarderDTO);
 
     ResponseDTO processUpdateSailyachtPayStatus(SailyachtDTO sailyachtDTO);
+
+    List<EmploymentDTO> processSelectEmploymentList(String gbn);
 }

@@ -124,6 +124,10 @@ let DTCustomerRegular = function () {
                     'render': function (data, type, row) { return renderFieldCell(data, type, row); }
                 },
                 {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderMajorCell(data, type, row); }
+                },
+                {
                     'targets': 5,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
@@ -146,6 +150,19 @@ let DTCustomerRegular = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderMajorCell(data, type, row){
+        let renderHTML = '';
+
+        let major = row.major;
+        if(nvl(major, '') !== ''){
+            renderHTML = major;
+        }else{
+            renderHTML = '-';
+        }
+
+        return renderHTML;
     }
 
     function renderContactCell(data, type, row){
@@ -243,7 +260,7 @@ let DTCustomerRegular = function () {
     };
 }();
 
-let DTCustomerInboarder = function () {
+let DTCustomerBoarder = function () {
     // Shared variables
     let table;
     let datatable;
@@ -256,34 +273,106 @@ let DTCustomerInboarder = function () {
             'paging' : false,
             'select': false,
             'ordering': true,
-            'order': [[0, 'desc']],
+            'order': [[1, 'desc']],
             'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
                 {
                     'targets': '_all',
                     'className': 'text-center'
                 },
                 {
-                    'targets': 2,
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderCancelReasonCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1] }
+                { visible: false, targets: [2] }
             ],
             columns: [
+                { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
                 { data: 'name'},
-                { data: 'phone'},
-                { data: 'email'},
+                { data: 'contact'},
+                { data: 'applyStatus'},
+                { data: 'cancelReason'},
                 { data: 'initRegiDttm' },
                 { data: 'finalRegiDttm' },
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCancelReasonCell(data, type, row) {
+        let renderHTML = '';
+        let cancelReason = row.cancelReason;
+        if(nvl(cancelReason,'') !== ''){
+            renderHTML += cancelReason;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+        }
+
+        renderHTML += applyStatus;
+        renderHTML += '</div>';
+
+        return renderHTML;
     }
 
     function renderNameCell(data, type, row) {
@@ -311,12 +400,561 @@ let DTCustomerInboarder = function () {
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
         renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
-        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_boarder_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_boarder_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_boarder_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_customer_boarder_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_customer_boarder_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_customer_boarder_search();
+        }
+    };
+}();
+
+let DTCustomerFrp = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderCancelReasonCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'name'},
+                { data: 'contact'},
+                { data: 'applyStatus'},
+                { data: 'cancelReason'},
+                { data: 'initRegiDttm' },
+                { data: 'finalRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCancelReasonCell(data, type, row) {
+        let renderHTML = '';
+        let cancelReason = row.cancelReason;
+        if(nvl(cancelReason,'') !== ''){
+            renderHTML += cancelReason;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+        }
+
+        renderHTML += applyStatus;
+        renderHTML += '</div>';
+
+        return renderHTML;
+    }
+
+    function renderNameCell(data, type, row) {
+        let renderHTML = '';
+        let nameKo = row.nameKo;
+        let nameEn = row.nameEn;
+        if(nvl(nameKo,'') !== ''){
+            renderHTML += nameKo;
+        }else{
+            renderHTML += '-';
+        }
+        if(nvl(nameEn,'') !== ''){
+            renderHTML += '<br>' + nameEn;
+        }else{
+            renderHTML += '<br>-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_frp_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_frp_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_frp_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_customer_frp_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_customer_frp_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_customer_frp_search();
+        }
+    };
+}();
+
+let DTCustomerOutboarder = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderCancelReasonCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'name'},
+                { data: 'contact'},
+                { data: 'applyStatus'},
+                { data: 'cancelReason'},
+                { data: 'initRegiDttm' },
+                { data: 'finalRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCancelReasonCell(data, type, row) {
+        let renderHTML = '';
+        let cancelReason = row.cancelReason;
+        if(nvl(cancelReason,'') !== ''){
+            renderHTML += cancelReason;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+        }
+
+        renderHTML += applyStatus;
+        renderHTML += '</div>';
+
+        return renderHTML;
+    }
+
+    function renderNameCell(data, type, row) {
+        let renderHTML = '';
+        let nameKo = row.nameKo;
+        let nameEn = row.nameEn;
+        if(nvl(nameKo,'') !== ''){
+            renderHTML += nameKo;
+        }else{
+            renderHTML += '-';
+        }
+        if(nvl(nameEn,'') !== ''){
+            renderHTML += '<br>' + nameEn;
+        }else{
+            renderHTML += '<br>-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_outboarder_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_outboarder_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_outboarder_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_customer_outboarder_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_customer_outboarder_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_customer_outboarder_search();
+        }
+    };
+}();
+
+let DTCustomerInboarder = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderCancelReasonCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'name'},
+                { data: 'contact'},
+                { data: 'applyStatus'},
+                { data: 'cancelReason'},
+                { data: 'initRegiDttm' },
+                { data: 'finalRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCancelReasonCell(data, type, row) {
+        let renderHTML = '';
+        let cancelReason = row.cancelReason;
+        if(nvl(cancelReason,'') !== ''){
+            renderHTML += cancelReason;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+        }
+
+        renderHTML += applyStatus;
+        renderHTML += '</div>';
+
+        return renderHTML;
+    }
+
+    function renderNameCell(data, type, row) {
+        let renderHTML = '';
+        let nameKo = row.nameKo;
+        let nameEn = row.nameEn;
+        if(nvl(nameKo,'') !== ''){
+            renderHTML += nameKo;
+        }else{
+            renderHTML += '-';
+        }
+        if(nvl(nameEn,'') !== ''){
+            renderHTML += '<br>' + nameEn;
+        }else{
+            renderHTML += '<br>-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_inboarder_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_inboarder_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
-        renderHTML += '</div>';
+        renderHTML += '</div>';*/
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_inboarder_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
         renderHTML += '</div>';
@@ -342,7 +980,7 @@ let DTCustomerInboarder = function () {
 
             dataTbl.on('order.dt search.dt', function () {
                 let i = dataTbl.rows().count();
-                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
                     .every(function (cell) {
                         this.data(i--);
                     });
@@ -350,6 +988,189 @@ let DTCustomerInboarder = function () {
 
             /* 조회 */
             f_customer_inboarder_search();
+        }
+    };
+}();
+
+let DTCustomerSailyacht = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderCancelReasonCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'name'},
+                { data: 'contact'},
+                { data: 'applyStatus'},
+                { data: 'cancelReason'},
+                { data: 'initRegiDttm' },
+                { data: 'finalRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCancelReasonCell(data, type, row) {
+        let renderHTML = '';
+        let cancelReason = row.cancelReason;
+        if(nvl(cancelReason,'') !== ''){
+            renderHTML += cancelReason;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+        }
+
+        renderHTML += applyStatus;
+        renderHTML += '</div>';
+
+        return renderHTML;
+    }
+
+    function renderNameCell(data, type, row) {
+        let renderHTML = '';
+        let nameKo = row.nameKo;
+        let nameEn = row.nameEn;
+        if(nvl(nameKo,'') !== ''){
+            renderHTML += nameKo;
+        }else{
+            renderHTML += '-';
+        }
+        if(nvl(nameEn,'') !== ''){
+            renderHTML += '<br>' + nameEn;
+        }else{
+            renderHTML += '<br>-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sailyacht_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sailyacht_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sailyacht_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_customer_sailyacht_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_customer_sailyacht_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_customer_sailyacht_search();
         }
     };
 }();
@@ -1392,6 +2213,96 @@ let DTBoardAnnouncement = function () {
     };
 }();
 
+let DTBoardEmployment = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 8,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'gbn' },
+                { data: 'employName' },
+                { data: 'employField' },
+                { data: 'employAddress' },
+                { data: 'initRegiDttm' },
+                { data: 'finalRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_employment_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_employment_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_employment_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_board_employment_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_board_employment_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_board_employment_search();
+        }
+    };
+}();
+
 let DTBoardJob = function () {
     // Shared variables
     let table;
@@ -2165,8 +3076,16 @@ KTUtil.onDOMContentLoaded(function () {
     // 회원/신청>신청자 목록
     // 상시사전신청
     DTCustomerRegular.init(); // /mng/customer/regular.do
+    // 해상엔진 테크니션 (선내기/선외기)
+    DTCustomerBoarder.init(); // /mng/customer/boarder.do
+    // FRP 정비 테크니션
+    DTCustomerFrp.init(); // /mng/customer/frp.do
+    // 자가정비(선외기)
+    DTCustomerOutboarder.init(); // /mng/customer/outboarder.do
     // 자가정비(선내기)
     DTCustomerInboarder.init(); // /mng/customer/inboarder.do
+    // 자가정비(세일요트)
+    DTCustomerSailyacht.init(); // /mng/customer/sailyacht.do
 
     // 교육>교육관리
     // 교육현황
@@ -2188,6 +3107,8 @@ KTUtil.onDOMContentLoaded(function () {
     // 채용공고
     DTBoardAnnouncement.init(); // /mng/board/announcement.do
     // 취/창업현황
+    DTBoardEmployment.init(); // /mng/board/employment.do
+    // 취/창업성공후기
     DTBoardJob.init(); // /mng/board/job.do
     // 커뮤니티
     DTBoardCommunity.init(); // /mng/board/community.do

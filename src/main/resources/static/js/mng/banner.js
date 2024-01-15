@@ -131,21 +131,23 @@ function f_pop_banner_remove(seq){
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then((result) => {
-            if (result.value) {
+            if (result.isConfirmed) {
+                if (result.value) {
 
-                let jsonObj = {
-                    targetSeq: seq,
-                    targetTable: 'banner',
-                    deleteReason: result.value,
-                    targetMenu: getTargetMenu('mng_pop_banner_table'),
-                    delYn: 'Y'
+                    let jsonObj = {
+                        targetSeq: seq,
+                        targetTable: 'banner',
+                        deleteReason: result.value,
+                        targetMenu: getTargetMenu('mng_pop_banner_table'),
+                        delYn: 'Y'
+                    }
+                    f_mng_trash_remove(jsonObj);
+
+                    f_pop_banner_search(); // 재조회
+
+                } else {
+                    alert('삭제 사유를 입력해주세요.');
                 }
-                f_mng_trash_remove(jsonObj);
-
-                f_pop_banner_search(); // 재조회
-
-            }else{
-                alert('삭제 사유를 입력해주세요.');
             }
         });
 

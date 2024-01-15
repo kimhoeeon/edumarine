@@ -1615,6 +1615,13 @@ public class EduMarineServiceImpl implements EduMarineService {
         return responseDTO;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<EmploymentDTO> processSelectEmploymentList(String gbn) {
+        System.out.println("EduMarineServiceImpl > processSelectEmploymentList");
+        return eduMarineMapper.selectEmploymentList(gbn);
+    }
+
     /*************************************************
      * File
      * ***********************************************/

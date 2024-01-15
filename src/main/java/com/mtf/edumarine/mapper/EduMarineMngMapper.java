@@ -264,4 +264,32 @@ public interface EduMarineMngMapper {
     Integer deleteTargetTableTrash(TrashDTO trashDTO);
 
     TrashDTO selectTrashSingle(TrashDTO trashDTO);
+
+    List<EmploymentDTO> selectEmploymentList(SearchDTO searchDTO);
+
+    EmploymentDTO selectEmploymentSingle(EmploymentDTO employmentDTO);
+
+    Integer updateEmployment(EmploymentDTO employmentDTO);
+
+    String getEmploymentSeq();
+
+    Integer insertEmployment(EmploymentDTO employmentDTO);
+
+    List<BoarderDTO> selectBoarderList(SearchDTO searchDTO);
+
+    Integer updateBoarderApplyStatus(BoarderDTO info);
+
+    List<FrpDTO> selectFrpList(SearchDTO searchDTO);
+
+    Integer updateFrpApplyStatus(FrpDTO info);
+
+    List<OutboarderDTO> selectOutboarderList(SearchDTO searchDTO);
+
+    Integer updateOutboarderApplyStatus(OutboarderDTO info);
+
+    List<SailyachtDTO> selectSailyachtList(SearchDTO searchDTO);
+
+    Integer updateSailyachtApplyStatus(SailyachtDTO info);
+
+    Integer updateInboarderApplyStatus(InboarderDTO info);
 }

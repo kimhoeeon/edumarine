@@ -895,6 +895,84 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<EmploymentDTO> processSelectEmploymentList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectEmploymentList");
+        return eduMarineMngMapper.selectEmploymentList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public EmploymentDTO processSelectEmploymentSingle(EmploymentDTO employmentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectEmploymentSingle");
+        return eduMarineMngMapper.selectEmploymentSingle(employmentDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateEmployment(EmploymentDTO employmentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateEmployment");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(employmentDTO.getSeq())){
+
+                result = eduMarineMngMapper.updateEmployment(employmentDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + employmentDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateEmployment ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertEmployment(EmploymentDTO employmentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processInsertEmployment");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String getSeq = eduMarineMngMapper.getEmploymentSeq();
+            employmentDTO.setSeq(getSeq);
+
+            result = eduMarineMngMapper.insertEmployment(employmentDTO);
+
+            responseDTO.setCustomValue(getSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertEmployment ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<CommunityDTO> processSelectCommunityList(SearchDTO searchDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectCommunityList");
         return eduMarineMngMapper.selectCommunityList(searchDTO);
@@ -1510,6 +1588,144 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<BoarderDTO> processSelectBoarderList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectBoarderList");
+        return eduMarineMngMapper.selectBoarderList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateBoarderApplyStatus(List<BoarderDTO> boarderList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateBoarderApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(BoarderDTO info : boarderList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    System.out.println("이전 신청상태 : " + info.getPreApplyStatus());
+                    result = eduMarineMngMapper.updateBoarderApplyStatus(info);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateBoarderApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<FrpDTO> processSelectFrpList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectFrpList");
+        return eduMarineMngMapper.selectFrpList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateFrpApplyStatus(List<FrpDTO> frpList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateFrpApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(FrpDTO info : frpList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    System.out.println("이전 신청상태 : " + info.getPreApplyStatus());
+                    result = eduMarineMngMapper.updateFrpApplyStatus(info);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFrpApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<OutboarderDTO> processSelectOutboarderList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectOutboarderList");
+        return eduMarineMngMapper.selectOutboarderList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateOutboarderApplyStatus(List<OutboarderDTO> outboarderList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateOutboarderApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(OutboarderDTO info : outboarderList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    System.out.println("이전 신청상태 : " + info.getPreApplyStatus());
+                    result = eduMarineMngMapper.updateOutboarderApplyStatus(info);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateOutboarderApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<InboarderDTO> processSelectInboarderList(SearchDTO searchDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectInboarderList");
         return eduMarineMngMapper.selectInboarderList(searchDTO);
@@ -1609,6 +1825,91 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertInboarder ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateInboarderApplyStatus(List<InboarderDTO> inboarderList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateInboarderApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(InboarderDTO info : inboarderList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    System.out.println("이전 신청상태 : " + info.getPreApplyStatus());
+                    result = eduMarineMngMapper.updateInboarderApplyStatus(info);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateInboarderApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<SailyachtDTO> processSelectSailyachtList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectSailyachtList");
+        return eduMarineMngMapper.selectSailyachtList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateSailyachtApplyStatus(List<SailyachtDTO> sailyachtList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateSailyachtApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(SailyachtDTO info : sailyachtList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    System.out.println("이전 신청상태 : " + info.getPreApplyStatus());
+                    result = eduMarineMngMapper.updateSailyachtApplyStatus(info);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateSailyachtApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 

@@ -207,7 +207,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/boarder.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">해상 엔진 테크니션</span>
                                                                         </a>
@@ -217,7 +217,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/frp.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">FRP 정비 테크니션</span>
                                                                         </a>
@@ -227,7 +227,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/outboarder.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (선외기)</span>
                                                                         </a>
@@ -247,7 +247,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/sailyacht.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (세일요트)</span>
                                                                         </a>
@@ -466,6 +466,16 @@ if (document.documentElement) {
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>--%>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/employment.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">취/창업 현황</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
                                                                     <!--end:Menu item-->
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
@@ -930,7 +940,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/boarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -942,7 +952,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/frp.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -954,7 +964,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/outboarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -978,7 +988,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/sailyacht.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1142,6 +1152,18 @@ if (document.documentElement) {
                                             </a>
                                             <!--end:Menu link-->
                                         </div>--%>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/employment.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">취/창업 현황</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
                                         <!--end:Menu item-->
                                         <!--begin:Menu item-->
                                         <div class="menu-item">

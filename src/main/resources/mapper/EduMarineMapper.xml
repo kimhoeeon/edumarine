@@ -503,6 +503,34 @@
             )
     </insert>
 
+    <select id="selectEmploymentList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EmploymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectEmploymentList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT gbn
+                            , employ_name
+                            , employ_ceo
+                            , employ_year
+                            , employ_field
+                            , employ_address
+                            , employ_address_detail
+                            , init_regi_dttm
+                       FROM employment
+                       WHERE del_yn = 'N'
+                       AND gbn = #{gbn}
+                       ) LISTA
+                <if test='gbn == "창업자"'>
+                ORDER BY LISTA.employ_year asc , LISTA.employ_name desc
+                </if>
+                <if test='gbn == "취업자"'>
+                ORDER BY LISTA.employ_name desc , LISTA.init_regi_dttm desc
+                </if>
+                ) LISTB
+        ORDER BY LISTB.rownum desc
+    </select>
+
     <select id="selectBoardNoticeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectBoardNoticeList */
         SELECT LISTB.*

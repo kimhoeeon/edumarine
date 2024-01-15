@@ -353,6 +353,7 @@ function getTargetMenu(tableId){
         case 'gallery':
         case 'media':
         case 'newsletter':
+        case 'employment':
         case 'job':
         case 'community':
             targetMenu += '게시판관리';
@@ -408,6 +409,9 @@ function getTargetMenu(tableId){
         case 'newsletter':
             targetMenu += '뉴스레터';
             break;
+        case 'employment':
+            targetMenu += '취창업현황';
+            break;
         case 'job':
             targetMenu += '취창업성공후기';
             break;
@@ -449,6 +453,7 @@ function getTargetMenu(tableId){
     //mng_board_gallery_table // 정보센터_게시판관리_사진자료
     //mng_board_media_table // 정보센터_게시판관리_영상자료
     //mng_board_newsletter_table // 정보센터_게시판관리_뉴스레터
+    //mng_board_employment_table // 정보센터_게시판관리_취창업현황
     //mng_board_job_table // 정보센터_게시판관리_취창업성공후기
     //mng_board_community_table // 정보센터_게시판관리_커뮤니티
 

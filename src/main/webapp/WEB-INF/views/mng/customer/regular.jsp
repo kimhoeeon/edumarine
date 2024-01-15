@@ -215,7 +215,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/boarder.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">해상 엔진 테크니션</span>
                                                                         </a>
@@ -225,7 +225,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/frp.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">FRP 정비 테크니션</span>
                                                                         </a>
@@ -235,7 +235,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/outboarder.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (선외기)</span>
                                                                         </a>
@@ -255,7 +255,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="javascript:alert('서비스 준비중입니다.');"
+                                                                        <a href="/mng/customer/sailyacht.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (세일요트)</span>
                                                                         </a>
@@ -474,6 +474,16 @@ if (document.documentElement) {
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>--%>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/employment.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">취/창업 현황</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
                                                                     <!--end:Menu item-->
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
@@ -938,7 +948,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/boarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -950,7 +960,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/frp.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -962,7 +972,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/outboarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -986,7 +996,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="javascript:alert('서비스 준비중입니다.');">
+                                            <a class="menu-link" href="/mng/customer/sailyacht.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1150,6 +1160,18 @@ if (document.documentElement) {
                                             </a>
                                             <!--end:Menu link-->
                                         </div>--%>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/employment.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">취/창업 현황</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
                                         <!--end:Menu item-->
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
@@ -1446,13 +1468,12 @@ if (document.documentElement) {
                                             <div class="w-100 mw-150px">
                                                 <!--begin::Select2-->
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
-                                                        aria-label="- 언어 -" data-placeholder="- 언어 -"
-                                                        data-allow-clear="true" data-hide-search="true" onchange="f_customer_regular_search()">
+                                                        aria-label="- 검색조건 -" data-placeholder="- 검색조건 -"
+                                                        data-allow-clear="true" data-hide-search="true">
                                                     <option></option>
-                                                    <option disabled>- 언어 -</option>
+                                                    <option disabled>- 검색조건 -</option>
                                                     <option value="" selected>전체</option>
-                                                    <option value="KO">국문</option>
-                                                    <option value="EN">영문</option>
+                                                    <option value="name">이름</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -1463,7 +1484,7 @@ if (document.documentElement) {
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
                                                 </i>
-                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="글 제목 입력"/>
+                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="검색어 입력"/>
                                             </div>
                                             <!--end::Search-->
                                             <!--begin:Action-->
@@ -1476,11 +1497,11 @@ if (document.documentElement) {
                                                     </i>검색조건 초기화</button>
                                             </div>
                                             <!--end:Action-->
-                                            <div class="ms-auto">
-                                                <!--begin::글쓰기-->
+                                            <%--<div class="ms-auto">
+                                                <!--begin::등록-->
                                                 <a href="javascript:void(0);" onclick="f_customer_regular_modify_init_set('');" class="btn btn-primary ms-auto">등록</a>
-                                                <!--end::글쓰기-->
-                                            </div>
+                                                <!--end::등록-->
+                                            </div>--%>
                                         </div>
                                         <!--end::Card title-->
                                     </div>
