@@ -14,4 +14,5 @@ public class SmsResponseDTO {
     String success_cnt; //요청성공건수
     String error_cnt; //요청실패건수
     String msg_type; //메시지타입
+    String note;
 }

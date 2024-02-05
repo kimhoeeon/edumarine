@@ -14,12 +14,16 @@ public class FrpDTO {
     String seq; //순번
     String memberSeq; //회원SEQ
     String trainSeq; //교육SEQ
+    String grade;
     String id;
     String nameKo; //이름
     String nameEn; //이름
     String phone; //연락처
     String email; //이메일
-    String rrn; //주민등록번호
+    String birthYear; //출생년도
+    String birthMonth; //출생월
+    String birthDay; //출생일
+    String sex; //성별
     Integer age; //나이
     String address; //주소
     String addressDetail; //상세주소
@@ -44,6 +48,7 @@ public class FrpDTO {
     String planReason; //수료후포부
     String etcReason; //기타사항
     String applyStatus; //신청상태
+    String cancelDttm; //취소신청일시
     String cancelReason; //취소사유
     String delYn; //임시휴지통여부
     String note; //비고
@@ -53,4 +58,5 @@ public class FrpDTO {
     String finalRegiDttm; //최종 변경 일시
 
     String preApplyStatus;
+    String cancelGbn;
 }

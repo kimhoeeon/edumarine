@@ -267,6 +267,16 @@ $(document).ready(function () {
         // 복제된 .formCareerBox 내의 삭제 버튼 보이기
         newformCareerBox.find('.formCareerDel').show();
 
+        // 파일 입력 초기화 및 비활성화 속성 제거
+        let fileInput = newformCareerBox.find('.upload_hidden');
+        let fileNameInput = newformCareerBox.find('.upload_name');
+        fileInput.val('').attr('id', 'careerLicenseFile' + formCareerCount);
+        fileNameInput.val('').attr('disabled', true).attr('id', 'careerLicense' + formCareerCount).attr('name', 'careerLicense');
+        newformCareerBox.find('label').attr('for', 'careerLicenseFile' + formCareerCount);
+
+        // 복제된 .onlineInfoBox 는 제품 기존 값 목록 제거
+        newformCareerBox.find('.preFileList').remove();
+
         newformCareerBox.find('.formCareerDel').on('click', function () {
             deleteformCareerBox(this);
         });
@@ -295,6 +305,22 @@ $(document).ready(function () {
                     let resData = ajaxConnect('/mypage/eduApply02/career/delete.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
                         showMessage('', 'error', '에러 발생', '경력사항 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    }
+
+                    let fileList = $(el).parent().parent().find('.preFileList').find('.naeyong ul .careerLicenseFile_li').find('input[type=hidden][name=careerLicenseUploadFile]');
+                    if(nvl(fileList, '') !== ''){
+                        for(let i=0; i<fileList.length; i++){
+                            let file_id = fileList[i].id;
+                            if(nvl(file_id,'') !== ''){
+                                let file_jsonObj = {
+                                    id: file_id
+                                };
+                                let resData = ajaxConnect('/file/delete.do','post',file_jsonObj);
+                                if(resData.resultCode !== '0'){
+                                    showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                                }
+                            }
+                        }
                     }
                 }
 

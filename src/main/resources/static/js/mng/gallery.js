@@ -23,7 +23,6 @@ function f_board_gallery_search(){
     let searchText = $('#search_text').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
         };
     }else{
         jsonObj = {
@@ -76,11 +75,11 @@ function f_board_gallery_detail_modal_set(seq){
     /* 사진자료 상세보기 Modal form Set */
     //console.log(resData);
 
-    if(resData.lang==="KO"){
+    /*if(resData.lang==="KO"){
         document.querySelector('#md_lang').value = '국문';
     }else{
         document.querySelector('#md_lang').value = '영문';
-    }
+    }*/
 
     document.querySelector('#md_title').value = resData.title;
     document.querySelector('#md_writer').value = resData.writer;
@@ -103,7 +102,7 @@ function f_board_gallery_detail_modal_set(seq){
         for(let i=0; i<fileData.length; i++){
             let file_list_el = document.getElementById('file_list');
             let img_el = document.createElement('img');
-            img_el.src = fileData[i].fullFilePath.replace('./usr/local/tomcat/webapps','../../../../..');
+            img_el.src = fileData[i].fullFilePath.replace('/usr/local/tomcat/webapps', '/../../../..');
             img_el.classList.add('w-350px','mr10', 'mb-6');
             img_el.style.border = '1px solid #009ef7';
             file_list_el.append(img_el);
@@ -157,30 +156,6 @@ function f_board_gallery_remove(seq){
             }
         });
 
-        /*let jsonObj = {
-            seq: seq
-        }
-        Swal.fire({
-            title: '선택한 사진자료를 삭제하시겠습니까?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                let resData = ajaxConnect('/mng/board/gallery/delete.do', 'post', jsonObj);
-
-                if (resData.resultCode === "0") {
-                    showMessage('', 'info', '사진자료 삭제', '사진자료가 삭제되었습니다.', '');
-                    f_board_gallery_search(); // 삭제 성공 후 재조회 수행
-                } else {
-                    showMessage('', 'error', '에러 발생', '사진자료 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                }
-            }
-        });*/
     }
 }
 

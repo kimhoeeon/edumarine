@@ -15,7 +15,7 @@ $(function(){
         } else {
             domain.prop('disabled', true).val(selectedOption);
         }
-    });
+    });*/
 
     // 출생년월일
     $('#year_select, #month_select').on('change', function () {
@@ -23,7 +23,7 @@ $(function(){
     });
 
     // 초기값
-    lastDay($('#birthDay').val());*/
+    lastDay($('#birthDay').val());
 
     let myModalEl = document.getElementById('kt_modal_apply_status_cancel');
 
@@ -36,6 +36,7 @@ $(function(){
         myModalEl.addEventListener('hidden.bs.modal', event => {
             // input init
             $('.customer_list').empty();
+            $('#md_cancel_gbn').val('').select2({minimumResultsForSearch: Infinity});
             $('input[type=hidden][name=checkVal]').remove();
             $('input[type=hidden][name=checkStatus]').remove();
         })
@@ -89,6 +90,72 @@ $(function(){
 
         })
     }//myModalEl
+
+    let myModalEl2 = document.getElementById('kt_modal_apply_status_change');
+
+    if(myModalEl2){
+
+        let myModal = new bootstrap.Modal('#kt_modal_apply_status_change', {
+            focus: true
+        });
+
+        myModalEl2.addEventListener('hidden.bs.modal', event => {
+            // input init
+            $('.customer_list').empty();
+            $('#md_status_gbn').val('').select2({minimumResultsForSearch: Infinity});
+            $('input[type=hidden][name=checkVal]').remove();
+            $('input[type=hidden][name=checkStatus]').remove();
+        })
+
+        $('#apply_status_change_btn').on('click', function () {
+
+            let checkbox_el = $('.train_check input[type=checkbox]:checked');
+            let checkbox_len = checkbox_el.length;
+            let checkbox_data_val = '';
+            let checkbox_val = '';
+            let checkbox_status = '';
+            if(checkbox_len !== 0){
+                let i = 0;
+                $(checkbox_el).each(function() {
+                    checkbox_data_val += (i+1) + '. ';
+                    let data_val = $(this).data('value');
+                    checkbox_data_val += data_val;
+
+                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    checkbox_status += checkbox_data_status;
+                    checkbox_val += $(this).val();
+                    if((i+1) !== checkbox_len){
+                        checkbox_data_val += '<br>';
+                        checkbox_val += ',';
+                        checkbox_status += ',';
+                    }
+                    i++;
+                });
+
+                if(nvl(checkbox_val,'') !== ''){
+                    let input_hidden = document.createElement('input');
+                    input_hidden.type = 'hidden';
+                    input_hidden.name = 'checkVal'
+                    input_hidden.value = checkbox_val;
+
+                    let input_hidden2 = document.createElement('input');
+                    input_hidden2.type = 'hidden';
+                    input_hidden2.name = 'checkStatus'
+                    input_hidden2.value = checkbox_status;
+
+                    $('#modal_form2 .customer_list').html(checkbox_data_val);
+                    $('#modal_form2 .customer_list').append(input_hidden);
+                    $('#modal_form2 .customer_list').append(input_hidden2);
+
+                    myModal.show();
+                }
+            }else{
+                showMessage('', 'error', '[신청 상태 변경]', '신청 상태를 변경할 신청내역을 하나 이상 선택해 주세요.', '');
+                return false;
+            }
+
+        })
+    }//myModalEl2
 
 });
 
@@ -245,7 +312,7 @@ function f_customer_sailyacht_remove(seq){
 }
 
 function f_customer_sailyacht_modify_init_set(seq){
-    window.location.href = '/mng/customer/inboarder/detail.do?seq=' + seq;
+    window.location.href = '/mng/customer/sailyacht/detail.do?seq=' + seq;
 }
 
 function f_customer_sailyacht_save(seq){
@@ -383,46 +450,108 @@ function f_apply_cancel_btn(){
     let statusArr = $('input[type=hidden][name=checkStatus]').val();
     if (nvl(idArr,'') !== ''){
 
-        Swal.fire({
-            title: '취소 승인',
-            html: '취소 승인 처리하시겠습니까 ?',
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: '확인',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let idSplit = idArr.split(',');
-                let statusSplit = statusArr.split(',');
-                let jsonArr = [];
-                for(let i=0; i<idSplit.length; i++){
-                    let jsonObj = {
-                        seq: idSplit[i],
-                        preApplyStatus: statusSplit[i],
-                        applyStatus: '취소완료'
+        let md_cancel_gbn_val = $('#md_cancel_gbn').val();
+
+        if(nvl(md_cancel_gbn_val,'') !== '') {
+            Swal.fire({
+                title: '취소 승인',
+                html: '취소 승인 처리하시겠습니까 ?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인',
+                cancelButtonColor: '#A1A5B7',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let idSplit = idArr.split(',');
+                    let statusSplit = statusArr.split(',');
+                    let jsonArr = [];
+                    for(let i=0; i<idSplit.length; i++){
+                        let jsonObj = {
+                            seq: idSplit[i],
+                            preApplyStatus: statusSplit[i],
+                            cancelGbn: md_cancel_gbn_val,
+                            applyStatus: '취소완료'
+                        }
+
+                        jsonArr.push(jsonObj);
+
+                    } // for
+
+                    let resData = ajaxConnect('/mng/customer/sailyacht/status/update.do', 'post', jsonArr);
+
+                    if(resData.resultCode !== "0"){
+                        showMessage('', 'error', '에러 발생', '취소 승인을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    }else{
+                        showMessage('', 'info', '취소 승인', '취소 승인처리가 정상 완료되었습니다.', '');
+
+                        $('#kt_modal_apply_status_cancel').modal('hide');
+
+                        /* 재조회 */
+                        f_customer_sailyacht_search();
                     }
-
-                    jsonArr.push(jsonObj);
-
-                } // for
-
-                let resData = ajaxConnect('/mng/customer/sailyacht/status/update.do', 'post', jsonArr);
-
-                if(resData.resultCode !== "0"){
-                    showMessage('', 'error', '에러 발생', '취소 승인을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                    return false;
-                }else{
-                    showMessage('', 'info', '취소 승인', '취소 승인처리가 정상 완료되었습니다.', '');
-
-                    $('#kt_modal_apply_status_cancel').modal('hide');
-
-                    /* 재조회 */
-                    f_customer_sailyacht_search();
                 }
-            }
-        });
+            });
+        }else{
+            showMessage('', 'error', '[환불 구분]', '환불 구분을 선택해 주세요.', '');
+        }
+    }
+
+}
+
+function f_apply_change_btn(){
+
+    let idArr = $('input[type=hidden][name=checkVal]').val();
+    let statusArr = $('input[type=hidden][name=checkStatus]').val();
+    if (nvl(idArr,'') !== ''){
+
+        let md_status_gbn_val = $('#md_status_gbn').val();
+
+        if(nvl(md_status_gbn_val,'') !== '') {
+            Swal.fire({
+                title: '신청 상태 변경',
+                html: '신청 상태를 변경하시겠습니까 ?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인',
+                cancelButtonColor: '#A1A5B7',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let idSplit = idArr.split(',');
+                    let statusSplit = statusArr.split(',');
+                    let jsonArr = [];
+                    for (let i = 0; i < idSplit.length; i++) {
+                        let jsonObj = {
+                            seq: idSplit[i],
+                            preApplyStatus: statusSplit[i],
+                            applyStatus: md_status_gbn_val
+                        }
+
+                        jsonArr.push(jsonObj);
+
+                    } // for
+
+                    let resData = ajaxConnect('/mng/customer/sailyacht/status/change/update.do', 'post', jsonArr);
+
+                    if (resData.resultCode !== "0") {
+                        showMessage('', 'error', '에러 발생', '신청 상태 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    } else {
+                        showMessage('', 'info', '신청 상태 변경', '신청 상태 변경이 정상 완료되었습니다.', '');
+
+                        $('#kt_modal_apply_status_change').modal('hide');
+
+                        /* 재조회 */
+                        f_customer_sailyacht_search();
+                    }
+                }
+            });
+
+        }else{
+            showMessage('', 'error', '[신청 상태 변경]', '변경할 신청 상태를 선택해 주세요.', '');
+        }
     }
 
 }

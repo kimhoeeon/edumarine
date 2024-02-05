@@ -22,6 +22,7 @@ public class PopupDTO extends AbstractPagingRequestVo {
     String align; //정렬
     String writer; //등록자
     String content; //내용
+    String linkUrl; //링크URL
     String delYn; //삭제여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

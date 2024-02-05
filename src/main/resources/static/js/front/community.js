@@ -334,11 +334,21 @@ function f_main_community_reply_remove(pageGbn, depthReplyNo, communitySeq, repl
             };
             let resData = ajaxConnect('/job/community/reply/delete.do', 'post', jsonObj);
             if (resData.resultCode === "0") {
-                if(pageGbn === "C"){
-                    window.location.href = '/job/community_view.do?seq=' + communitySeq;
-                }else{
-                    window.location.href = '/mypage/post.do';
-                }
+                Swal.fire({
+                    title: '[댓글 삭제]',
+                    html: '댓글을 삭제하였습니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#00a8ff',
+                    confirmButtonText: '확인',
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        if(pageGbn === "C"){
+                            window.location.href = '/job/community_view.do?seq=' + communitySeq;
+                        }else{
+                            window.location.href = '/mypage/post.do';
+                        }
+                    }
+                });
             }
         }
     });

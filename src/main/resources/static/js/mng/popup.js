@@ -14,7 +14,7 @@ $(function(){
                 minYear: 1901,
                 maxYear: parseInt(moment().format("YYYY"), 12),
                 locale: {
-                    format: 'YYYY/MM/DD hh:mm:ss'
+                    format: 'YYYY-MM-DD HH:mm:ss'
                 }
             }
         );
@@ -53,12 +53,19 @@ function f_pop_popup_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
+
+    let useYnVal = $('#condition_use_yn').is(':checked');
+    let useYn = '';
+    if(useYnVal === true){
+        useYn = 'Y';
+    }
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
+            useYn: useYn
         };
     }else{
         jsonObj = {
+            useYn: useYn,
             condition: condition,
             searchText: searchText
         }
@@ -89,63 +96,10 @@ function f_pop_popup_search(){
     jb.tooltip();
 }
 
-function f_search_condition_sel_change(){
-
-    /* 로딩페이지 */
-    loadingBarShow();
-
-    /* DataTable Data Clear */
-    let dataTbl = $('#mng_pop_popup_table').DataTable();
-    dataTbl.clear();
-    dataTbl.draw(false);
-
-    let lang = $('#lang option:selected').val(); //참가신청언어
-    let useYnVal = $('#condition_use_yn').is(':checked');
-    let useYn = '';
-    if(useYnVal === true){
-        useYn = 'Y';
-    }
-
-    let condition = $('#search_box option:selected').val();
-    let searchText = $('#search_text').val();
-
-    let jsonObj = {
-        lang: lang,
-        useYn: useYn,
-        condition: condition,
-        searchText: searchText
-    }
-
-    //console.log(jsonObj);
-
-    /* 목록 데이터 조회 */
-    let resData = ajaxConnect('/mng/pop/popup/selectList.do', 'post', jsonObj);
-    dataTbl.rows.add(resData).draw();
-
-    /* 조회 카운트 입력 */
-    document.getElementById('search_cnt').innerText = resData.length;
-
-    /* DataTable Column tooltip Set */
-    let jb = $('#mng_pop_popup_table tbody td');
-    let cnt = 0;
-    jb.each(function(index, item){
-        let itemText = $(item).text();
-        let itemText_trim = itemText.replaceAll(' ','');
-        if(itemText_trim !== ''){
-            $(item).attr('data-bs-toggle', 'tooltip');
-            $(item).attr('data-bs-trigger', 'hover');
-            $(item).attr('data-bs-custom-class', 'tooltip-inverse');
-            $(item).attr('data-bs-placement', 'top');
-            $(item).attr('title',itemText);
-        }
-        cnt++;
-    })
-    jb.tooltip();
-}
-
 function f_pop_popup_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_use_yn').prop('checked',false);
 
     /* 재조회 */
     f_pop_popup_search();
@@ -186,30 +140,6 @@ function f_pop_popup_remove(seq){
             }
         });
 
-        /*let jsonObj = {
-            seq: rowId
-        }
-        Swal.fire({
-            title: '선택한 팝업을 삭제하시겠습니까?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                let resData = ajaxConnect('/mng/pop/popup/delete.do', 'post', jsonObj);
-
-                if (resData.resultCode === "0") {
-                    showMessage('', 'info', '팝업 삭제', '팝업이 삭제되었습니다.', '');
-                    f_pop_popup_search(); // 삭제 성공 후 재조회 수행
-                } else {
-                    showMessage('', 'error', '에러 발생', '팝업 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                }
-            }
-        });*/
     }
 }
 
@@ -329,6 +259,9 @@ function f_center_popup_form_data_setting(seq){
     // 내용
     let content = $('#quill_content').val();
 
+    // 링크
+    let linkUrl = $('#linkUrl').val();
+
     let jsonObj = {
         seq: seq,
         title: title,
@@ -340,7 +273,8 @@ function f_center_popup_form_data_setting(seq){
         topPx: topPx,
         leftPx: leftPx,
         align: align,
-        content: content
+        content: content,
+        linkUrl: linkUrl
     }
 
     return JSON.stringify(jsonObj);

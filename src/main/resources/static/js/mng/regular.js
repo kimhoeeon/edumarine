@@ -5,7 +5,8 @@
 
 $(function(){
 
-    // 이메일
+
+    /*// 이메일
     $('#email_select').on('change', function () {
         let selectedOption = $(this).val();
         let domain = $('#domain');
@@ -22,7 +23,139 @@ $(function(){
         $('#day_select').val('');
 
         lastDay(); //년과 월에 따라 마지막 일 구하기
-    });
+    });*/
+
+    let myModalEl = document.getElementById('kt_modal_apply_status_cancel');
+
+    if(myModalEl){
+
+        let myModal = new bootstrap.Modal('#kt_modal_apply_status_cancel', {
+            focus: true
+        });
+
+        myModalEl.addEventListener('hidden.bs.modal', event => {
+            // input init
+            $('.customer_list').empty();
+            $('#md_cancel_gbn').val('').select2({minimumResultsForSearch: Infinity});
+            $('input[type=hidden][name=checkVal]').remove();
+            $('input[type=hidden][name=checkStatus]').remove();
+        })
+
+        $('#apply_status_cancel_btn').on('click', function () {
+
+            let checkbox_el = $('.train_check input[type=checkbox]:checked');
+            let checkbox_len = checkbox_el.length;
+            let checkbox_data_val = '';
+            let checkbox_val = '';
+            let checkbox_status = '';
+            if(checkbox_len !== 0){
+                let i = 0;
+                $(checkbox_el).each(function() {
+                    checkbox_data_val += (i+1) + '. ';
+                    let data_val = $(this).data('value');
+                    checkbox_data_val += data_val;
+
+                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    checkbox_status += checkbox_data_status;
+                    checkbox_val += $(this).val();
+                    if((i+1) !== checkbox_len){
+                        checkbox_data_val += '<br>';
+                        checkbox_val += ',';
+                        checkbox_status += ',';
+                    }
+                    i++;
+                });
+
+                if(nvl(checkbox_val,'') !== ''){
+                    let input_hidden = document.createElement('input');
+                    input_hidden.type = 'hidden';
+                    input_hidden.name = 'checkVal'
+                    input_hidden.value = checkbox_val;
+
+                    let input_hidden2 = document.createElement('input');
+                    input_hidden2.type = 'hidden';
+                    input_hidden2.name = 'checkStatus'
+                    input_hidden2.value = checkbox_status;
+
+                    $('#modal_form .customer_list').html(checkbox_data_val);
+                    $('#modal_form .customer_list').append(input_hidden);
+                    $('#modal_form .customer_list').append(input_hidden2);
+
+                    myModal.show();
+                }
+            }else{
+                showMessage('', 'error', '[취소 승인]', '취소 승인할 신청내역을 하나 이상 선택해 주세요.', '');
+                return false;
+            }
+
+        })
+    }//myModalEl
+
+    let myModalEl2 = document.getElementById('kt_modal_apply_status_change');
+
+    if(myModalEl2){
+
+        let myModal = new bootstrap.Modal('#kt_modal_apply_status_change', {
+            focus: true
+        });
+
+        myModalEl2.addEventListener('hidden.bs.modal', event => {
+            // input init
+            $('.customer_list').empty();
+            $('#md_status_gbn').val('').select2({minimumResultsForSearch: Infinity});
+            $('input[type=hidden][name=checkVal]').remove();
+            $('input[type=hidden][name=checkStatus]').remove();
+        })
+
+        $('#apply_status_change_btn').on('click', function () {
+
+            let checkbox_el = $('.train_check input[type=checkbox]:checked');
+            let checkbox_len = checkbox_el.length;
+            let checkbox_data_val = '';
+            let checkbox_val = '';
+            let checkbox_status = '';
+            if(checkbox_len !== 0){
+                let i = 0;
+                $(checkbox_el).each(function() {
+                    checkbox_data_val += (i+1) + '. ';
+                    let data_val = $(this).data('value');
+                    checkbox_data_val += data_val;
+
+                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    checkbox_status += checkbox_data_status;
+                    checkbox_val += $(this).val();
+                    if((i+1) !== checkbox_len){
+                        checkbox_data_val += '<br>';
+                        checkbox_val += ',';
+                        checkbox_status += ',';
+                    }
+                    i++;
+                });
+
+                if(nvl(checkbox_val,'') !== ''){
+                    let input_hidden = document.createElement('input');
+                    input_hidden.type = 'hidden';
+                    input_hidden.name = 'checkVal'
+                    input_hidden.value = checkbox_val;
+
+                    let input_hidden2 = document.createElement('input');
+                    input_hidden2.type = 'hidden';
+                    input_hidden2.name = 'checkStatus'
+                    input_hidden2.value = checkbox_status;
+
+                    $('#modal_form2 .customer_list').html(checkbox_data_val);
+                    $('#modal_form2 .customer_list').append(input_hidden);
+                    $('#modal_form2 .customer_list').append(input_hidden2);
+
+                    myModal.show();
+                }
+            }else{
+                showMessage('', 'error', '[신청 상태 변경]', '신청 상태를 변경할 신청내역을 하나 이상 선택해 주세요.', '');
+                return false;
+            }
+
+        })
+    }//myModalEl2
 
 });
 
@@ -60,12 +193,18 @@ function f_customer_regular_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
-    if(nullToEmpty(searchText) === ""){
+
+    let applyStatus = $('#condition_apply_status option:selected').val();
+    let experienceYn = $('#condition_experience_yn option:selected').val();
+    if(nullToEmpty(searchText) === ''){
         jsonObj = {
-            condition: condition
+            applyStatus: applyStatus,
+            experienceYn: experienceYn
         };
     }else{
         jsonObj = {
+            applyStatus: applyStatus,
+            experienceYn: experienceYn,
             condition: condition ,
             searchText: searchText
         }
@@ -99,6 +238,8 @@ function f_customer_regular_search(){
 function f_customer_regular_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_apply_status').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_experience_yn').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_customer_regular_search();
@@ -110,28 +251,51 @@ function f_customer_regular_detail_modal_set(seq){
         seq: seq
     };
 
-    let resData = ajaxConnect('/mng/customer/regular/selectSingle.do', 'post', jsonObj);
+    $.ajax({
+        url: '/mng/customer/regular/selectSingle.do',
+        method: 'post',
+        async: false,
+        data: JSON.stringify(jsonObj),
+        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+    })
+    .done(function (data) {
+        let resData = data;
+        if(nvl(resData,'') !== ''){
+            $('#kt_modal_modify_history').modal('toggle');
 
-    /* 상세보기 Modal form Set */
-    //console.log(resData);
+            document.querySelector('#md_name').value = resData.name;
+            document.querySelector('#md_phone').value = resData.phone;
+            document.querySelector('#md_email').value = resData.email;
+            document.querySelector('#md_birth_year').value = resData.birthYear;
+            document.querySelector('#md_birth_month').value = resData.birthMonth;
+            document.querySelector('#md_birth_day').value = resData.birthDay;
+            document.querySelector('#md_region').value = resData.region;
 
-    document.querySelector('#md_name').value = resData.name;
-    document.querySelector('#md_phone').value = resData.phone;
-    document.querySelector('#md_email').value = resData.email;
-    document.querySelector('#md_birth_year').value = resData.birthYear;
-    document.querySelector('#md_birth_month').value = resData.birthMonth;
-    document.querySelector('#md_birth_day').value = resData.birthDay;
-    document.querySelector('#md_region').value = resData.region;
+            $('input[type=radio][name=md_participation_path][value=' + resData.participationPath + ']').prop('checked',true);
 
-    $('input[type=radio][name=md_participation_path][value=' + resData.participationPath + ']').prop('checked',true);
+            document.querySelector('#md_first_application_field').value = resData.firstApplicationField;
+            document.querySelector('#md_second_application_field').value = resData.secondApplicationField;
+            document.querySelector('#md_third_application_field').value = resData.thirdApplicationField;
+            document.querySelector('#md_desired_education_time').value = resData.desiredEducationTime;
+            document.querySelector('#md_major').value = resData.major;
 
-    document.querySelector('#md_first_application_field').value = resData.firstApplicationField;
-    document.querySelector('#md_second_application_field').value = resData.secondApplicationField;
-    document.querySelector('#md_third_application_field').value = resData.thirdApplicationField;
-    document.querySelector('#md_desired_education_time').value = resData.desiredEducationTime;
-    document.querySelector('#md_major').value = resData.major;
+            $('input[type=radio][name=md_experience_yn][value=' + resData.experienceYn + ']').prop('checked',true);
+        }else{
 
-    $('input[type=radio][name=md_experience_yn][value=' + resData.experienceYn + ']').prop('checked',true);
+            //$('#kt_modal_modify_history').find('.modal-header').find('.closeBtn').click();
+            //$('#kt_modal_modify_history').modal('toggle');
+
+            showMessage('', 'error', '[신청 정보]', '신청자 정보가 없습니다.', '');
+        }
+    })
+    .fail(function (xhr, status, errorThrown) {
+        /*$('body').html("오류가 발생했습니다.")
+            .append("<br>오류명: " + errorThrown)
+            .append("<br>상태: " + status);*/
+
+        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+    })
+
 }
 
 function f_customer_regular_remove(seq){
@@ -169,30 +333,6 @@ function f_customer_regular_remove(seq){
             }
         });
 
-        /*let jsonObj = {
-            seq: seq
-        }
-        Swal.fire({
-            title: '선택한 신청 내역을 삭제하시겠습니까?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                let resData = ajaxConnect('/mng/customer/regular/delete.do', 'post', jsonObj);
-
-                if (resData.resultCode === "0") {
-                    showMessage('', 'info', '신청 내역 삭제', '신청 내역이 삭제되었습니다.', '');
-                    f_customer_regular_search(); // 삭제 성공 후 재조회 수행
-                } else {
-                    showMessage('', 'error', '에러 발생', '신청 내역 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                }
-            }
-        });*/
     }
 }
 
@@ -300,26 +440,12 @@ function f_customer_regular_form_data_setting(){
 }
 
 function f_customer_regular_valid(){
-    let name = document.querySelector('#name').value;
-    let phone = document.querySelector('#phone').value;
-    let email = document.querySelector('#email').value;
-    let domain = document.querySelector('#domain').value;
-    let year = $('#year_select').val();
-    let month = $('#month_select').val();
-    let day = $('#day_select').val();
     let region = document.querySelector('#region').value;
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let first_field_select = $('#first_field_select').val();
     let second_field_select = $('#second_field_select').val();
     let third_field_select = $('#third_field_select').val();
 
-    if(nvl(name,'') === ''){ showMessage('', 'error', '[등록 정보]', '이름을 입력해 주세요.', ''); return false; }
-    if(nvl(phone,'') === ''){ showMessage('', 'error', '[등록 정보]', '연락처를 입력해 주세요.', ''); return false; }
-    if(nvl(email,'') === ''){ showMessage('', 'error', '[등록 정보]', '이메일을 입력해 주세요.', ''); return false; }
-    if(nvl(domain,'') === ''){ showMessage('', 'error', '[등록 정보]', '이메일 도메인을 입력해 주세요.', ''); return false; }
-    if(nvl(year,'') === ''){ showMessage('', 'error', '[등록 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(month,'') === ''){ showMessage('', 'error', '[등록 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(day,'') === ''){ showMessage('', 'error', '[등록 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
     if(nvl(region,'') === ''){ showMessage('', 'error', '[등록 정보]', '거주지역을 입력해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[등록 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
     if(nvl(first_field_select,'') === ''){ showMessage('', 'error', '[등록 정보]', '1순위 신청분야를 선택해 주세요.', ''); return false; }
@@ -327,4 +453,109 @@ function f_customer_regular_valid(){
     if(nvl(third_field_select,'') === ''){ showMessage('', 'error', '[등록 정보]', '3순위 신청분야를 선택해 주세요.', ''); return false; }
 
     return true;
+}
+
+function f_apply_cancel_btn(){
+
+    let idArr = $('input[type=hidden][name=checkVal]').val();
+    let statusArr = $('input[type=hidden][name=checkStatus]').val();
+    if (nvl(idArr,'') !== ''){
+
+        Swal.fire({
+            title: '취소 승인',
+            html: '취소 승인 처리하시겠습니까 ?',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let idSplit = idArr.split(',');
+                let statusSplit = statusArr.split(',');
+                let jsonArr = [];
+                for (let i = 0; i < idSplit.length; i++) {
+                    let jsonObj = {
+                        seq: idSplit[i],
+                        preApplyStatus: statusSplit[i],
+                        applyStatus: '취소완료'
+                    }
+
+                    jsonArr.push(jsonObj);
+
+                } // for
+
+                let resData = ajaxConnect('/mng/customer/regular/status/update.do', 'post', jsonArr);
+
+                if (resData.resultCode !== "0") {
+                    showMessage('', 'error', '에러 발생', '취소 승인을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                } else {
+                    showMessage('', 'info', '취소 승인', '취소 승인처리가 정상 완료되었습니다.', '');
+
+                    $('#kt_modal_apply_status_cancel').modal('hide');
+
+                    /* 재조회 */
+                    f_customer_regular_search();
+                }
+            }
+        });
+    }
+
+}
+
+function f_apply_change_btn(){
+
+    let idArr = $('input[type=hidden][name=checkVal]').val();
+    let statusArr = $('input[type=hidden][name=checkStatus]').val();
+    if (nvl(idArr,'') !== ''){
+
+        let md_status_gbn_val = $('#md_status_gbn').val();
+
+        if(nvl(md_status_gbn_val,'') !== '') {
+            Swal.fire({
+                title: '신청 상태 변경',
+                html: '신청 상태를 변경하시겠습니까 ?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인',
+                cancelButtonColor: '#A1A5B7',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let idSplit = idArr.split(',');
+                    let statusSplit = statusArr.split(',');
+                    let jsonArr = [];
+                    for (let i = 0; i < idSplit.length; i++) {
+                        let jsonObj = {
+                            seq: idSplit[i],
+                            preApplyStatus: statusSplit[i],
+                            applyStatus: md_status_gbn_val
+                        }
+
+                        jsonArr.push(jsonObj);
+
+                    } // for
+
+                    let resData = ajaxConnect('/mng/customer/regular/status/change/update.do', 'post', jsonArr);
+
+                    if (resData.resultCode !== "0") {
+                        showMessage('', 'error', '에러 발생', '신청 상태 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    } else {
+                        showMessage('', 'info', '신청 상태 변경', '신청 상태 변경이 정상 완료되었습니다.', '');
+
+                        $('#kt_modal_apply_status_change').modal('hide');
+
+                        /* 재조회 */
+                        f_customer_regular_search();
+                    }
+                }
+            });
+
+        }else{
+            showMessage('', 'error', '[신청 상태 변경]', '변경할 신청 상태를 선택해 주세요.', '');
+        }
+    }
+
 }

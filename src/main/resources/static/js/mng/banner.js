@@ -23,7 +23,6 @@ function f_pop_banner_search(){
     let searchText = $('#search_text').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
         };
     }else{
         jsonObj = {
@@ -97,7 +96,7 @@ function f_pop_banner_detail_modal_set(seq){
         for(let i=0; i<fileData.length; i++){
             let file_list_el = document.getElementById('file_list');
             let img_el = document.createElement('img');
-            img_el.src = fileData[i].fullFilePath.replace('./usr/local/tomcat/webapps','../../../../..');
+            img_el.src = fileData[i].fullFilePath.replace('/usr/local/tomcat/webapps', '/../../../..');
             img_el.classList.add('w-350px','mr10', 'mb-6');
             img_el.style.border = '1px solid #009ef7';
             file_list_el.append(img_el);

@@ -7,11 +7,48 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="ko">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
+    <meta name="copyright" content="경기테크노파크">
+    <meta name="robots" content="all">
+    <meta property="og:locale" content="ko_KR">
+    <meta itemprop="inLanguage" content="ko-kr">
+    <meta name="resource-type" content="website">
+    <meta property="og:type" content="website">
+
+    <meta property="og:site_name" content="경기해양레저인력양성센터">
     <title>경기해양레저 인력양성센터</title>
+
+    <meta name="title" content="경기해양레저인력양성센터">
+    <meta property="og:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://edumarine.org/main.do">
+    <meta itemprop="name" content="경기해양레저인력양성센터">
+    <meta property="nate:title" content="경기해양레저인력양성센터">
+    <meta property="nate:url" content="https://edumarine.org/main.do">
+
+    <meta property="og:url" content="https://edumarine.org/main.do">
+    <meta itemprop="url" content="https://edumarine.org/main.do">
+    <link rel="canonical" id="canonical" href="https://edumarine.org/main.do">
+
+    <meta name="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta name="twitter:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="og:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta itemprop="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="nate:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+
+    <meta property="og:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta name="keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta property="twitter:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+
+    <meta name="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta name="twitter:image " content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta property="og:image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -22,10 +59,25 @@
     <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    <%-- favicon
-    <link rel="shortcut icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    <link rel="icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    --%>
+    <%-- favicon --%>
+    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%-- favicon --%>
 
     <!--begin::Fonts(mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
@@ -178,6 +230,16 @@ if (document.documentElement) {
                                                                         <a href="/mng/customer/member.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">전체 회원 목록</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/resume.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">나의 이력서 목록</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -505,6 +567,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/faq.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">FAQ</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -705,69 +777,23 @@ if (document.documentElement) {
                         <!--end::Menu wrapper-->
                         <!--begin::Navbar-->
                         <div class="app-navbar flex-shrink-0">
-                            <!--begin::Search-->
-                            <%--<div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
-                                <!--begin::Search-->
-                                <div id="kt_header_search" class="header-search d-flex align-items-stretch"
-                                     data-kt-search-keypress="true" data-kt-search-min-length="2"
-                                     data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto"
-                                     data-kt-menu-overflow="false" data-kt-menu-permanent="true"
-                                     data-kt-menu-placement="bottom-end">
-                                    <!--begin::Search toggle-->
-                                    <div class="d-flex align-items-center" data-kt-search-element="toggle"
-                                         id="kt_header_search_toggle">
-                                        <div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px">
-                                            <i class="ki-duotone ki-magnifier fs-2 fs-lg-1">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
+
+                            <!--begin::admin mng menu-->
+                            <c:if test="${sessionScope.gbn eq '슈퍼'}">
+                                <div class="app-navbar-item align-items-stretch ms-md-3">
+                                    <!--begin::admin-->
+                                    <div class="d-flex align-items-stretch">
+                                        <!--begin::admin mng-->
+                                        <div class="d-flex align-items-center" id="kt_header_admin_menu">
+                                            <a href="/mng/adminMng/admin.do" class="btn btn-dark btn-active-light-dark">관리자 관리</a>
                                         </div>
+                                        <!--end::admin mng-->
                                     </div>
-                                    <!--end::Search toggle-->
-                                    <!--begin::Menu-->
-                                    <div data-kt-search-element="content"
-                                         class="menu menu-sub menu-sub-dropdown p-7 w-325px w-md-375px">
-                                        <!--begin::Wrapper-->
-                                        <div data-kt-search-element="wrapper">
-                                            <!--begin::Form-->
-                                            <form data-kt-search-element="form" class="w-100 position-relative mb-3" autocomplete="off">
-                                                <!--begin::Icon-->
-                                                <i class="ki-duotone ki-magnifier fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-0">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <!--end::Icon-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                       class="search-input form-control form-control-flush ps-10"
-                                                       name="search" value="" placeholder="Search..."
-                                                       data-kt-search-element="input"/>
-                                                <!--end::Input-->
-                                                <!--begin::Spinner-->
-                                                <span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-1"
-                                                      data-kt-search-element="spinner">
-                                                    <span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
-                                                </span>
-                                                <!--end::Spinner-->
-                                                <!--begin::Reset-->
-                                                <span class="search-reset btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 d-none"
-                                                      data-kt-search-element="clear">
-                                                    <i class="ki-duotone ki-cross fs-2 fs-lg-1 me-0">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                </span>
-                                                <!--end::Reset-->
-                                            </form>
-                                            <!--end::Form-->
-                                        </div>
-                                        <!--end::Wrapper-->
-                                    </div>
-                                    <!--end::Menu-->
+                                    <!--end::admin-->
                                 </div>
-                                <!--end::Search-->
-                            </div>--%>
-                            <!--end::Search-->
+                            </c:if>
+                            <!--end::admin mng menu-->
+
                             <!--begin::User menu-->
                             <div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
                                 <!--begin::Menu wrapper-->
@@ -790,9 +816,9 @@ if (document.documentElement) {
                                             <!--begin::Username-->
                                             <div class="d-flex flex-column">
                                                 <div class="fw-bold d-flex align-items-center fs-5">${sessionScope.id}
-                                                    <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">admin</span>
+                                                    <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Admin</span>
                                                 </div>
-                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">EduMarine 관리자</a>
+                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">${sessionScope.gbn} 관리자</a>
                                             </div>
                                             <!--end::Username-->
                                         </div>
@@ -906,6 +932,18 @@ if (document.documentElement) {
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">전체 회원 목록</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/resume.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">나의 이력서 목록</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1197,6 +1235,18 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/faq.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">FAQ</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -1468,13 +1518,14 @@ if (document.documentElement) {
                                             <div class="w-100 mw-150px">
                                                 <!--begin::Select2-->
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
-                                                        aria-label="- 언어 -" data-placeholder="- 언어 -"
-                                                        data-allow-clear="true" data-hide-search="true" onchange="f_smsMng_sms_search()">
+                                                        aria-label="- 검색조건 -" data-placeholder="- 검색조건 -"
+                                                        data-allow-clear="true" data-hide-search="true">
                                                     <option></option>
-                                                    <option disabled>- 언어 -</option>
+                                                    <option disabled>- 검색조건 -</option>
                                                     <option value="" selected>전체</option>
-                                                    <option value="KO">국문</option>
-                                                    <option value="EN">영문</option>
+                                                    <option value="SENDERPHONE">발신번호</option>
+                                                    <option value="PHONE">수신번호</option>
+                                                    <option value="CONTENT">내용</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -1498,7 +1549,27 @@ if (document.documentElement) {
                                                     </i>검색조건 초기화</button>
                                             </div>
                                             <!--end:Action-->
+                                        </div>
+                                        <!--end::Card title-->
+                                        <!--begin::Card toolbar-->
+                                        <div class="card-toolbar flex-row-fluid gap-5">
+                                                <%--begin::신청상태--%>
+                                            <div class="w-100 mw-150px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_result" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 발송결과 -" onchange="f_smsMng_sms_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 발송결과 -</option>
+                                                    <option value="성공">성공</option>
+                                                    <option value="실패">실패</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                                <%--end::신청상태--%>
+
                                             <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
+
                                                 <!--begin::button-->
                                                 <button type="button" id="template_mng_btn" class="btn btn-danger" data-bs-target="#kt_modal_template_mng">
                                                     <i class="ki-duotone ki-element-7 fs-3">
@@ -1506,16 +1577,17 @@ if (document.documentElement) {
                                                         <span class="path2"></span>
                                                     </i> 템플릿 관리</button>
                                                 <!--end::button-->
-                                                <!--begin::button-->
-                                                <button type="button" id="sms_mng_btn" class="btn btn-primary" data-bs-target="#kt_modal_sms_mng">
+
+                                                <button type="button" id="sms_send_mng_btn" class="btn btn-primary" onclick="window.location.href='/mng/smsMng/sms/send.do'">
                                                     <i class="ki-duotone ki-sms fs-3">
                                                         <span class="path1"></span>
                                                         <span class="path2"></span>
                                                     </i> SMS 발송</button>
-                                                <!--end::button-->
+
                                             </div>
+
                                         </div>
-                                        <!--end::Card title-->
+                                        <!--end::Card toolbar-->
                                     </div>
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
@@ -1663,134 +1735,6 @@ if (document.documentElement) {
                         <div class="ms-10">
                             <!--begin::Cancel-->
                             <a class="btn btn-warning" data-bs-dismiss="modal">취소</a>
-                            <!--end::Cancel-->
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 수정이력-->
-
-    <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="kt_modal_sms_mng" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">SMS 발송</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <!--begin::Input group-->
-                    <div class="row mb-6">
-                        <!--begin::Label-->
-                        <label class="col-lg-2 col-form-label required fw-semibold fs-6">수신번호</label>
-                        <!--end::Label-->
-                        <!--begin::Col-->
-                        <div class="col-lg-8">
-                            <div class="d-flex align-items-center mb-3 senderPhoneList">
-                                <div class="col-lg-12">
-                                    <div class="form-group row">
-                                        <div class="col-lg-10">
-                                            <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="ki-duotone ki-phone fs-2">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                </span>
-                                                <input type="text" class="form-control onlyTel" maxlength="13" placeholder="Phone"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2">
-                                            <a href="javascript:void(0);" onclick="f_sms_phone_remove_btn(this)" class="btn font-weight-bold btn-danger btn-icon senderPhoneDelBtn">
-                                                <i class="ki-duotone ki-cross">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 text-end">
-                            <div class="btn font-weight-bold btn-primary" onclick="f_sms_phone_add_btn()">
-                                <i class="ki-duotone ki-plus">
-                                </i>
-                                Add
-                            </div>
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Input group-->
-                    <!--begin::Input group-->
-                    <div class="row mb-6">
-                        <!--begin::Label-->
-                        <label class="col-lg-2 col-form-label fw-semibold fs-6">템플릿 목록</label>
-                        <!--end::Label-->
-                        <!--begin::Col-->
-                        <div class="col-lg-10 d-flex align-items-center">
-                            <input type="text" id="sms_template_title" name="sms_template_title" class="form-control form-control-solid-bg me-3" placeholder="템플릿명" disabled/>
-                            <select id="sms_template_list" class="form-select form-select-solid" data-control="select2"
-                                    data-hide-search="true" data-allow-clear="true"
-                                    data-placeholder="- 템플릿 선택 -">
-                                <option></option>
-                                <option value="미사용" selected>미사용</option>
-                                <%--<option value="T0000002">testTemp</option>--%>
-                            </select>
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Input group-->
-                    <!--begin::Input group-->
-                    <div class="row mb-6">
-                        <!--begin::Label-->
-                        <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span id="smsRemain">90</span> / 90 Bytes 남음 )</label>
-                        <!--end::Label-->
-                        <!--begin::Col-->
-                        <div class="col-lg-10 d-flex align-items-center">
-                            <textarea id="sms_template_content" name="sms_template_content" class="form-control form-control-solid-bg resize-none h-200px"
-                                      onblur="smsByteChk(this);" onkeyup="smsByteChk(this);" placeholder="SMS 내용"></textarea>
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Input group-->
-                    <!--begin::Menu separator-->
-                    <div class="separator my-6"></div>
-                    <!--end::Menu separator-->
-                    <!--begin::Col-->
-                    <div class="col-lg-12 d-flex justify-content-center">
-                        <!--begin::Col-->
-                        <div>
-                            <!--begin::button-->
-                            <a onclick="f_smsMng_sms_send()" class="btn btn-primary">SMS 발송</a>
-                            <!--end::button-->
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
-                        <div class="ms-10">
-                            <!--begin::Cancel-->
-                            <a class="btn btn-danger" data-bs-dismiss="modal">취소</a>
                             <!--end::Cancel-->
                         </div>
                         <!--end::Col-->

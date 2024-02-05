@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -98,7 +100,7 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainDTO> processSelectTrainScheduleList(SearchDTO searchDTO) {
-        System.out.println("EduMarineServiceImpl > processSelectTrainList");
+        System.out.println("EduMarineServiceImpl > processSelectTrainScheduleList");
         return eduMarineMapper.selectTrainScheduleList(searchDTO);
     }
 
@@ -132,6 +134,11 @@ public class EduMarineServiceImpl implements EduMarineService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
+            String getSalt = eduMarineMapper.getMemberSalt(memberDTO.getId());
+            //암호화
+            String pw_encrypt = SHA512(memberDTO.getPassword(), getSalt);
+            memberDTO.setPassword(pw_encrypt);
+
             Integer loginCheck = eduMarineMapper.checkMemberSingle(memberDTO);
             if(loginCheck == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -165,6 +172,16 @@ public class EduMarineServiceImpl implements EduMarineService {
         Integer result = 0;
         try {
 
+            String password = memberDTO.getPassword();
+
+            //salt값 생성
+            String salt = Salt();
+            memberDTO.setSalt(salt);
+
+            //암호화
+            String pw_encrypt = SHA512(password, salt);
+            memberDTO.setPassword(pw_encrypt);
+
             String getSeq = eduMarineMapper.getMemberSeq();
             memberDTO.setSeq(getSeq);
 
@@ -184,12 +201,12 @@ public class EduMarineServiceImpl implements EduMarineService {
                 regularDTO.setMemberSeq(getSeq);
                 regularDTO.setEmail(memberDTO.getEmail());
 
-                result = eduMarineMapper.updatePreRegularInfo(regularDTO);
+                Integer regularResult = eduMarineMapper.updatePreRegularInfo(regularDTO);
 
-                if(result == 0){
+                /*if(regularResult == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Regular Data Update Fail]";
-                }
+                }*/
             }
             //System.out.println(result);
         }catch (Exception e){
@@ -219,7 +236,15 @@ public class EduMarineServiceImpl implements EduMarineService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
-            memberDTO.setPassword("aa134!@cc");
+            String password = "aa134!@cc";
+            //salt값 생성
+            String salt = Salt();
+            memberDTO.setSalt(salt);
+
+            //암호화
+            String pw_encrypt = SHA512(password, salt);
+            memberDTO.setPassword(pw_encrypt);
+
             Integer result = eduMarineMapper.initMemberPassword(memberDTO);
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -389,6 +414,17 @@ public class EduMarineServiceImpl implements EduMarineService {
 
         try {
             if(memberDTO.getPasswordChangeYn() != null){
+
+                String password = memberDTO.getPassword();
+
+                //salt값 생성
+                String salt = Salt();
+                memberDTO.setSalt(salt);
+
+                //암호화
+                String pw_encrypt = SHA512(password, salt);
+                memberDTO.setPassword(pw_encrypt);
+
                 //update
                 System.out.println("[비밀번호 변경 프로세스 포함] 회원 정보 업데이트");
                 Integer result = eduMarineMapper.updateMember(memberDTO);
@@ -398,9 +434,13 @@ public class EduMarineServiceImpl implements EduMarineService {
                 }
             }else{
                 String id = memberDTO.getId();
-                String password = memberDTO.getPassword();
+
+                String getSalt = eduMarineMapper.getMemberSalt(id);
+                //암호화
+                String pw_encrypt = SHA512(memberDTO.getPassword(), getSalt);
+
                 MemberDTO memberInfo = eduMarineMapper.selectMemberSingle(id);
-                if(!Objects.equals(password, memberInfo.getPassword())){
+                if(!Objects.equals(pw_encrypt, memberInfo.getPassword())){
                     resultCode = "99";
                     resultMessage = "기존 비밀번호와 입력하신 비밀번호가 다릅니다.<br>비밀번호 변경도 진행하시겠습니까?";
                 }else{
@@ -1622,6 +1662,13 @@ public class EduMarineServiceImpl implements EduMarineService {
         return eduMarineMapper.selectEmploymentList(gbn);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<FaqDTO> processSelectFaqList(SearchDTO searchDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectFaqList");
+        return eduMarineMapper.selectFaqList(searchDTO);
+    }
+
     /*************************************************
      * File
      * ***********************************************/
@@ -1638,6 +1685,67 @@ public class EduMarineServiceImpl implements EduMarineService {
     public List<FileDTO> processSelectFileList(String userId) {
         System.out.println("EduMarineServiceImpl > processSelectFileList");
         return eduMarineMapper.selectFileList(userId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteFile(FileDTO fileDTO) {
+        System.out.println("EduMarineServiceImpl > processDeleteFile");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(fileDTO.getId() != null){
+
+                result = eduMarineMapper.deleteFile(fileDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Id : " + fileDTO.getId();
+                }
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Id Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteFile ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    public String Salt() {
+
+        String salt="";
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            byte[] bytes = new byte[16];
+            random.nextBytes(bytes);
+            salt = new String(Base64.getEncoder().encode(bytes));
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return salt;
+    }
+
+    public String SHA512(String password, String hash) {
+        String salt = hash+password;
+        String hex = null;
+        try {
+            MessageDigest msg = MessageDigest.getInstance("SHA-512");
+            msg.update(salt.getBytes());
+
+            hex = String.format("%128x", new BigInteger(1, msg.digest()));
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hex;
     }
 
 }

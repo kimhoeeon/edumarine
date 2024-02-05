@@ -2,20 +2,78 @@
  * mngMain.js
  * */
 
+/*$(window).on("beforeunload", function(e) {
+    kill(true);
+});*/
+
+window.onbeforeunload = function () {
+    /*fetch('/mng/session/kill/gbn.do?isClose=true', {
+        method: 'POST',
+        keepalive: true
+    });*/
+
+    if(self.screenTop > 9000){
+        console.log('close');
+        /*kill(true);*/
+    }else {
+        if(document.readyState === "complete"){
+            //새로고침
+            console.log('refresh');
+        }else if (document.readyState === "loading"){
+            //페이지 이동
+            console.log('page move');
+        }else{
+            //
+            console.log('close2');
+        }
+    }
+}
+
 $(function(){
 
+    if(!window.location.href.includes('localhost')){
+        if (window.location.protocol !== "https:") {
+            window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+        }
+
+        if (document.location.protocol === "http:") {
+            document.location.href = document.location.href.replace('http:', 'https:');
+        }
+    }
+
+    /*kill(false);*/
+
+    /*const exportButtons = document.querySelectorAll('button[data-kt-export]');
+    exportButtons.forEach(exportButton => {
+        exportButton.addEventListener('click', e => {
+            e.preventDefault();
+
+            // Get clicked export value
+            const exportValue = e.target.getAttribute('data-kt-export');
+            const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
+
+            // Trigger click event on hidden datatable export buttons
+            if (target) {
+                target.click();
+            }
+        });
+    });*/
+
     // 숫자만 입력
-    $('.onlyNum').on("blur keyup", function () {
+    $(document).on('blur keyup', '.onlyNum', function () {
+    /*$('.onlyNum').on("blur keyup", function () {*/
         $(this).val($(this).val().replaceAll(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'));
     });
 
     // 연락처 입력 시 자동으로 - 삽입과 숫자만 입력
-    $('.onlyTel').on("blur keyup", function () {
+    $(document).on('blur keyup', '.onlyTel', function () {
+    /*$('.onlyTel').on("blur keyup", function () {*/
         $(this).val($(this).val().replaceAll(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
     });
 
     // 영문, 숫자만 입력
-    $('.onlyNumEng').on("blur keyup", function () {
+    $(document).on('blur keyup', '.onlyNumEng', function () {
+    /*$('.onlyNumEng').on("blur keyup", function () {*/
         let exp = /[^A-Za-z0-9_\`\~\!\@\#\$\%\^\&\*\(\)\-\=\+\\\{\}\[\]\'\"\;\:\<\,\>\.\?\/\s]/gm;
         $(this).val($(this).val().replaceAll(exp, ''));
     });
@@ -68,29 +126,15 @@ $(function(){
     if(writeDatePicker) {
         writeDatePicker.flatpickr({
             enableTime: true,
-            dateFormat: "Y-m-d H:i:S",
-            defaultDate: new Date()
+            dateFormat: "Y-m-d H:i:S"
         });
     }
 
-    const exportButtons = document.querySelectorAll('button[data-kt-export]');
-    exportButtons.forEach(exportButton => {
-        exportButton.addEventListener('click', e => {
-            e.preventDefault();
-
-            // Get clicked export value
-            const exportValue = e.target.getAttribute('data-kt-export');
-            const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
-
-            // Trigger click event on hidden datatable export buttons
-            if(target){
-                target.click();
-            }
-        });
-    });
-
 });
 
+function kill(isClose) {
+    navigator.sendBeacon('/mng/session/kill/gbn.do?isClose=' + isClose);
+}
 
 function loginFormSubmit() {
     let form = document.getElementById("login_form");
@@ -102,35 +146,184 @@ function loginFormSubmit() {
         return false;
     }
 
-    let jsonObj = {
-        id: id.value,
-        password: password.value
-    };
-
     $.ajax({
-        url: '/mng/login.do',
-        method: 'post',
-        data: JSON.stringify(jsonObj),
-        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
-    })
-        .done(function (data) {
-            if (data !== '') {
-                form.submit(); // /mng/main.do
-            } else {
-                showMessage('', 'info', '로그인 실패', '관리자 아이디와 비밀번호를 확인해주세요.', '');
-            }
-        })
-        .fail(function (xhr, status, errorThrown) {
-            /*$('body').html("오류가 발생했습니다.")
-                .append("<br>오류명: " + errorThrown)
-                .append("<br>상태: " + status);*/
-            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
-        })
+        url: 'https://api.ip.pe.kr/json',
+        method: 'get'
+    }).done(function(api) {
+        let ipAddress = api.ip;
+        console.log(ipAddress);
+
+        if(nvl(ipAddress,'') !== ''){
+            let jsonObj = {
+                id: id.value,
+                password: password.value,
+                ipAddress: ipAddress
+            };
+
+            $.ajax({
+                url: '/mng/login.do',
+                method: 'post',
+                data: JSON.stringify(jsonObj),
+                contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+            })
+            .done(function (data) {
+                if (data !== '') {
+                    let resultCode = data.resultCode;
+                    let resultMsg = data.resultMsg;
+                    if(resultCode === '0'){
+
+                        form.submit(); // /mng/main.do
+                    }else if(resultCode === '-4'){
+
+                        Swal.fire({
+                            title: '[인증 필요]',
+                            html: resultMsg,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '인증진행',
+                            cancelButtonColor: '#A1A5B7',
+                            cancelButtonText: '취소'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+
+                                let cpName;
+                                let cpPhone;
+                                Swal.fire({
+                                    title: '담당자명을 입력해주세요.',
+                                    input: 'text',
+                                    inputPlaceholder: '이름을 입력해주세요.',
+                                    showCancelButton: true,
+                                    confirmButtonText: '다음',
+                                }).then((result) => {
+                                    cpName = result.value;
+                                    if (result.isConfirmed) {
+
+                                        Swal.fire({
+                                            title: '휴대전화번호를 입력해주세요.',
+                                            input: 'text',
+                                            inputPlaceholder: '휴대전화번호를 입력해주세요.',
+                                            inputAttributes: { maxlength: 13 },
+                                            showCancelButton: true,
+                                            confirmButtonText: '다음',
+                                            customClass: { input: 'onlyTel'}
+                                        }).then((result) => {
+                                            cpPhone = result.value;
+                                            if (result.isConfirmed) {
+
+                                                let jsonObj2 = {
+                                                    id: id.value
+                                                };
+
+                                                $.ajax({
+                                                    url: '/mng/adminMng/admin/selectSingle.do',
+                                                    method: 'post',
+                                                    data: JSON.stringify(jsonObj2),
+                                                    contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+                                                })
+                                                    .done(function (data) {
+                                                        if (data.cpName === cpName && data.cpPhone === cpPhone) {
+
+                                                            let jsonObj3 = {
+                                                                sender: '070-8949-8065',
+                                                                phone: cpPhone
+                                                            }
+
+                                                            $.ajax({
+                                                                type: 'post',
+                                                                url: '/sms/send/certNum.do',
+                                                                data: JSON.stringify(jsonObj3),
+                                                                async: false,
+                                                                dataType: 'json',
+                                                                contentType: 'application/json; charset=utf-8', //server charset 확인 필요
+                                                                success: function(res){
+                                                                    if (res.result_code === 1) {
+
+                                                                        let certNum;
+                                                                        Swal.fire({
+                                                                            title: '전송된 인증번호를 입력해주세요.',
+                                                                            input: 'text',
+                                                                            inputPlaceholder: '인증번호 6자리 입력',
+                                                                            inputAttributes: { maxlength: 6 },
+                                                                            showCancelButton: true,
+                                                                            confirmButtonText: '인증',
+                                                                            customClass: { input: 'onlyNum'}
+                                                                        }).then((result) => {
+                                                                            certNum = result.value;
+                                                                            if (result.isConfirmed) {
+
+                                                                                if($.trim(res.note) === certNum) {
+
+                                                                                    let jsonObj3 = {
+                                                                                        id: id.value,
+                                                                                        password: password.value,
+                                                                                        ipAddress: ipAddress,
+                                                                                        cpName: cpName,
+                                                                                        cpPhone: cpPhone
+                                                                                    };
+
+                                                                                    $.ajax({
+                                                                                        url: '/mng/adminMng/admin/updateValidYn.do',
+                                                                                        method: 'post',
+                                                                                        data: JSON.stringify(jsonObj3),
+                                                                                        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+                                                                                    })
+                                                                                    .done(function (data) {
+                                                                                        if (data.resultCode === "0") {
+                                                                                            showMessage('', 'info', '계정 인증 성공', '로그인 재시도해주세요.', '');
+                                                                                        } else {
+                                                                                            showMessage('', 'info', '계정 인증 실패', data.resultMessage, '');
+                                                                                        }
+                                                                                    })
+                                                                                    .fail(function (xhr, status, errorThrown) {
+                                                                                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+                                                                                    })
+                                                                                }
+
+                                                                            }
+                                                                        })
+                                                                    } else {
+                                                                        showMessage('', 'info', '인증 번호 전송 실패', 'SMS SEND FAIL : 관리자에 문의해주세요.', '');
+                                                                    }
+                                                                }
+                                                            })
+
+                                                        } else {
+                                                            showMessage('', 'info', '계정 인증 실패', '해당 계정에 등록된 정보와 다릅니다.', '');
+                                                        }
+                                                    })
+
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+
+                    }else{
+                        showMessage('', 'error', '로그인 실패', resultMsg, '');
+                    }
+                } else {
+                    showMessage('', 'info', '로그인 실패', '관리자 아이디와 비밀번호를 확인해주세요.', '');
+                }
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            })
+        }else{
+            showMessage('', 'error', '입력 정보 확인', '접속 IP 조회에 실패하였습니다. 관리자에게 문의해주세요.', '');
+        }
+
+    }).fail(function() {
+        showMessage('', 'error', '입력 정보 확인', '[API ERROR] 접속 IP 조회에 실패하였습니다. 관리자에게 문의해주세요.', '');
+    });
 
 }
 
 function logout() {
     if(confirm('로그아웃 하시겠습니까?')){
+        /*navigator.sendBeacon('/mng/logoutCheck.do');*/
+
         $.ajax({
             url: '/mng/logoutCheck.do',
             method: 'post',
@@ -196,6 +389,24 @@ function ajaxConnect(url, method, jsonStr) {
                 .append("<br>오류명: " + errorThrown)
                 .append("<br>상태: " + status);*/
 
+            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+        })
+    return result;
+}
+
+function ajaxConnectSimple(url, method, jsonStr){
+    let result = '';
+    $.ajax({
+        url: url,
+        method: method,
+        async: false,
+        data: JSON.stringify(jsonStr),
+        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+    })
+        .done(function (data) {
+            result = data;
+        })
+        .fail(function (xhr, status, errorThrown) {
             alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
         })
     return result;
@@ -279,171 +490,165 @@ function loadingBarShow(){
 }
 
 function f_excel_export(tableId , name){
+
     let dataTbl = $('#' + tableId).DataTable();
     let dataCount = dataTbl.rows().count();
     if(dataCount > 0){
 
-        let downloadFileName = name + '_목록_excel_' + getCurrentDate();
+        Swal.fire({
+            title: '[엑셀 다운로드]',
+            html: '엑셀 다운로드 사유 입력 후 다운로드 가능합니다.<br>파일 > 파일관리 > 다운로드내역',
+            input: 'text',
+            inputPlaceholder: '엑셀 다운로드 사유를 입력해주세요.',
+            width: '70em',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '다운로드',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (result.value) {
 
-        let jsonObj = {
-            downloadFileName: downloadFileName,
-            targetMenu: getTargetMenu(tableId)
-        }
-        let resData = ajaxConnect('/mng/file/download/insert.do', 'post', jsonObj);
+                        let downloadFileName = name + '_목록_excel_' + getCurrentDate();
 
-        if (resData.resultCode === "0") {
-            let buttons = new $.fn.dataTable.Buttons(dataTbl, {
-                buttons:[
-                    {
-                        extend: 'excelHtml5',
-                        title: downloadFileName,
-                        autoFilter: true,
-                        text: 'Export as Excel',
-                        className: 'btn btn-success btn-active-light-success'
-                    }
-                ]
-            }).container().appendTo($('#kt_datatable_excel_hidden_buttons'));
-        }else{
-            showMessage('', 'error', '에러 발생', '엑셀 다운로드 내역 저장에 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-        }
+                        let jsonObj = {
+                            downloadFileName: downloadFileName,
+                            targetMenu: getTargetMenu(tableId),
+                            downloadReason: result.value
+                        }
+                        $.ajax({
+                            url: '/mng/file/download/insert.do',
+                            method: 'post',
+                            async: false,
+                            data: JSON.stringify(jsonObj),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (res) {
+                                if (res.resultCode === '0') {
+
+                                    let buttons = new $.fn.dataTable.Buttons(dataTbl, {
+                                        buttons:[
+                                            {
+                                                extend: 'excelHtml5',
+                                                title: downloadFileName,
+                                                autoFilter: true,
+                                                text: 'Export as Excel',
+                                                className: 'btn btn-success btn-active-light-success'
+                                            }
+                                        ]
+                                    }).container().appendTo($('#kt_datatable_excel_hidden_buttons'));
+
+                                    const target = document.querySelector('.buttons-excel');
+                                    target.click();
+
+                                }else{
+                                    showMessage('', 'error', '에러 발생', '엑셀 다운로드 내역 저장에 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                                }
+                            }
+                        })
+                } else {
+                    alert('삭제 사유를 입력해주세요.');
+                }
+            }
+        })
     }else{
         showMessage('', 'info', 'Export as Excel', '엑셀로 추출할 데이터가 없습니다.', '');
     }
+
 }
 
 function getTargetMenu(tableId){
     let targetMenu = '';
-    let menu = tableId.toString().split('_');
-    let menuTop = menu[1];
-    switch (menuTop){
-        case 'customer':
-            targetMenu += '회원/신청';
+    switch (tableId){
+        case 'mng_customer_member_table':
+            targetMenu = '회원/신청_회원관리_전체회원목록';
             break;
-        case 'education':
-            targetMenu += '교육';
+        case 'mng_customer_resume_table':
+            targetMenu = '회원/신청_회원관리_나의이력서목록';
             break;
-        case 'board':
-        case 'pop':
-        case 'newsletter':
-        case 'smsMng':
-            targetMenu += '정보센터';
+        case 'mng_customer_regular_table':
+            targetMenu = '회원/신청_신청자목록_상시사전신청';
             break;
-        case 'file':
-            targetMenu += '파일';
+        case 'mng_customer_boarder_table':
+            targetMenu = '회원/신청_신청자목록_해상엔진테크니션';
             break;
-        default:
+        case 'mng_customer_frp_table':
+            targetMenu = '회원/신청_신청자목록_FRP정비테크니션';
             break;
-    }
-
-    targetMenu += '_';
-
-    let menuMid = menu[2];
-    switch (menuMid){
-        case 'member':
-        case 'regular':
-        case 'inboarder':
-            targetMenu += '회원관리';
+        case 'mng_customer_outboarder_table':
+            targetMenu = '회원/신청_신청자목록_자가정비(선외기)';
             break;
-        case 'train':
-        case 'payment':
-            targetMenu += '교육관리';
+        case 'mng_customer_inboarder_table':
+            targetMenu = '회원/신청_신청자목록_자가정비(선내기)';
             break;
-        case 'notice':
-        case 'press':
-        case 'gallery':
-        case 'media':
-        case 'newsletter':
-        case 'employment':
-        case 'job':
-        case 'community':
-            targetMenu += '게시판관리';
+        case 'mng_customer_sailyacht_table':
+            targetMenu = '회원/신청_신청자목록_자가정비(세일요트)';
             break;
-        case 'popup':
-        case 'banner':
-            targetMenu += '팝업/배너관리';
+        case 'mng_education_train_table':
+            targetMenu = '교육_교육관리_교육현황';
             break;
-        case 'subscriber':
-            targetMenu += '뉴스레터관리';
+        case 'mng_education_payment_table':
+            targetMenu = '교육_교육관리_결제/환불현황';
             break;
-        case 'sms':
-            targetMenu += 'SMS관리';
+        case 'mng_board_notice_table':
+            targetMenu = '정보센터_게시판관리_공지사항';
             break;
-        case 'download':
-            targetMenu += '파일관리';
+        case 'mng_board_press_table':
+            targetMenu = '정보센터_게시판관리_보도자료';
             break;
-        default:
+        case 'mng_board_gallery_table':
+            targetMenu = '정보센터_게시판관리_사진자료';
             break;
-    }
-
-    targetMenu += '_';
-
-    let menuBot = menu[3];
-    switch (menuMid){
-        case 'member':
-            targetMenu += '전체회원목록';
+        case 'mng_board_media_table':
+            targetMenu = '정보센터_게시판관리_영상자료';
             break;
-        case 'regular':
-            targetMenu += '상시사전신청';
+        case 'mng_board_newsletter_table':
+            targetMenu = '정보센터_게시판관리_뉴스레터';
             break;
-        case 'inboarder':
-            targetMenu += '자가정비(선내기)';
+        case 'mng_board_employment_table':
+            targetMenu = '정보센터_게시판관리_취창업현황';
             break;
-        case 'train':
-            targetMenu += '교육현황';
+        case 'mng_board_job_table':
+            targetMenu = '정보센터_게시판관리_취창업성공후기';
             break;
-        case 'payment':
-            targetMenu += '결제/환불현황';
+        case 'mng_board_community_table':
+            targetMenu = '정보센터_게시판관리_커뮤니티';
             break;
-        case 'notice':
-            targetMenu += '공지사항';
+        case 'mng_board_faq_table':
+            targetMenu = '정보센터_게시판관리_FAQ';
             break;
-        case 'press':
-            targetMenu += '보도자료';
+        case 'mng_pop_popup_table':
+            targetMenu = '정보센터_팝업/배너관리_팝업관리';
             break;
-        case 'gallery':
-            targetMenu += '사진자료';
+        case 'mng_pop_banner_table':
+            targetMenu = '정보센터_팝업/배너관리_배너관리';
             break;
-        case 'media':
-            targetMenu += '영상자료';
+        case 'mng_newsletter_subscriber_table':
+            targetMenu = '정보센터_뉴스레터관리_뉴스레터구독자관리';
             break;
-        case 'newsletter':
-            targetMenu += '뉴스레터';
+        case 'mng_smsMng_sms_table':
+            targetMenu = '정보센터_SMS관리_SMS발송관리';
             break;
-        case 'employment':
-            targetMenu += '취창업현황';
+        case 'mng_file_download_table':
+            targetMenu = '파일_파일관리_다운로드내역';
             break;
-        case 'job':
-            targetMenu += '취창업성공후기';
-            break;
-        case 'community':
-            targetMenu += '커뮤니티';
-            break;
-        case 'popup':
-            targetMenu += '팝업관리';
-            break;
-        case 'banner':
-            targetMenu += '배너관리';
-            break;
-        case 'subscriber':
-            targetMenu += '뉴스레터구독자관리';
-            break;
-        case 'sms':
-            targetMenu += 'SMS발송관리';
-            break;
-        case 'download':
-            targetMenu += '다운로드내역';
-            break;
-        case 'trash':
-            targetMenu += '임시휴지통';
+        case 'mng_file_trash_table':
+            targetMenu = '파일_파일관리_임시휴지통';
             break;
         default:
+            targetMenu = tableId;
             break;
     }
 
     //mng_customer_member_table // 회원/신청_회원관리_전체회원목록
+    //mng_customer_resume_table // 회원/신청_회원관리_나의이력서목록
 
-    //mng_customer_regular_table // 회원/신청_회원관리_상시사전신청
-    //mng_customer_inboarder_table // 회원/신청_회원관리_자가정비(선내기)
+    //mng_customer_regular_table // 회원/신청_신청자목록_상시사전신청
+    //mng_customer_boarder_table // 회원/신청_신청자목록_해상엔진테크니션
+    //mng_customer_frp_table // 회원/신청_신청자목록_FRP정비테크니션
+    //mng_customer_outboarder_table // 회원/신청_신청자목록_자가정비(선외기)
+    //mng_customer_inboarder_table // 회원/신청_신청자목록_자가정비(선내기)
+    //mng_customer_sailyacht_table // 회원/신청_신청자목록_자가정비(세일요트)
 
     //mng_education_train_table // 교육_교육관리_교육현황
     //mng_education_payment_table 교육_교육관리_결제/환불현황
@@ -456,6 +661,7 @@ function getTargetMenu(tableId){
     //mng_board_employment_table // 정보센터_게시판관리_취창업현황
     //mng_board_job_table // 정보센터_게시판관리_취창업성공후기
     //mng_board_community_table // 정보센터_게시판관리_커뮤니티
+    //mng_board_faq_table // 정보센터_게시판관리_FAQ
 
     //mng_pop_popup_table // 정보센터_팝업/배너관리_팝업관리
     //mng_pop_banner_table // 정보센터_팝업/배너관리_배너관리
@@ -465,6 +671,7 @@ function getTargetMenu(tableId){
     //mng_smsMng_sms_table // 정보센터_SMS관리_SMS발송관리
 
     //mng_file_download_table // 파일_파일관리_다운로드내역
+    //mng_file_trash_table // 파일_파일관리_임시휴지통
 
     return targetMenu;
 }
@@ -625,7 +832,7 @@ async function f_attach_file_upload(userId, formId, path) {
 
                         if(folderPath === 'gallery' || folderPath === 'banner'){
                             let img_el = document.createElement('img');
-                            img_el.src = fullFilePath.replace('./usr/local/tomcat/webapps','../../../../..');
+                            img_el.src = fullFilePath.replace('/usr/local/tomcat/webapps', '/../../../..');
                             img_el.classList.add('w-350px','mr10');
                             img_el.style.border = '1px solid #009ef7';
                             li_el.append(img_el);
@@ -770,6 +977,85 @@ function execDaumPostcode(address, addressDetail) {
         popupTitle: '우편번호 검색 팝업', //팝업창 타이틀 설정 (영문,한글,숫자 모두 가능)
         popupKey: 'popup1' //팝업창 Key값 설정 (영문+숫자 추천)
     });
+}
+
+function f_resume_detail_print(){
+    console.log('Single Print');
+    let initBody = document.body.innerHTML;
+    window.onbeforeprint = function(){
+        $('html').css('overflow','hidden');
+        $('body').css('overflow','hidden');
+
+        // 출력버튼 숨김
+        $('.print_btn_area').hide();
+        $('.print_area').css('border','none');
+
+        document.body.innerHTML = $('body').html();
+    }
+    window.onafterprint = function(){
+        document.body.innerHTML = initBody;
+    }
+    window.print();
+}
+
+function f_multi_resume_detail_print(){
+    console.log('Multi Print');
+    let initBody = document.body.innerHTML;
+    window.onbeforeprint = function(){
+        // 출력버튼 숨김
+        $('.print_btn_area').hide();
+        $('.print_area').css('border','none');
+        $('html').css('overflow','');
+        $('body').css('overflow','');
+        /*$('.page').css('page-break-after','');
+
+        let page_html = $('.page');
+        let print_html = '';
+        for(let i=0; i<page_html.length; i++){
+            print_html += page_html.eq(i).html();
+        }
+        document.body.innerHTML = print_html;*/
+        document.body.innerHTML = $('body').html();
+    }
+    window.onafterprint = function(){
+        document.body.innerHTML = initBody;
+    }
+    window.print();
+}
+
+function f_multi_resume_print(){
+    let checkbox_el = $('.train_check input[type=checkbox]:checked');
+    let checkbox_len = checkbox_el.length;
+    let checkbox_val = '';
+    if(checkbox_len !== 0){
+        let i = 0;
+        $(checkbox_el).each(function() {
+            checkbox_val += $(this).val();
+            if((i+1) !== checkbox_len){
+                checkbox_val += ',';
+            }
+            i++;
+        });
+
+        let form = document.createElement('form');
+        form.setAttribute('method', 'post'); //POST 메서드 적용
+        form.setAttribute('action', '/mng/customer/resume/detail/multi.do');
+
+        let hiddenSeq = document.createElement('input');
+        hiddenSeq.setAttribute('type', 'hidden'); //값 입력
+        hiddenSeq.setAttribute('name', 'seqList');
+        hiddenSeq.setAttribute('value', checkbox_val);
+        form.appendChild(hiddenSeq);
+
+        document.body.appendChild(form);
+
+        window.open("", 'popOpen', 'width=900, height=900, location=no, status=no, toolbar=no, menubar=no');
+
+        form.target = 'popOpen';
+        form.submit();
+    }else{
+        showMessage('', 'error', '[이력서 인쇄]', '출력할 이력서를 선택해주세요.', '');
+    }
 }
 
 /*

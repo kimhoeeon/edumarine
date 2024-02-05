@@ -38,18 +38,33 @@
             </div>
             <div class="footer_info">
                 <div class="info">
-                    <p class="text1">경기도 김포시 고촌읍 아라육로 152번길 210, 경기해양레저인력양성센터</p>
+                    <p class="text1">
+                        <%--경기도 김포시 고촌읍 아라육로 152번길 210, 경기해양레저인력양성센터--%>
+                        대전광역시 유성구 테크노7로 29, 3층(용산동, 유진빌딩)
+                    </p>
+                    <p class="text2">
+                        <span class="gubun">사업자번호</span>
+                        484-86-01123
+                    </p>
+                    <p class="text2">
+                        <span class="gubun">상호</span>
+                        경기해양레저인력양성센터
+                    </p>
+                    <p class="text2">
+                        <span class="gubun">대표자</span>
+                        정승용
+                    </p>
                     <p class="text2">
                         <span class="gubun">대표번호</span>
-                        1811-7891
+                        1811-2031
                     </p>
-                    <p class="text2">
+                    <%--<p class="text2">
                         <span class="gubun">사무실</span>
                         031-983-4395
-                    </p>
+                    </p>--%>
                     <p class="text2">
                         <span class="gubun">팩스</span>
-                        031-983-4396
+                        042-636-2892
                     </p>
                     <p class="text2">
                         <span class="gubun">이메일</span>

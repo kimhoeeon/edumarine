@@ -3,6 +3,13 @@
 
 <mapper namespace="com.mtf.edumarine.mapper.EduMarineMapper">
 
+    <select id="getMemberSalt" parameterType="java.lang.String" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.getMemberSalt */
+        SELECT salt
+        FROM member
+        WHERE id = #{id}
+    </select>
+
     <select id="checkStatisticsAccessor" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="java.lang.String">
         /* com.mtf.edumarine.mapper.EduMarineMapper.checkStatisticsAccessor */
         SELECT seq
@@ -62,6 +69,7 @@
              , align
              , writer
              , content
+             , link_url
              , note
              , init_regi_pic
              , init_regi_dttm
@@ -110,6 +118,7 @@
              , train_note
              , exposure_yn
              , schedule_exposure_yn
+             , closing_yn
              , del_yn
              , note
              , init_regi_pic
@@ -121,6 +130,7 @@
           AND gbn LIKE CONCAT('%',#{gbn},'%')
           AND exposure_yn = 'Y'
           AND del_yn = 'N'
+          AND closing_yn = 'N'
         ORDER BY train_start_dttm DESC
     </select>
 
@@ -139,6 +149,7 @@
              , train_note
              , exposure_yn
              , schedule_exposure_yn
+             , closing_yn
              , del_yn
              , note
              , init_regi_pic
@@ -172,6 +183,7 @@
              , train_note
              , exposure_yn
              , schedule_exposure_yn
+             , closing_yn
              , ( SELECT COUNT(*)
                  FROM train
                  WHERE del_yn = 'N'
@@ -183,7 +195,7 @@
                     AND gbn LIKE CONCAT('%',#{searchText},'%')
                  </if>
                  <if test='year != null and year != ""'>
-                    AND train_start_dttm LIKE CONCAT('%',#{year},'%')
+                    AND (train_start_dttm LIKE CONCAT('%',#{year},'%') OR train_end_dttm LIKE CONCAT('%',#{year},'%'))
                  </if>
                  ) AS totalRecords
         FROM train
@@ -193,10 +205,10 @@
             AND category = #{category}
         </if>
         <if test='searchText != null and searchText != ""'>
-            AND gbn LIKE CONCAT('%',#{searchText},'%')
+            AND gbn BINARY LIKE CONCAT('%',#{searchText},'%')
         </if>
         <if test='year != null and year != ""'>
-            AND train_start_dttm LIKE CONCAT('%',#{year},'%')
+            AND (train_start_dttm LIKE CONCAT('%',#{year},'%') OR train_end_dttm LIKE CONCAT('%',#{year},'%'))
         </if>
         ORDER BY gbn = '상시신청' DESC, train_start_dttm DESC, train_end_dttm DESC, final_regi_dttm DESC
         <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
@@ -221,6 +233,7 @@
           AND category != '전체'
           AND del_yn = 'N'
           AND schedule_exposure_yn = 'Y'
+          AND closing_yn = 'N'
         ORDER BY category DESC
     </select>
 
@@ -290,11 +303,20 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.insertMember */
         INSERT INTO member
         ( seq
+        , apply_status
         , id
+        , salt
         , password
         , grade
         , name
+        , name_en
         , phone
+        , birth_year
+        , birth_month
+        , birth_day
+        , sex
+        , address
+        , address_detail
         , email
         , keyword
         , sms_yn
@@ -307,11 +329,20 @@
         )
         VALUES
             ( #{seq}
+            , '회원'
             , #{id}
+            , <![CDATA[#{salt}]]>
             , <![CDATA[#{password}]]>
             , #{grade}
             , #{name}
+            , #{nameEn}
             , #{phone}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{sex}
+            , #{address}
+            , <![CDATA[#{addressDetail}]]>
             , #{email}
             , #{keyword}
             , #{smsYn}
@@ -343,7 +374,8 @@
     <update id="initMemberPassword" parameterType="com.mtf.edumarine.dto.MemberDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.initMemberPassword */
         UPDATE member
-        SET password = <![CDATA[#{password}]]>
+        SET salt = <![CDATA[#{salt}]]>
+          , password = <![CDATA[#{password}]]>
         WHERE id = #{id}
     </update>
 
@@ -356,6 +388,12 @@
              , name
              , name_en
              , phone
+             , birth_year
+             , birth_month
+             , birth_day
+             , sex
+             , address
+             , address_detail
              , email
              , keyword
              , sms_yn
@@ -376,8 +414,15 @@
              , password
              , grade
              , name
+             , name_en
              , phone
              , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , sex
+             , address
+             , address_detail
              , keyword
              , sms_yn
              , del_yn
@@ -396,10 +441,17 @@
         SET grade = #{grade}
         , name = #{name}
         , phone = #{phone}
+        , birth_year = #{birthYear}
+        , birth_month = #{birthMonth}
+        , birth_day = #{birthDay}
+        , sex = #{sex}
+        , address = #{address}
+        , address_detail = <![CDATA[#{addressDetail}]]>
         , email = #{email}
         , keyword = #{keyword}
         , sms_yn = #{smsYn}
         <if test='passwordChangeYn != null and !passwordChangeYn.equals("")'>
+            , salt = <![CDATA[#{salt}]]>
             , password = <![CDATA[#{password}]]>
         </if>
         WHERE id = #{id}
@@ -413,7 +465,10 @@
              , name_en
              , phone
              , email
-             , rrn
+             , birth_year
+             , birth_month
+             , birth_day
+             , sex
              , age
              , address
              , address_detail
@@ -438,7 +493,10 @@
           , name_en = #{nameEn}
           , phone = #{phone}
           , email = #{email}
-          , rrn = #{rrn}
+          , birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , sex = #{sex}
           , age = #{age}
           , address = <![CDATA[#{address}]]>
           , address_detail = <![CDATA[#{addressDetail}]]>
@@ -464,7 +522,10 @@
         , name_en
         , phone
         , email
-        , rrn
+        , birth_year
+        , birth_month
+        , birth_day
+        , sex
         , age
         , address
         , address_detail
@@ -486,7 +547,10 @@
             , #{nameEn}
             , #{phone}
             , #{email}
-            , #{rrn}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{sex}
             , #{age}
             , <![CDATA[#{address}]]>
             , <![CDATA[#{addressDetail}]]>
@@ -848,13 +912,6 @@
         ( seq
         , member_seq
         , train_seq
-        , name
-        , phone
-        , email
-        , birth_year
-        , birth_month
-        , birth_day
-        , age_group
         , region
         , participation_path
         , first_application_field
@@ -875,13 +932,6 @@
             ( #{seq}
             , #{memberSeq}
             , #{trainSeq}
-            , #{name}
-            , #{phone}
-            , #{email}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{ageGroup}
             , #{region}
             , #{participationPath}
             , #{firstApplicationField}
@@ -931,6 +981,8 @@
              , major
              , experience_yn
              , apply_status
+             , cancel_dttm
+             , cancel_reason
              , del_yn
              , note
              , init_regi_pic
@@ -1432,6 +1484,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateRegularPayStatus */
         UPDATE regular
         SET apply_status = #{applyStatus}
+          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
           <if test='cancelReason != null and cancelReason != ""'>
           , cancel_reason = #{cancelReason}
           </if>
@@ -1443,10 +1496,11 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoarderPayStatus */
         UPDATE boarder
         SET apply_status = #{applyStatus}
+          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
         </if>
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -1454,10 +1508,11 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateFrpPayStatus */
         UPDATE frp
         SET apply_status = #{applyStatus}
+          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
         </if>
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -1465,10 +1520,11 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateInboarderPayStatus */
         UPDATE inboarder
         SET apply_status = #{applyStatus}
+          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
         </if>
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -1476,10 +1532,11 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateOutboarderPayStatus */
         UPDATE outboarder
         SET apply_status = #{applyStatus}
+          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
         </if>
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -1487,10 +1544,11 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateSailyachtPayStatus */
         UPDATE sailyacht
         SET apply_status = #{applyStatus}
+          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
         </if>
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -1498,7 +1556,18 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoList */
         SELECT LISTB.*
         FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
-                   , LISTA.*
+                   , LISTA.trainname
+                   , LISTA.train_seq
+                   , IF(LISTA.paystatus = '결제완료'
+                       , '신청완료'
+                       , IF(LISTA.paystatus = '수강확정' AND (DATE_FORMAT(NOW(), '%Y.%m.%d') <![CDATA[>=]]> LISTA.trainStartDttm AND DATE_FORMAT(NOW(), '%Y.%m.%d') <![CDATA[<=]]> LISTA.trainEndDttm)
+                           ,'수강중'
+                           , LISTA.payStatus)
+                       ) AS payStatus
+                   , LISTA.seq
+                   , LISTA.final_regi_dttm
+                   , LISTA.trainStartDttm
+                   , LISTA.trainEndDttm
               FROM ( SELECT @ROWNUM := 0) R
                  , ( SELECT '상시신청' AS trainName
                           , r.train_seq
@@ -1653,13 +1722,6 @@
         SELECT seq
              , member_seq
              , train_seq
-             , name
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , age_group
              , region
              , participation_path
              , first_application_field
@@ -1669,6 +1731,8 @@
              , major
              , experience_yn
              , apply_status
+             , cancel_dttm
+             , cancel_reason
              , del_yn
              , note
              , init_regi_pic
@@ -1682,11 +1746,7 @@
     <update id="updateRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateRegular */
         UPDATE regular
-        SET birth_year = #{birthYear}
-          , birth_month = #{birthMonth}
-          , birth_day = #{birthDay}
-          , age_group = #{ageGroup}
-          , region = #{region}
+        SET region = #{region}
           , participation_path = #{participationPath}
           , first_application_field = #{firstApplicationField}
           , second_application_field = #{secondApplicationField}
@@ -1743,14 +1803,6 @@
              , member_seq
              , train_seq
              , id
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , rrn
-             , age
-             , address
-             , address_detail
              , top_clothes_size
              , bottom_clothes_size
              , shoes_size
@@ -1770,6 +1822,7 @@
              , plan_reason
              , etc_reason
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -1787,14 +1840,6 @@
              , member_seq
              , train_seq
              , id
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , rrn
-             , age
-             , address
-             , address_detail
              , top_clothes_size
              , bottom_clothes_size
              , shoes_size
@@ -1814,6 +1859,7 @@
              , plan_reason
              , etc_reason
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -1862,14 +1908,6 @@
         , member_seq
         , train_seq
         , id
-        , name_ko
-        , name_en
-        , phone
-        , email
-        , rrn
-        , age
-        , address
-        , address_detail
         , top_clothes_size
         , bottom_clothes_size
         , shoes_size
@@ -1902,14 +1940,6 @@
             , #{memberSeq}
             , #{trainSeq}
             , #{id}
-            , #{nameKo}
-            , #{nameEn}
-            , #{phone}
-            , #{email}
-            , #{rrn}
-            , #{age}
-            , #{address}
-            , #{addressDetail}
             , #{topClothesSize}
             , #{bottomClothesSize}
             , #{shoesSize}
@@ -2008,12 +2038,7 @@
     <update id="updateBoarder" parameterType="com.mtf.edumarine.dto.BoarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoarder */
         UPDATE boarder
-        SET name_en = #{nameEn}
-          , rrn = #{rrn}
-          , age = #{age}
-          , address = <![CDATA[#{address}]]>
-          , address_detail = <![CDATA[#{addressDetail}]]>
-          , top_clothes_size = #{topClothesSize}
+        SET top_clothes_size = #{topClothesSize}
           , bottom_clothes_size = #{bottomClothesSize}
           , shoes_size = #{shoesSize}
           , participation_path = #{participationPath}
@@ -2082,14 +2107,6 @@
         , member_seq
         , train_seq
         , id
-        , name_ko
-        , name_en
-        , phone
-        , email
-        , rrn
-        , age
-        , address
-        , address_detail
         , top_clothes_size
         , bottom_clothes_size
         , shoes_size
@@ -2122,14 +2139,6 @@
             , #{memberSeq}
             , #{trainSeq}
             , #{id}
-            , #{nameKo}
-            , #{nameEn}
-            , #{phone}
-            , #{email}
-            , #{rrn}
-            , #{age}
-            , #{address}
-            , #{addressDetail}
             , #{topClothesSize}
             , #{bottomClothesSize}
             , #{shoesSize}
@@ -2162,12 +2171,7 @@
     <update id="updateFrp" parameterType="com.mtf.edumarine.dto.FrpDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateFrp */
         UPDATE frp
-        SET name_en = #{nameEn}
-          , rrn = #{rrn}
-          , age = #{age}
-          , address = <![CDATA[#{address}]]>
-          , address_detail = <![CDATA[#{addressDetail}]]>
-          , top_clothes_size = #{topClothesSize}
+        SET top_clothes_size = #{topClothesSize}
           , bottom_clothes_size = #{bottomClothesSize}
           , shoes_size = #{shoesSize}
           , participation_path = #{participationPath}
@@ -2201,15 +2205,6 @@
         ( seq
         , member_seq
         , train_seq
-        , name_ko
-        , name_en
-        , phone
-        , email
-        , birth_year
-        , birth_month
-        , birth_day
-        , address
-        , address_detail
         , clothes_size
         , participation_path
         , apply_status
@@ -2225,15 +2220,6 @@
             ( #{seq}
             , #{memberSeq}
             , #{trainSeq}
-            , #{nameKo}
-            , #{nameEn}
-            , #{phone}
-            , #{email}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{address}
-            , #{addressDetail}
             , #{clothesSize}
             , #{participationPath}
             , #{applyStatus}
@@ -2252,18 +2238,10 @@
         SELECT seq
              , member_seq
              , train_seq
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , address
-             , address_detail
              , clothes_size
              , participation_path
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -2278,13 +2256,7 @@
     <update id="updateInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateInboarder */
         UPDATE inboarder
-        SET name_en = #{nameEn}
-          , birth_year = #{birthYear}
-          , birth_month = #{birthMonth}
-          , birth_day = #{birthDay}
-          , address = #{address}
-          , address_detail = #{addressDetail}
-          , clothes_size = #{clothesSize}
+        SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -2303,15 +2275,6 @@
         ( seq
         , member_seq
         , train_seq
-        , name_ko
-        , name_en
-        , phone
-        , email
-        , birth_year
-        , birth_month
-        , birth_day
-        , address
-        , address_detail
         , clothes_size
         , participation_path
         , apply_status
@@ -2327,15 +2290,6 @@
             ( #{seq}
             , #{memberSeq}
             , #{trainSeq}
-            , #{nameKo}
-            , #{nameEn}
-            , #{phone}
-            , #{email}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{address}
-            , #{addressDetail}
             , #{clothesSize}
             , #{participationPath}
             , #{applyStatus}
@@ -2361,15 +2315,6 @@
         ( seq
         , member_seq
         , train_seq
-        , name_ko
-        , name_en
-        , phone
-        , email
-        , birth_year
-        , birth_month
-        , birth_day
-        , address
-        , address_detail
         , clothes_size
         , participation_path
         , apply_status
@@ -2385,15 +2330,6 @@
             ( #{seq}
             , #{memberSeq}
             , #{trainSeq}
-            , #{nameKo}
-            , #{nameEn}
-            , #{phone}
-            , #{email}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{address}
-            , #{addressDetail}
             , #{clothesSize}
             , #{participationPath}
             , #{applyStatus}
@@ -2412,18 +2348,10 @@
         SELECT seq
              , member_seq
              , train_seq
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , address
-             , address_detail
              , clothes_size
              , participation_path
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -2440,18 +2368,10 @@
         SELECT seq
              , member_seq
              , train_seq
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , address
-             , address_detail
              , clothes_size
              , participation_path
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -2466,13 +2386,7 @@
     <update id="updateOutboarder" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateOutboarder */
         UPDATE outboarder
-        SET name_en = #{nameEn}
-          , birth_year = #{birthYear}
-          , birth_month = #{birthMonth}
-          , birth_day = #{birthDay}
-          , address = #{address}
-          , address_detail = #{addressDetail}
-          , clothes_size = #{clothesSize}
+        SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -2482,18 +2396,68 @@
     <update id="updateSailyacht" parameterType="com.mtf.edumarine.dto.SailyachtDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateSailyacht */
         UPDATE sailyacht
-        SET name_en = #{nameEn}
-          , birth_year = #{birthYear}
-          , birth_month = #{birthMonth}
-          , birth_day = #{birthDay}
-          , address = #{address}
-          , address_detail = #{addressDetail}
-          , clothes_size = #{clothesSize}
+        SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
+
+    <select id="selectFaqList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectFaqList */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+                FROM ( SELECT @ROWNUM := 0) R
+                   , ( SELECT question
+                            , answer
+                            , write_date
+                            , ( SELECT COUNT(*)
+                                FROM faq
+                                WHERE del_yn = 'N'
+                                  AND exposure_yn = 'Y'
+                                  <if test='searchText != null and searchText != ""'>
+                                      <if test='condition == "QUESTION"'>
+                                      AND question LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "ANSWER"'>
+                                      AND answer LIKE CONCAT('%',#{searchText},'%')
+                                      </if>
+                                      <if test='condition == "ALL"'>
+                                      AND ( question LIKE CONCAT('%',#{searchText},'%')
+                                                OR answer LIKE CONCAT('%',#{searchText},'%') )
+                                      </if>
+                                  </if>
+                                ) AS totalRecords
+                       FROM faq
+                       WHERE del_yn = 'N'
+                         AND exposure_yn = 'Y'
+                         <if test='searchText != null and searchText != ""'>
+                             <if test='condition == "QUESTION"'>
+                             AND question LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "ANSWER"'>
+                             AND answer LIKE CONCAT('%',#{searchText},'%')
+                             </if>
+                             <if test='condition == "ALL"'>
+                             AND ( question LIKE CONCAT('%',#{searchText},'%')
+                                       OR answer LIKE CONCAT('%',#{searchText},'%') )
+                           </if>
+                       </if>
+                       ) LISTA
+                ORDER BY LISTA.write_date
+                ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <delete id="deleteFile" parameterType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.deleteFile */
+        DELETE FROM file
+        WHERE id = #{id}
+    </delete>
 
 </mapper>
 

@@ -12,6 +12,8 @@ public interface CommService {
 
     SmsResponseDTO smsSend(SmsDTO smsDTO);
 
+    SmsResponseDTO smsSend_certNum(SmsDTO smsDTO);
+
     String getSystemicSiteMap();
 
 }

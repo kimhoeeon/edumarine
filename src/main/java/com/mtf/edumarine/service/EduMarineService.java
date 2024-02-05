@@ -168,4 +168,8 @@ public interface EduMarineService {
     ResponseDTO processUpdateSailyachtPayStatus(SailyachtDTO sailyachtDTO);
 
     List<EmploymentDTO> processSelectEmploymentList(String gbn);
+
+    List<FaqDTO> processSelectFaqList(SearchDTO searchDTO);
+
+    ResponseDTO processDeleteFile(FileDTO fileDTO);
 }

@@ -65,6 +65,7 @@
                         <a href="/apply/schedule.do">교육신청</a>
                         <ul class="dept2">
                             <li><a href="/apply/schedule.do">교육신청</a></li>
+                            <li><a href="/apply/faq.do">FAQ</a></li>
                         </ul>
                     </li>
                     <li>
@@ -78,7 +79,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/job/announcement_list.do">취업/창업</a>
+                        <a href="/job/state01.do">취업/창업</a>
                         <ul class="dept2">
                             <!--<li><a href="/job/announcement_list.do">채용공고</a></li>-->
                             <li><a href="/job/state01.do">취창업현황</a></li>

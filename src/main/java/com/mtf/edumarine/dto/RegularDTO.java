@@ -13,7 +13,9 @@ public class RegularDTO {
     String seq; //순번
     String memberSeq; //회원SEQ
     String trainSeq; //교육SEQ
+    String grade;
     String name; //이름
+    String nameEn; //이름
     String phone; //연락처
     String email; //이메일
     String birthYear; //출생년도
@@ -29,6 +31,7 @@ public class RegularDTO {
     String major; //전공
     String experienceYn; //경험유무
     String applyStatus; //신청상태
+    String cancelDttm; //취소신청일시
     String cancelReason; //취소사유
     String delYn; //임시휴지통여부
     String note; //비고

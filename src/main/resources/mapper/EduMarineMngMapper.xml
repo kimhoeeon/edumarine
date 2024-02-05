@@ -5,16 +5,208 @@
 
     <select id="login" parameterType="com.mtf.edumarine.dto.AdminDTO" resultType="com.mtf.edumarine.dto.AdminDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.login */
-        SELECT id
+        SELECT seq
+             , login_yn
+             , valid_yn
+             , gbn
+             , id
+             , password
+             , ip_address
+             , cp_name
+             , cp_phone
         FROM admin
         WHERE id = #{id}
-          AND password = <![CDATA[#{password}]]>
+          AND del_yn = 'N'
     </select>
+
+    <select id="selectAdminMngList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAdminMngList */
+        SELECT seq
+             , gbn
+             , block_yn
+             , access_menu
+             , ip_address
+             , id
+             , password
+             , cp_name
+             , cp_tel
+             , cp_phone
+             , cp_email
+             , cp_depart
+             , note
+             , last_access_dttm
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM admin
+        WHERE 1=1
+          AND del_yn = 'N'
+          AND gbn != '슈퍼'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "NAME"'>
+                AND cp_name LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "TEL"'>
+                AND cp_tel LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "PHONE"'>
+                AND cp_phone LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "EMAIL"'>
+                AND cp_email LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='blockYn != null and blockYn != "" and blockYn == "Y" '>
+            AND block_yn = #{blockYn}
+        </if>
+        ORDER BY gbn desc, init_regi_dttm desc
+    </select>
+
+    <select id="selectAdminMngSingle" parameterType="com.mtf.edumarine.dto.AdminDTO" resultType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAdminMngSingle */
+        SELECT seq
+             , gbn
+             , block_yn
+             , access_menu
+             , ip_address
+             , id
+             , password
+             , cp_name
+             , cp_tel
+             , cp_phone
+             , cp_email
+             , cp_depart
+             , note
+             , last_access_dttm
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM admin
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectAdminMngSingleId" parameterType="com.mtf.edumarine.dto.AdminDTO" resultType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAdminMngSingleId */
+        SELECT seq
+             , gbn
+             , block_yn
+             , access_menu
+             , ip_address
+             , id
+             , password
+             , cp_name
+             , cp_tel
+             , cp_phone
+             , cp_email
+             , cp_depart
+             , note
+             , last_access_dttm
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM admin
+        WHERE id = #{id}
+        AND del_yn = 'N'
+    </select>
+
+    <select id="selectAdminMngCheckDuplicateId" parameterType="com.mtf.edumarine.dto.AdminDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAdminMngCheckDuplicateId */
+        SELECT COUNT(1)
+        FROM admin
+        WHERE id = #{id}
+          AND del_yn = 'N'
+    </select>
+
+    <update id="updateAdminMng" parameterType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateAdminMng */
+        UPDATE admin
+        SET gbn = #{gbn}
+          , cp_name = #{cpName}
+          , cp_tel = #{cpTel}
+          , cp_phone = #{cpPhone}
+          , cp_email = #{cpEmail}
+          , block_yn = #{blockYn}
+          , ip_address = #{ipAddress}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getAdminSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getAdminSeq */
+        SELECT CONCAT('A', LPAD(nextval('admin_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertAdminMng" parameterType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertAdminMng */
+        INSERT INTO admin
+        ( seq
+        , gbn
+        , block_yn
+        , access_menu
+        , ip_address
+        , id
+        , password
+        , cp_name
+        , cp_tel
+        , cp_phone
+        , cp_email
+        , cp_depart
+        , last_access_dttm
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{gbn}
+            , #{blockYn}
+            , #{accessMenu}
+            , #{ipAddress}
+            , #{id}
+            , <![CDATA[#{password}]]>
+            , #{cpName}
+            , #{cpTel}
+            , #{cpPhone}
+            , #{cpEmail}
+            , #{cpDepart}
+            , #{lastAccessDttm}
+            , 'N'
+            , #{note}
+            , #{initRegiPic}
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , #{finalRegiPic}
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updateAdminMngLoginYn" parameterType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateAdminMngLoginYn */
+        UPDATE admin
+        SET login_yn = #{loginYn}
+        <if test='loginYn eq "Y"'>
+            , last_access_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateAdminMngValidYn" parameterType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateAdminMngValidYn */
+        UPDATE admin
+        SET valid_yn = #{validYn}
+        WHERE seq = #{seq}
+    </update>
 
     <select id="selectNoticeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNoticeList */
         SELECT seq
-             , lang
              , notice_gbn
              , title
              , writer
@@ -25,10 +217,18 @@
         WHERE 1=1
             AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "CONTENTS"'>
+                AND content LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "ALL"'>
+                AND ( title LIKE BINARY CONCAT('%',#{searchText},'%') OR content LIKE BINARY CONCAT('%',#{searchText},'%') )
+            </if>
         </if>
-        <if test='condition != null and condition != ""'>
-            AND lang = #{condition}
+        <if test='gbn != null and gbn != ""'>
+            AND notice_gbn = #{gbn}
         </if>
         ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
     </select>
@@ -36,7 +236,6 @@
     <select id="selectNoticeSingle" parameterType="com.mtf.edumarine.dto.NoticeDTO" resultType="com.mtf.edumarine.dto.NoticeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNoticeSingle */
         SELECT seq
-             , lang
              , notice_gbn
              , title
              , content
@@ -62,12 +261,11 @@
     <update id="updateNotice" parameterType="com.mtf.edumarine.dto.NoticeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateNotice */
         UPDATE notice
-        SET lang = #{lang}
-        , notice_gbn = #{noticeGbn}
-        , title = <![CDATA[#{title}]]>
-        , content = <![CDATA[#{content}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
+        SET notice_gbn = #{noticeGbn}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
         <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
@@ -85,7 +283,6 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertNotice */
         INSERT INTO notice
         ( seq
-        , lang
         , notice_gbn
         , title
         , content
@@ -101,7 +298,6 @@
         )
         VALUES
             ( #{seq}
-            , #{lang}
             , #{noticeGbn}
             , <![CDATA[#{title}]]>
             , <![CDATA[#{content}]]>
@@ -120,7 +316,6 @@
     <select id="selectPressList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PressDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPressList */
         SELECT seq
-             , lang
              , notice_gbn
              , title
              , writer
@@ -131,10 +326,18 @@
         WHERE 1=1
             AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "CONTENTS"'>
+                AND content LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "ALL"'>
+                AND ( title LIKE BINARY CONCAT('%',#{searchText},'%') OR content LIKE BINARY CONCAT('%',#{searchText},'%') )
+            </if>
         </if>
-        <if test='condition != null and condition != ""'>
-            AND lang = #{condition}
+        <if test='gbn != null and gbn != ""'>
+            AND notice_gbn = #{gbn}
         </if>
         ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
     </select>
@@ -142,7 +345,6 @@
     <select id="selectPressSingle" parameterType="com.mtf.edumarine.dto.PressDTO" resultType="com.mtf.edumarine.dto.PressDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPressSingle */
         SELECT seq
-             , lang
              , notice_gbn
              , title
              , content
@@ -168,12 +370,11 @@
     <update id="updatePress" parameterType="com.mtf.edumarine.dto.PressDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePress */
         UPDATE press
-        SET lang = #{lang}
-        , notice_gbn = #{noticeGbn}
-        , title = <![CDATA[#{title}]]>
-        , content = <![CDATA[#{content}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
+        SET notice_gbn = #{noticeGbn}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
         <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
@@ -191,7 +392,6 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertPress */
         INSERT INTO press
         ( seq
-        , lang
         , notice_gbn
         , title
         , content
@@ -207,7 +407,6 @@
         )
         VALUES
             ( #{seq}
-            , #{lang}
             , #{noticeGbn}
             , <![CDATA[#{title}]]>
             , <![CDATA[#{content}]]>
@@ -226,7 +425,6 @@
     <select id="selectGalleryList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.GalleryDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectGalleryList */
         SELECT seq
-             , lang
              , title
              , writer
              , write_date
@@ -236,10 +434,9 @@
         WHERE 1=1
           AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
-        </if>
-        <if test='condition != null and condition != ""'>
-            AND lang = #{condition}
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
         </if>
         ORDER BY write_date desc, init_regi_dttm desc, title asc
     </select>
@@ -247,7 +444,6 @@
     <select id="selectGallerySingle" parameterType="com.mtf.edumarine.dto.GalleryDTO" resultType="com.mtf.edumarine.dto.GalleryDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectGallerySingle */
         SELECT seq
-             , lang
              , title
              , writer
              , write_date
@@ -271,10 +467,9 @@
     <update id="updateGallery" parameterType="com.mtf.edumarine.dto.GalleryDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateGallery */
         UPDATE gallery
-        SET lang = #{lang}
-        , title = <![CDATA[#{title}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
+        SET title = <![CDATA[#{title}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
         <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
@@ -292,7 +487,6 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertGallery */
         INSERT INTO gallery
         ( seq
-        , lang
         , title
         , writer
         , write_date
@@ -306,7 +500,6 @@
         )
         VALUES
             ( #{seq}
-            , #{lang}
             , <![CDATA[#{title}]]>
             , #{writer}
             , #{writeDate}
@@ -323,7 +516,6 @@
     <select id="selectMediaList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.MediaDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMediaList */
         SELECT seq
-             , lang
              , title
              , writer
              , write_date
@@ -333,10 +525,9 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
-        </if>
-        <if test='condition != null and condition != ""'>
-            AND lang = #{condition}
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
         </if>
         ORDER BY write_date desc, init_regi_dttm desc, title asc
     </select>
@@ -344,7 +535,6 @@
     <select id="selectMediaSingle" parameterType="com.mtf.edumarine.dto.MediaDTO" resultType="com.mtf.edumarine.dto.MediaDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMediaSingle */
         SELECT seq
-             , lang
              , title
              , writer
              , write_date
@@ -370,8 +560,7 @@
     <update id="updateMedia" parameterType="com.mtf.edumarine.dto.MediaDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateMedia */
         UPDATE media
-        SET lang = #{lang}
-          , title = <![CDATA[#{title}]]>
+        SET title = <![CDATA[#{title}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
           , media_url = <![CDATA[#{mediaUrl}]]>
@@ -393,7 +582,6 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertMedia */
         INSERT INTO media
         ( seq
-        , lang
         , title
         , writer
         , write_date
@@ -409,7 +597,6 @@
         )
         VALUES
             ( #{seq}
-            , #{lang}
             , <![CDATA[#{title}]]>
             , #{writer}
             , #{writeDate}
@@ -428,7 +615,6 @@
     <select id="selectNewsletterList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.NewsletterDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNewsletterList */
         SELECT seq
-             , lang
              , notice_gbn
              , title
              , writer
@@ -439,10 +625,12 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
         </if>
-        <if test='condition != null and condition != ""'>
-            AND lang = #{condition}
+        <if test='gbn != null and gbn != ""'>
+            AND notice_gbn = #{gbn}
         </if>
         ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
     </select>
@@ -450,7 +638,6 @@
     <select id="selectNewsletterSingle" parameterType="com.mtf.edumarine.dto.NewsletterDTO" resultType="com.mtf.edumarine.dto.NewsletterDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectNewsletterSingle */
         SELECT seq
-             , lang
              , notice_gbn
              , title
              , content
@@ -476,12 +663,11 @@
     <update id="updateNewsletter" parameterType="com.mtf.edumarine.dto.NewsletterDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateNewsletter */
         UPDATE newsletter
-        SET lang = #{lang}
-        , notice_gbn = #{noticeGbn}
-        , title = <![CDATA[#{title}]]>
-        , content = <![CDATA[#{content}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
+        SET notice_gbn = #{noticeGbn}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
         <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
@@ -499,7 +685,6 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertNewsletter */
         INSERT INTO newsletter
         ( seq
-        , lang
         , notice_gbn
         , title
         , content
@@ -515,7 +700,6 @@
         )
         VALUES
             ( #{seq}
-            , #{lang}
             , #{noticeGbn}
             , <![CDATA[#{title}]]>
             , <![CDATA[#{content}]]>
@@ -545,7 +729,7 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
+            AND title LIKE BINARY CONCAT('%',#{searchText},'%')
         </if>
         <if test='condition != null and condition != ""'>
             AND lang = #{condition}
@@ -649,10 +833,9 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
-        </if>
-        <if test='condition != null and condition != ""'>
-            /*AND lang = #{condition}*/
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
         </if>
         ORDER BY write_date desc, init_regi_dttm desc, title asc
     </select>
@@ -754,7 +937,7 @@
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
             <if test='condition eq "employmentName"'>
-                AND employ_name LIKE CONCAT('%',#{searchText},'%')
+                AND employ_name LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
         </if>
         <if test='gbn != null and gbn != ""'>
@@ -853,10 +1036,12 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
         </if>
-        <if test='condition != null and condition != ""'>
-            /*AND lang = #{condition}*/
+        <if test='gbn != null and gbn != ""'>
+            AND gbn = #{gbn}
         </if>
         ORDER BY write_date desc, init_regi_dttm desc, title asc
     </select>
@@ -955,6 +1140,106 @@
             )
     </insert>
 
+    <select id="selectFaqList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFaqList */
+        SELECT seq
+             , question
+             , answer
+             , writer
+             , write_date
+             , exposure_yn
+             , exposure_seq
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM faq
+        WHERE 1=1
+        AND del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "QUESTION"'>
+                AND question LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='exposureYn != null and exposureYn != ""'>
+            AND exposure_yn = #{exposureYn}
+        </if>
+        ORDER BY write_date desc, init_regi_dttm desc, question asc
+    </select>
+
+    <select id="selectFaqSingle" parameterType="com.mtf.edumarine.dto.FaqDTO" resultType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFaqSingle */
+        SELECT seq
+             , question
+             , answer
+             , writer
+             , write_date
+             , exposure_yn
+             , exposure_seq
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM faq
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateFaq" parameterType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFaq */
+        UPDATE faq
+        SET exposure_yn = #{exposureYn}
+          , question = <![CDATA[#{question}]]>
+          , answer = <![CDATA[#{answer}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getFaqSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getFaqSeq */
+        SELECT CONCAT('Q', LPAD(nextval('faq_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertFaq" parameterType="com.mtf.edumarine.dto.FaqDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertFaq */
+        INSERT INTO faq
+        ( seq
+        , question
+        , answer
+        , writer
+        , write_date
+        , exposure_yn
+        , exposure_seq
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , <![CDATA[#{question}]]>
+            , <![CDATA[#{answer}]]>
+            , #{writer}
+            , #{writeDate}
+            , #{exposureYn}
+            , 0
+            , 'N'
+            , #{note}
+            , 'FAQ'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'FAQ'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
     <select id="selectPopupList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PopupDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPopupList */
         SELECT seq
@@ -975,8 +1260,8 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "title"'>
-                AND title LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
         </if>
         <if test='useYn != null and useYn != "" and useYn == "Y"'>
@@ -998,6 +1283,7 @@
              , align
              , writer
              , content
+             , link_url
              , note
              , init_regi_pic
              , init_regi_dttm
@@ -1026,6 +1312,7 @@
           , align = #{align}
           , writer = #{writer}
           , content = <![CDATA[#{content}]]>
+          , link_url = <![CDATA[#{linkUrl}]]>
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -1051,6 +1338,7 @@
         , align
         , writer
         , content
+        , link_url
         , del_yn
         , note
         , init_regi_pic
@@ -1070,6 +1358,7 @@
             , #{align}
             , #{writer}
             , <![CDATA[#{content}]]>
+            , <![CDATA[#{linkUrl}]]>
             , 'N'
             , #{note}
             , 'POPUP'
@@ -1107,8 +1396,8 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "title"'>
-                AND title LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "TITLE"'>
+                AND title LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
         </if>
         ORDER BY view_seq , write_date DESC
@@ -1193,12 +1482,20 @@
     <select id="selectMemberList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.MemberDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMemberList */
         SELECT seq
+             , apply_status
              , id
              , password
              , grade
              , name
+             , name_en
              , phone
              , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , sex
+             , address
+             , address_detail
              , keyword
              , sms_yn
              , del_yn
@@ -1211,9 +1508,21 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "name"'>
-                AND name LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "NAME"'>
+                AND name LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
+            <if test='condition eq "ID"'>
+                AND id LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='grade != null and grade != ""'>
+            AND grade = #{grade}
+        </if>
+        <if test='sex != null and sex != ""'>
+            AND sex = #{sex}
+        </if>
+        <if test='keyword != null and keyword != ""'>
+            AND keyword LIKE CONCAT('%',#{keyword}, '%')
         </if>
         ORDER BY init_regi_dttm DESC
     </select>
@@ -1225,8 +1534,15 @@
              , password
              , grade
              , name
+             , name_en
              , phone
              , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , sex
+             , address
+             , address_detail
              , keyword
              , sms_yn
              , del_yn
@@ -1251,7 +1567,14 @@
         SET password = <![CDATA[#{password}]]>
           , grade = #{grade}
           , name = #{name}
+          , name_en = #{nameEn}
           , phone = #{phone}
+          , birth_year = #{birthYear}
+          , birth_month = #{birthMonth}
+          , birth_day = #{birthDay}
+          , sex = #{sex}
+          , address = #{address}
+          , address_detail = <![CDATA[#{addressDetail}]]>
           , email = #{email}
           , keyword = #{keyword}
           , sms_yn = #{smsYn}
@@ -1270,11 +1593,19 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertMember */
         INSERT INTO member
         ( seq
+        , apply_status
         , id
         , password
         , grade
         , name
+        , name_en
         , phone
+        , birth_year
+        , birth_month
+        , birth_day
+        , sex
+        , address
+        , address_detail
         , email
         , keyword
         , sms_yn
@@ -1287,11 +1618,19 @@
         )
         VALUES
             ( #{seq}
+            , '회원'
             , #{id}
             , <![CDATA[#{password}]]>
             , #{grade}
             , #{name}
+            , #{nameEn}
             , #{phone}
+            , #{birthYear}
+            , #{birthMonth}
+            , #{birthDay}
+            , #{sex}
+            , #{address}
+            , <![CDATA[#{addressDetail}]]>
             , #{email}
             , #{keyword}
             , #{smsYn}
@@ -1304,69 +1643,162 @@
             )
     </insert>
 
-    <select id="selectRegularList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
-        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularList */
+    <select id="selectResumeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ResumeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectResumeList */
         SELECT seq
-             , member_seq
-             , train_seq
-             , name
+             , id
+             , name_ko
+             , name_en
              , phone
              , email
              , birth_year
              , birth_month
              , birth_day
-             , region
+             , sex
+             , age
+             , address
+             , address_detail
+             , top_clothes_size
+             , bottom_clothes_size
+             , shoes_size
              , participation_path
-             , first_application_field
-             , second_application_field
-             , desired_education_time
-             , major
-             , experience_yn
-             , apply_status
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM regular
+        FROM resume
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "name"'>
-                AND name LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "NAMEKO"'>
+                AND name_ko LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
+            <if test='condition eq "NAMEEN"'>
+                AND name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "ID"'>
+                AND id LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='sex != null and sex != ""'>
+            AND sex = #{sex}
         </if>
         ORDER BY init_regi_dttm DESC
     </select>
 
-    <select id="selectRegularSingle" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
-        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularSingle */
+    <select id="selectResumeSingle" parameterType="com.mtf.edumarine.dto.ResumeDTO" resultType="com.mtf.edumarine.dto.ResumeDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectResumeSingle */
         SELECT seq
-             , member_seq
-             , train_seq
-             , name
+             , id
+             , name_ko
+             , name_en
              , phone
              , email
              , birth_year
              , birth_month
              , birth_day
-             , region
+             , sex
+             , age
+             , address
+             , address_detail
+             , top_clothes_size
+             , bottom_clothes_size
+             , shoes_size
              , participation_path
-             , first_application_field
-             , second_application_field
-             , desired_education_time
-             , major
-             , experience_yn
-             , apply_status
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM regular
+        FROM resume
         WHERE seq = #{seq}
+    </select>
+
+    <select id="selectRegularList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularList */
+        SELECT r.seq
+             , r.member_seq
+             , r.train_seq
+             , m.grade
+             , m.id
+             , m.name
+             , m.name_en
+             , m.phone
+             , m.email
+             , r.age_group
+             , r.region
+             , r.participation_path
+             , r.first_application_field
+             , r.second_application_field
+             , r.desired_education_time
+             , r.major
+             , r.experience_yn
+             , r.apply_status
+             , r.cancel_dttm
+             , r.cancel_reason
+             , r.del_yn
+             , r.note
+             , r.init_regi_pic
+             , r.init_regi_dttm
+             , r.final_regi_pic
+             , r.final_regi_dttm
+        FROM regular r
+        LEFT JOIN member m
+        ON r.member_seq = m.seq
+        WHERE 1=1
+        AND r.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAME"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND r.apply_status = #{applyStatus}
+        </if>
+        <if test='experienceYn != null and experienceYn != ""'>
+            AND r.experience_yn = #{experienceYn}
+        </if>
+        ORDER BY m.name, r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectRegularSingle" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRegularSingle */
+        SELECT r.seq
+             , r.member_seq
+             , r.train_seq
+             , m.name
+             , m.phone
+             , m.email
+             , m.birth_year
+             , m.birth_month
+             , m.birth_day
+             , r.region
+             , r.participation_path
+             , r.first_application_field
+             , r.second_application_field
+             , r.desired_education_time
+             , r.major
+             , r.experience_yn
+             , r.apply_status
+             , r.cancel_dttm
+             , r.cancel_reason
+             , r.del_yn
+             , r.note
+             , r.init_regi_pic
+             , r.init_regi_dttm
+             , r.final_regi_pic
+             , r.final_regi_dttm
+        FROM regular r
+        JOIN member m
+        ON r.member_seq = m.seq
+        WHERE r.seq = #{seq}
+
     </select>
 
     <delete id="deleteRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
@@ -1378,14 +1810,7 @@
     <update id="updateRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateRegular */
         UPDATE regular
-        SET name = #{name}
-          , phone = #{phone}
-          , email = #{email}
-          , birth_year = #{birthYear}
-          , birth_month = #{birthMonth}
-          , birth_day = #{birthDay}
-          , age_group = #{ageGroup}
-          , region = #{region}
+        SET region = #{region}
           , participation_path = #{participationPath}
           , first_application_field = #{firstApplicationField}
           , second_application_field = #{secondApplicationField}
@@ -1411,13 +1836,6 @@
         ( seq
         , member_seq
         , train_seq
-        , name
-        , phone
-        , email
-        , birth_year
-        , birth_month
-        , birth_day
-        , age_group
         , region
         , participation_path
         , first_application_field
@@ -1438,13 +1856,6 @@
             ( #{seq}
             , #{memberSeq}
             , #{trainSeq}
-            , #{name}
-            , #{phone}
-            , #{email}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{ageGroup}
             , #{region}
             , #{participationPath}
             , #{firstApplicationField}
@@ -1463,20 +1874,89 @@
             )
     </insert>
 
+    <update id="updateRegularApplyStatus" parameterType="com.mtf.edumarine.dto.RegularDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateRegularApplyStatus */
+        UPDATE regular
+        SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectBoarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.BoarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectBoarderList */
+        SELECT b.seq
+             , b.member_seq
+             , b.train_seq
+             , m.grade
+             , m.id
+             , m.name as nameKo
+             , m.name_en
+             , m.phone
+             , m.email
+             , b.top_clothes_size
+             , b.bottom_clothes_size
+             , b.shoes_size
+             , b.participation_path
+             , b.grade_gbn
+             , b.school_name
+             , b.major
+             , b.military_gbn
+             , b.military_reason
+             , b.disabled_gbn
+             , b.job_support_gbn
+             , b.tech_edu_gbn
+             , b.tech_edu_name
+             , b.apply_reason
+             , b.tech_reason
+             , b.activity_reason
+             , b.plan_reason
+             , b.etc_reason
+             , b.apply_status
+             , b.cancel_dttm
+             , b.cancel_reason
+             , b.del_yn
+             , b.note
+             , b.init_regi_pic
+             , b.init_regi_dttm
+             , b.final_regi_pic
+             , b.final_regi_dttm
+        FROM boarder b
+        join member m
+        on b.member_seq = m.seq
+        WHERE 1=1
+          AND b.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND b.apply_status = #{applyStatus}
+        </if>
+        <if test='jobSupportYn != null and jobSupportYn != ""'>
+            AND b.job_support_gbn = #{jobSupportYn}
+        </if>
+        ORDER BY b.init_regi_dttm DESC
+    </select>
+
+    <select id="selectBoarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectBoarderSingle */
         SELECT seq
              , member_seq
              , train_seq
              , id
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , rrn
-             , age
-             , address
-             , address_detail
              , top_clothes_size
              , bottom_clothes_size
              , shoes_size
@@ -1496,6 +1976,7 @@
              , plan_reason
              , etc_reason
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -1504,44 +1985,130 @@
              , final_regi_pic
              , final_regi_dttm
         FROM boarder
-        WHERE 1=1
-          AND del_yn = 'N'
-          <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "nameKo"'>
-            AND name_ko LIKE CONCAT('%',#{searchText},'%')
-            </if>
-            <if test='condition eq "nameEn"'>
-            AND name_en LIKE CONCAT('%',#{searchText},'%')
-            </if>
-          </if>
-          <if test='applyStatus != null and applyStatus != ""'>
-          AND apply_status = #{applyStatus}
-          </if>
-        ORDER BY init_regi_dttm DESC
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectCareerList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.CareerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectCareerList */
+        SELECT seq
+             , boarder_seq
+             , member_seq
+             , train_seq
+             , career_place
+             , career_date
+             , career_position
+             , career_task
+             , career_location
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM career
+        WHERE boarder_seq = #{boarderSeq}
+    </select>
+
+    <select id="selectLicenseList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.LicenseDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectLicenseList */
+        SELECT seq
+             , boarder_seq
+             , member_seq
+             , train_seq
+             , license_name
+             , license_date
+             , license_org
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM license
+        WHERE boarder_seq = #{boarderSeq}
     </select>
 
     <update id="updateBoarderApplyStatus" parameterType="com.mtf.edumarine.dto.BoarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBoarderApplyStatus */
         UPDATE boarder
         SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
     <select id="selectFrpList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.FrpDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFrpList */
+        SELECT f.seq
+             , f.member_seq
+             , f.train_seq
+             , m.grade
+             , m.id
+             , m.name as nameKo
+             , m.name_en
+             , m.phone
+             , m.email
+             , f.top_clothes_size
+             , f.bottom_clothes_size
+             , f.shoes_size
+             , f.participation_path
+             , f.grade_gbn
+             , f.school_name
+             , f.major
+             , f.military_gbn
+             , f.military_reason
+             , f.disabled_gbn
+             , f.job_support_gbn
+             , f.know_path
+             , f.know_path_reason
+             , f.apply_reason
+             , f.tech_reason
+             , f.activity_reason
+             , f.plan_reason
+             , f.etc_reason
+             , f.apply_status
+             , f.cancel_dttm
+             , f.cancel_reason
+             , f.del_yn
+             , f.note
+             , f.init_regi_pic
+             , f.init_regi_dttm
+             , f.final_regi_pic
+             , f.final_regi_dttm
+        FROM frp f
+        join member m
+        on f.member_seq = m.seq
+        WHERE 1=1
+          AND f.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND f.apply_status = #{applyStatus}
+        </if>
+        <if test='jobSupportYn != null and jobSupportYn != ""'>
+            AND f.job_support_gbn = #{jobSupportYn}
+        </if>
+        ORDER BY f.init_regi_dttm DESC
+    </select>
+
+    <select id="selectFrpSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFrpSingle */
         SELECT seq
              , member_seq
              , train_seq
              , id
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , rrn
-             , age
-             , address
-             , address_detail
              , top_clothes_size
              , bottom_clothes_size
              , shoes_size
@@ -1561,6 +2128,7 @@
              , plan_reason
              , etc_reason
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -1569,47 +2137,76 @@
              , final_regi_pic
              , final_regi_dttm
         FROM frp
-        WHERE 1=1
-          AND del_yn = 'N'
-          <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "nameKo"'>
-            AND name_ko LIKE CONCAT('%',#{searchText},'%')
-            </if>
-            <if test='condition eq "nameEn"'>
-            AND name_en LIKE CONCAT('%',#{searchText},'%')
-            </if>
-          </if>
-          <if test='applyStatus != null and applyStatus != ""'>
-          AND apply_status = #{applyStatus}
-          </if>
-        ORDER BY init_regi_dttm DESC
+        WHERE seq = #{seq}
     </select>
 
     <update id="updateFrpApplyStatus" parameterType="com.mtf.edumarine.dto.FrpDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFrpApplyStatus */
         UPDATE frp
         SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
     <select id="selectOutboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectOutboarderList */
+        SELECT o.seq
+             , o.member_seq
+             , o.train_seq
+             , m.grade
+             , m.id
+             , m.name as nameKo
+             , m.name_en
+             , m.phone
+             , m.email
+             , o.clothes_size
+             , o.participation_path
+             , o.apply_status
+             , o.cancel_dttm
+             , o.cancel_reason
+             , o.del_yn
+             , o.note
+             , o.init_regi_pic
+             , o.init_regi_dttm
+             , o.final_regi_pic
+             , o.final_regi_dttm
+        FROM outboarder o
+        JOIN member m
+        ON o.member_seq = m.seq
+        WHERE 1=1
+          AND o.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND o.apply_status = #{applyStatus}
+        </if>
+        ORDER BY o.init_regi_dttm DESC
+    </select>
+
+    <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectOutboarderSingle */
         SELECT seq
              , member_seq
              , train_seq
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , address
-             , address_detail
              , clothes_size
              , participation_path
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -1618,85 +2215,77 @@
              , final_regi_pic
              , final_regi_dttm
         FROM outboarder
-        WHERE 1=1
-          AND del_yn = 'N'
-          <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "nameKo"'>
-            AND name_ko LIKE CONCAT('%',#{searchText},'%')
-            </if>
-            <if test='condition eq "nameEn"'>
-            AND name_en LIKE CONCAT('%',#{searchText},'%')
-            </if>
-          </if>
-          <if test='applyStatus != null and applyStatus != ""'>
-          AND apply_status = #{applyStatus}
-          </if>
-        ORDER BY init_regi_dttm DESC
+        WHERE seq = #{seq}
     </select>
 
     <update id="updateOutboarderApplyStatus" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateOutboarderApplyStatus */
         UPDATE outboarder
         SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
     <select id="selectInboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectInboarderList */
-        SELECT seq
-             , member_seq
-             , train_seq
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , address
-             , address_detail
-             , clothes_size
-             , participation_path
-             , apply_status
-             , cancel_reason
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
-        FROM inboarder
+        SELECT i.seq
+             , i.member_seq
+             , i.train_seq
+             , m.grade
+             , m.id
+             , m.name as nameKo
+             , m.name_en
+             , m.phone
+             , m.email
+             , i.clothes_size
+             , i.participation_path
+             , i.apply_status
+             , i.cancel_dttm
+             , i.cancel_reason
+             , i.del_yn
+             , i.note
+             , i.init_regi_pic
+             , i.init_regi_dttm
+             , i.final_regi_pic
+             , i.final_regi_dttm
+        FROM inboarder i
+        JOIN member m
+        ON i.member_seq = m.seq
         WHERE 1=1
-          AND del_yn = 'N'
+          AND i.del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "nameKo"'>
-            AND name_ko LIKE CONCAT('%',#{searchText},'%')
-            </if>
-            <if test='condition eq "nameEn"'>
-            AND name_en LIKE CONCAT('%',#{searchText},'%')
-            </if>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
           </if>
-          <if test='applyStatus != null and applyStatus != ""'>
-          AND apply_status = #{applyStatus}
-          </if>
-        ORDER BY init_regi_dttm DESC
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND i.apply_status = #{applyStatus}
+        </if>
+        ORDER BY i.init_regi_dttm DESC
     </select>
 
     <select id="selectInboarderSingle" parameterType="com.mtf.edumarine.dto.InboarderDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectInboarderSingle */
         SELECT seq
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , address
-             , address_detail
+             , member_seq
+             , train_seq
              , clothes_size
              , participation_path
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
              , del_yn
              , note
              , init_regi_pic
@@ -1716,16 +2305,7 @@
     <update id="updateInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateInboarder */
         UPDATE inboarder
-        SET name_ko = #{nameKo}
-          , name_en = #{nameEn}
-          , phone = #{phone}
-          , email = #{email}
-          , birth_year = #{birthYear}
-          , birth_month = #{birthMonth}
-          , birth_day = #{birthDay}
-          , address = <![CDATA[#{address}]]>
-          , address_detail = <![CDATA[#{addressDetail}]]>
-          , clothes_size = #{clothesSize}
+        SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -1742,15 +2322,6 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertInboarder */
         INSERT INTO inboarder
         ( seq
-        , name_ko
-        , name_en
-        , phone
-        , email
-        , birth_year
-        , birth_month
-        , birth_day
-        , address
-        , address_detail
         , clothes_size
         , participation_path
         , del_yn
@@ -1762,15 +2333,6 @@
         )
         VALUES
             ( #{seq}
-            , #{nameKo}
-            , #{nameEn}
-            , #{phone}
-            , #{email}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{address}
-            , #{addressDetail}
             , #{clothesSize}
             , #{participationPath}
             , 'N'
@@ -1786,27 +2348,69 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateInboarderApplyStatus */
         UPDATE inboarder
         SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
     <select id="selectSailyachtList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SailyachtDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSailyachtList */
+        SELECT s.seq
+             , s.member_seq
+             , s.train_seq
+             , m.grade
+             , m.id
+             , m.name as nameKo
+             , m.name_en
+             , m.phone
+             , m.email
+             , s.clothes_size
+             , s.participation_path
+             , s.apply_status
+             , s.cancel_dttm
+             , s.cancel_reason
+             , s.del_yn
+             , s.note
+             , s.init_regi_pic
+             , s.init_regi_dttm
+             , s.final_regi_pic
+             , s.final_regi_dttm
+        FROM sailyacht s
+        JOIN member m
+        ON s.member_seq = m.seq
+        WHERE 1=1
+          AND s.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND s.apply_status = #{applyStatus}
+        </if>
+        ORDER BY s.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSailyachtSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSailyachtSingle */
         SELECT seq
              , member_seq
              , train_seq
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , address
-             , address_detail
              , clothes_size
              , participation_path
              , apply_status
+             , cancel_dttm
              , cancel_reason
              , del_yn
              , note
@@ -1815,26 +2419,19 @@
              , final_regi_pic
              , final_regi_dttm
         FROM sailyacht
-        WHERE 1=1
-          AND del_yn = 'N'
-          <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "nameKo"'>
-            AND name_ko LIKE CONCAT('%',#{searchText},'%')
-            </if>
-            <if test='condition eq "nameEn"'>
-            AND name_en LIKE CONCAT('%',#{searchText},'%')
-            </if>
-          </if>
-          <if test='applyStatus != null and applyStatus != ""'>
-          AND apply_status = #{applyStatus}
-          </if>
-        ORDER BY init_regi_dttm DESC
+        WHERE seq = #{seq}
     </select>
 
     <update id="updateSailyachtApplyStatus" parameterType="com.mtf.edumarine.dto.SailyachtDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSailyachtApplyStatus */
         UPDATE sailyacht
         SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -1843,6 +2440,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainList */
         SELECT seq
              , gbn
+             , category
              , train_start_dttm
              , train_end_dttm
              , apply_start_dttm
@@ -1854,6 +2452,7 @@
              , train_note
              , exposure_yn
              , schedule_exposure_yn
+             , closing_yn
              , del_yn
              , note
              , init_regi_pic
@@ -1864,9 +2463,18 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "name"'>
-                AND gbn LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "NAME"'>
+                AND gbn LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
+        </if>
+        <if test='time != null and time != ""'>
+            AND next_time = #{time}
+        </if>
+        <if test='category != null and category != ""'>
+            AND category = #{category}
+        </if>
+        <if test='gbn != null and gbn != ""'>
+            AND gbn = #{gbn}
         </if>
         ORDER BY train_start_dttm desc, init_regi_dttm DESC
     </select>
@@ -1875,6 +2483,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainSingle */
         SELECT seq
              , gbn
+             , category
              , train_start_dttm
              , train_end_dttm
              , apply_start_dttm
@@ -1886,6 +2495,7 @@
              , train_note
              , exposure_yn
              , schedule_exposure_yn
+             , closing_yn
              , del_yn
              , note
              , init_regi_pic
@@ -1905,10 +2515,7 @@
     <update id="updateTrain" parameterType="com.mtf.edumarine.dto.TrainDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrain */
         UPDATE train
-        SET gbn = #{gbn}
-          , category = #{category}
-          , next_time = #{nextTime}
-          , train_start_dttm = <![CDATA[#{trainStartDttm}]]>
+        SET train_start_dttm = <![CDATA[#{trainStartDttm}]]>
           , train_end_dttm = <![CDATA[#{trainEndDttm}]]>
           , apply_start_dttm = <![CDATA[#{applyStartDttm}]]>
           , apply_end_dttm = <![CDATA[#{applyEndDttm}]]>
@@ -1917,7 +2524,16 @@
           , train_note = <![CDATA[#{trainNote}]]>
           , exposure_yn = #{exposureYn}
           , schedule_exposure_yn = #{scheduleExposureYn}
+          , closing_yn = #{closingYn}
           , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateTrainEarlyClosingYn" parameterType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrainEarlyClosingYn */
+        UPDATE train
+        SET closing_yn = #{closingYn}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -1945,6 +2561,7 @@
         , train_note
         , exposure_yn
         , schedule_exposure_yn
+        , closing_yn
         , del_yn
         , note
         , init_regi_pic
@@ -1968,6 +2585,7 @@
             , #{exposureYn}
             , #{scheduleExposureYn}
             , 'N'
+            , 'N'
             , #{note}
             , 'TRAIN'
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -1978,35 +2596,59 @@
 
     <select id="selectPaymentList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPaymentList */
-        SELECT p.seq
-             , p.member_seq
-             , (select m.name
-                from member m
-                where m.seq = p.member_seq) as memberName
-             , (select m.phone
-                from member m
-                where m.seq = p.member_seq) as memberPhone
-             , p.train_seq
-             , (select t.gbn
-                from train t
-                where t.seq = p.train_seq) as trainName
-             , p.pay_sum
-             , p.pay_status
-             , p.del_yn
-             , p.note
-             , p.init_regi_pic
-             , p.init_regi_dttm
-             , p.final_regi_pic
-             , p.final_regi_dttm
-        FROM payment p
+        SELECT r.seq
+             , r.member_seq
+             , r.memberName
+             , r.memberPhone
+             , r.train_seq
+             , r.trainName
+             , r.pay_sum
+             , r.pay_method
+             , r.pay_status
+             , r.del_yn
+             , r.note
+             , r.init_regi_pic
+             , r.init_regi_dttm
+             , r.final_regi_pic
+             , r.final_regi_dttm
+        FROM ( SELECT p.seq
+                    , p.member_seq
+                    , ( SELECT m.name
+                        FROM member m
+                        WHERE m.seq = p.member_seq) AS memberName
+                    , ( SELECT m.phone
+                        FROM member m
+                        WHERE m.seq = p.member_seq) AS memberPhone
+                    , p.train_seq
+                    , ( SELECT t.gbn
+                        FROM train t
+                        WHERE t.seq = p.train_seq) AS trainName
+                    , p.pay_sum
+                    , p.pay_method
+                    , p.pay_status
+                    , p.del_yn
+                    , p.note
+                    , p.init_regi_pic
+                    , p.init_regi_dttm
+                    , p.final_regi_pic
+                    , p.final_regi_dttm
+               FROM payment p
+               WHERE 1=1
+                 AND p.del_yn = 'N'
+               ) r
         WHERE 1=1
-        AND p.del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "name"'>
-                /*AND gbn LIKE CONCAT('%',#{searchText},'%')*/
+            <if test='condition eq "NAME"'>
+                AND r.memberName LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "PHONE"'>
+                AND r.memberPhone LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
         </if>
-        ORDER BY p.init_regi_dttm DESC
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND r.pay_status = #{applyStatus}
+        </if>
+        ORDER BY r.init_regi_dttm DESC
     </select>
 
     <select id="selectPaymentSingle" parameterType="com.mtf.edumarine.dto.PaymentDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">
@@ -2034,6 +2676,66 @@
              , p.final_regi_dttm
         FROM payment p
         WHERE p.seq = #{seq}
+    </select>
+
+    <select id="selectPaymentTableSeq" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectPaymentTableSeq */
+        SELECT seq
+             , member_seq
+             , member_name
+             , member_phone
+             , table_seq
+             , train_seq
+             , train_name
+             , buyer_name
+             , buyer_tel
+             , buyer_email
+             , cust_email
+             , pay_sum
+             , tot_price
+             , good_name
+             , goods_name
+             , pay_status
+             , appl_date
+             , appl_time
+             , moid
+             , mid
+             , tid
+             , appl_num
+             , auth_signature
+             , event_code
+             , pay_method
+             , currency
+             , p_fn_nm
+             , card_num
+             , card_code
+             , card_corp_flag
+             , card_member_num
+             , card_appl_price
+             , card_point
+             , card_quota
+             , card_purchase_code
+             , card_prtc_code
+             , card_check_flag
+             , card_bank_code
+             , card_terminal_num
+             , card_use_point
+             , card_interest
+             , card_src_code
+             , card_gwcode
+             , card_purchase_name
+             , pay_device
+             , result_code
+             , result_msg
+             , refund_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM payment
+        WHERE table_seq = #{tableSeq}
     </select>
 
     <delete id="deletePayment" parameterType="com.mtf.edumarine.dto.PaymentDTO">
@@ -2116,6 +2818,35 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updatePaymentCancelResult" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePaymentCancelResult */
+        UPDATE payment
+        SET cancel_gbn = #{cancelGbn}
+          <if test='cancelDate != null and cancelDate != ""'>
+          , cancel_date = #{cancelDate}
+          </if>
+          <if test='cancelTime != null and cancelTime != ""'>
+          , cancel_time = #{cancelTime}
+          </if>
+          <if test='prtcDate != null and prtcDate != ""'>
+          , prtc_date = #{prtcDate}
+          </if>
+          <if test='prtcTime != null and prtcTime != ""'>
+          , prtc_time = #{prtcTime}
+          </if>
+          <if test='cancelTid != null and cancelTid != ""'>
+          , cancel_tid = #{cancelTid}
+          </if>
+          <if test='prtcPrice != null and prtcPrice != ""'>
+          , prtc_price = #{prtcPrice}
+          </if>
+          <if test='prtcRemains != null and prtcRemains != ""'>
+          , prtc_remains = #{prtcRemains}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectSubscriberList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SubscriberDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSubscriberList */
         SELECT seq
@@ -2133,9 +2864,12 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "email"'>
-                AND email LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "EMAIL"'>
+                AND email LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
+        </if>
+        <if test='sendYn != null and sendYn != "" and sendYn == "Y"'>
+            AND send_yn = #{sendYn}
         </if>
         ORDER BY init_regi_dttm DESC
     </select>
@@ -2228,9 +2962,18 @@
         WHERE 1=1
         AND del_yn = 'N'
         <if test='searchText != null and searchText != ""'>
-            <if test='condition eq "phone"'>
-                AND phone LIKE CONCAT('%',#{searchText},'%')
+            <if test='condition eq "PHONE"'>
+                AND phone LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
+            <if test='condition eq "SENDERPHONE"'>
+                AND sender_phone LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "CONTENT"'>
+                AND content LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='result != null and result != ""'>
+            AND send_result = #{result}
         </if>
         ORDER BY init_regi_dttm DESC
     </select>
@@ -2385,10 +3128,120 @@
         WHERE seq = #{seq}
     </delete>
 
+    <select id="selectSmsSendRegularList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendRegularList */
+        SELECT r.seq AS tableSeq
+             , r.train_seq
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , r.apply_status
+        FROM `member` m
+        JOIN regular r
+        ON m.seq = r.member_seq
+        WHERE r.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendBoarderList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendBoarderList */
+        SELECT r.seq AS tableSeq
+             , r.train_seq
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , r.apply_status
+        FROM `member` m
+        JOIN boarder r
+        ON m.seq = r.member_seq
+        WHERE r.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendFrpList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendFrpList */
+        SELECT r.seq AS tableSeq
+             , r.train_seq
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , r.apply_status
+        FROM `member` m
+        JOIN frp r
+        ON m.seq = r.member_seq
+        WHERE r.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendOutboarderList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendOutboarderList */
+        SELECT r.seq AS tableSeq
+             , r.train_seq
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , r.apply_status
+        FROM `member` m
+        JOIN outboarder r
+        ON m.seq = r.member_seq
+        WHERE r.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendInboarderList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendInboarderList */
+        SELECT r.seq AS tableSeq
+             , r.train_seq
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , r.apply_status
+        FROM `member` m
+        JOIN inboarder r
+        ON m.seq = r.member_seq
+        WHERE r.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendSailyachtList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendSailyachtList */
+        SELECT r.seq AS tableSeq
+             , r.train_seq
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , r.apply_status
+        FROM `member` m
+        JOIN sailyacht r
+        ON m.seq = r.member_seq
+        WHERE r.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY r.init_regi_dttm DESC
+    </select>
+
     <select id="selectDownloadList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.DownloadDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectDownloadList */
         SELECT seq
              , download_file_name
+             , download_reason
+             , download_user
              , target_menu
              , note
              , init_regi_pic
@@ -2397,11 +3250,11 @@
              , final_regi_dttm
         FROM download
         WHERE 1=1
-        <!--<if test='searchText != null and searchText != ""'>
-            <if test='condition eq "phone"'>
-                AND phone LIKE CONCAT('%',#{searchText},'%')
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "NAME"'>
+                AND download_file_name LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
-        </if>-->
+        </if>
         ORDER BY init_regi_dttm DESC
     </select>
 
@@ -2417,6 +3270,8 @@
         ( seq
         , download_file_name
         , target_menu
+        , download_reason
+        , download_user
         , note
         , init_regi_pic
         , init_regi_dttm
@@ -2427,6 +3282,8 @@
             ( #{seq}
             , <![CDATA[#{downloadFileName}]]>
             , <![CDATA[#{targetMenu}]]>
+            , <![CDATA[#{downloadReason}]]>
+            , <![CDATA[#{downloadUser}]]>
             , #{note}
             , 'DOWNLOAD'
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -2449,11 +3306,11 @@
              , final_regi_dttm
         FROM trash
         WHERE 1=1
-        <!--<if test='searchText != null and searchText != ""'>
-            <if test='condition eq "phone"'>
-                AND phone LIKE CONCAT('%',#{searchText},'%')
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "REASON"'>
+                AND delete_reason LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
-        </if>-->
+        </if>
         ORDER BY init_regi_dttm DESC
     </select>
 

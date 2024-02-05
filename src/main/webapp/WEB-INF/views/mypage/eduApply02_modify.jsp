@@ -7,13 +7,64 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-368L9FRD5B"></script>
+    <script>   window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-368L9FRD5B'); </script>
+
+    <meta name="google-site-verification" content="nOdgBX2kjgySRAVZjwMl-AmYg53q0GxLBOV_qEtG7jk" />
+
+    <meta name="naver-site-verification" content="8027433e606d42e31ef9e566afbd709c593e33bc" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="ko">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
+    <meta name="copyright" content="경기테크노파크">
+    <meta name="robots" content="all">
+    <meta property="og:locale" content="ko_KR">
+    <meta itemprop="inLanguage" content="ko-kr">
+    <meta name="resource-type" content="website">
+    <meta property="og:type" content="website">
+
+    <meta property="og:site_name" content="경기해양레저인력양성센터">
     <title>경기해양레저 인력양성센터</title>
+
+    <meta name="title" content="경기해양레저인력양성센터">
+    <meta property="og:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://edumarine.org/main.do">
+    <meta itemprop="name" content="경기해양레저인력양성센터">
+    <meta property="nate:title" content="경기해양레저인력양성센터">
+    <meta property="nate:url" content="https://edumarine.org/main.do">
+
+    <meta property="og:url" content="https://edumarine.org/main.do">
+    <meta itemprop="url" content="https://edumarine.org/main.do">
+    <link rel="canonical" id="canonical" href="https://edumarine.org/main.do">
+
+    <meta name="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta name="twitter:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="og:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta itemprop="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="nate:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+
+    <meta property="og:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta name="keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta property="twitter:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+
+    <meta name="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta name="twitter:image " content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta property="og:image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -23,6 +74,26 @@
 
     <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
     <meta http-equiv="Cache-Control" content="no-cache" />
+
+    <%-- favicon --%>
+    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%-- favicon --%>
 
     <!-- swiper 외부 라이브러리 -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -80,7 +151,7 @@
                         <div class="form_box">
                             <div class="form_tit">
                                 <div class="big">기본정보</div>
-                                <div class="small">이름, 연락처, 이메일 주소는 <span style="font-weight: bold;">'마이페이지>회원정보'</span> 에서 수정 가능합니다.</div>
+                                <div class="small">이름, 연락처, 주소 등 기본정보는 <span style="font-weight: bold;">'마이페이지>회원정보'</span> 에서 수정 가능합니다.</div>
                             </div>
                             <ul class="form_list">
                                 <li>
@@ -89,8 +160,8 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" id="nameKo" name="nameKo" value="${info.nameKo}" placeholder="이름 입력" class="w50" readonly>
-                                            <input type="text" id="nameEn" name="nameEn" value="${info.nameEn}" placeholder="영문" class="w50">
+                                            <input type="text" id="nameKo" name="nameKo" value="${memberInfo.name}" placeholder="이름 입력" class="w50" readonly>
+                                            <input type="text" id="nameEn" name="nameEn" value="${memberInfo.nameEn}" placeholder="영문" class="w50" readonly <%--oninput="f_input_box_only_eng(this)"--%>>
                                         </div>
                                     </div>
                                 </li>
@@ -100,7 +171,7 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" id="phone" name="phone" value="${info.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50" readonly>
+                                            <input type="text" id="phone" name="phone" value="${memberInfo.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50" readonly>
                                         </div>
                                     </div>
                                 </li>
@@ -108,11 +179,11 @@
                                     <div class="gubun req"><p>이메일 주소</p></div>
                                     <div class="naeyong">
                                         <div class="input form_email">
-                                            <input type="text" id="email" name="email" value="${fn:split(info.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1" readonly>
+                                            <input type="text" id="email" name="email" value="${fn:split(memberInfo.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1" readonly>
                                             <span>@</span>
-                                            <input type="text" id="domain" name="domain" value="${fn:split(info.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2" readonly>
+                                            <input type="text" id="domain" name="domain" value="${fn:split(memberInfo.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2" readonly>
                                             <select class="email_select">
-                                                <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
+                                                <c:set var="domain" value="${fn:split(memberInfo.email,'@')[1]}"/>
                                                 <option selected disabled>직접입력</option>
                                                 <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> disabled>daum.net</option>
                                                 <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> disabled>nate.com</option>
@@ -133,29 +204,66 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="gubun req">
-                                        <p>주민등록번호</p>
-                                    </div>
+                                    <div class="gubun req"><p>생년월일</p></div>
                                     <div class="naeyong">
-                                        <div class="input form_idNum">
-                                            <input type="text" id="rrnFirst" name="rrnFirst" value="${fn:split(info.rrn,'-')[0]}" onchange="f_rrn_age_calc(this)" class="onlyNum" maxlength="6" placeholder="앞 6자리">
-                                            <span>-</span>
-                                            <input type="text" id="rrnLast" name="rrnLast" value="${fn:split(info.rrn,'-')[1]}" class="onlyNum" maxlength="7" placeholder="뒤 7자리">
+                                        <div class="input form_birth">
+                                            <select class="box" id="birth-year" name="birthYear" <%--onchange="f_birth_age_calc()"--%>>
+                                                <option disabled selected>출생 연도</option>
+                                            </select>
+                                            <select class="box" id="birth-month" name="birthMonth" <%--onchange="f_birth_age_calc()"--%>>
+                                                <option disabled selected>월</option>
+                                            </select>
+                                            <select class="box" id="birth-day" name="birthDay" <%--onchange="f_birth_age_calc()"--%>>
+                                                <option disabled selected>일</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="gubun">
-                                        <p>연령</p>
-                                    </div>
+                                    <div class="gubun req"><p>성별</p></div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            만
-                                            <input type="text" id="age" name="age" value="${info.age}" class="onlyNum w50" placeholder="주민번호 앞자리 입력 시 자동 입력됩니다." maxlength="6" readonly>
-                                            세
+                                            <label><input type="radio" name="sex" value="남성" <c:if test="${memberInfo.sex eq '남성'}">checked</c:if> disabled="disabled">남성</label>
+                                            <label><input type="radio" name="sex" value="여성" <c:if test="${memberInfo.sex eq '여성'}">checked</c:if> disabled="disabled">여성</label>
                                         </div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="gubun req"><p>주소</p></div>
+                                    <div class="naeyong">
+                                        <div class="input form_address">
+                                            <div class="address_box">
+                                                <input type="text" id="address" name="address" value="${memberInfo.address}" placeholder="주소" readonly="readonly">
+                                                    <%--<input type="button" onclick="execDaumPostcode('address','addressDetail')" value="주소 검색">
+                                                    <div id="map" style="width:300px;height:300px;margin-top:10px;display:none">
+                                                    </div>--%>
+                                            </div>
+                                            <div class="address_box">
+                                                <input type="text" id="addressDetail" name="addressDetail" value="${memberInfo.addressDetail}" placeholder="상세주소" readonly="readonly">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <%--<li>
+                                    <div class="gubun"><p>연령</p><p></div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            만
+                                            <input type="text" id="age" name="age" value="${info.age}" class="onlyNum w50" placeholder="생년월일 선택 시 자동 입력됩니다." maxlength="2" readonly>
+                                            세
+                                        </div>
+                                    </div>
+                                </li>--%>
+                            </ul>
+                        </div>
+                        <!-- //기본정보 -->
+
+                        <!-- 기본정보 -->
+                        <div class="form_box">
+                            <div class="form_tit">
+                                <div class="big">신청정보</div>
+                            </div>
+                            <ul class="form_list">
                                 <li>
                                     <div class="gubun req"><p>상반신 사진</p></div>
                                     <div class="naeyong">
@@ -180,7 +288,7 @@
                                         <div class="naeyong">
                                             <ul>
                                                 <li class="bodyPhotoFile_li" style="display: flex; align-items: center;">
-                                                    <c:set var="bodyPhotoFileSrc" value="${fn:replace(bodyPhotoFile.fullFilePath, './usr/local/tomcat/webapps', '../../../../..')}" />
+                                                    <c:set var="bodyPhotoFileSrc" value="${fn:replace(bodyPhotoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                     <img src="${bodyPhotoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                     <a href="/file/download.do?path=member/boarder/${bodyPhotoFile.folderPath}&fileName=${bodyPhotoFile.fullFileName}">${bodyPhotoFile.fileName}</a>
                                                     <input type="hidden" name="bodyPhotoUploadFile" id="${bodyPhotoFile.id}" value="${bodyPhotoFile.fullFilePath}">
@@ -190,22 +298,6 @@
                                         </div>
                                     </li>
                                 </c:if>
-                                <li>
-                                    <div class="gubun req"><p>주소</p></div>
-                                    <div class="naeyong">
-                                        <div class="input form_address">
-                                            <div class="address_box">
-                                                <input type="text" id="address" name="address" value="${info.address}" placeholder="주소">
-                                                <input type="button" onclick="execDaumPostcode('address','addressDetail')" value="주소 검색">
-                                                <div id="map" style="width:300px;height:300px;margin-top:10px;display:none">
-                                                </div>
-                                            </div>
-                                            <div class="address_box">
-                                                <input type="text" id="addressDetail" name="addressDetail" value="${info.addressDetail}" placeholder="상세주소">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
                                 <li>
                                     <div class="gubun req">
                                         <p>상의 사이즈<span>(남여공용)</span></p>
@@ -311,6 +403,37 @@
                                         <div class="cmnt">전공이 없을 시 '없음' 기재</div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="gubun req">
+                                        <p>
+                                            최종학교 졸업 (졸업예정)증명서
+                                        </p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input form_file">
+                                            <input type="text" id="gradeLicense" name="gradeLicense" class="upload_name w50" value="" disabled="disabled">
+                                            <input type="file" id="gradeLicenseFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                            <label for="gradeLicenseFile">파일선택</label>
+                                        </div>
+                                        <div class="cmnt">PNG, JPG 이미지, 10MB 이하로 등록해주세요.</div>
+                                    </div>
+                                </li>
+                                <c:if test="${gradeLicenseFile ne null and not empty gradeLicenseFile}">
+                                    <li>
+                                        <div class="gubun"><p>저장된 최종학교 졸업 (졸업예정)증명서</p></div>
+                                        <div class="naeyong">
+                                            <ul>
+                                                <li class="gradeLicenseFile_li" style="display: flex; align-items: center;">
+                                                    <c:set var="gradeLicenseFileSrc" value="${fn:replace(gradeLicenseFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                    <img src="${gradeLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
+                                                    <a href="/file/download.do?path=member/boarder/${gradeLicenseFile.folderPath}&fileName=${gradeLicenseFile.fullFileName}">${gradeLicenseFile.fileName}</a>
+                                                    <input type="hidden" name="gradeLicenseUploadFile" id="${gradeLicenseFile.id}" value="${gradeLicenseFile.fullFilePath}">
+                                                    <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${gradeLicenseFile.id}')">X</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </c:if>
                             </ul>
                         </div>
                         <!-- //최종학력 -->
@@ -377,6 +500,19 @@
                                             </div>
                                         </div>
                                     </li>
+                                    <li>
+                                        <div class="gubun">
+                                            <p>관련분야 경력증명서</p>
+                                        </div>
+                                        <div class="naeyong">
+                                            <div class="input form_file">
+                                                <input type="text" id="careerLicense1" name="careerLicense" class="upload_name w50" value="" disabled="disabled">
+                                                <input type="file" id="careerLicenseFile1" name="careerLicenseFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                <label for="careerLicenseFile1">파일선택</label>
+                                            </div>
+                                            <div class="cmnt">PNG, JPG 이미지, 10MB 이하로 등록해주세요.</div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </c:if>
 
@@ -438,6 +574,40 @@
                                                 </div>
                                             </div>
                                         </li>
+                                        <li>
+                                            <div class="gubun">
+                                                <p>관련분야 경력증명서</p>
+                                            </div>
+                                            <div class="naeyong">
+                                                <div class="input form_file">
+                                                    <input type="text" id="careerLicense${status.index + 1}" name="careerLicense" class="upload_name w50" value="" disabled="disabled">
+                                                    <input type="file" id="careerLicenseFile${status.index + 1}" name="careerLicenseFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                    <label for="careerLicenseFile${status.index + 1}">파일선택</label>
+                                                </div>
+                                                <div class="cmnt">PNG, JPG 이미지, 10MB 이하로 등록해주세요.</div>
+                                            </div>
+                                        </li>
+                                        <c:if test="${careerLicenseFileList ne null and not empty careerLicenseFileList}">
+                                            <li class="preFileList">
+                                                <div class="gubun"><p>저장된 관련분야 경력증명서</p></div>
+                                                <div class="naeyong">
+                                                    <ul>
+                                                        <c:forEach var="careerLicenseFile" items="${careerLicenseFileList}" begin="0" end="${careerLicenseFileList.size()}" step="1">
+                                                            <c:set var="idx" value="${status.index + 1}"/>
+                                                            <c:if test="${fn:contains(careerLicenseFile.note, 'careerLicense'.concat(idx.toString()))}">
+                                                                <li class="careerLicenseFile_li" style="display: flex; align-items: center;">
+                                                                    <c:set var="careerLicenseFileSrc" value="${fn:replace(careerLicenseFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                    <img src="${careerLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
+                                                                    <a href="/file/download.do?path=member/boarder/${careerLicenseFile.folderPath}&fileName=${careerLicenseFile.fullFileName}">${careerLicenseFile.fileName}</a>
+                                                                    <input type="hidden" name="careerLicenseUploadFile" id="${careerLicenseFile.id}" value="${careerLicenseFile.fullFilePath}">
+                                                                    <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${careerLicenseFile.id}')">X</button>
+                                                                </li>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </c:if>
                                     </ul>
                                 </c:forEach>
                             </c:if>
@@ -602,78 +772,6 @@
                             </ul>
                         </div>
                         <!-- //상세정보 -->
-
-                        <!-- 첨부파일 -->
-                        <div class="form_box">
-                            <div class="form_tit">
-                                <div class="big">첨부파일</div>
-                            </div>
-                            <ul class="form_list">
-                                <li>
-                                    <div class="gubun req">
-                                        <p>
-                                            최종학교 졸업 (졸업예정)증명서
-                                        </p>
-                                    </div>
-                                    <div class="naeyong">
-                                        <div class="input form_file">
-                                            <input type="text" id="gradeLicense" name="gradeLicense" class="upload_name w50" value="" disabled="disabled">
-                                            <input type="file" id="gradeLicenseFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
-                                            <label for="gradeLicenseFile">파일선택</label>
-                                        </div>
-                                        <div class="cmnt">PNG, JPG 이미지, 10MB 이하로 등록해주세요.</div>
-                                    </div>
-                                </li>
-                                <c:if test="${gradeLicenseFile ne null and not empty gradeLicenseFile}">
-                                    <li>
-                                        <div class="gubun"><p>저장된 최종학교 졸업 (졸업예정)증명서</p></div>
-                                        <div class="naeyong">
-                                            <ul>
-                                                <li class="gradeLicenseFile_li" style="display: flex; align-items: center;">
-                                                    <c:set var="gradeLicenseFileSrc" value="${fn:replace(gradeLicenseFile.fullFilePath, './usr/local/tomcat/webapps', '../../../../..')}" />
-                                                    <img src="${gradeLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                    <a href="/file/download.do?path=member/boarder/${gradeLicenseFile.folderPath}&fileName=${gradeLicenseFile.fullFileName}">${gradeLicenseFile.fileName}</a>
-                                                    <input type="hidden" name="bodyPhotoUploadFile" id="${gradeLicenseFile.id}" value="${gradeLicenseFile.fullFilePath}">
-                                                    <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${gradeLicenseFile.id}')">X</button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </c:if>
-                                <li>
-                                    <div class="gubun">
-                                        <p>
-                                            관련분야 경력증명서
-                                        </p>
-                                    </div>
-                                    <div class="naeyong">
-                                        <div class="input form_file">
-                                            <input type="text" id="careerLicense" name="careerLicense" class="upload_name w50" value="" disabled="disabled">
-                                            <input type="file" id="careerLicenseFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
-                                            <label for="careerLicenseFile">파일선택</label>
-                                        </div>
-                                        <div class="cmnt">PNG, JPG 이미지, 10MB 이하로 등록해주세요.</div>
-                                    </div>
-                                </li>
-                                <c:if test="${careerLicenseFile ne null and not empty careerLicenseFile}">
-                                    <li>
-                                        <div class="gubun"><p>저장된 관련분야 경력증명서</p></div>
-                                        <div class="naeyong">
-                                            <ul>
-                                                <li class="careerLicenseFile_li" style="display: flex; align-items: center;">
-                                                    <c:set var="careerLicenseFileSrc" value="${fn:replace(careerLicenseFile.fullFilePath, './usr/local/tomcat/webapps', '../../../../..')}" />
-                                                    <img src="${careerLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                    <a href="/file/download.do?path=member/boarder/${careerLicenseFile.folderPath}&fileName=${careerLicenseFile.fullFileName}">${careerLicenseFile.fileName}</a>
-                                                    <input type="hidden" name="bodyPhotoUploadFile" id="${careerLicenseFile.id}" value="${careerLicenseFile.fullFilePath}">
-                                                    <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${careerLicenseFile.id}')">X</button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </c:if>
-                            </ul>
-                        </div>
-                        <!-- //첨부파일 -->
 
                         <!-- 자기소개서 -->
                         <div class="form_box">
@@ -840,6 +938,17 @@
 <script src="<%request.getContextPath();%>/static/js/form.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
+<script>
+    $(function(){
+        $('#birth-year').val('${memberInfo.birthYear}');
+        $('#birth-month').val('${memberInfo.birthMonth}');
+        $('#birth-day').val('${memberInfo.birthDay}');
+
+        $('#birth-year option').prop('disabled',true);
+        $('#birth-month option').prop('disabled',true);
+        $('#birth-day option').prop('disabled',true);
+    });
+</script>
 </c:if>
 </body>
 </html>

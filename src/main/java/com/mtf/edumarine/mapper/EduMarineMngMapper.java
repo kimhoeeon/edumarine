@@ -292,4 +292,72 @@ public interface EduMarineMngMapper {
     Integer updateSailyachtApplyStatus(SailyachtDTO info);
 
     Integer updateInboarderApplyStatus(InboarderDTO info);
+
+    BoarderDTO selectBoarderSingle(String seq);
+
+    PaymentDTO selectPaymentTableSeq(String seq);
+
+    Integer updatePaymentCancelResult(PaymentDTO updCancelPayment);
+
+    FrpDTO selectFrpSingle(String seq);
+
+    OutboarderDTO selectOutboarderSingle(String seq);
+
+    SailyachtDTO selectSailyachtSingle(String seq);
+
+    Integer updateRegularApplyStatus(RegularDTO info);
+
+    List<AdminDTO> selectAdminMngList(SearchDTO searchDTO);
+
+    AdminDTO selectAdminMngSingle(AdminDTO adminDTO);
+
+    Integer selectAdminMngCheckDuplicateId(AdminDTO adminDTO);
+
+    Integer updateAdminMng(AdminDTO adminDTO);
+
+    String getAdminSeq();
+
+    Integer insertAdminMng(AdminDTO adminDTO);
+
+    void updateAdminMngLoginYn(AdminDTO adminDTO);
+
+    void updateAdminMngValidYn(AdminDTO reqAdminDTO);
+
+    AdminDTO selectAdminMngSingleId(AdminDTO adminDTO);
+
+    Integer updateTrainEarlyClosingYn(TrainDTO trainDTO);
+
+    List<CareerDTO> selectCareerList(String boarderSeq);
+
+    List<LicenseDTO> selectLicenseList(String boarderSeq);
+
+    List<FileDTO> selectFileList(String userId);
+
+    List<ResumeDTO> selectResumeList(SearchDTO searchDTO);
+
+    ResumeDTO selectResumeSingle(ResumeDTO resumeDTO);
+
+    List<SmsSendDTO> selectSmsSendList(SearchDTO searchDTO);
+
+    List<SmsSendDTO> selectSmsSendRegularList();
+
+    List<SmsSendDTO> selectSmsSendBoarderList();
+
+    List<SmsSendDTO> selectSmsSendFrpList();
+
+    List<SmsSendDTO> selectSmsSendOutboarderList();
+
+    List<SmsSendDTO> selectSmsSendInboarderList();
+
+    List<SmsSendDTO> selectSmsSendSailyachtList();
+
+    List<FaqDTO> selectFaqList(SearchDTO searchDTO);
+
+    FaqDTO selectFaqSingle(FaqDTO faqDTO);
+
+    Integer updateFaq(FaqDTO faqDTO);
+
+    String getFaqSeq();
+
+    Integer insertFaq(FaqDTO faqDTO);
 }

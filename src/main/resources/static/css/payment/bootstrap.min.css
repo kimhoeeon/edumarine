@@ -4308,7 +4308,7 @@ fieldset:disabled .btn {
     border-top-right-radius: 0
 }
 
-.nav {
+#inicisModalDiv .nav {
     display: flex;
     flex-wrap: wrap;
     padding-left: 0;

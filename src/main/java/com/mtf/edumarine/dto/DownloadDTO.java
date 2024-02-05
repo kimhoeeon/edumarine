@@ -12,6 +12,8 @@ public class DownloadDTO {
     String seq; //순번
     String downloadFileName; //다운로드파일명
     String targetMenu; //메뉴위치
+    String downloadReason; //다운로드사유
+    String downloadUser; //다운로드한 관리자ID
     String note; //비고
     String initRegiPic; //최초 등록 담당자
     String initRegiDttm; //최초 등록 일시

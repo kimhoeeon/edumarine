@@ -4,7 +4,6 @@ import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineMngService;
-import com.mtf.edumarine.util.SHA512;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import org.apache.poi.ss.usermodel.*;
@@ -30,11 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -103,12 +99,128 @@ public class EduMarineMngController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping("/mng/logoutCheck.do")
+    @RequestMapping(value = "/mng/logoutCheck.do", method = RequestMethod.POST)
     public ModelAndView logoutCheck(HttpSession session, ModelAndView mv) {
         System.out.println("EduMarineMngController > logoutCheck");
         eduMarineMngService.logoutCheck(session);
         mv.setViewName("/mng/index");
         return mv;
+    }
+
+    boolean isClose = false;
+    @RequestMapping(value = "/mng/session/kill/gbn.do", method = RequestMethod.POST)
+    @ResponseBody
+    public void mng_session_kill_gbn(boolean isClose, HttpSession session) throws Exception {
+        System.out.println("EduMarineMngController > mng_session_kill_gbn");
+        this.isClose = isClose;
+
+        if ( !isClose ) {
+            System.out.println("Refresh Site");
+            return ;
+        }
+
+        Thread.sleep(2000);
+        if ( this.isClose ) {
+            System.out.println("Log Out");
+            eduMarineMngService.logoutCheck(session);
+        }
+
+    }
+
+
+    //***************************************************************************
+    // board Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/adminMng/admin.do", method = RequestMethod.GET)
+    public ModelAndView mng_adminMng_admin() {
+        System.out.println("EduMarineMngController > mng_adminMng_admin");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/adminMng/admin");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/adminMng/admin/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_adminMng_admin_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_adminMng_admin_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            AdminDTO adminDTO = new AdminDTO();
+            adminDTO.setSeq(seq);
+            AdminDTO info = eduMarineMngService.processSelectAdminMngSingle(adminDTO);
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/mng/adminMng/admin/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/adminMng/admin/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<AdminDTO>> mng_adminMng_admin_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_adminMng_admin_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<AdminDTO> responseList = eduMarineMngService.processSelectAdminMngList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/adminMng/admin/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<AdminDTO> mng_adminMng_admin_selectSingle(@RequestBody AdminDTO adminDTO) {
+        System.out.println("EduMarineMngController > mng_adminMng_admin_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        AdminDTO response = eduMarineMngService.processSelectAdminMngSingleId(adminDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/adminMng/admin/checkDuplicateId.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> mng_adminMng_admin_checkDuplicateId(@RequestBody AdminDTO adminDTO) {
+        System.out.println("EduMarineMngController > mng_adminMng_admin_checkDuplicateId");
+        //System.out.println(searchDTO.toString());
+        Integer result = eduMarineMngService.processSelectAdminMngCheckDuplicateId(adminDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/adminMng/admin/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_adminMng_admin_update(@RequestBody AdminDTO adminDTO) {
+        System.out.println("EduMarineMngController > mng_adminMng_admin_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateAdminMng(adminDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/adminMng/admin/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_adminMng_admin_insert(@RequestBody AdminDTO adminDTO, HttpSession session) {
+        System.out.println("EduMarineMngController > mng_adminMng_admin_insert");
+        //System.out.println(noticeDTO.toString());
+
+        String regiPic = session.getAttribute("id").toString();
+        adminDTO.setInitRegiPic(regiPic);
+        adminDTO.setFinalRegiPic(regiPic);
+        ResponseDTO responseDTO = eduMarineMngService.processInsertAdminMng(adminDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/adminMng/admin/updateValidYn.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_adminMng_admin_checkValidYn(@RequestBody AdminDTO adminDTO) {
+        System.out.println("EduMarineMngController > mng_adminMng_admin_checkValidYn");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processCheckAdminMngValidYn(adminDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //***************************************************************************
@@ -1030,6 +1142,74 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/board/faq.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_faq() {
+        System.out.println("EduMarineMngController > mng_board_faq");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/faq");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/faq/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<FaqDTO>> mng_board_faq_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_board_faq_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<FaqDTO> responseList = eduMarineMngService.processSelectFaqList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<FaqDTO> mng_board_faq_selectSingle(@RequestBody FaqDTO faqDTO) {
+        System.out.println("EduMarineMngController > mng_board_faq_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        FaqDTO response = eduMarineMngService.processSelectFaqSingle(faqDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_faq_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_board_faq_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            FaqDTO faqDTO = new FaqDTO();
+            faqDTO.setSeq(seq);
+            FaqDTO info = eduMarineMngService.processSelectFaqSingle(faqDTO);
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/mng/board/faq/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/faq/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_faq_update(@RequestBody FaqDTO faqDTO) {
+        System.out.println("EduMarineMngController > mng_board_faq_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateFaq(faqDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_faq_insert(@RequestBody FaqDTO faqDTO) {
+        System.out.println("EduMarineMngController > mng_center_board_faq_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertFaq(faqDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/pop/popup.do", method = RequestMethod.GET)
     public ModelAndView mng_pop_popup() {
         System.out.println("EduMarineMngController > mng_pop_popup");
@@ -1288,6 +1468,96 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/customer/resume.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_resume() {
+        System.out.println("EduMarineMngController > mng_customer_resume");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/customer/resume");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/resume/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ResumeDTO>> mng_customer_resume_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_customer_resume_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ResumeDTO> responseList = eduMarineMngService.processSelectResumeList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/resume/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_resume_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_resume_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            ResumeDTO resumeDTO = new ResumeDTO();
+            resumeDTO.setSeq(seq);
+            ResumeDTO info = eduMarineMngService.processSelectResumeSingle(resumeDTO);
+            mv.addObject("info", info);
+
+            if(info != null){
+                /* 첨부파일 정보 Set */
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(info.getSeq());
+                List<FileDTO> bodyPhotoFile = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+                if(bodyPhotoFile != null  && !bodyPhotoFile.isEmpty()){
+                    for (FileDTO fileInfo : bodyPhotoFile) {
+                        if ("bodyPhoto".equals(fileInfo.getNote())) {
+                            mv.addObject("bodyPhotoFile", fileInfo);
+                        }
+                    }
+                }
+            }
+        }
+
+        mv.setViewName("/mng/customer/resume/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/resume/detail/multi.do", method = RequestMethod.POST)
+    public ModelAndView mng_customer_resume_detail_multi(String seqList) {
+        System.out.println("EduMarineMngController > mng_customer_resume_detail_multi");
+        ModelAndView mv = new ModelAndView();
+
+        if(seqList != null && !"".equals(seqList)){
+
+            List<ResumeDTO> resumeList = new ArrayList<>();
+            String[] seqSplitArr = seqList.split(",");
+            for(int i=0; i<seqSplitArr.length; i++){
+                String seq = seqSplitArr[i];
+
+                ResumeDTO resumeDTO = new ResumeDTO();
+                resumeDTO.setSeq(seq);
+                ResumeDTO info = eduMarineMngService.processSelectResumeSingle(resumeDTO);
+
+                if(info != null){
+                    /* 첨부파일 정보 Set */
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setUserId(info.getSeq());
+                    List<FileDTO> bodyPhotoFile = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+                    if(bodyPhotoFile != null  && !bodyPhotoFile.isEmpty()){
+                        for (FileDTO fileInfo : bodyPhotoFile) {
+                            if ("bodyPhoto".equals(fileInfo.getNote())) {
+                                info.setBodyPhotoFileSrc(fileInfo.getFullFilePath());
+                            }
+                        }
+                    }
+                }
+
+                resumeList.add(info);
+            }
+
+            mv.addObject("resumeList", resumeList);
+
+        }
+
+        mv.setViewName("/mng/customer/resume/detail");
+        return mv;
+    }
+
     @RequestMapping(value = "/mng/customer/regular.do", method = RequestMethod.GET)
     public ModelAndView mng_customer_regular() {
         System.out.println("EduMarineMngController > mng_customer_regular");
@@ -1338,6 +1608,13 @@ public class EduMarineMngController {
             regularDTO.setSeq(seq);
             RegularDTO info = eduMarineMngService.processSelectRegularSingle(regularDTO);
             mv.addObject("info", info);
+
+            if(info != null){
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+            }
         }
 
         mv.setViewName("/mng/customer/regular/detail");
@@ -1366,11 +1643,77 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/customer/regular/status/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_regular_status_update(@RequestBody List<RegularDTO> regularList) {
+        System.out.println("EduMarineMngController > mng_customer_regular_status_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateRegularApplyStatus(regularList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_regular_status_change_update(@RequestBody List<RegularDTO> regularList) {
+        System.out.println("EduMarineMngController > mng_customer_regular_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateRegularApplyStatusChange(regularList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/customer/boarder.do", method = RequestMethod.GET)
     public ModelAndView mng_customer_boarder() {
         System.out.println("EduMarineMngController > mng_customer_boarder");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/customer/boarder");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/boarder/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_boarder_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_boarder_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            BoarderDTO info = eduMarineMngService.processSelectBoarderSingle(seq);
+
+            if(info != null){
+                mv.addObject("info", info);
+
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+
+                String boarderSeq = info.getSeq();
+
+                List<CareerDTO> careerList = eduMarineMngService.processSelectCareerList(boarderSeq);
+                mv.addObject("careerList", careerList);
+
+                List<LicenseDTO> licenseList = eduMarineMngService.processSelectLicenseList(boarderSeq);
+                mv.addObject("licenseList", licenseList);
+
+                /* 첨부파일 정보 Set */
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(boarderSeq);
+                List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+                if(fileList != null && !fileList.isEmpty()){
+                    for(FileDTO fileInfo : fileList){
+                        if("bodyPhoto".equals(fileInfo.getNote())){
+                            mv.addObject("bodyPhotoFileInfo", fileInfo);
+                        }else if("gradeLicense".equals(fileInfo.getNote())){
+                            mv.addObject("gradeLicenseFileInfo", fileInfo);
+                        }else if("careerLicense".equals(fileInfo.getNote())){
+                            mv.addObject("careerLicenseFileInfo", fileInfo);
+                        }
+                    }
+                }
+            }
+        }
+
+        mv.setViewName("/mng/customer/boarder/detail");
         return mv;
     }
 
@@ -1391,6 +1734,16 @@ public class EduMarineMngController {
         System.out.println("EduMarineMngController > mng_customer_boarder_status_update");
 
         ResponseDTO responseDTO = eduMarineMngService.processUpdateBoarderApplyStatus(boarderList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/boarder/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_boarder_status_change_update(@RequestBody List<BoarderDTO> boarderList) {
+        System.out.println("EduMarineMngController > mng_customer_boarder_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateBoarderApplyStatusChange(boarderList);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1424,6 +1777,62 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/customer/frp/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_frp_status_change_update(@RequestBody List<FrpDTO> frpList) {
+        System.out.println("EduMarineMngController > mng_customer_frp_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateFrpApplyStatusChange(frpList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/frp/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_frp_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_frp_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            FrpDTO info = eduMarineMngService.processSelectFrpSingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null){
+
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+
+                String boarderSeq = info.getSeq();
+
+                List<CareerDTO> careerList = eduMarineMngService.processSelectCareerList(boarderSeq);
+                mv.addObject("careerList", careerList);
+
+                List<LicenseDTO> licenseList = eduMarineMngService.processSelectLicenseList(boarderSeq);
+                mv.addObject("licenseList", licenseList);
+
+                /* 첨부파일 정보 Set */
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(boarderSeq);
+                List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+                if(fileList != null && !fileList.isEmpty()){
+                    for(FileDTO fileInfo : fileList){
+                        if("bodyPhoto".equals(fileInfo.getNote())){
+                            mv.addObject("bodyPhotoFileInfo", fileInfo);
+                        }else if("gradeLicense".equals(fileInfo.getNote())){
+                            mv.addObject("gradeLicenseFileInfo", fileInfo);
+                        }else if("careerLicense".equals(fileInfo.getNote())){
+                            mv.addObject("careerLicenseFileInfo", fileInfo);
+                        }
+                    }
+                }
+            }
+        }
+
+        mv.setViewName("/mng/customer/frp/detail");
+        return mv;
+    }
+
     @RequestMapping(value = "/mng/customer/outboarder.do", method = RequestMethod.GET)
     public ModelAndView mng_customer_outboarder() {
         System.out.println("EduMarineMngController > mng_customer_outboarder");
@@ -1451,6 +1860,37 @@ public class EduMarineMngController {
         ResponseDTO responseDTO = eduMarineMngService.processUpdateOutboarderApplyStatus(outboarderList);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/outboarder/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_outboarder_status_change_update(@RequestBody List<OutboarderDTO> outboarderList) {
+        System.out.println("EduMarineMngController > mng_customer_outboarder_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateOutboarderApplyStatusChange(outboarderList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/outboarder/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_outboarder_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_outboarder_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            OutboarderDTO info = eduMarineMngService.processSelectOutboarderSingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null){
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+            }
+        }
+
+        mv.setViewName("/mng/customer/outboarder/detail");
+        return mv;
     }
 
     @RequestMapping(value = "/mng/customer/inboarder.do", method = RequestMethod.GET)
@@ -1503,6 +1943,13 @@ public class EduMarineMngController {
             inboarderDTO.setSeq(seq);
             InboarderDTO info = eduMarineMngService.processSelectInboarderSingle(inboarderDTO);
             mv.addObject("info", info);
+
+            if(info != null){
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+            }
         }
 
         mv.setViewName("/mng/customer/inboarder/detail");
@@ -1541,6 +1988,16 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/customer/inboarder/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_inboarder_status_change_update(@RequestBody List<InboarderDTO> inboarderList) {
+        System.out.println("EduMarineMngController > mng_customer_inboarder_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateInboarderApplyStatusChange(inboarderList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/customer/sailyacht.do", method = RequestMethod.GET)
     public ModelAndView mng_customer_sailyacht() {
         System.out.println("EduMarineMngController > mng_customer_sailyacht");
@@ -1568,6 +2025,39 @@ public class EduMarineMngController {
         ResponseDTO responseDTO = eduMarineMngService.processUpdateSailyachtApplyStatus(sailyachtList);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/sailyacht/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_sailyacht_status_change_update(@RequestBody List<SailyachtDTO> sailyachtList) {
+        System.out.println("EduMarineMngController > mng_customer_sailyacht_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateSailyachtApplyStatusChange(sailyachtList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/sailyacht/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_sailyacht_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_sailyacht_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            SailyachtDTO sailyachtDTO = new SailyachtDTO();
+            sailyachtDTO.setSeq(seq);
+            SailyachtDTO info = eduMarineMngService.processSelectSailyachtSingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null){
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+            }
+        }
+
+        mv.setViewName("/mng/customer/sailyacht/detail");
+        return mv;
     }
 
     @RequestMapping(value = "/mng/education/train.do", method = RequestMethod.GET)
@@ -1644,6 +2134,17 @@ public class EduMarineMngController {
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineMngService.processInsertTrain(trainDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/education/train/earlyClosingYn.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_education_train_earlyClosing(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_earlyClosing");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateTrainEarlyClosing(trainDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1822,6 +2323,17 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/smsMng/sms/send/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<SmsSendDTO>> mng_smsMng_sms_send_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_smsMng_sms_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<SmsSendDTO> responseList = eduMarineMngService.processSelectSmsSendList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/smsMng/sms/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_smsMng_sms_detail(String seq) {
         System.out.println("EduMarineMngController > mng_smsMng_sms_detail");
@@ -1835,6 +2347,14 @@ public class EduMarineMngController {
         }
 
         mv.setViewName("/mng/smsMng/sms/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/smsMng/sms/send.do", method = RequestMethod.GET)
+    public ModelAndView mng_smsMng_sms_send() {
+        System.out.println("EduMarineMngController > mng_smsMng_sms_send");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/smsMng/sms/send");
         return mv;
     }
 
@@ -1923,10 +2443,11 @@ public class EduMarineMngController {
 
     @RequestMapping(value = "/mng/file/download/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_file_download_insert(@RequestBody DownloadDTO downloadDTO) {
+    public ResponseEntity<ResponseDTO> mng_file_download_insert(@RequestBody DownloadDTO downloadDTO, HttpSession session) {
         System.out.println("EduMarineMngController > mng_file_download_insert");
         //System.out.println(noticeDTO.toString());
 
+        downloadDTO.setDownloadUser(String.valueOf(session.getAttribute("id")));
         ResponseDTO responseDTO = eduMarineMngService.processInsertDownload(downloadDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
@@ -1984,86 +2505,6 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/payment/cancel.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_payment_cancel(@RequestBody RegularDTO regularDTO) {
-        System.out.println("EduMarineMngController > apply_payment_cancel");
-        //System.out.println(memberDTO.toString());
-
-        ResponseDTO responseDTO = new ResponseDTO();
-
-        /* 이니시스 취소 API CALL */
-
-        SHA512 sha512 = new SHA512();
-        Date date_now = new Date(System.currentTimeMillis());
-        SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMddHHmmss");
-
-        //step1. 요청을 위한 파라미터 설정
-        String key = "ItEQKi3rY7uvDS8l";
-        String mid = "INIpayTest";
-        String type = "refund";
-        String timestamp = fourteen_format.format(date_now);
-        String clientIp = "127.0.0.1";
-
-
-        Map<String, Object> data1 = new HashMap<String, Object>();
-        data1.put("tid", "");
-        data1.put("msg", "환불 요청합니다. 사유 : ");
-
-        JSONObject data = new JSONObject(data1);
-
-
-        // Hash Encryption
-        String plainTxt = key + mid + type + timestamp + data ;
-        plainTxt = plainTxt.replaceAll("\\\\", "");
-        String hashData = sha512.hash(plainTxt);
-
-
-        // reqeust URL
-        String apiUrl = "https://iniapi.inicis.com/v2/pg/refund";
-
-        JSONObject respJson = new JSONObject();
-        respJson.put("mid", mid);
-        respJson.put("type", type);
-        respJson.put("timestamp",timestamp);
-        respJson.put("clientIp",clientIp);
-        respJson.put("data",data);
-        respJson.put("hashData",hashData);
-
-
-        //step2. key=value 로 post 요청
-        try {
-            URL reqUrl = new URL(apiUrl);
-            HttpURLConnection conn = (HttpURLConnection) reqUrl.openConnection();
-
-            if (conn != null) {
-                conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                conn.setRequestMethod("POST");
-                conn.setDefaultUseCaches(false);
-                conn.setDoOutput(true);
-
-                if (conn.getDoOutput()) {
-                    conn.getOutputStream().write(respJson.toString().getBytes(StandardCharsets.UTF_8));
-                    conn.getOutputStream().flush();
-                    conn.getOutputStream().close();
-                }
-
-                conn.connect();
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-
-                //step3. 요청 결과
-                System.out.println(br.readLine());
-                br.close();
-            }
-
-        }catch(Exception e ) {
-            e.printStackTrace();
-        }
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
     /*********************** file upload ***********************/
 
     @RequestMapping(value = "/file/upload/save.do", method = RequestMethod.POST)
@@ -2116,10 +2557,10 @@ public class EduMarineMngController {
         try {
             String path = "";
             if("mail".equals(gbn)){
-                path = ResourceUtils.getFile("./usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + gbn + "/").toPath().toString();
+                path = ResourceUtils.getFile("/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + gbn + "/").toPath().toString();
             }else{
                 /* prod */
-                path = ResourceUtils.getFile("./usr/local/tomcat/webapps/upload/" + gbn + "/").toPath().toString();
+                path = ResourceUtils.getFile("/usr/local/tomcat/webapps/upload/" + gbn + "/").toPath().toString();
             }
 
             /* 날짜로 폴더 setting
@@ -2248,10 +2689,10 @@ public class EduMarineMngController {
 
         String file_repo = "";
         if("mail".equals(path)){
-            file_repo = ResourceUtils.getFile("./usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path + "/").toPath().toString();
+            file_repo = ResourceUtils.getFile("/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path + "/").toPath().toString();
         }else {
             // 파일 업로드된 경로
-            file_repo = ResourceUtils.getFile("./usr/local/tomcat/webapps/upload/" + path + "/").toPath().toString();
+            file_repo = ResourceUtils.getFile("/usr/local/tomcat/webapps/upload/" + path + "/").toPath().toString();
         }
         // 서버에 실제 저장된 파일명
         //String filename = "20140819151221.zip" ;
@@ -2651,6 +3092,17 @@ public class EduMarineMngController {
         //System.out.println(fileDTO.toString());
 
         SmsResponseDTO response = commService.smsSend(smsDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/sms/send/certNum.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<SmsResponseDTO> processSmsSend_certNum(@RequestBody SmsDTO smsDTO) {
+        System.out.println("EduMarineMngController > processSmsSend_certNum");
+        //System.out.println(fileDTO.toString());
+
+        SmsResponseDTO response = commService.smsSend_certNum(smsDTO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

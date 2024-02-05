@@ -17,4 +17,14 @@ public class SearchDTO extends AbstractPagingRequestVo {
     String year; //년도
     String category; //카테고리
     String applyStatus; //신청상태
+    String grade; //등급
+    Integer time; //차시
+    String sendYn; //수신허용여부
+    String result; //결과
+    String blockYn;
+    String sex;
+    String keyword;
+    String exposureYn;
+    String experienceYn;
+    String jobSupportYn;
 }

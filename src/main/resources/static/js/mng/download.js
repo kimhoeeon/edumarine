@@ -23,7 +23,6 @@ function f_file_download_search(){
     let searchText = $('#search_text').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
         };
     }else{
         jsonObj = {

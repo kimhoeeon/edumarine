@@ -21,12 +21,15 @@ function f_board_community_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
+
+    let gbn = $('#condition_gbn option:selected').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
+            gbn: gbn
         };
     }else{
         jsonObj = {
+            gbn: gbn ,
             condition: condition ,
             searchText: searchText
         }

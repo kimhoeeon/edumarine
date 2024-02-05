@@ -89,12 +89,15 @@ function f_education_payment_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
+
+    let status = $('#condition_status option:selected').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
+            applyStatus: status
         };
     }else{
         jsonObj = {
+            applyStatus: status ,
             condition: condition ,
             searchText: searchText
         }
@@ -128,6 +131,7 @@ function f_education_payment_search(){
 function f_education_payment_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_status').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_education_payment_search();
@@ -192,30 +196,6 @@ function f_education_payment_remove(seq){
             }
         });
 
-        /*let jsonObj = {
-            seq: seq
-        }
-        Swal.fire({
-            title: '선택한 결제 내역을 삭제하시겠습니까?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                let resData = ajaxConnect('/mng/education/payment/delete.do', 'post', jsonObj);
-
-                if (resData.resultCode === "0") {
-                    showMessage('', 'info', '결제 내역 삭제', '결제 내역이 삭제되었습니다.', '');
-                    f_education_payment_search(); // 삭제 성공 후 재조회 수행
-                } else {
-                    showMessage('', 'error', '에러 발생', '결제 내역 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                }
-            }
-        });*/
     }
 }
 

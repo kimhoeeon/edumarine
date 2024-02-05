@@ -10,6 +10,7 @@ import lombok.ToString;
 public class InboarderDTO {
     Integer rownum; //연번
     String seq; //순번
+    String grade;
     String id;
     String memberSeq;
     String trainSeq;
@@ -27,6 +28,7 @@ public class InboarderDTO {
     String payYn; //결제여부
     Integer paySum; //결제금액
     String applyStatus;
+    String cancelDttm; //취소신청일시
     String cancelReason;
     String delYn; //임시휴지통여부
     String note; //비고
@@ -36,4 +38,5 @@ public class InboarderDTO {
     String finalRegiDttm; //최종 변경 일시
 
     String preApplyStatus;
+    String cancelGbn;
 }
