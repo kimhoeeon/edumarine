@@ -21,12 +21,15 @@ function f_board_press_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
+
+    let gbn = $('#condition_gbn option:selected').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
+            gbn: gbn
         };
     }else{
         jsonObj = {
+            gbn: gbn ,
             condition: condition ,
             searchText: searchText
         }
@@ -60,6 +63,7 @@ function f_board_press_search(){
 function f_board_press_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_gbn').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_board_press_search();
@@ -76,11 +80,11 @@ function f_board_press_detail_modal_set(seq){
     /* 보도자료 상세보기 Modal form Set */
     //console.log(resData);
 
-    if(resData.lang==="KO"){
+    /*if(resData.lang==="KO"){
         document.querySelector('#md_lang').value = '국문';
     }else{
         document.querySelector('#md_lang').value = '영문';
-    }
+    }*/
 
     document.querySelector('#md_title').value = resData.title;
     document.querySelector('#md_writer').value = resData.writer;
@@ -162,30 +166,6 @@ function f_board_press_remove(seq){
             }
         });
 
-        /*let jsonObj = {
-            seq: seq
-        }
-        Swal.fire({
-            title: '선택한 보도자료를 삭제하시겠습니까?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                let resData = ajaxConnect('/mng/board/press/delete.do', 'post', jsonObj);
-
-                if (resData.resultCode === "0") {
-                    showMessage('', 'info', '보도자료 삭제', '보도자료가 삭제되었습니다.', '');
-                    f_board_press_search(); // 삭제 성공 후 재조회 수행
-                } else {
-                    showMessage('', 'error', '에러 발생', '보도자료 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                }
-            }
-        });*/
     }
 }
 

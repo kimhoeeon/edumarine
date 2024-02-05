@@ -115,29 +115,35 @@ function searchPosts(pageNum, categoryValue) {
             let trainEndDttm = results[i].trainEndDttm;
             let applyStartDttm = results[i].applyStartDttm;
             let applyEndDttm = results[i].applyEndDttm;
+            let trainNote = results[i].trainNote;
 
             let paySum = results[i].paySum;
             let trainCnt = results[i].trainCnt;
             let trainApplyCnt = results[i].trainApplyCnt;
+            let closingYn = results[i].closingYn;
 
             // 마감여부체크
             let trainBtnText = '교육신청';
-            if(applyStartDttm > today){
-                trainBtnText = '접수예정';
-                if(trainStartDttm > today){
-                    trainBtnText = '교육예정';
-                }
-            }else{
-                if(applyEndDttm < today){
-                    trainBtnText = '접수마감';
-                    if(trainEndDttm < today){
-                        trainBtnText = '교육마감';
+            if(closingYn === 'N'){
+                if(applyStartDttm > today){
+                    trainBtnText = '접수예정';
+                    if(trainStartDttm > today){
+                        trainBtnText = '교육예정';
                     }
                 }else{
-                    if(trainCnt === trainApplyCnt){
+                    if(applyEndDttm < today){
                         trainBtnText = '접수마감';
+                        if(trainEndDttm < today){
+                            trainBtnText = '교육마감';
+                        }
+                    }else{
+                        if(trainCnt === trainApplyCnt){
+                            trainBtnText = '접수마감';
+                        }
                     }
                 }
+            }else{
+                trainBtnText = '교육마감';
             }
 
             applyStartDttm = applyStartDttm.toString().substring(2);
@@ -225,7 +231,7 @@ function searchPosts(pageNum, categoryValue) {
                                 str += '기타';
                             str += '</div>';
                             str += '<div class="naeyong">';
-                                str += '수료 시, 전액 환급';
+                                str += trainNote;
                             str += '</div>';
                         str += '</li>';
                     str += '</ul>';

@@ -57,6 +57,14 @@ public class PaymentDTO {
     String cardPurchaseName;
     String payDevice; // 결제장치
     String refundReason; //환불사유
+    String cancelGbn; //취소구분(전체/부분)
+    String cancelDate; //[전체]취소일자
+    String cancelTime; //[전체]취소시간
+    String prtcDate; //[부분]취소일자
+    String prtcTime; //[부분]취소시간
+    String cancelTid; //[부분]취소거래번호
+    String prtcPrice; //[부분]취소금액
+    String prtcRemains; //[부분]취소후남은금액
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

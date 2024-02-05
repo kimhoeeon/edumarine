@@ -103,7 +103,7 @@ function searchPosts(pageNum) {
             if(nvl(fullFilePathList, "") !== ""){
                 thumbnailImage = fullFilePathList[0];
                 if(nvl(thumbnailImage,"") !== ""){
-                    thumbnailImage = thumbnailImage.toString().replace('./usr/local/tomcat/webapps', '../../../../..');
+                    thumbnailImage = thumbnailImage.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
                 }
             }
 

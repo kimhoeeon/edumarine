@@ -15,7 +15,10 @@ public class ResumeDTO {
     String nameEn; //이름
     String phone; //연락처
     String email; //이메일
-    String rrn; //주민등록번호
+    String birthYear; //출생년도
+    String birthMonth; //출생월
+    String birthDay; //출생일
+    String sex; //성별
     Integer age; //나이
     String address; //주소
     String addressDetail; //상세주소
@@ -29,4 +32,6 @@ public class ResumeDTO {
     String initRegiDttm; //최초 등록 일시
     String finalRegiPic; //최종 변경 담당자
     String finalRegiDttm; //최종 변경 일시
+
+    String bodyPhotoFileSrc;
 }

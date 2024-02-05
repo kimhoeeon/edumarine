@@ -7,13 +7,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-368L9FRD5B"></script>
+    <script>   window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-368L9FRD5B'); </script>
+
+    <meta name="google-site-verification" content="nOdgBX2kjgySRAVZjwMl-AmYg53q0GxLBOV_qEtG7jk" />
+
+    <meta name="naver-site-verification" content="8027433e606d42e31ef9e566afbd709c593e33bc" />
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="ko">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
+    <meta name="copyright" content="경기테크노파크">
+    <meta name="robots" content="all">
+    <meta property="og:locale" content="ko_KR">
+    <meta itemprop="inLanguage" content="ko-kr">
+    <meta name="resource-type" content="website">
+    <meta property="og:type" content="website">
+
+    <meta property="og:site_name" content="경기해양레저인력양성센터">
     <title>경기해양레저 인력양성센터</title>
+
+    <meta name="title" content="경기해양레저인력양성센터">
+    <meta property="og:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://edumarine.org/main.do">
+    <meta itemprop="name" content="경기해양레저인력양성센터">
+    <meta property="nate:title" content="경기해양레저인력양성센터">
+    <meta property="nate:url" content="https://edumarine.org/main.do">
+
+    <meta property="og:url" content="https://edumarine.org/main.do">
+    <meta itemprop="url" content="https://edumarine.org/main.do">
+    <link rel="canonical" id="canonical" href="https://edumarine.org/main.do">
+
+    <meta name="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta name="twitter:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="og:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta itemprop="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="nate:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+
+    <meta property="og:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta name="keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta property="twitter:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+
+    <meta name="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta name="twitter:image " content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta property="og:image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -34,6 +86,26 @@
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+
+    <%-- favicon --%>
+    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%-- favicon --%>
 
     <style>
         .mainLayerPopup { display:none; position:fixed; width:auto; min-height:100px; top:74px; left:0px; padding:0px;  border:3px solid #242527; background:#fff; overflow:hidden; z-index:9999; }
@@ -86,7 +158,7 @@
                         <div class="swiper">
                             <ul class="swiper-wrapper">
                                 <c:forEach var="mainBanner" items="${bannerList}" begin="0" end="${bannerList.size()}" step="1" varStatus="status">
-                                    <c:set var="bannerFilePathSrc" value="${fn:replace(mainBanner.fullFilePath, './usr/local/tomcat/webapps', '../../../../..')}" />
+                                    <c:set var="bannerFilePathSrc" value="${fn:replace(mainBanner.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                 <li class="swiper-slide img_box">
                                     <img src="${bannerFilePathSrc}" alt="메인 슬라이드_${status.index+1}">
                                 </li>
@@ -184,7 +256,7 @@
                         <ul class="list_body">
                             <c:forEach var="mainEngine" items="${engineList}" begin="0" end="${engineList.size()}" step="1" varStatus="status">
                             <li>
-                                <div class="name"><a href="">${mainEngine.gbn}</a></div>
+                                <div class="name"><a href="/apply/schedule.do">${mainEngine.gbn}</a></div>
                                 <div class="chasi">${mainEngine.nextTime}</div>
                                 <div class="peopleRecruit">${mainEngine.trainCnt}</div>
                                 <div class="peopleApp">${mainEngine.trainApplyCnt}</div>
@@ -218,7 +290,7 @@
                         <ul class="list_body">
                             <c:forEach var="mainFrp" items="${frpList}" begin="0" end="${frpList.size()}" step="1" varStatus="status">
                                 <li>
-                                    <div class="name"><a href="">${mainFrp.gbn}</a></div>
+                                    <div class="name"><a href="/apply/schedule.do">${mainFrp.gbn}</a></div>
                                     <div class="chasi">${mainFrp.nextTime}</div>
                                     <div class="peopleRecruit">${mainFrp.trainCnt}</div>
                                     <div class="peopleApp">${mainFrp.trainApplyCnt}</div>
@@ -252,7 +324,7 @@
                         <ul class="list_body">
                             <c:forEach var="mainOutBoarder" items="${outBoarderList}" begin="0" end="${outBoarderList.size()}" step="1" varStatus="status">
                                 <li>
-                                    <div class="name"><a href="">${mainOutBoarder.gbn}</a></div>
+                                    <div class="name"><a href="/apply/schedule.do">${mainOutBoarder.gbn}</a></div>
                                     <div class="chasi">${mainOutBoarder.nextTime}</div>
                                     <div class="peopleRecruit">${mainOutBoarder.trainCnt}</div>
                                     <div class="peopleApp">${mainOutBoarder.trainApplyCnt}</div>
@@ -286,7 +358,7 @@
                         <ul class="list_body">
                             <c:forEach var="mainInBoarder" items="${inBoarderList}" begin="0" end="${inBoarderList.size()}" step="1" varStatus="status">
                                 <li>
-                                    <div class="name"><a href="">${mainInBoarder.gbn}</a></div>
+                                    <div class="name"><a href="/apply/schedule.do">${mainInBoarder.gbn}</a></div>
                                     <div class="chasi">${mainInBoarder.nextTime}</div>
                                     <div class="peopleRecruit">${mainInBoarder.trainCnt}</div>
                                     <div class="peopleApp">${mainInBoarder.trainApplyCnt}</div>
@@ -320,7 +392,7 @@
                         <ul class="list_body">
                             <c:forEach var="mainSale" items="${saleList}" begin="0" end="${saleList.size()}" step="1" varStatus="status">
                                 <li>
-                                    <div class="name"><a href="">${mainSale.gbn}</a></div>
+                                    <div class="name"><a href="/apply/schedule.do">${mainSale.gbn}</a></div>
                                     <div class="chasi">${mainSale.nextTime}</div>
                                     <div class="peopleRecruit">${mainSale.trainCnt}</div>
                                     <div class="peopleApp">${mainSale.trainApplyCnt}</div>
@@ -436,7 +508,14 @@
         <div class="mainLayerPopup" id="id_popup_${popup.seq}"
              style="position:fixed; top:${popup.topPx}px; left:${imgLeftPosition}px; width:${popup.widthPx}px; display: none;">
             <div class="popupBox" style="padding:0;">
+                <c:if test="${popup.linkUrl ne null and popup.linkUrl ne ''}">
                     ${fn:replace(fn:replace(popup.content,'&lt;','<'),'&gt;','>')}
+                </c:if>
+                <c:if test="${popup.linkUrl eq null or popup.linkUrl eq ''}">
+                    <a href="${popup.linkUrl}" target="_blank">
+                        ${fn:replace(fn:replace(popup.content,'&lt;','<'),'&gt;','>')}
+                    </a>
+                </c:if>
             </div>
             <div class="popupClose">
                 <input type="checkbox" id="id_today_${popup.seq}" onclick="CloseMainPopup('${popup.seq}')">

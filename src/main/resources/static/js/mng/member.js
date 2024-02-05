@@ -33,12 +33,21 @@ function f_customer_member_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
-    if(nullToEmpty(searchText) === ""){
+
+    let grade = $('#condition_grade option:selected').val();
+    let keyword = $('#condition_keyword option:selected').val();
+    let sex = $('#condition_sex option:selected').val();
+    if(nullToEmpty(searchText) === ''){
         jsonObj = {
-            condition: condition
+            grade: grade,
+            keyword: keyword,
+            sex: sex
         };
     }else{
         jsonObj = {
+            grade: grade ,
+            keyword: keyword,
+            sex: sex,
             condition: condition ,
             searchText: searchText
         }
@@ -72,6 +81,9 @@ function f_customer_member_search(){
 function f_customer_member_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_grade').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_keyword').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_sex').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_customer_member_search();

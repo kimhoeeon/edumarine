@@ -9,11 +9,48 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="ko">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
+    <meta name="copyright" content="경기테크노파크">
+    <meta name="robots" content="all">
+    <meta property="og:locale" content="ko_KR">
+    <meta itemprop="inLanguage" content="ko-kr">
+    <meta name="resource-type" content="website">
+    <meta property="og:type" content="website">
+
+    <meta property="og:site_name" content="경기해양레저인력양성센터">
     <title>경기해양레저 인력양성센터</title>
+
+    <meta name="title" content="경기해양레저인력양성센터">
+    <meta property="og:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://edumarine.org/main.do">
+    <meta itemprop="name" content="경기해양레저인력양성센터">
+    <meta property="nate:title" content="경기해양레저인력양성센터">
+    <meta property="nate:url" content="https://edumarine.org/main.do">
+
+    <meta property="og:url" content="https://edumarine.org/main.do">
+    <meta itemprop="url" content="https://edumarine.org/main.do">
+    <link rel="canonical" id="canonical" href="https://edumarine.org/main.do">
+
+    <meta name="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta name="twitter:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="og:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta itemprop="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="nate:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+
+    <meta property="og:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta name="keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta property="twitter:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+
+    <meta name="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta name="twitter:image " content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta property="og:image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -24,10 +61,25 @@
     <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    <%-- favicon
-    <link rel="shortcut icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    <link rel="icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    --%>
+    <%-- favicon --%>
+    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%-- favicon --%>
 
     <!--begin::Fonts(mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
@@ -120,6 +172,75 @@ if (document.documentElement) {
                         <!--begin::Menu-->
                         <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0"
                              id="kt_app_header_menu" data-kt-menu="true">
+
+                            <%--관리자 관리 메뉴
+                            <!--begin:Menu item-->
+                            <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                 data-kt-menu-placement="bottom-start" class="menu-item">
+                                <!--begin:Menu link-->
+                                <span class="menu-link">
+                                    <span class="menu-title">관리자</span>
+                                    <span class="menu-arrow d-lg-none"></span>
+                                </span>
+                                <!--end:Menu link-->
+                                <!--begin:Menu sub-->
+                                <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0">
+                                    <!--begin:Pages menu-->
+                                    <div class="menu-active-bg px-4 px-lg-0">
+                                        <!--begin:Tabs nav-->
+                                        <div class="d-flex w-100 overflow-auto">
+                                            <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
+                                                <!--begin:Nav item-->
+                                                <li class="nav-item mx-lg-1">
+                                                    <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                       data-bs-toggle="tab"
+                                                       data-bs-target="#kt_app_header_menu_pages_admin">관리자 관리</a>
+                                                </li>
+                                                <!--end:Nav item-->
+                                            </ul>
+                                        </div>
+                                        <!--end:Tabs nav-->
+                                        <!--begin:Tab content-->
+                                        <div class="tab-content py-4 py-lg-8 px-lg-7">
+                                            <!--begin:Tab pane-->
+                                            <div class="tab-pane active w-lg-125px" id="kt_app_header_menu_pages_admin">
+                                                <!--begin:Row-->
+                                                <div class="row">
+                                                    <!--begin:Col-->
+                                                    <div class="col-lg-12 mb-6 mb-lg-0">
+                                                        <!--begin:Row-->
+                                                        <div class="row">
+                                                            <!--begin:Col-->
+                                                            <div class="col-lg-12">
+                                                                <!--begin:Menu item-->
+                                                                <div class="menu-item p-0 m-0">
+                                                                    <!--begin:Menu link-->
+                                                                    <a href="/mng/adminMng/admin.do"
+                                                                       class="menu-link">
+                                                                        <span class="menu-title">관리자 목록</span>
+                                                                    </a>
+                                                                    <!--end:Menu link-->
+                                                                </div>
+                                                                <!--end:Menu item-->
+                                                            </div>
+                                                            <!--end:Col-->
+                                                        </div>
+                                                        <!--end:Row-->
+                                                    </div>
+                                                    <!--end:Col-->
+                                                </div>
+                                                <!--end:Row-->
+                                            </div>
+                                            <!--end:Tab pane-->
+                                        </div>
+                                        <!--end:Tab content-->
+                                    </div>
+                                    <!--end:Pages menu-->
+                                </div>
+                                <!--end:Menu sub-->
+                            </div>
+                            <!--end:Menu item-->--%>
+
                             <!--begin:Menu item-->
                             <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
                                  data-kt-menu-placement="bottom-start" class="menu-item">
@@ -171,6 +292,16 @@ if (document.documentElement) {
                                                                     <a href="/mng/customer/member.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">전체 회원 목록</span>
+                                                                    </a>
+                                                                    <!--end:Menu link-->
+                                                                </div>
+                                                                <!--end:Menu item-->
+                                                                <!--begin:Menu item-->
+                                                                <div class="menu-item p-0 m-0">
+                                                                    <!--begin:Menu link-->
+                                                                    <a href="/mng/customer/resume.do"
+                                                                       class="menu-link">
+                                                                        <span class="menu-title">나의 이력서 목록</span>
                                                                     </a>
                                                                     <!--end:Menu link-->
                                                                 </div>
@@ -433,7 +564,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu link-->
                                                                     <a href="/mng/board/press.do"
                                                                        class="menu-link">
-                                                                        <span class="menu-title">/mng/board/press.do</span>
+                                                                        <span class="menu-title">보도자료</span>
                                                                     </a>
                                                                     <!--end:Menu link-->
                                                                 </div>
@@ -504,6 +635,16 @@ if (document.documentElement) {
                                                                     <a href="/mng/board/community.do"
                                                                        class="menu-link">
                                                                         <span class="menu-title">커뮤니티</span>
+                                                                    </a>
+                                                                    <!--end:Menu link-->
+                                                                </div>
+                                                                <!--end:Menu item-->
+                                                                <!--begin:Menu item-->
+                                                                <div class="menu-item p-0 m-0">
+                                                                    <!--begin:Menu link-->
+                                                                    <a href="/mng/board/faq.do"
+                                                                       class="menu-link">
+                                                                        <span class="menu-title">FAQ</span>
                                                                     </a>
                                                                     <!--end:Menu link-->
                                                                 </div>
@@ -708,69 +849,23 @@ if (document.documentElement) {
                     <!--end::Menu wrapper-->
                     <!--begin::Navbar-->
                     <div class="app-navbar flex-shrink-0">
-                        <!--begin::Search-->
-                        <%--<div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
-                            <!--begin::Search-->
-                            <div id="kt_header_search" class="header-search d-flex align-items-stretch"
-                                 data-kt-search-keypress="true" data-kt-search-min-length="2"
-                                 data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto"
-                                 data-kt-menu-overflow="false" data-kt-menu-permanent="true"
-                                 data-kt-menu-placement="bottom-end">
-                                <!--begin::Search toggle-->
-                                <div class="d-flex align-items-center" data-kt-search-element="toggle"
-                                     id="kt_header_search_toggle">
-                                    <div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px">
-                                        <i class="ki-duotone ki-magnifier fs-2 fs-lg-1">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
+
+                        <!--begin::admin mng menu-->
+                        <c:if test="${sessionScope.gbn eq '슈퍼'}">
+                            <div class="app-navbar-item align-items-stretch ms-md-3">
+                                <!--begin::admin-->
+                                <div class="d-flex align-items-stretch">
+                                    <!--begin::admin mng-->
+                                    <div class="d-flex align-items-center" id="kt_header_admin_menu">
+                                        <a href="/mng/adminMng/admin.do" class="btn btn-dark btn-active-light-dark">관리자 관리</a>
                                     </div>
+                                    <!--end::admin mng-->
                                 </div>
-                                <!--end::Search toggle-->
-                                <!--begin::Menu-->
-                                <div data-kt-search-element="content"
-                                     class="menu menu-sub menu-sub-dropdown p-7 w-325px w-md-375px">
-                                    <!--begin::Wrapper-->
-                                    <div data-kt-search-element="wrapper">
-                                        <!--begin::Form-->
-                                        <form data-kt-search-element="form" class="w-100 position-relative mb-3" autocomplete="off">
-                                            <!--begin::Icon-->
-                                            <i class="ki-duotone ki-magnifier fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-0">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                            <!--end::Icon-->
-                                            <!--begin::Input-->
-                                            <input type="text"
-                                                   class="search-input form-control form-control-flush ps-10"
-                                                   name="search" value="" placeholder="Search..."
-                                                   data-kt-search-element="input"/>
-                                            <!--end::Input-->
-                                            <!--begin::Spinner-->
-                                            <span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-1"
-                                                  data-kt-search-element="spinner">
-                                                <span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
-                                            </span>
-                                            <!--end::Spinner-->
-                                            <!--begin::Reset-->
-                                            <span class="search-reset btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 d-none"
-                                                  data-kt-search-element="clear">
-                                                <i class="ki-duotone ki-cross fs-2 fs-lg-1 me-0">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                            </span>
-                                            <!--end::Reset-->
-                                        </form>
-                                        <!--end::Form-->
-                                    </div>
-                                    <!--end::Wrapper-->
-                                </div>
-                                <!--end::Menu-->
+                                <!--end::admin-->
                             </div>
-                            <!--end::Search-->
-                        </div>--%>
-                        <!--end::Search-->
+                            <!--end::admin mng menu-->
+                        </c:if>
+
                         <!--begin::User menu-->
                         <div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
                             <!--begin::Menu wrapper-->
@@ -793,9 +888,9 @@ if (document.documentElement) {
                                         <!--begin::Username-->
                                         <div class="d-flex flex-column">
                                             <div class="fw-bold d-flex align-items-center fs-5">${sessionScope.id}
-                                                <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">admin</span>
+                                                <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Admin</span>
                                             </div>
-                                            <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">EduMarine 관리자</a>
+                                            <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">${sessionScope.gbn} 관리자</a>
                                         </div>
                                         <!--end::Username-->
                                     </div>
@@ -875,6 +970,51 @@ if (document.documentElement) {
                         <!--begin::Menu-->
                         <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu"
                              data-kt-menu="true" data-kt-menu-expand="false">
+
+                            <%--관리자 관리 메뉴
+                            <!--begin:Menu item-->
+                            <div class="menu-item pt-5">
+                                <!--begin:Menu content-->
+                                <div class="menu-content">
+                                    <span class="menu-heading fw-bold text-uppercase fs-7">관리자</span>
+                                </div>
+                                <!--end:Menu content-->
+                            </div>
+                            <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <!--begin:Menu link-->
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-user-tick fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">관리자 관리</span>
+                                    <span class="menu-arrow"></span>
+                                </span>
+                                <!--end:Menu link-->
+                                <!--begin:Menu sub-->
+                                <div class="menu-sub menu-sub-accordion">
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="/mng/adminMng/admin.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">관리자 목록</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                </div>
+                                <!--end:Menu sub-->
+                            </div>
+                            <!--end:Menu item-->--%>
+
                             <!--begin:Menu item-->
                             <div class="menu-item pt-5">
                                 <!--begin:Menu content-->
@@ -909,6 +1049,18 @@ if (document.documentElement) {
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
                                             <span class="menu-title">전체 회원 목록</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="/mng/customer/resume.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">나의 이력서 목록</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>
@@ -1200,6 +1352,18 @@ if (document.documentElement) {
                                         <!--end:Menu link-->
                                     </div>
                                     <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="/mng/board/faq.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">FAQ</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
                                 </div>
                                 <!--end:Menu sub-->
                             </div>
@@ -1421,7 +1585,7 @@ if (document.documentElement) {
                     <!--end::Toolbar-->
 
                     <!--begin::Content-->
-                    <%--<div id="kt_app_content" class="app-content flex-column-fluid">
+                    <div id="kt_app_content" class="app-content flex-column-fluid">
                         <!--begin::Content container-->
                         <div id="kt_app_content_container" class="app-container container-xxl">
                             <!--begin::Stats-->
@@ -1435,11 +1599,10 @@ if (document.documentElement) {
                                                 <span class="card-label fw-bold fs-3 mb-1">안내사항</span>
                                                 <span class="text-muted fw-semibold fs-7">Information</span>
                                             </h3>
-                                            <div class="mt-5 mb-2">※ 현황 통계는 <span class="text-primary fw-bold">'2024'년 데이터</span>만 나타냅니다.</div>
-                                            <div class="mb-2">※ 통계(<span class="text-primary fw-bold">'전체'</span>) 항목은 {(참가기업수-참가취소)+(참관객수-참관취소)} 의 값입니다.</div>
-                                            <div class="mb-2">※ 그래프(<span class="text-primary fw-bold">'홈페이지 방문 현황'</span>) 항목은 메인페이지 접속 시에 +1 되어 도출된 값입니다.</div>
-                                            <div class="mb-2">※ 그래프(<span class="text-primary fw-bold">'참가 신청 현황'</span>) 항목은 참가기업(취소제외), 참관객(취소제외) 수 현황입니다.</div>
-                                            <div>※ 그래프(<span class="text-primary fw-bold">'부스별 신청업체 수'</span>) 항목은 부스별 신청업체 수를 백분율로 표현한 그래프입니다.</div>
+                                            <div class="mt-5 mb-2">※ 각 메뉴를 통해 메인 사이트 내 <span class="text-primary fw-bold">정보를 관리</span> 할 수 있습니다.</div>
+                                            <div class="mb-2">※ 각 메뉴의 기능의 <span class="text-primary fw-bold">오류 발생 시 개발사에 문의</span> 부탁드립니다.</div>
+                                            <%--<div class="mb-2">※ 통계(<span class="text-primary fw-bold">'전체'</span>) 항목은 {(참가기업수-참가취소)+(참관객수-참관취소)} 의 값입니다.</div>
+                                            <div>※ 그래프(<span class="text-primary fw-bold">'부스별 신청업체 수'</span>) 항목은 부스별 신청업체 수를 백분율로 표현한 그래프입니다.</div>--%>
                                         </div>
                                         <!--end::Card body-->
                                     </div>
@@ -1449,7 +1612,7 @@ if (document.documentElement) {
                             <!--end::Stats-->
 
                             <!--begin::Stats-->
-                            <div class="row g-6 g-xl-9">
+                            <%--<div class="row g-6 g-xl-9">
                                 <div class="col-lg-3 col-xxl-3 mb-xl-8">
                                     <!--begin::Card-->
                                     <div class="card h-100">
@@ -1537,11 +1700,11 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Card-->
                                 </div>
-                            </div>
+                            </div>--%>
                             <!--end::Stats-->
 
                             <!--begin::Row-->
-                            <div class="row g-5 g-xl-8">
+                            <%--<div class="row g-5 g-xl-8">
 
                                 <div class="col-xl-6">
                                     <!--begin::Charts Widget 3-->
@@ -1655,11 +1818,11 @@ if (document.documentElement) {
                                     <!--end::Charts Widget 4-->
                                 </div>
 
-                            </div>
+                            </div>--%>
                             <!--end::Row-->
                         </div>
                         <!--end::Content container-->
-                    </div>--%>
+                    </div>
                     <!--end::Content-->
                 </div>
                 <!--end::Content wrapper-->

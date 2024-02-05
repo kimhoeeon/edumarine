@@ -23,7 +23,6 @@ function f_board_media_search(){
     let searchText = $('#search_text').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            condition: condition
         };
     }else{
         jsonObj = {
@@ -76,11 +75,11 @@ function f_board_media_detail_modal_set(seq){
     /* 영상자료 상세보기 Modal form Set */
     //console.log(resData);
 
-    if(resData.lang==="KO"){
+    /*if(resData.lang==="KO"){
         document.querySelector('#md_lang').value = '국문';
     }else{
         document.querySelector('#md_lang').value = '영문';
-    }
+    }*/
 
     document.querySelector('#md_title').value = resData.title;
     document.querySelector('#md_writer').value = resData.writer;
@@ -136,30 +135,6 @@ function f_board_media_remove(seq){
             }
         });
 
-        /*let jsonObj = {
-            seq: seq
-        }
-        Swal.fire({
-            title: '선택한 영상자료를 삭제하시겠습니까?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                let resData = ajaxConnect('/mng/board/media/delete.do', 'post', jsonObj);
-
-                if (resData.resultCode === "0") {
-                    showMessage('', 'info', '영상자료 삭제', '영상자료가 삭제되었습니다.', '');
-                    f_board_media_search(); // 삭제 성공 후 재조회 수행
-                } else {
-                    showMessage('', 'error', '에러 발생', '영상자료 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                }
-            }
-        });*/
     }
 }
 

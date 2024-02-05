@@ -8,11 +8,48 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="ko">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
+    <meta name="copyright" content="경기테크노파크">
+    <meta name="robots" content="all">
+    <meta property="og:locale" content="ko_KR">
+    <meta itemprop="inLanguage" content="ko-kr">
+    <meta name="resource-type" content="website">
+    <meta property="og:type" content="website">
+
+    <meta property="og:site_name" content="경기해양레저인력양성센터">
     <title>경기해양레저 인력양성센터</title>
+
+    <meta name="title" content="경기해양레저인력양성센터">
+    <meta property="og:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://edumarine.org/main.do">
+    <meta itemprop="name" content="경기해양레저인력양성센터">
+    <meta property="nate:title" content="경기해양레저인력양성센터">
+    <meta property="nate:url" content="https://edumarine.org/main.do">
+
+    <meta property="og:url" content="https://edumarine.org/main.do">
+    <meta itemprop="url" content="https://edumarine.org/main.do">
+    <link rel="canonical" id="canonical" href="https://edumarine.org/main.do">
+
+    <meta name="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta name="twitter:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="og:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta itemprop="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="nate:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+
+    <meta property="og:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta name="keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta property="twitter:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+
+    <meta name="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta name="twitter:image " content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta property="og:image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -23,10 +60,25 @@
     <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    <%-- favicon
-    <link rel="shortcut icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    <link rel="icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    --%>
+    <%-- favicon --%>
+    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%-- favicon --%>
 
     <!--begin::Fonts(mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
@@ -174,6 +226,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/resume.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">나의 이력서 목록</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -218,7 +280,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/frp.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">FRP 정비 테크니션</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -238,7 +300,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/inboarder.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">자가정비 (선내기)</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -497,6 +559,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/faq.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">FAQ</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -697,69 +769,23 @@ if (document.documentElement) {
                         <!--end::Menu wrapper-->
                         <!--begin::Navbar-->
                         <div class="app-navbar flex-shrink-0">
-                            <!--begin::Search-->
-                            <%--<div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
-                                <!--begin::Search-->
-                                <div id="kt_header_search" class="header-search d-flex align-items-stretch"
-                                     data-kt-search-keypress="true" data-kt-search-min-length="2"
-                                     data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto"
-                                     data-kt-menu-overflow="false" data-kt-menu-permanent="true"
-                                     data-kt-menu-placement="bottom-end">
-                                    <!--begin::Search toggle-->
-                                    <div class="d-flex align-items-center" data-kt-search-element="toggle"
-                                         id="kt_header_search_toggle">
-                                        <div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px">
-                                            <i class="ki-duotone ki-magnifier fs-2 fs-lg-1">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
+
+                            <!--begin::admin mng menu-->
+                            <c:if test="${sessionScope.gbn eq '슈퍼'}">
+                                <div class="app-navbar-item align-items-stretch ms-md-3">
+                                    <!--begin::admin-->
+                                    <div class="d-flex align-items-stretch">
+                                        <!--begin::admin mng-->
+                                        <div class="d-flex align-items-center" id="kt_header_admin_menu">
+                                            <a href="/mng/adminMng/admin.do" class="btn btn-dark btn-active-light-dark">관리자 관리</a>
                                         </div>
+                                        <!--end::admin mng-->
                                     </div>
-                                    <!--end::Search toggle-->
-                                    <!--begin::Menu-->
-                                    <div data-kt-search-element="content"
-                                         class="menu menu-sub menu-sub-dropdown p-7 w-325px w-md-375px">
-                                        <!--begin::Wrapper-->
-                                        <div data-kt-search-element="wrapper">
-                                            <!--begin::Form-->
-                                            <form data-kt-search-element="form" class="w-100 position-relative mb-3" autocomplete="off">
-                                                <!--begin::Icon-->
-                                                <i class="ki-duotone ki-magnifier fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-0">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <!--end::Icon-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                       class="search-input form-control form-control-flush ps-10"
-                                                       name="search" value="" placeholder="Search..."
-                                                       data-kt-search-element="input"/>
-                                                <!--end::Input-->
-                                                <!--begin::Spinner-->
-                                                <span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-1"
-                                                      data-kt-search-element="spinner">
-                                                    <span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
-                                                </span>
-                                                <!--end::Spinner-->
-                                                <!--begin::Reset-->
-                                                <span class="search-reset btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 d-none"
-                                                      data-kt-search-element="clear">
-                                                    <i class="ki-duotone ki-cross fs-2 fs-lg-1 me-0">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                </span>
-                                                <!--end::Reset-->
-                                            </form>
-                                            <!--end::Form-->
-                                        </div>
-                                        <!--end::Wrapper-->
-                                    </div>
-                                    <!--end::Menu-->
+                                    <!--end::admin-->
                                 </div>
-                                <!--end::Search-->
-                            </div>--%>
-                            <!--end::Search-->
+                            </c:if>
+                            <!--end::admin mng menu-->
+
                             <!--begin::User menu-->
                             <div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
                                 <!--begin::Menu wrapper-->
@@ -782,9 +808,9 @@ if (document.documentElement) {
                                             <!--begin::Username-->
                                             <div class="d-flex flex-column">
                                                 <div class="fw-bold d-flex align-items-center fs-5">${sessionScope.id}
-                                                    <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">admin</span>
+                                                    <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Admin</span>
                                                 </div>
-                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">EduMarine 관리자</a>
+                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">${sessionScope.gbn} 관리자</a>
                                             </div>
                                             <!--end::Username-->
                                         </div>
@@ -902,6 +928,18 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/resume.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">나의 이력서 목록</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -952,7 +990,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/customer/frp.do">
+                                            <a class="menu-link active" href="/mng/customer/frp.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -976,7 +1014,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/customer/inboarder.do">
+                                            <a class="menu-link" href="/mng/customer/inboarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1189,6 +1227,18 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/faq.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">FAQ</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -1390,7 +1440,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        자가정비 (선내기)</h1>
+                                        FRP 정비 테크니션</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1421,7 +1471,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">자가정비 (선내기)</li>
+                                        <li class="breadcrumb-item text-muted">FRP 정비 테크니션</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1445,6 +1495,7 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-full">
+
                                 <!--begin::Basic info-->
                                 <div class="card mb-5 mb-xl-10">
                                     <!--begin::form-->
@@ -1462,6 +1513,7 @@ if (document.documentElement) {
                                         <!--end::Card header-->
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
+
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
@@ -1473,12 +1525,12 @@ if (document.documentElement) {
                                                     <div class="row">
                                                         <!--begin::Col-->
                                                         <div class="col-lg-6">
-                                                            <input type="text" id="nameKo" name="nameKo" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="이름(국문)" value="${info.nameKo}"/>
+                                                            <input type="text" id="nameKo" name="nameKo" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="이름(국문)" value="${memberInfo.name}" readonly/>
                                                         </div>
                                                         <!--end::Col-->
                                                         <!--begin::Col-->
                                                         <div class="col-lg-6">
-                                                            <input type="text" id="nameEn" name="nameEn" class="form-control form-control-lg form-control-solid-bg" placeholder="이름(영문)" value="${info.nameEn}"/>
+                                                            <input type="text" id="nameEn" name="nameEn" class="form-control form-control-lg form-control-solid-bg" placeholder="이름(영문)" value="${memberInfo.nameEn}" readonly/>
                                                         </div>
                                                         <!--end::Col-->
                                                     </div>
@@ -1494,7 +1546,7 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input type="text" id="phone" name="phone" class="form-control form-control-lg form-control-solid-bg onlyTel" placeholder="연락처" value="${info.phone}"/>
+                                                    <input type="text" id="phone" name="phone" class="form-control form-control-lg form-control-solid-bg onlyTel" placeholder="연락처" value="${memberInfo.phone}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -1507,12 +1559,12 @@ if (document.documentElement) {
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
                                                     <div class="input-group">
-                                                        <c:set var="email1" value="${fn:split(info.email,'@')[0]}" />
-                                                        <c:set var="email2" value="${fn:split(info.email,'@')[1]}" />
-                                                        <input type="text" id="email" name="email" value="${email1}" class="form-control form-control-solid-bg" placeholder="이메일"/>
+                                                        <c:set var="email1" value="${fn:split(memberInfo.email,'@')[0]}" />
+                                                        <c:set var="email2" value="${fn:split(memberInfo.email,'@')[1]}" />
+                                                        <input type="text" id="email" name="email" value="${email1}" class="form-control form-control-solid-bg" placeholder="이메일" readonly/>
                                                         <span class="input-group-text">@</span>
-                                                        <input type="text" id="domain" name="domain" value="${email2}" class="form-control form-control-solid-bg" placeholder="도메인"/>
-                                                        <select id="email_select" class="form-select form-control-solid-bg ms-4" aria-label="Select Email">
+                                                        <input type="text" id="domain" name="domain" value="${email2}" class="form-control form-control-solid-bg" placeholder="도메인" readonly/>
+                                                        <select id="email_select" class="form-select form-control-solid-bg ms-4" aria-label="Select Email" disabled>
                                                             <option selected>직접입력</option>
                                                             <option value="daum.net" <c:if test="${email2 eq 'daum.net'}">selected</c:if> >daum.net</option>
                                                             <option value="nate.com" <c:if test="${email2 eq 'nate.com'}">selected</c:if> >nate.com</option>
@@ -1542,25 +1594,29 @@ if (document.documentElement) {
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
                                                     <div class="input-group">
-                                                        <select id="year_select" name="birthYear" class="form-select form-control-solid-bg me-4">
-                                                            <option value="" selected disabled>출생연도</option>
-                                                            <c:set var="now" value="<%=new java.util.Date()%>" />
-                                                            <c:set var="sysYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
-                                                            <c:set var="idx" value="${sysYear}"/>
-                                                            <c:forEach var="year" begin="1950" end="${sysYear}" step="1">
-                                                                <option value="${idx}" <c:if test="${info.birthYear eq idx}">selected</c:if>><c:out value="${idx}"/> 년</option>
-                                                                <c:set var="idx" value="${idx-1}"/>
-                                                            </c:forEach>
-                                                        </select>
-                                                        <select id="month_select" name="birthMonth" class="form-select form-control-solid-bg me-4">
-                                                            <option value="" selected disabled>월</option>
-                                                            <c:forEach var="month" begin="1" end="12" step="1">
-                                                                <option value="${month}" <c:if test="${info.birthMonth eq month}">selected</c:if>><c:out value="${month}"/> 월</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                        <input type="hidden" id="birthDay" value="${info.birthDay}">
-                                                        <select id="day_select" name="birthDay" class="form-select form-control-solid-bg"></select>
+                                                        <input type="text" id="birthYear" name="birthYear" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생연도" value="${memberInfo.birthYear} 년" readonly/>
+                                                        <input type="text" id="birthMonth" name="birthMonth" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생월" value="${memberInfo.birthMonth} 월" readonly/>
+                                                        <input type="text" id="birthDay" name="birthDay" class="form-control form-control-lg form-control-solid-bg" placeholder="출생일" value="${memberInfo.birthDay} 일" readonly/>
                                                     </div>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">성별</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8 d-flex align-items-center">
+                                                    <label class="me-5">
+                                                        <input type="radio" name="sex" value="남성" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${memberInfo.sex eq '남성'}">checked</c:if> disabled/> 남성
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="sex" value="여성" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${memberInfo.sex eq '여성'}">checked</c:if> disabled/> 여성
+                                                    </label>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -1575,22 +1631,22 @@ if (document.documentElement) {
                                                     <!--begin::Row-->
                                                     <div class="row">
                                                         <!--begin::Col-->
-                                                        <div class="col-lg-10">
-                                                            <input type="text" id="address" name="address" class="form-control form-control-lg form-control-solid-bg" placeholder="주소" value="${info.address}" readonly/>
+                                                        <div class="col-lg-12">
+                                                            <input type="text" id="address" name="address" class="form-control form-control-lg form-control-solid-bg" placeholder="주소" value="${memberInfo.address}" readonly/>
                                                         </div>
                                                         <!--end::Col-->
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-2">
-                                                            <button type="button" class="btn btn-primary" onclick="execDaumPostcode('address','addressDetail')">주소 검색</button>
-                                                        </div>
-                                                        <!--end::Col-->
+                                                            <%--<!--begin::Col-->
+                                                            <div class="col-lg-2">
+                                                                <button type="button" class="btn btn-primary" onclick="execDaumPostcode('address','addressDetail')">주소 검색</button>
+                                                            </div>
+                                                            <!--end::Col-->--%>
                                                     </div>
                                                     <!--end::Row-->
                                                     <!--begin::Row-->
                                                     <div class="row mt-3">
                                                         <!--begin::Col-->
                                                         <div class="col-lg-12">
-                                                            <input type="text" id="addressDetail" name="addressDetail" class="form-control form-control-lg form-control-solid-bg" value="${info.addressDetail}" placeholder="상세주소"/>
+                                                            <input type="text" id="addressDetail" name="addressDetail" class="form-control form-control-lg form-control-solid-bg" value="${memberInfo.addressDetail}" placeholder="상세주소" readonly/>
                                                         </div>
                                                         <!--end::Col-->
                                                     </div>
@@ -1602,29 +1658,148 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">작업복 사이즈 (남여공용)</label>
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">상반신 사진</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <ul>
+                                                        <c:if test="${bodyPhotoFileInfo ne null}">
+                                                            <li class="mb-4">
+                                                                <c:set var="fileSrc" value="${fn:replace(bodyPhotoFileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                <c:if test="${not fn:contains(fileSrc, '.ai') and not fn:contains(fileSrc, '.pdf')}">
+                                                                    <img src="${fileSrc}" class="w-350px mr10" style="border: 1px solid #009ef7"/>
+                                                                </c:if>
+                                                                <a href="/file/download.do?path=member/boarder/${bodyPhotoFileInfo.folderPath}&fileName=${bodyPhotoFileInfo.fullFileName}">${bodyPhotoFileInfo.fileName}</a>
+                                                                <%--<input type="hidden" name="uploadFile" id="${bodyPhotoFileInfo.id}" value="${bodyPhotoFileInfo.fullFilePath}">
+                                                                <button type="button" class="ml10" onclick="f_file_remove(this, '${bodyPhotoFileInfo.id}')">
+                                                                    <i class="ki-duotone ki-abstract-11">
+                                                                        <i class="path1"></i>
+                                                                        <i class="path2"></i>
+                                                                    </i>
+                                                                </button>--%>
+                                                            </li>
+                                                        </c:if>
+                                                    </ul>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">상의 사이즈 (남여공용)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8 d-flex align-items-center">
                                                     <label class="me-5">
-                                                        <input type="radio" name="clothesSize" value="S" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.clothesSize eq 'S'}">checked</c:if>/> S (90)
+                                                        <input type="radio" name="topClothesSize" value="S" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.topClothesSize eq 'S'}">checked</c:if> disabled/> S (90)
                                                     </label>
                                                     <label class="me-5">
-                                                        <input type="radio" name="clothesSize" value="M" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.clothesSize eq 'M'}">checked</c:if>/> M (95)
+                                                        <input type="radio" name="topClothesSize" value="M" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.topClothesSize eq 'M'}">checked</c:if> disabled/> M (95)
                                                     </label>
                                                     <label class="me-5">
-                                                        <input type="radio" name="clothesSize" value="L" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.clothesSize eq 'L'}">checked</c:if>/> L (100)
+                                                        <input type="radio" name="topClothesSize" value="L" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.topClothesSize eq 'L'}">checked</c:if> disabled/> L (100)
                                                     </label>
                                                     <label class="me-5">
-                                                        <input type="radio" name="clothesSize" value="XL" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.clothesSize eq 'XL'}">checked</c:if>/> XL (105)
+                                                        <input type="radio" name="topClothesSize" value="XL" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.topClothesSize eq 'XL'}">checked</c:if> disabled/> XL (105)
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="topClothesSize" value="XXL" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.topClothesSize eq 'XXL'}">checked</c:if> disabled/> XXL (110)
                                                     </label>
                                                     <label>
-                                                        <input type="radio" name="clothesSize" value="기타" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.clothesSize eq '기타'}">checked</c:if>/> 기타
+                                                        <input type="radio" name="topClothesSize" value="기타" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.topClothesSize eq '기타'}">checked</c:if> disabled/> 기타
+                                                    </label>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">하의 사이즈 (남여공용)</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8 d-flex align-items-center">
+                                                    <label class="me-5">
+                                                        <input type="radio" name="bottomClothesSize" value="28" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.bottomClothesSize eq '28'}">checked</c:if> disabled/> 28
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="bottomClothesSize" value="30" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.bottomClothesSize eq '30'}">checked</c:if> disabled/> 30
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="bottomClothesSize" value="32" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.bottomClothesSize eq '32'}">checked</c:if> disabled/> 32
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="bottomClothesSize" value="34" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.bottomClothesSize eq '34'}">checked</c:if> disabled/> 34
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="bottomClothesSize" value="36" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.bottomClothesSize eq '36'}">checked</c:if> disabled/> 36
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="bottomClothesSize" value="기타" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.bottomClothesSize eq '기타'}">checked</c:if> disabled/> 기타
+                                                    </label>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">안전화 사이즈 (남여공용)</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8 d-flex align-items-center">
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="240" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '240'}">checked</c:if> disabled/> 240
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="245" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '245'}">checked</c:if> disabled/> 245
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="250" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '250'}">checked</c:if> disabled/> 250
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="255" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '255'}">checked</c:if> disabled/> 255
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="260" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '260'}">checked</c:if> disabled/> 260
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="265" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '265'}">checked</c:if> disabled/> 265
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="270" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '270'}">checked</c:if> disabled/> 270
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="275" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '275'}">checked</c:if> disabled/> 275
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="shoesSize" value="280" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '280'}">checked</c:if> disabled/> 280
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="shoesSize" value="기타" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.shoesSize eq '기타'}">checked</c:if> disabled/> 기타
                                                     </label>
                                                 </div>
                                                 <!--end::Col-->
@@ -1639,23 +1814,23 @@ if (document.documentElement) {
                                                 <div class="col-lg-8 d-flex align-items-center">
                                                     <label class="me-5">
                                                         <input type="radio" name="participationPath" value="인터넷" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.participationPath eq '인터넷'}">checked</c:if>/> 인터넷
+                                                               <c:if test="${info.participationPath eq '인터넷'}">checked</c:if> disabled/> 인터넷
                                                     </label>
                                                     <label class="me-5">
                                                         <input type="radio" name="participationPath" value="홈페이지" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.participationPath eq '홈페이지'}">checked</c:if>/> 홈페이지
+                                                               <c:if test="${info.participationPath eq '홈페이지'}">checked</c:if> disabled/> 홈페이지
                                                     </label>
                                                     <label class="me-5">
                                                         <input type="radio" name="participationPath" value="홍보물" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.participationPath eq '홍보물'}">checked</c:if>/> 홍보물
+                                                               <c:if test="${info.participationPath eq '홍보물'}">checked</c:if> disabled/> 홍보물
                                                     </label>
                                                     <label class="me-5">
                                                         <input type="radio" name="participationPath" value="지인추천" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.participationPath eq '지인추천'}">checked</c:if>/> 지인추천
+                                                               <c:if test="${info.participationPath eq '지인추천'}">checked</c:if> disabled/> 지인추천
                                                     </label>
                                                     <label>
                                                         <input type="radio" name="participationPath" value="기타" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.participationPath eq '기타'}">checked</c:if>/> 기타
+                                                               <c:if test="${info.participationPath eq '기타'}">checked</c:if> disabled/> 기타
                                                     </label>
                                                 </div>
                                                 <!--end::Col-->
@@ -1667,21 +1842,541 @@ if (document.documentElement) {
                                     <!--end::form-->
                                 </div>
                                 <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">최종 학력</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">졸업구분</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" id="gradeGbn" name="gradeGbn" class="form-control form-control-lg form-control-solid-bg" placeholder="졸업구분" value="${info.gradeGbn}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">학교명</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" id="schoolName" name="schoolName" class="form-control form-control-lg form-control-solid-bg" placeholder="학교명" value="${info.schoolName}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">전공</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" id="major" name="major" class="form-control form-control-lg form-control-solid-bg" placeholder="전공" value="${info.major}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">경력사항</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+
+                                        <c:if test="${not empty careerList}">
+                                            <c:forEach var="careerInfo" items="${careerList}" begin="0" end="${careerList.size()}" step="1" varStatus="status">
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-12 col-form-label fw-semibold fs-6" style="background-color: #083274; color: #FFFFFF; font-weight: bold;">경력사항 ${status.index + 1}</label>
+                                                    <!--end::Label-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">근무처</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="careerPlace" name="careerPlace" class="form-control form-control-lg form-control-solid-bg" placeholder="근무처" value="${careerInfo.careerPlace}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">기간</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="careerDate" name="careerDate" class="form-control form-control-lg form-control-solid-bg" placeholder="기간" value="${careerInfo.careerDate}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">직위</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="careerPosition" name="careerPosition" class="form-control form-control-lg form-control-solid-bg" placeholder="직위" value="${careerInfo.careerPosition}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당업무</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="careerTask" name="careerTask" class="form-control form-control-lg form-control-solid-bg" placeholder="담당업무" value="${careerInfo.careerTask}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">소재지</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="careerLocation" name="careerLocation" class="form-control form-control-lg form-control-solid-bg" placeholder="소재지" value="${careerInfo.careerLocation}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </c:forEach>
+                                        </c:if>
+                                        <c:if test="${empty careerList}">
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-12 col-form-label fw-semibold fs-6">등록된 경력사항 없음</label>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </c:if>
+
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">자격면허</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+
+                                        <c:if test="${not empty licenseList}">
+                                            <c:forEach var="licenseInfo" items="${licenseList}" begin="0" end="${licenseList.size()}" step="1" varStatus="status">
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-12 col-form-label fw-semibold fs-6" style="background-color: #083274; color: #FFFFFF; font-weight: bold;">자격면허 ${status.index + 1}</label>
+                                                    <!--end::Label-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">자격면허명</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="licenseName" name="licenseName" class="form-control form-control-lg form-control-solid-bg" placeholder="자격면허명" value="${licenseInfo.licenseName}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">취득일</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="licenseDate" name="licenseDate" class="form-control form-control-lg form-control-solid-bg" placeholder="취득일" value="${licenseInfo.licenseDate}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">발행기관</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-8">
+                                                        <input type="text" id="licenseOrg" name="licenseOrg" class="form-control form-control-lg form-control-solid-bg" placeholder="발행기관" value="${licenseInfo.licenseOrg}" readonly/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </c:forEach>
+                                        </c:if>
+                                        <c:if test="${empty licenseList}">
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-12 col-form-label fw-semibold fs-6">등록된 자격먼허 없음</label>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </c:if>
+
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">상세정보</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">병역</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8 d-flex align-items-center">
+                                                <label class="me-5">
+                                                    <input type="radio" name="militaryGbn" value="필" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.militaryGbn eq '필'}">checked</c:if> disabled/> 필
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="militaryGbn" value="미필" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.militaryGbn eq '미필'}">checked</c:if> disabled/> 미필
+                                                </label>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">병역 미필 사유</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" id="militaryReason" name="militaryReason" class="form-control form-control-lg form-control-solid-bg" placeholder="병역 미필 사유" value="${info.militaryReason}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">장애인</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8 d-flex align-items-center">
+                                                <label class="me-5">
+                                                    <input type="radio" name="disabledGbn" value="대상" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.disabledGbn eq '대상'}">checked</c:if> disabled/> 대상
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="disabledGbn" value="비대상" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.disabledGbn eq '비대상'}">checked</c:if> disabled/> 비대상
+                                                </label>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">취업지원대상</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8 d-flex align-items-center">
+                                                <label class="me-5">
+                                                    <input type="radio" name="jobSupportGbn" value="대상" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.jobSupportGbn eq '대상'}">checked</c:if> disabled/> 대상
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="jobSupportGbn" value="비대상" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.jobSupportGbn eq '비대상'}">checked</c:if> disabled/> 비대상
+                                                </label>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">본 사업을 알게 된 경로</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8 d-flex align-items-center">
+                                                <label class="me-5">
+                                                    <input type="radio" name="knowPath" value="홍보" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.knowPath eq '홍보'}">checked</c:if> disabled/> 홍보
+                                                </label>
+                                                <label class="me-5">
+                                                    <input type="radio" name="knowPath" value="추천" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.knowPath eq '추천'}">checked</c:if> disabled/> 추천
+                                                </label>
+                                                <label class="me-5">
+                                                    <input type="radio" name="knowPath" value="검색" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.knowPath eq '검색'}">checked</c:if> disabled/> 검색
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="knowPath" value="기타" class="form-check-input form-control-solid-bg"
+                                                           <c:if test="${info.knowPath eq '기타'}">checked</c:if> disabled/> 기타
+                                                </label>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">본 사업을 알게 된 경로 (기타)</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" id="knowPathReason" name="knowPathReason" class="form-control form-control-lg form-control-solid-bg" placeholder="본 사업을 알게 된 경로 (기타)" value="${info.knowPathReason}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">첨부파일</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">최종학교 졸업증명서</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <ul>
+                                                    <c:if test="${gradeLicenseFileInfo ne null}">
+                                                        <li class="mb-4">
+                                                            <c:set var="fileSrc" value="${fn:replace(gradeLicenseFileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:if test="${not fn:contains(fileSrc, '.ai') and not fn:contains(fileSrc, '.pdf')}">
+                                                                <img src="${fileSrc}" class="w-350px mr10" style="border: 1px solid #009ef7"/>
+                                                            </c:if>
+                                                            <a href="/file/download.do?path=member/boarder/${gradeLicenseFileInfo.folderPath}&fileName=${gradeLicenseFileInfo.fullFileName}">${gradeLicenseFileInfo.fileName}</a>
+                                                                <%--<input type="hidden" name="uploadFile" id="${gradeLicenseFileInfo.id}" value="${gradeLicenseFileInfo.fullFilePath}">
+                                                                <button type="button" class="ml10" onclick="f_file_remove(this, '${gradeLicenseFileInfo.id}')">
+                                                                    <i class="ki-duotone ki-abstract-11">
+                                                                        <i class="path1"></i>
+                                                                        <i class="path2"></i>
+                                                                    </i>
+                                                                </button>--%>
+                                                        </li>
+                                                    </c:if>
+                                                </ul>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">관련분야 경력증명서</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <ul>
+                                                    <c:if test="${careerLicenseFileInfo ne null}">
+                                                        <li class="mb-4">
+                                                            <c:set var="fileSrc" value="${fn:replace(careerLicenseFileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:if test="${not fn:contains(fileSrc, '.ai') and not fn:contains(fileSrc, '.pdf')}">
+                                                                <img src="${fileSrc}" class="w-350px mr10" style="border: 1px solid #009ef7"/>
+                                                            </c:if>
+                                                            <a href="/file/download.do?path=member/boarder/${careerLicenseFileInfo.folderPath}&fileName=${careerLicenseFileInfo.fullFileName}">${careerLicenseFileInfo.fileName}</a>
+                                                                <%--<input type="hidden" name="uploadFile" id="${careerLicenseFileInfo.id}" value="${careerLicenseFileInfo.fullFilePath}">
+                                                                <button type="button" class="ml10" onclick="f_file_remove(this, '${careerLicenseFileInfo.id}')">
+                                                                    <i class="ki-duotone ki-abstract-11">
+                                                                        <i class="path1"></i>
+                                                                        <i class="path2"></i>
+                                                                    </i>
+                                                                </button>--%>
+                                                        </li>
+                                                    </c:if>
+                                                </ul>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">자기소개서</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">지원동기</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <textarea id="applyReason" name="applyReason" class="form-control form-control-solid-bg resize-none h-200px" placeholder="지원동기">${info.applyReason}</textarea>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">향후 테크니션 업무 수행시의 인성 적합성 기술</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <textarea id="techReason" name="techReason" class="form-control form-control-solid-bg resize-none h-200px" placeholder="향후 테크니션 업무 수행시의 인성 적합성 기술">${info.techReason}</textarea>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">자격 및 경력, 대외 활동 사항</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <textarea id="activityReason" name="activityReason" class="form-control form-control-solid-bg resize-none h-200px" placeholder="자격 및 경력, 대외 활동 사항">${info.activityReason}</textarea>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">교육수료 후 포부 (향후 자신의 진로 등)</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <textarea id="planReason" name="planReason" class="form-control form-control-solid-bg resize-none h-200px" placeholder="교육수료 후 포부 (향후 자신의 진로 등)">${info.planReason}</textarea>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">기타</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <textarea id="etcReason" name="etcReason" class="form-control form-control-solid-bg resize-none h-200px" placeholder="기타">${info.etcReason}</textarea>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Basic info-->
+
                                 <!--begin::Basic info-->
                                 <div class="card mb-5 mb-xl-10">
                                     <!--begin::Actions-->
                                     <div class="card-footer d-flex justify-content-between py-6 px-9">
                                         <div>
-                                            <a href="/mng/customer/boarder.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
+                                            <a href="/mng/customer/frp.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>
-                                        <div>
-                                            <button type="button" onclick="f_customer_frp_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_customer_frp_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
-                                        </div>
+                                        <%--<div>
+                                            <button type="button" onclick="f_customer_boarder_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
+                                            <button type="button" onclick="f_customer_boarder_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
+                                        </div>--%>
                                     </div>
                                     <!--end::Actions-->
                                 </div>
                                 <!--end::Basic info-->
+
                             </div>
                             <!--end::Content container-->
                         </div>

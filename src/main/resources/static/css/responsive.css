@@ -314,6 +314,11 @@
     .board_wrap .gallery_list_wrap .gallery_list .subject {font-size: 1.4rem;}
     .board_wrap .gallery_list_wrap .gallery_list .date {font-size: 1.2rem;}
 
+    /* faq 추가 20240201 */
+    .board_wrap .board_faq_wrap {margin-top: 20px;}
+    .board_wrap .board_faq .ask {font-size: 1.4rem;}
+    .board_wrap .board_faq .answer {font-size: 1.4rem;}
+
     .community_list li {padding: 20px 0;}
     .community_list li .number {display: none;}
     .community_list li .info .subject {font-size: 1.4rem;}

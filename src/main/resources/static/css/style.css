@@ -577,6 +577,26 @@ button {
 .board_wrap .gallery_list .subject {margin:15px 10px 0; } 
 .board_wrap .gallery_list .date {font-size: 1.4rem; margin:2px 10px 0; color: #777;}
 
+/* faq 추가 20240201 */
+.board_wrap .board_faq_wrap {margin: 40px auto 0; max-width: 1020px;}
+.board_wrap .board_faq { border-top: 2px solid #083274; }
+.board_wrap .board_faq li>div { padding: 25px 40px 21px 60px; position: relative; }
+.board_wrap .board_faq li>div:before {
+    display: block; content: ""; position: absolute; left: 10px; top: 18px; width: 32px; height: 32px;
+    background-size: 32px 32px; background-repeat: no-repeat; background-position: center center;
+}
+.board_wrap .board_faq li { border-bottom: 1px solid #ddd; }
+.board_wrap .board_faq .ask { font-size: 1.6rem;}
+.board_wrap .board_faq .ask:before { background-image: url('../img/icon_faq_q.png'); }
+.board_wrap .board_faq .ask:after {
+    content: ""; width: 7px; height: 7px; border-top: 2px solid #000; border-right: 2px solid #000;
+    display: inline-block; transform: rotate(135deg) translateY(-50%); position: absolute; top: 34%; right: 20px;
+}
+.board_wrap .board_faq .ask.on:before { background-image: url('../img/icon_faq_q_on.png'); }
+.board_wrap .board_faq .ask.on:after { transform: rotate(315deg) translateY(-50%); top: 50%; right: 15px; }
+.board_wrap .board_faq .answer { display: none; border-bottom: 1px solid #ddd; background: #f8f8f8; font-size: 1.6rem;}
+.board_wrap .board_faq .answer:before { background-image: url('../img/icon_faq_a_on.png'); }
+
 .community_list_wrap {margin-top: 40px;}
 .community_list {border-top:1px solid #ddd;}
 .community_list li {border-bottom: 1px solid #ddd; padding: 30px 0; display: flex; gap: 20px; align-items: center;}
@@ -800,6 +820,12 @@ button {
 .my_edu_list_wrap .my_edu_list .list_body .subject .edu_time::before {
     display:inline-block; content: "교육시간 :"; margin-right: 5px;
 }
+.my_edu_list_wrap .my_edu_list .list_body .state a {
+    display: inline-block; vertical-align: middle; padding: 10px 5px 8px;
+    border-radius: 3px; line-height: 1; font-size: 1.4rem;
+}
+.my_edu_list_wrap .my_edu_list .list_body .state .btn_modify_2 {background: #083274; color: #fff;}
+
 .my_edu_list_wrap .my_edu_list .list_body .modify a {
     display: inline-block; vertical-align: middle; padding: 8px 10px 5px;
     border-radius: 3px; line-height: 1; font-size: 1.4rem;

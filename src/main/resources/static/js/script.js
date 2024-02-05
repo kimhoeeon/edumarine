@@ -82,7 +82,7 @@ $(document).ready(function () {
 
         let str = '';
         $.each(slideImgList , function(i) {
-            let slideImgPath = slideImgList[i].value.toString().replace('./usr/local/tomcat/webapps', '../../../../..');
+            let slideImgPath = slideImgList[i].value.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
             str += '<li class="swiper-slide img_box">';
             str += '<img src="' + slideImgPath + '">';
             str += '</li>';
@@ -125,7 +125,7 @@ $(document).ready(function () {
 
         let str = '';
         $.each(slideImgList , function(i) {
-            let slideImgPath = slideImgList[i].value.toString().replace('./usr/local/tomcat/webapps', '../../../../..');
+            let slideImgPath = slideImgList[i].value.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
             str += '<li class="swiper-slide img_box">';
             str += '<img src="' + slideImgPath + '">';
             str += '</li>';
@@ -149,6 +149,17 @@ $(document).ready(function () {
         $('body').removeClass('lock_scroll');
     });
 
+    /// faq 추가 20240201
+    $(document).on('click', '.board_faq .ask', function() {
+        let answer = $(this).next('div');
+        $(this).toggleClass('on');
+
+        if (answer.is(':visible')) {
+            answer.slideUp();
+        } else {
+            answer.slideDown();
+        }
+    });
 
     /*$('.reply_wrap .recommend_btn').on('click', function () {
         $(this).toggleClass('on');

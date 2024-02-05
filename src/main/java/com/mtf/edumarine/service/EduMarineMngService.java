@@ -33,6 +33,8 @@ public interface EduMarineMngService {
 
     FileResponseDTO processUpdateFileUseN(FileDTO fileDTO);
 
+    InistdpayCancelResponseDTO processApplyPaymentCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO);
+
     FileResponseDTO processInsertFileInfo(FileDTO fileDTO);
 
     List<?> uploadExcelFile(MultipartFile file);
@@ -254,4 +256,60 @@ public interface EduMarineMngService {
     ResponseDTO processUpdateSailyachtApplyStatus(List<SailyachtDTO> sailyachtList);
 
     ResponseDTO processUpdateInboarderApplyStatus(List<InboarderDTO> inboarderList);
+
+    ResponseDTO processUpdateRegularApplyStatus(List<RegularDTO> regularList);
+
+    ResponseDTO processUpdateRegularApplyStatusChange(List<RegularDTO> regularList);
+
+    ResponseDTO processUpdateBoarderApplyStatusChange(List<BoarderDTO> boarderList);
+
+    ResponseDTO processUpdateFrpApplyStatusChange(List<FrpDTO> frpList);
+
+    ResponseDTO processUpdateOutboarderApplyStatusChange(List<OutboarderDTO> outboarderList);
+
+    ResponseDTO processUpdateInboarderApplyStatusChange(List<InboarderDTO> inboarderList);
+
+    ResponseDTO processUpdateSailyachtApplyStatusChange(List<SailyachtDTO> sailyachtList);
+
+    List<AdminDTO> processSelectAdminMngList(SearchDTO searchDTO);
+
+    AdminDTO processSelectAdminMngSingle(AdminDTO adminDTO);
+
+    Integer processSelectAdminMngCheckDuplicateId(AdminDTO adminDTO);
+
+    ResponseDTO processUpdateAdminMng(AdminDTO adminDTO);
+
+    ResponseDTO processInsertAdminMng(AdminDTO adminDTO);
+
+    ResponseDTO processCheckAdminMngValidYn(AdminDTO adminDTO);
+
+    AdminDTO processSelectAdminMngSingleId(AdminDTO adminDTO);
+
+    ResponseDTO processUpdateTrainEarlyClosing(TrainDTO trainDTO);
+
+    BoarderDTO processSelectBoarderSingle(String seq);
+
+    List<CareerDTO> processSelectCareerList(String boarderSeq);
+
+    List<LicenseDTO> processSelectLicenseList(String boarderSeq);
+
+    FrpDTO processSelectFrpSingle(String seq);
+
+    OutboarderDTO processSelectOutboarderSingle(String seq);
+
+    SailyachtDTO processSelectSailyachtSingle(String seq);
+
+    List<ResumeDTO> processSelectResumeList(SearchDTO searchDTO);
+
+    ResumeDTO processSelectResumeSingle(ResumeDTO resumeDTO);
+
+    List<SmsSendDTO> processSelectSmsSendList(SearchDTO searchDTO);
+
+    List<FaqDTO> processSelectFaqList(SearchDTO searchDTO);
+
+    FaqDTO processSelectFaqSingle(FaqDTO faqDTO);
+
+    ResponseDTO processUpdateFaq(FaqDTO faqDTO);
+
+    ResponseDTO processInsertFaq(FaqDTO faqDTO);
 }

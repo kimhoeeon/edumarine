@@ -34,8 +34,8 @@
 
 	String verification = SignatureUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
 
-    String siteDomain = "http://localhost:8080/payment";
-    /*String siteDomain = "http://www.meeting-fan.shop/payment";*/
+    /*String siteDomain = "http://localhost:8080/payment";*/
+    String siteDomain = "https://edumarine.org/payment";
 %>
 <!DOCTYPE html>
 <html lang="ko">

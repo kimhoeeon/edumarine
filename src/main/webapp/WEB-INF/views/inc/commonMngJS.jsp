@@ -11,7 +11,8 @@
 <script src="<%request.getContextPath();%>/static/js/jquery-1.9.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
---%><script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
+--%>
+<script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>

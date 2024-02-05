@@ -1,5 +1,15 @@
 $(function(){
 
+    if(!window.location.href.includes('localhost')){
+        if (window.location.protocol !== "https:") {
+            window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+        }
+
+        if (document.location.protocol === "http:") {
+            document.location.href = document.location.href.replace('http:', 'https:');
+        }
+    }
+
     $('#id').on('blur keyup', function(event){
 
         if (!(event.keyCode >=37 && event.keyCode<=40)) {
@@ -83,7 +93,12 @@ $(function(){
         $(this).val($(this).val().replaceAll(exp, ''));
     });
 
+
 })
+
+function f_input_box_only_eng(e)  {
+    e.value = e.value.replace(/[^A-Za-z]/ig, '');
+}
 
 function f_main_pre_apply_box_display(){
     let displayStatus = $('#preApplyBox').css('display');
@@ -261,10 +276,25 @@ function f_main_member_join(){
     if(nvl(passwordCheck,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '비밀번호 확인을 입력해 주세요.', ''); return false; }
 
     let name = $('#name').val();
-    if(nvl(name,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '이름을 입력해 주세요.', ''); return false; }
+    if(nvl(name,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '이름(국문)을 입력해 주세요.', ''); return false; }
+
+    let nameEn = $('#nameEn').val();
+    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '이름(영문)을 입력해 주세요.', ''); return false; }
 
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '연락처를 입력해 주세요.', ''); return false; }
+
+    let birthYear = $('#birth-year').val();
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+
+    let birthMonth = $('#birth-month').val();
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+
+    let birthDay = $('#birth-day').val();
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+
+    let sexLen = $('input[type=radio][name=sex]:checked').length;
+    if(sexLen === 0){ showMessage('', 'error', '[회원가입 정보]', '성별을 선택해 주세요.', ''); return false; }
 
     let email = $('#email').val();
     if(nvl(email,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '이메일을 입력해 주세요.', ''); return false; }
@@ -283,10 +313,10 @@ function f_main_member_join(){
 
     //관심키워드
     let keyword = '';
-    let keywordArr = form.keyword;
+    let keywordArr = keywordCheckbox;
     let keywordArrLen = keywordArr.length;
     for(let i=0; i<keywordArrLen; i++){
-        keyword += keywordArr[i];
+        keyword += keywordArr.eq(i).val();
         if((i+1) !== keywordArrLen){
             keyword += ',';
         }
@@ -493,6 +523,18 @@ function f_main_member_modify(){
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){ showMessage('', 'error', '[회원 정보]', '연락처를 입력해 주세요.', ''); return false; }
 
+    let birthYear = $('#birth-year').val();
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[회원 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+
+    let birthMonth = $('#birth-month').val();
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[회원 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+
+    let birthDay = $('#birth-day').val();
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[회원 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+
+    let sexLen = $('input[type=radio][name=sex]:checked').length;
+    if(sexLen === 0){ showMessage('', 'error', '[회원 정보]', '성별을 선택해 주세요.', ''); return false; }
+
     let email = $('#email').val();
     if(nvl(email,'') === ''){ showMessage('', 'error', '[회원 정보]', '이메일을 입력해 주세요.', ''); return false; }
 
@@ -510,10 +552,10 @@ function f_main_member_modify(){
 
     //관심키워드
     let keyword = '';
-    let keywordArr = form.keyword;
+    let keywordArr = keywordCheckbox;
     let keywordArrLen = keywordArr.length;
     for(let i=0; i<keywordArrLen; i++){
-        keyword += keywordArr[i];
+        keyword += keywordArr.eq(i).val();
         if((i+1) !== keywordArrLen){
             keyword += ',';
         }
@@ -664,10 +706,47 @@ function f_rrn_age_calc(el){
     }
 }
 
+function f_birth_age_calc(){
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+
+    if(nvl(birthYear,'') !== '' && nvl(birthMonth,'') !== '' && nvl(birthDay,'') !== ''){
+        let birth = birthYear + '-' + birthMonth + '-' + birthDay;
+        let birthDate = new Date(birth);
+
+        // 한국식 나이를 계산합니다.
+        let koreanAge = calculateKoreanAge(birthDate);
+
+        $('#age').val(koreanAge);
+    }else{
+        $('#age').val('');
+    }
+}
+
 function calculateKoreanAge(birthDate) {
-    let currentYear = new Date().getFullYear();  // 현재 연도를 가져옵니다.
-    let birthYear = birthDate.getFullYear();  // 생년을 가져옵니다.
-    return currentYear - birthYear + 1;
+    let birthYear = birthDate.getFullYear();
+    let birthMonth = birthDate.getMonth();
+    let birthDay = birthDate.getDate();
+
+    let currentDate = new Date();
+    let currentYear = currentDate.getFullYear();
+    let currentMonth = currentDate.getMonth();
+    let currentDay = currentDate.getDate();
+
+    // 만 나이를 계산합니다.
+    let age = currentYear - birthYear;
+
+    // 현재 월과 생일의 월을 비교합니다.
+    if (currentMonth < birthMonth) {
+        age--;
+    }
+    // 현재 월과 생일의 월이 같은 경우, 현재 일과 생일의 일을 비교합니다.
+    else if (currentMonth === birthMonth && currentDay < birthDay) {
+        age--;
+    }
+
+    return age;
 }
 
 function f_main_member_resume_submit(){
@@ -687,11 +766,17 @@ function f_main_member_resume_submit(){
     let domain = $('#domain').val();
     if(nvl(domain,'') === ''){ showMessage('', 'error', '[이력서 정보]', '이메일 도메인을 입력해 주세요.', ''); return false; }
 
-    let rrn_first = $('#rrn_first').val();
-    if(nvl(rrn_first,'') === '' || rrn_first.length !== 6){ showMessage('', 'error', '[이력서 정보]', '주민등록번호 앞자리를 입력해 주세요.', ''); return false; }
+    let birthYear = $('#birth-year').val();
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[이력서 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
 
-    let rrn_last = $('#rrn_last').val();
-    if(nvl(rrn_last,'') === '' || rrn_last.length !== 7){ showMessage('', 'error', '[이력서 정보]', '주민등록번호 뒷자리를 입력해 주세요.', ''); return false; }
+    let birthMonth = $('#birth-month').val();
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[이력서 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+
+    let birthDay = $('#birth-day').val();
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[이력서 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+
+    let sexLen = $('input[type=radio][name=sex]:checked').length;
+    if(sexLen === 0){ showMessage('', 'error', '[이력서 정보]', '성별을 선택해 주세요.', ''); return false; }
 
     let bodyPhotoFile_li = $('.bodyPhotoFile_li').length;
     if(bodyPhotoFile_li === 0){
@@ -722,9 +807,6 @@ function f_main_member_resume_submit(){
 
     //이메일
     form.email = email + '@' + domain;
-
-    //주민등록번호
-    form.rrn = rrn_first + '-' + rrn_last;
 
     form.id = sessionStorage.getItem('id');
 
@@ -925,6 +1007,46 @@ function maskingName(strName) {
     }
 }
 
+function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email){
+    // 결제모듈 Call
+    let paymentForm = document.createElement('form');
+    paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+    paymentForm.setAttribute('action', '/apply/payment.do');
+
+    let hiddenRegularSeq = document.createElement('input');
+    hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+    hiddenRegularSeq.setAttribute('name', 'tableSeq');
+    hiddenRegularSeq.setAttribute('value', tableSeq);
+    paymentForm.appendChild(hiddenRegularSeq);
+
+    let hiddenTrainSeq = document.createElement('input');
+    hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+    hiddenTrainSeq.setAttribute('name', 'trainSeq');
+    hiddenTrainSeq.setAttribute('value', trainSeq);
+    paymentForm.appendChild(hiddenTrainSeq);
+
+    let hiddenBuyerName = document.createElement('input');
+    hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+    hiddenBuyerName.setAttribute('name', 'buyername');
+    hiddenBuyerName.setAttribute('value', name);
+    paymentForm.appendChild(hiddenBuyerName);
+
+    let hiddenBuyerTel = document.createElement('input');
+    hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+    hiddenBuyerTel.setAttribute('name', 'buyertel');
+    hiddenBuyerTel.setAttribute('value', phone.replaceAll('-',''));
+    paymentForm.appendChild(hiddenBuyerTel);
+
+    let hiddenBuyerEmail = document.createElement('input');
+    hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+    hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+    hiddenBuyerEmail.setAttribute('value', email);
+    paymentForm.appendChild(hiddenBuyerEmail);
+
+    document.body.appendChild(paymentForm);
+    paymentForm.submit();
+}
+
 function f_main_apply_eduApply01_submit(trainSeq){
     let birthYear = $('#birth-year').val();
     let birthMonth = $('#birth-month').val();
@@ -956,7 +1078,7 @@ function f_main_apply_eduApply01_submit(trainSeq){
     form.trainSeq = trainSeq;
 
     //신청현황
-    form.applyStatus = '결제대기';
+    form.applyStatus = '결제완료';
 
     Swal.fire({
         title: '[신청 정보]',
@@ -1044,18 +1166,12 @@ function f_main_apply_eduApply01_submit(trainSeq){
 }
 
 function f_main_apply_eduApply01_modify_submit(seq){
-    let birthYear = $('#birth-year').val();
-    let birthMonth = $('#birth-month').val();
-    let birthDay = $('#birth-day').val();
     let region = $('#region').val();
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let firstApplicationField = $('#firstApplicationField').val();
     let secondApplicationField = $('#secondApplicationField').val();
     let thirdApplicationField = $('#thirdApplicationField').val();
 
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
     if(nvl(region,'') === ''){ showMessage('', 'error', '[신청 정보]', '거주지역을 입력해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
     if(nvl(firstApplicationField,'') === ''){ showMessage('', 'error', '[신청 정보]', '1순위 신청분야를 선택해 주세요.', ''); return false; }
@@ -1118,24 +1234,30 @@ function f_main_apply_eduApply01_modify_submit(seq){
 function f_main_apply_eduApply02_submit(trainSeq){
 
     console.log(trainSeq);
-    
+    /*
     let nameEn = $('#nameEn').val();
     if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '성명(영문)을 입력해 주세요.', ''); return false; }
 
-    let rrnFirst = $('#rrnFirst').val();
-    if(nvl(rrnFirst,'') === '' || rrnFirst.length !== 6){ showMessage('', 'error', '[신청 정보]', '주민등록번호 앞자리를 입력해 주세요.', ''); return false; }
+    let birthYear = $('#birth-year').val();
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
 
-    let rrnLast = $('#rrnLast').val();
-    if(nvl(rrnLast,'') === '' || rrnLast.length !== 7){ showMessage('', 'error', '[신청 정보]', '주민등록번호 뒷자리를 입력해 주세요.', ''); return false; }
+    let birthMonth = $('#birth-month').val();
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
 
-    let bodyPhoto = $('#bodyPhoto').val();
-    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', ''); return false; }
+    let birthDay = $('#birth-day').val();
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
 
-    let address = $('#address').val();
+    let sexLen = $('input[type=radio][name=sex]:checked').length;
+    if(sexLen === 0){ showMessage('', 'error', '[신청 정보]', '성별을 선택해 주세요.', ''); return false; }*/
+
+    /*let address = $('#address').val();
     if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
 
     let addressDetail = $('#addressDetail').val();
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+
+    let bodyPhoto = $('#bodyPhoto').val();
+    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', ''); return false; }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
     if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
@@ -1240,9 +1362,6 @@ function f_main_apply_eduApply02_submit(trainSeq){
 
     // form
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
-
-    //주민등록번호
-    form.rrn = rrnFirst + '-' + rrnLast;
 
     //이메일
     form.email = form.email + '@' + form.domain;
@@ -1380,15 +1499,6 @@ function f_main_apply_eduApply02_submit(trainSeq){
 function f_main_apply_eduApply02_modify_submit(boarderSeq){
     console.log(boarderSeq);
 
-    let nameEn = $('#nameEn').val();
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '성명(영문)을 입력해 주세요.', ''); return false; }
-
-    let rrnFirst = $('#rrnFirst').val();
-    if(nvl(rrnFirst,'') === '' || rrnFirst.length !== 6){ showMessage('', 'error', '[신청 정보]', '주민등록번호 앞자리를 입력해 주세요.', ''); return false; }
-
-    let rrnLast = $('#rrnLast').val();
-    if(nvl(rrnLast,'') === '' || rrnLast.length !== 7){ showMessage('', 'error', '[신청 정보]', '주민등록번호 뒷자리를 입력해 주세요.', ''); return false; }
-
     let bodyPhotoFile_li = $('.bodyPhotoFile_li').length;
     if(bodyPhotoFile_li === 0){
         let bodyPhoto = $('#bodyPhoto').val();
@@ -1397,12 +1507,6 @@ function f_main_apply_eduApply02_modify_submit(boarderSeq){
             return false;
         }
     }
-
-    let address = $('#address').val();
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-
-    let addressDetail = $('#addressDetail').val();
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
     if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
@@ -1519,9 +1623,6 @@ function f_main_apply_eduApply02_modify_submit(boarderSeq){
     // form
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
-    //주민등록번호
-    form.rrn = rrnFirst + '-' + rrnLast;
-
     //이메일
     form.email = form.email + '@' + form.domain;
 
@@ -1615,24 +1716,30 @@ function f_main_apply_eduApply02_modify_submit(boarderSeq){
 function f_main_apply_eduApply03_submit(trainSeq){
 
     console.log(trainSeq);
-
+    /*
     let nameEn = $('#nameEn').val();
     if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '성명(영문)을 입력해 주세요.', ''); return false; }
 
-    let rrnFirst = $('#rrnFirst').val();
-    if(nvl(rrnFirst,'') === '' || rrnFirst.length !== 6){ showMessage('', 'error', '[신청 정보]', '주민등록번호 앞자리를 입력해 주세요.', ''); return false; }
+    let birthYear = $('#birth-year').val();
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
 
-    let rrnLast = $('#rrnLast').val();
-    if(nvl(rrnLast,'') === '' || rrnLast.length !== 7){ showMessage('', 'error', '[신청 정보]', '주민등록번호 뒷자리를 입력해 주세요.', ''); return false; }
+    let birthMonth = $('#birth-month').val();
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
 
-    let bodyPhoto = $('#bodyPhoto').val();
-    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', ''); return false; }
+    let birthDay = $('#birth-day').val();
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+
+    let sexLen = $('input[type=radio][name=sex]:checked').length;
+    if(sexLen === 0){ showMessage('', 'error', '[신청 정보]', '성별을 선택해 주세요.', ''); return false; }
 
     let address = $('#address').val();
     if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
 
     let addressDetail = $('#addressDetail').val();
     if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
+    */
+    let bodyPhoto = $('#bodyPhoto').val();
+    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', ''); return false; }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
     if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
@@ -1737,9 +1844,6 @@ function f_main_apply_eduApply03_submit(trainSeq){
 
     // form
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
-
-    //주민등록번호
-    form.rrn = rrnFirst + '-' + rrnLast;
 
     //이메일
     form.email = form.email + '@' + form.domain;
@@ -1877,15 +1981,6 @@ function f_main_apply_eduApply03_submit(trainSeq){
 function f_main_apply_eduApply03_modify_submit(boarderSeq){
     console.log(boarderSeq);
 
-    let nameEn = $('#nameEn').val();
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '성명(영문)을 입력해 주세요.', ''); return false; }
-
-    let rrnFirst = $('#rrnFirst').val();
-    if(nvl(rrnFirst,'') === '' || rrnFirst.length !== 6){ showMessage('', 'error', '[신청 정보]', '주민등록번호 앞자리를 입력해 주세요.', ''); return false; }
-
-    let rrnLast = $('#rrnLast').val();
-    if(nvl(rrnLast,'') === '' || rrnLast.length !== 7){ showMessage('', 'error', '[신청 정보]', '주민등록번호 뒷자리를 입력해 주세요.', ''); return false; }
-
     let bodyPhotoFile_li = $('.bodyPhotoFile_li').length;
     if(bodyPhotoFile_li === 0){
         let bodyPhoto = $('#bodyPhoto').val();
@@ -1894,12 +1989,6 @@ function f_main_apply_eduApply03_modify_submit(boarderSeq){
             return false;
         }
     }
-
-    let address = $('#address').val();
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-
-    let addressDetail = $('#addressDetail').val();
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
     if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
@@ -2016,9 +2105,6 @@ function f_main_apply_eduApply03_modify_submit(boarderSeq){
     // form
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
-    //주민등록번호
-    form.rrn = rrnFirst + '-' + rrnLast;
-
     //이메일
     form.email = form.email + '@' + form.domain;
 
@@ -2113,21 +2199,21 @@ function f_main_apply_eduApply04_submit(trainSeq){
 
     console.log(trainSeq);
 
-    let nameEn = $('#nameEn').val();
+    /*let nameEn = $('#nameEn').val();
     let birthYear = $('#birth-year').val();
     let birthMonth = $('#birth-month').val();
     let birthDay = $('#birth-day').val();
     let address = $('#address').val();
-    let addressDetail = $('#addressDetail').val();
+    let addressDetail = $('#addressDetail').val();*/
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
     if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
     if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
     if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
     if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
     if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈를 하나 이상 선택해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
 
@@ -2233,21 +2319,9 @@ function f_main_apply_eduApply04_submit(trainSeq){
 
 function f_main_apply_eduApply04_modify_submit(boarderSeq){
 
-    let nameEn = $('#nameEn').val();
-    let birthYear = $('#birth-year').val();
-    let birthMonth = $('#birth-month').val();
-    let birthDay = $('#birth-day').val();
-    let address = $('#address').val();
-    let addressDetail = $('#addressDetail').val();
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
     if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈를 하나 이상 선택해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
 
@@ -2308,21 +2382,21 @@ function f_main_apply_eduApply05_submit(trainSeq){
 
     console.log(trainSeq);
 
-    let nameEn = $('#nameEn').val();
+    /*let nameEn = $('#nameEn').val();
     let birthYear = $('#birth-year').val();
     let birthMonth = $('#birth-month').val();
     let birthDay = $('#birth-day').val();
     let address = $('#address').val();
-    let addressDetail = $('#addressDetail').val();
+    let addressDetail = $('#addressDetail').val();*/
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
     if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
     if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
     if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
     if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
     if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈를 하나 이상 선택해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
 
@@ -2428,21 +2502,9 @@ function f_main_apply_eduApply05_submit(trainSeq){
 
 function f_main_apply_eduApply05_modify_submit(boarderSeq){
 
-    let nameEn = $('#nameEn').val();
-    let birthYear = $('#birth-year').val();
-    let birthMonth = $('#birth-month').val();
-    let birthDay = $('#birth-day').val();
-    let address = $('#address').val();
-    let addressDetail = $('#addressDetail').val();
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
     if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈를 하나 이상 선택해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
 
@@ -2503,21 +2565,21 @@ function f_main_apply_eduApply06_submit(trainSeq){
 
     console.log(trainSeq);
 
-    let nameEn = $('#nameEn').val();
+    /*let nameEn = $('#nameEn').val();
     let birthYear = $('#birth-year').val();
     let birthMonth = $('#birth-month').val();
     let birthDay = $('#birth-day').val();
     let address = $('#address').val();
-    let addressDetail = $('#addressDetail').val();
+    let addressDetail = $('#addressDetail').val();*/
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
     if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
     if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
     if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
     if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
     if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈를 하나 이상 선택해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
 
@@ -2623,21 +2685,9 @@ function f_main_apply_eduApply06_submit(trainSeq){
 
 function f_main_apply_eduApply06_modify_submit(boarderSeq){
 
-    let nameEn = $('#nameEn').val();
-    let birthYear = $('#birth-year').val();
-    let birthMonth = $('#birth-month').val();
-    let birthDay = $('#birth-day').val();
-    let address = $('#address').val();
-    let addressDetail = $('#addressDetail').val();
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
     if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈를 하나 이상 선택해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
 
@@ -2974,9 +3024,12 @@ function f_main_boarder_file_upload_call(id, path) {
     }
 
     /* 관련분야 경력증명서 */
-    let careerLicenseFile = document.getElementById('careerLicenseFile').value;
-    if (nvl(careerLicenseFile, '') !== '') {
-        f_main_file_upload(id, 'careerLicenseFile', path);
+    let careerLicenseFileList = document.getElementsByName('careerLicenseFile');
+    for(let i=0; i<careerLicenseFileList.length; i++){
+        let careerLicenseFile = careerLicenseFileList[i].value;
+        if (nvl(careerLicenseFile, '') !== '') {
+            f_main_file_upload(id, 'careerLicenseFile' + (i+1), path);
+        }
     }
 
 }
@@ -2996,50 +3049,12 @@ function f_main_frp_file_upload_call(id, path) {
     }
 
     /* 관련분야 경력증명서 */
-    let careerLicenseFile = document.getElementById('careerLicenseFile').value;
-    if (nvl(careerLicenseFile, '') !== '') {
-        f_main_file_upload(id, 'careerLicenseFile', path);
-    }
-
-}
-
-function f_gift_file_upload_call(id, path) {
-
-    /* 경품사진 */
-    let giftPhotoFileList = document.getElementsByName('giftPhotoFile');
-    let photoIdx = parseInt($('div.form_chuga_list').length);
-    for(let i=0; i<giftPhotoFileList.length; i++){
-        let giftPhotoFile = giftPhotoFileList[i].value;
-        if (nvl(giftPhotoFile, '') !== '') {
-            f_main_file_upload(id, 'giftPhotoFile' + photoIdx, path);
+    let careerLicenseFileList = document.getElementsByName('careerLicenseFile');
+    for(let i=0; i<careerLicenseFileList.length; i++){
+        let careerLicenseFile = careerLicenseFileList[i].value;
+        if (nvl(careerLicenseFile, '') !== '') {
+            f_main_file_upload(id, 'careerLicenseFile' + (i+1), path);
         }
-    }
-
-    /* 회사로고 */
-    let giftCompanyLogoFileList = document.getElementsByName('giftCompanyLogoFile');
-    let logoIdx = parseInt($('div.form_chuga_list').length);
-    for(let i=0; i<giftCompanyLogoFileList.length; i++){
-        let giftCompanyLogoFile = giftCompanyLogoFileList[i].value;
-        if (nvl(giftCompanyLogoFile, '') !== '') {
-            f_main_file_upload(id, 'giftCompanyLogoFile' + logoIdx, path);
-        }
-    }
-
-}
-
-function f_web_file_upload_call(id, path) {
-
-    /* 배너 이미지 */
-    let webbannerImageFile = document.getElementById('webbannerImageFile').value;
-    if (nvl(webbannerImageFile, '') !== '') {
-        f_main_file_upload(id, 'webbannerImageFile', path);
-    }
-
-    /* 로고 이미지 */
-    let webbannerLogoImageFile = document.getElementById('webbannerLogoImageFile').value;
-    if (nvl(webbannerLogoImageFile, '') !== '') {
-        //console.log('로고 파일 업로드');
-        f_main_file_upload(id, 'webbannerLogoImageFile', path);
     }
 
 }

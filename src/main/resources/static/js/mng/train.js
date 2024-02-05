@@ -67,12 +67,21 @@ function f_education_train_search(){
     let jsonObj;
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
-    if(nullToEmpty(searchText) === ""){
+
+    let time = $('#condition_time option:selected').val();
+    let category = $('#condition_category option:selected').val();
+    let gbn = $('#condition_gbn option:selected').val();
+    if(nullToEmpty(searchText) === ''){
         jsonObj = {
-            condition: condition
+            time: time,
+            category: category,
+            gbn: gbn,
         };
     }else{
         jsonObj = {
+            time: time,
+            category: category,
+            gbn: gbn,
             condition: condition ,
             searchText: searchText
         }
@@ -106,6 +115,9 @@ function f_education_train_search(){
 function f_education_train_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_category').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_gbn').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_education_train_search();
@@ -135,6 +147,7 @@ function f_education_train_detail_modal_set(seq){
 
     $('input[type=radio][name=md_exposure_yn][value=' + resData.exposureYn + ']').prop('checked',true);
     $('input[type=radio][name=md_schedule_exposure_yn][value=' + resData.scheduleExposureYn + ']').prop('checked',true);
+    $('input[type=radio][name=md_closing_yn][value=' + resData.closingYn + ']').prop('checked',true);
 
 }
 
@@ -300,6 +313,9 @@ function f_education_train_form_data_setting(){
     // 교육과정명
     form.gbn = $('#gbn').val();
 
+    // 차시
+    form.nextTime = $('#nextTime').val();
+
     // 카테고리
     let category = '전체';
     if(nvl(form.gbn,'') !== ''){
@@ -343,4 +359,52 @@ function f_education_train_valid(){
     if(nvl(trainCnt,'') === ''){ showMessage('', 'error', '[등록 정보]', '총 교육인원을 입력해 주세요.', ''); return false; }
 
     return true;
+}
+
+function f_education_train_early_closing(seq){
+    Swal.fire({
+        title: '해당 교육 접수를 마감 처리하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '마감하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            let jsonObj = {
+                seq: seq,
+                closingYn: 'Y'
+            }
+            $.ajax({
+                url: '/mng/education/train/earlyClosingYn.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(jsonObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '교육 정보 변경',
+                            text: '해당 교육 접수가 마감 처리되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mng/education/train.do';
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '교육 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+        }
+    });
+
 }

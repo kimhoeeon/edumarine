@@ -7,11 +7,48 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="ko">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="format-detection" content="telephone=no" />
+    <meta name="copyright" content="경기테크노파크">
+    <meta name="robots" content="all">
+    <meta property="og:locale" content="ko_KR">
+    <meta itemprop="inLanguage" content="ko-kr">
+    <meta name="resource-type" content="website">
+    <meta property="og:type" content="website">
+
+    <meta property="og:site_name" content="경기해양레저인력양성센터">
     <title>경기해양레저 인력양성센터</title>
+
+    <meta name="title" content="경기해양레저인력양성센터">
+    <meta property="og:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:title" content="경기해양레저인력양성센터">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://edumarine.org/main.do">
+    <meta itemprop="name" content="경기해양레저인력양성센터">
+    <meta property="nate:title" content="경기해양레저인력양성센터">
+    <meta property="nate:url" content="https://edumarine.org/main.do">
+
+    <meta property="og:url" content="https://edumarine.org/main.do">
+    <meta itemprop="url" content="https://edumarine.org/main.do">
+    <link rel="canonical" id="canonical" href="https://edumarine.org/main.do">
+
+    <meta name="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta name="twitter:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="og:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta itemprop="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+    <meta property="nate:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
+
+    <meta property="og:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta name="keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+    <meta property="twitter:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
+
+    <meta name="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta name="twitter:image " content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta property="og:image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
+    <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -22,10 +59,25 @@
     <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    <%-- favicon
-    <link rel="shortcut icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    <link rel="icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-    --%>
+    <%-- favicon --%>
+    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%-- favicon --%>
 
     <!--begin::Fonts(mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
@@ -178,6 +230,16 @@ if (document.documentElement) {
                                                                         <a href="/mng/customer/member.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">전체 회원 목록</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/resume.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">나의 이력서 목록</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -505,6 +567,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/board/faq.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">FAQ</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -705,69 +777,23 @@ if (document.documentElement) {
                         <!--end::Menu wrapper-->
                         <!--begin::Navbar-->
                         <div class="app-navbar flex-shrink-0">
-                            <!--begin::Search-->
-                            <%--<div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
-                                <!--begin::Search-->
-                                <div id="kt_header_search" class="header-search d-flex align-items-stretch"
-                                     data-kt-search-keypress="true" data-kt-search-min-length="2"
-                                     data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto"
-                                     data-kt-menu-overflow="false" data-kt-menu-permanent="true"
-                                     data-kt-menu-placement="bottom-end">
-                                    <!--begin::Search toggle-->
-                                    <div class="d-flex align-items-center" data-kt-search-element="toggle"
-                                         id="kt_header_search_toggle">
-                                        <div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px">
-                                            <i class="ki-duotone ki-magnifier fs-2 fs-lg-1">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
+
+                            <!--begin::admin mng menu-->
+                            <c:if test="${sessionScope.gbn eq '슈퍼'}">
+                                <div class="app-navbar-item align-items-stretch ms-md-3">
+                                    <!--begin::admin-->
+                                    <div class="d-flex align-items-stretch">
+                                        <!--begin::admin mng-->
+                                        <div class="d-flex align-items-center" id="kt_header_admin_menu">
+                                            <a href="/mng/adminMng/admin.do" class="btn btn-dark btn-active-light-dark">관리자 관리</a>
                                         </div>
+                                        <!--end::admin mng-->
                                     </div>
-                                    <!--end::Search toggle-->
-                                    <!--begin::Menu-->
-                                    <div data-kt-search-element="content"
-                                         class="menu menu-sub menu-sub-dropdown p-7 w-325px w-md-375px">
-                                        <!--begin::Wrapper-->
-                                        <div data-kt-search-element="wrapper">
-                                            <!--begin::Form-->
-                                            <form data-kt-search-element="form" class="w-100 position-relative mb-3" autocomplete="off">
-                                                <!--begin::Icon-->
-                                                <i class="ki-duotone ki-magnifier fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-0">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <!--end::Icon-->
-                                                <!--begin::Input-->
-                                                <input type="text"
-                                                       class="search-input form-control form-control-flush ps-10"
-                                                       name="search" value="" placeholder="Search..."
-                                                       data-kt-search-element="input"/>
-                                                <!--end::Input-->
-                                                <!--begin::Spinner-->
-                                                <span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-1"
-                                                      data-kt-search-element="spinner">
-                                                    <span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
-                                                </span>
-                                                <!--end::Spinner-->
-                                                <!--begin::Reset-->
-                                                <span class="search-reset btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 d-none"
-                                                      data-kt-search-element="clear">
-                                                    <i class="ki-duotone ki-cross fs-2 fs-lg-1 me-0">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                </span>
-                                                <!--end::Reset-->
-                                            </form>
-                                            <!--end::Form-->
-                                        </div>
-                                        <!--end::Wrapper-->
-                                    </div>
-                                    <!--end::Menu-->
+                                    <!--end::admin-->
                                 </div>
-                                <!--end::Search-->
-                            </div>--%>
-                            <!--end::Search-->
+                            </c:if>
+                            <!--end::admin mng menu-->
+
                             <!--begin::User menu-->
                             <div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
                                 <!--begin::Menu wrapper-->
@@ -790,9 +816,9 @@ if (document.documentElement) {
                                             <!--begin::Username-->
                                             <div class="d-flex flex-column">
                                                 <div class="fw-bold d-flex align-items-center fs-5">${sessionScope.id}
-                                                    <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">admin</span>
+                                                    <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Admin</span>
                                                 </div>
-                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">EduMarine 관리자</a>
+                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">${sessionScope.gbn} 관리자</a>
                                             </div>
                                             <!--end::Username-->
                                         </div>
@@ -906,6 +932,18 @@ if (document.documentElement) {
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">전체 회원 목록</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/resume.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">나의 이력서 목록</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1197,6 +1235,18 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/board/faq.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">FAQ</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -1473,8 +1523,9 @@ if (document.documentElement) {
                                                     <option></option>
                                                     <option disabled>- 검색조건 -</option>
                                                     <option value="" selected>전체</option>
-                                                    <option value="nameKo">이름(국문)</option>
-                                                    <option value="nameEn">이름(영문)</option>
+                                                    <option value="NAMEKO">이름(국문)</option>
+                                                    <option value="NAMEEN">이름(영문)</option>
+                                                    <option value="ID">아이디</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -1517,14 +1568,41 @@ if (document.documentElement) {
                                                     <option value="" disabled>- 신청상태 -</option>
                                                     <option value="결제대기">결제대기</option>
                                                     <option value="결제완료">결제완료</option>
+                                                    <option value="수강확정">수강확정</option>
+                                                    <option value="수강완료">수강완료</option>
+                                                    <option value="환급대기">환급대기</option>
+                                                    <option value="환급완료">환급완료</option>
                                                     <option value="취소신청">취소신청</option>
                                                     <option value="취소완료">취소완료</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
                                             <%--end::신청상태--%>
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-200px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_job_support_yn" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 취업지원대상 -" onchange="f_customer_boarder_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 취업지원대상 -</option>
+                                                    <option value="대상">대상</option>
+                                                    <option value="비대상">비대상</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::신청상태--%>
 
                                             <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
+
+                                                <!--begin::버튼-->
+                                                <button type="button" id="apply_status_change_btn" class="btn btn-info" data-bs-target="#kt_modal_apply_status_change">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i> 신청 상태 변경</button>
+                                                <!--end::버튼-->
+
                                                 <!--begin::버튼-->
                                                 <button type="button" id="apply_status_cancel_btn" class="btn btn-danger" data-bs-target="#kt_modal_apply_status_cancel">
                                                     <i class="ki-duotone ki-arrows-circle fs-3">
@@ -1532,6 +1610,7 @@ if (document.documentElement) {
                                                         <i class="path2"></i>
                                                     </i> 취소 승인</button>
                                                 <!--end::버튼-->
+
                                             </div>
 
                                         </div>
@@ -1554,17 +1633,19 @@ if (document.documentElement) {
                                                     </th>
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
+                                                    <th class="text-center min-w-75px">신청상태</th>
+                                                    <th class="text-center min-w-75px">등급</th>
+                                                    <th class="text-center min-w-75px">아이디</th>
                                                     <th class="text-center min-w-75px">이름</th>
                                                     <th class="text-center min-w-125px">연락처</th>
-                                                    <th class="text-center min-w-75px">신청상태</th>
-                                                    <th class="text-center min-w-150px">취소사유</th>
+                                                    <th class="text-center min-w-75px">취업지원대상</th>
                                                     <th class="text-center min-w-125px">등록일시</th>
-                                                    <th class="text-center min-w-125px">수정일시</th>
                                                     <th class="text-center min-w-75px">기능</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1820,6 +1901,27 @@ if (document.documentElement) {
                             <!--end::Col-->
                         </div>
                         <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">환불 구분</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <!--begin::Select2-->
+                                <select id="md_cancel_gbn" class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-allow-clear="true"
+                                        data-placeholder="- 환불 구분 -">
+                                    <option></option>
+                                    <option value="" disabled>- 환불 구분 -</option>
+                                    <option value="ALL">전액 환불</option>
+                                    <option value="PART">부분 환불</option>
+                                </select>
+                                <!--end::Select2-->
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
                     </form>
                     <!--end::form-->
                     <!--begin::Menu separator-->
@@ -1837,7 +1939,109 @@ if (document.documentElement) {
                         <!--begin::Col-->
                         <div class="ms-10">
                             <!--begin::File upload-->
-                            <a onclick="f_apply_cancel_btn()" class="btn btn-primary">변경하기</a>
+                            <a onclick="f_apply_cancel_btn()" class="btn btn-primary">승인</a>
+                            <!--end::File upload-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
+
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_apply_status_change" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">신청 상태 변경</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-10 px-lg-10">
+                    <!--begin::Input group-->
+                    <div>
+                        * <strong>수강확정</strong> : 현재 <strong class="text-danger">결제완료</strong> 상태인 경우에만 적용<br>
+                        * <strong>수강완료</strong> : 현재 <strong class="text-danger">수강확정</strong> 상태인 경우에만 적용<br>
+                        * <strong>환급대기</strong> : 현재 <strong class="text-danger">수강완료</strong> 상태인 경우에만 적용<br>
+                        * <strong>환급완료</strong> : 현재 <strong class="text-danger">환급대기</strong> 상태인 경우에만 적용<br>
+                    </div>
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::form-->
+                    <form id="modal_form2" method="post" onsubmit="return false;">
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">신청 상태 변경 대상 목록</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <span class="customer_list"></span>
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">변경할 신청 상태</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <!--begin::Select2-->
+                                <select id="md_status_gbn" class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-allow-clear="true"
+                                        data-placeholder="- 신청 상태 -">
+                                    <option></option>
+                                    <option value="" disabled>- 신청 상태 -</option>
+                                    <option value="수강확정">수강확정</option>
+                                    <option value="수강완료">수강완료</option>
+                                    <option value="환급대기">환급대기</option>
+                                    <option value="환급완료">환급완료</option>
+                                </select>
+                                <!--end::Select2-->
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                    </form>
+                    <!--end::form-->
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::Col-->
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <!--begin::Col-->
+                        <div>
+                            <!--begin::Cancel-->
+                            <a class="btn btn-danger" data-bs-dismiss="modal">취소</a>
+                            <!--end::Cancel-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="ms-10">
+                            <!--begin::File upload-->
+                            <a onclick="f_apply_change_btn()" class="btn btn-primary">변경</a>
                             <!--end::File upload-->
                         </div>
                         <!--end::Col-->

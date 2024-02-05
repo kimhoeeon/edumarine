@@ -215,4 +215,10 @@ public interface EduMarineMapper {
     Integer updateSailyachtPayStatus(SailyachtDTO sailyachtDTO);
 
     List<EmploymentDTO> selectEmploymentList(String gbn);
+
+    List<FaqDTO> selectFaqList(SearchDTO searchDTO);
+
+    Integer deleteFile(FileDTO fileDTO);
+
+    String getMemberSalt(String id);
 }
