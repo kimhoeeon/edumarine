@@ -172,4 +172,22 @@ public interface EduMarineService {
     List<FaqDTO> processSelectFaqList(SearchDTO searchDTO);
 
     ResponseDTO processDeleteFile(FileDTO fileDTO);
+
+    Integer processUpdateTrainApplyCnt(String trainSeq);
+
+    ResponseDTO processUpdateMemberWithdraw(MemberDTO memberDTO);
+
+    Integer processSelectRegularPreCheck(RegularDTO regularDTO);
+
+    Integer processSelectBoarderPreCheck(BoarderDTO boarderDTO);
+
+    Integer processSelectFrpPreCheck(FrpDTO frpDTO);
+
+    Integer processSelectInboarderPreCheck(InboarderDTO inboarderDTO);
+
+    Integer processSelectOutboarderPreCheck(OutboarderDTO outboarderDTO);
+
+    Integer processSelectSailyachtPreCheck(SailyachtDTO sailyachtDTO);
+
+    void processUpdateTrainClosing(String todate);
 }

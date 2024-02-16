@@ -120,9 +120,9 @@
                 <div class="sub_top_nav">
                     <span class="home"><img src="<%request.getContextPath();%>/static/img/icon_home_mini.png" alt="홈 아이콘"></span>
                     <span>교육 안내</span>
-                    <span>마리나선박 정비사 실기교육</span>
+                    <span>마리나 선박 정비사 실무교육</span>
                 </div>
-                <h2 class="sub_top_title">마리나선박 정비사 실기교육</h2>
+                <h2 class="sub_top_title">마리나 선박 정비사 실무교육</h2>
             </div>
         </div>
         <!-- //sub_top -->
@@ -134,8 +134,8 @@
                 <div class="title">교육안내</div>
                 <ul class="lnb">
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
-                    <li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
-                    <li class="on"><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
+                    <%--<li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>--%>
+                    <li class="on"><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
                     <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
@@ -152,7 +152,7 @@
                     <!-- guide_top -->
                     <div class="guide_top">
                         <div class="guide_top_tit">
-                            <div class="big">마리나선박 정비사 실기교육</div>
+                            <div class="big">마리나 선박 정비사 실무교육</div>
                             <div class="eng">Marina Ship Mechanic Practical Training</div>
                             <div class="text">
                                 마리나항만법 개정으로 마리나선박의 선외기 및 선내기 정비를 위해서는 마리나선박정비사 자격증을 취득해야 하고 해양레저 유지보수 분야의<br>
@@ -246,12 +246,22 @@
                                             <td>교육기간</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">2023.11.06.(월)~2023.12.01(금)</div>
+                                                    <ul class="list">
+                                                        <li>1차 : 2024.01.08(월) ~ 2024.02.02(금)</li>
+                                                        <li>2차 : 2024.04.02(화) ~ 2024.04.30(화)</li>
+                                                        <li>3차 : 2024.07.01(월) ~ 2024.07.26(금)</li>
+                                                        <li>4차 : 2024.09.23(월) ~ 2024.10.22(화)</li>
+                                                    </ul>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">2023.10.30.(월)~2023.11.24(금)</div>
+                                                    <ul class="list">
+                                                        <li>1차 : 2024.02.20(화) ~ 2024.03.19(화)</li>
+                                                        <li>2차 : 2024.05.16(목) ~ 2024.06.13(목)</li>
+                                                        <li>3차 : 2024.08.05(월) ~ 2024.09.02(월)</li>
+                                                        <li>4차 : 2024.11.11(월) ~ 2024.12.06(금)</li>
+                                                    </ul>
                                                 </div>
                                             </td>
                                         </tr>
@@ -298,12 +308,12 @@
                                             <td>교육인원</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">15명 내외</div>
+                                                    <div class="text">16명</div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">15명 내외</div>
+                                                    <div class="text">16명</div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -351,15 +361,15 @@
                             <li>
                                 <div class="gubun">모집방법</div>
                                 <div class="naeyong">
-                                    <div class="text">마리나선박정비사 홈페이지 (<span class="underline">https://yachtmnr.or.kr</span>) 에서 신청</div>
+                                    <div class="text">마리나선박정비사 홈페이지 (<span class="underline"><a href="https://yachtmnr.or.kr" target="_blank">https://yachtmnr.or.kr</a></span>) 에서 신청</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집기간</div>
                                 <div class="naeyong">
                                     <ul class="list">
-                                        <li>마리나 선외기 정비사 실무과정 : 2023. 10. 10(화) ~ 2023. 10. 27(금)</li>
-                                        <li>마리나 선내기 정비사 실무과정 : 2023. 10. 10(화) ~ 2023. 10. 20(금)</li>
+                                        <li>마리나 선외기 정비사 실무과정 : 교육시작 한달 전</li>
+                                        <li>마리나 선내기 정비사 실무과정 : 교육시작 한달 전</li>
                                     </ul>
                                 </div>
                             </li>
@@ -516,20 +526,20 @@
                                     <li>
                                         <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
                                         <div class="text">E-mail. <span class="underline">edu@edumarine.org</span> 또는
-                                            https://yachtmnr.or.kr
+                                            <a href="https://yachtmnr.or.kr" target="_blank">https://yachtmnr.or.kr</a>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                             <div class="box_cmnt">
                                 상기 교육일정 및 교육내용은 변경될 수 있습니다.<br>
-                                변경시 경기해양레저인력양성센터 홈페이지 (<span class="underline">www.edumarine.org</span>)에 게시
+                                변경시 경기해양레저인력양성센터 홈페이지 (<span class="underline"><a href="https://edumarine.org" target="_blank">www.edumarine.org</a></span>)에 게시
                             </div>
                         </div>
                         <!-- guide_btn_box -->
                         <div class="guide_btn_box">
                             <div class="btn_box">
-                                <a href="https://yachtmnr.or.kr/front/edu/eduList.do" target="_blank">교육신청 바로가기</a>
+                                <a href="https://yachtmnr.or.kr/common/greeting.do" target="_blank">교육신청 바로가기</a>
                             </div>
                         </div>
                         <!-- //guide_btn_box -->
@@ -558,7 +568,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>

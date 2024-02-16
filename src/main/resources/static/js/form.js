@@ -95,16 +95,65 @@ $(document).ready(function () {
 
     // 마이페이지 교육취소 팝업 - 오픈
     $('.form_cancel_edu_btn').on('click', function () {
-        $('#popupCancelEdu').addClass('on');
+        let changeYn = $(this).siblings('input[type=hidden]').val();
+        if(nvl(changeYn,'') !== '' && changeYn === 'Y'){
+            $('#popupCancelEdu').addClass('on');
 
-        let trainName = $(this).parent().siblings('.subject').find('a').text();
-        if(nvl(trainName,'') !== ''){
-            $('#popupCancelEdu').find('.train_name').text(trainName);
+            let trainName = $(this).parent().siblings('.subject').find('a').text();
+            if(nvl(trainName,'') !== ''){
+                $('#popupCancelEdu').find('.train_name').text(trainName);
 
-            let seq = $(this).attr('value');
-            let payStatus = $(this).parent().siblings('.state').text();
+                let seq = $(this).attr('value');
+                //let payStatus = $(this).parent().siblings('.state').text().trim();
+                let payMethod = $(this).data('value');
+                if(payMethod === 'VBank'){
+                    $("#popupCancelEdu .refund_account_box").css("display", "block");
+                }else{
+                    $("#popupCancelEdu .refund_account_box").css("display", "none");
+                }
 
-            $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "')");
+                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "')");
+            }
+        }else{
+            Swal.fire({
+                title: '[교육 신청 정보]',
+                html: '죄송합니다. 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
+                icon: 'info',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인'
+            });
+        }
+
+    });
+
+    // 각 신청 페이지 신청 취소 버튼
+    $('.form_apply_cancel_edu_btn').on('click', function () {
+        let changeYn = $(this).siblings('input[type=hidden][name=chg_changeYn]').val();
+        let seq = $(this).siblings('input[type=hidden][name=chg_seq]').val();
+        let trainName = $(this).siblings('input[type=hidden][name=chg_trainName]').val();
+        let payMethod = $(this).siblings('input[type=hidden][name=chg_payMethod]').val();
+        if(changeYn === 'Y'){
+            $('#popupCancelEdu').addClass('on');
+
+            if(nvl(trainName,'') !== ''){
+                $('#popupCancelEdu').find('.train_name').text(trainName);
+
+                if(payMethod === 'VBank'){
+                    $("#popupCancelEdu .refund_account_box").css("display", "block");
+                }else{
+                    $("#popupCancelEdu .refund_account_box").css("display", "none");
+                }
+
+                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "')");
+            }
+        }else{
+            Swal.fire({
+                title: '[교육 신청 정보]',
+                html: '죄송합니다. 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
+                icon: 'info',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인'
+            });
         }
 
     });
@@ -130,6 +179,9 @@ $(document).ready(function () {
         $("#popupCancelEdu .cmnt_box").css("display", "none");
         $("#popupCancelEdu .box_1").css("display", "block");
         $("#popupCancelEdu .box_2").css("display", "none");
+        $("#popupCancelEdu .refund_account_box").css("display", "none");
+        $('#popupCancelEdu #cancel_edu_bank_select').val("");
+        $('#popupCancelEdu .refund_account_box input[type=text]').val("");
         $('#popupCancelEdu').removeClass('on');
     });
     $("#popupCancelEdu .btn_confirm").on("click", function () {
@@ -150,9 +202,25 @@ $(document).ready(function () {
         if (inputValue.length <= 10) {
             $("#popupDeleteId .cmnt_box").css("display", "block");
         } else {
-            $("#popupDeleteId .cmnt_box").css("display", "none");
-            alert("이용해 주셔서 감사합니다.");
-            window.location = "/index.do";
+            $('#popupDeleteId .cmnt_box').css('display', 'none');
+            $('#popupDeleteId').removeClass('on');
+
+            Swal.fire({
+                title: '[회원 정보]',
+                html: '정말로 회원 탈퇴를 진행하시겠습니까?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#00a8ff',
+                confirmButtonText: '탈퇴하기',
+                cancelButtonColor: '#A1A5B7',
+                cancelButtonText: '취소'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    f_main_member_withdraw();
+                }
+            });
+            /*alert("이용해 주셔서 감사합니다.");
+            window.location = "/index.do";*/
         }
     });
 

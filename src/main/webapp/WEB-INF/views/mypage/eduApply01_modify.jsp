@@ -344,7 +344,8 @@
                     <!-- form box -->
 
                     <div class="form_btn_box">
-                        <a href="javascript:void(0);" value="${info.seq}" class="btnSt03 form_cancel_edu_btn">신청취소</a>
+                        <input type="hidden" name="changeYn" value="Y">
+                        <a href="javascript:void(0);" value="${info.seq}" class="btnSt03 form_apply_cancel_edu_btn">신청취소</a>
                         <a href="javascript:void(0);" onclick="f_main_apply_eduApply01_modify_submit('${info.seq}');" class="btnSt01">수정하기</a>
                     </div>
 
@@ -389,13 +390,14 @@
                                     </div>
                                     <div class="btn_box">
                                         <a href="javascript:void(0);" class="btnSt03 btn_prev">이전</a>
-                                        <a href="javascript:void(0);" class="btnSt04 btn_next" onclick="f_edu_apply_cancel_btn('${info.seq}','상시신청')">확인</a>
+                                        <a href="javascript:void(0);" class="btnSt04 btn_next" onclick="f_edu_apply_cancel_btn('${info.seq}','상시신청','payStatus')">확인</a>
                                     </div>
                                 </div>
                                 <div class="box_2">
                                     <div class="text_box">
                                         취소 신청이 접수되었습니다.<br>
-                                        담당자 승인 후 5일 내로, 취소 여부가 확정되며<br>
+                                        담당자 승인 후 2주 이내<br>
+                                        교육비 환불 기준에 따라 취소됩니다.<br>
                                         취소 확정 여부는 추후 마이페이지를 통해<br>
                                         확인하실 수 있습니다.
                                     </div>
@@ -429,7 +431,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 <script>
@@ -441,6 +443,25 @@
         $('#birth-year option').prop('disabled',true);
         $('#birth-month option').prop('disabled',true);
         $('#birth-day option').prop('disabled',true);
+
+        let modYn = '${modYn}';
+        if(nvl(modYn,'') !== ''){
+            if(modYn === 'N'){
+                $('#content input[type=text]').prop('readonly', true);
+                $('#content input[type=radio]').prop('disabled',true);
+                $('#content select option').prop('disabled',true);
+
+                $('.form_btn_box').hide();
+
+                Swal.fire({
+                    title: '[교육 신청 정보]',
+                    html: '해당 교육은<br>마감 또는 관리자에 의해 삭제된 교육이므로,<br>정보 수정이 불가합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                });
+            }
+        }
     });
 </script>
 </c:if>

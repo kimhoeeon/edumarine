@@ -172,7 +172,7 @@
                                     <div class="number">번호</div>
                                     <div class="subject">과정명</div>
                                     <div class="date">신청일(결제일)</div>
-                                    <div class="method">결제 방법</div>
+                                    <div class="method" style="flex-basis: 280px;">결제 정보</div>
                                     <div class="state">결제 상태</div>
                                 </li>
                             </ul>
@@ -188,10 +188,21 @@
                                                 </div>
                                             </div>
                                             <div class="date">
-                                                <fmt:parseDate var="dateString" value="${fn:split(info.finalRegiDttm,' ')[0]}" pattern="yyyy-MM-dd" />
+                                                <fmt:parseDate var="dateString" value="${info.applDate}" pattern="yyyyMMdd" />
                                                 <fmt:formatDate value="${dateString}" pattern="yyyy.MM.dd" />
                                             </div>
-                                            <div class="method">${info.cardPurchaseName} (${info.cardNum})</div>
+                                            <div class="method" style="flex-basis: 280px;">
+                                                <c:if test="${info.payMethod eq 'Card'}">
+                                                    ${info.cardPurchaseName}<br>
+                                                    (${info.cardNum})
+                                                </c:if>
+                                                <c:if test="${info.payMethod eq 'VBank'}">
+                                                    <fmt:parseDate var="dateString1" value="${info.vactDate}" pattern="yyyyMMdd" />
+                                                    가상계좌<br>
+                                                    (${info.vactBankName} / ${info.vactNum})<br>
+                                                    입급기한 : <fmt:formatDate value="${dateString1}" pattern="yyyy.MM.dd" />
+                                                </c:if>
+                                            </div>
                                             <div class="state">${info.payStatus}</div>
                                         </li>
                                     </c:forEach>
@@ -228,7 +239,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 </c:if>
 </body>

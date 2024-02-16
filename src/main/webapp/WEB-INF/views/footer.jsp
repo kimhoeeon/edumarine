@@ -52,7 +52,7 @@
                     </p>
                     <p class="text2">
                         <span class="gubun">대표자</span>
-                        정승용
+                        우달식
                     </p>
                     <p class="text2">
                         <span class="gubun">대표번호</span>

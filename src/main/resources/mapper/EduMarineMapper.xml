@@ -56,6 +56,23 @@
         )
     </insert>
 
+    <update id="updateTrainClosing" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateTrainClosing */
+        UPDATE train
+        SET closing_yn = 'Y'
+        WHERE seq IN ( SELECT r.seq
+                       FROM ( SELECT t.seq
+                              FROM train t
+                              WHERE t.del_yn = 'N'
+                                AND t.closing_yn = 'N'
+                                AND ( t.train_end_dttm <![CDATA[<]]> #{todate}
+                                          OR t.apply_end_dttm <![CDATA[<]]> #{todate}
+                                          OR t.train_cnt = t.train_apply_cnt
+                                    )
+                              ) r
+                      )
+    </update>
+
     <select id="selectPopupList" parameterType="com.mtf.edumarine.dto.PopupDTO" resultType="com.mtf.edumarine.dto.PopupDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectPopupList */
         SELECT seq
@@ -131,13 +148,15 @@
           AND exposure_yn = 'Y'
           AND del_yn = 'N'
           AND closing_yn = 'N'
-        ORDER BY train_start_dttm DESC
+        ORDER BY train_start_dttm ASC
+        LIMIT 5
     </select>
 
     <select id="selectTrainSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.TrainDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainSingle */
         SELECT seq
              , gbn
+             , category
              , train_start_dttm
              , train_end_dttm
              , apply_start_dttm
@@ -205,12 +224,12 @@
             AND category = #{category}
         </if>
         <if test='searchText != null and searchText != ""'>
-            AND gbn BINARY LIKE CONCAT('%',#{searchText},'%')
+            AND gbn LIKE CONCAT('%',#{searchText},'%')
         </if>
         <if test='year != null and year != ""'>
             AND (train_start_dttm LIKE CONCAT('%',#{year},'%') OR train_end_dttm LIKE CONCAT('%',#{year},'%'))
         </if>
-        ORDER BY gbn = '상시신청' DESC, train_start_dttm DESC, train_end_dttm DESC, final_regi_dttm DESC
+        ORDER BY gbn = '상시신청' DESC, closing_yn, train_start_dttm
         <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
             LIMIT #{pageNum} , #{rows}
         </if>
@@ -291,6 +310,7 @@
         FROM member
         WHERE id = #{id}
         AND del_yn = 'N'
+        AND apply_status != '탈퇴'
     </select>
 
     <select id="getMemberSeq" resultType="java.lang.String">
@@ -362,6 +382,7 @@
         WHERE id = #{id}
           AND password = <![CDATA[#{password}]]>
           AND del_yn = 'N'
+          AND apply_status != '탈퇴'
     </select>
 
     <select id="getMemberEmail" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.String">
@@ -457,9 +478,18 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateMemberWithdraw" parameterType="com.mtf.edumarine.dto.MemberDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateMemberWithdraw */
+        UPDATE member
+        SET apply_status = #{applyStatus}
+          , note = <![CDATA[#{note}]]>
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectResumeSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.ResumeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectResumeSingle */
         SELECT seq
+             , member_seq
              , id
              , name_ko
              , name_en
@@ -483,24 +513,13 @@
              , final_regi_pic
              , final_regi_dttm
         FROM resume
-        WHERE id = #{id}
+        WHERE member_seq = #{memberSeq}
     </select>
 
     <update id="updateResume" parameterType="com.mtf.edumarine.dto.ResumeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateResume */
         UPDATE resume
-        SET name_ko = #{nameKo}
-          , name_en = #{nameEn}
-          , phone = #{phone}
-          , email = #{email}
-          , birth_year = #{birthYear}
-          , birth_month = #{birthMonth}
-          , birth_day = #{birthDay}
-          , sex = #{sex}
-          , age = #{age}
-          , address = <![CDATA[#{address}]]>
-          , address_detail = <![CDATA[#{addressDetail}]]>
-          , top_clothes_size = #{topClothesSize}
+        SET top_clothes_size = #{topClothesSize}
           , bottom_clothes_size = #{bottomClothesSize}
           , shoes_size = #{shoesSize}
           , participation_path = #{participationPath}
@@ -517,18 +536,8 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.insertResume */
         INSERT INTO resume
         ( seq
+        , member_seq
         , id
-        , name_ko
-        , name_en
-        , phone
-        , email
-        , birth_year
-        , birth_month
-        , birth_day
-        , sex
-        , age
-        , address
-        , address_detail
         , top_clothes_size
         , bottom_clothes_size
         , shoes_size
@@ -542,18 +551,8 @@
         )
         VALUES
             ( #{seq}
+            , #{memberSeq}
             , #{id}
-            , #{nameKo}
-            , #{nameEn}
-            , #{phone}
-            , #{email}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{sex}
-            , #{age}
-            , <![CDATA[#{address}]]>
-            , <![CDATA[#{addressDetail}]]>
             , #{topClothesSize}
             , #{bottomClothesSize}
             , #{shoesSize}
@@ -1412,6 +1411,13 @@
             , card_gwcode
             , card_purchase_name
             , pay_device
+            , vact_date
+            , vact_time
+            , vact_name
+            , vact_input_name
+            , vact_bank_code
+            , vact_bank_name
+            , vact_num
             , result_code
             , result_msg
             , refund_reason
@@ -1468,6 +1474,13 @@
             , #{cardGwcode}
             , #{cardPurchaseName}
             , #{payDevice}
+            , #{vactDate}
+            , #{vactTime}
+            , #{vactName}
+            , #{vactInputName}
+            , #{vactBankCode}
+            , #{vactBankName}
+            , #{vactNum}
             , #{resultCode}
             , #{resultMsg}
             , <![CDATA[#{refundReason}]]>
@@ -1484,9 +1497,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateRegularPayStatus */
         UPDATE regular
         SET apply_status = #{applyStatus}
-          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
           <if test='cancelReason != null and cancelReason != ""'>
           , cancel_reason = #{cancelReason}
+          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
           </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -1496,9 +1509,21 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateBoarderPayStatus */
         UPDATE boarder
         SET apply_status = #{applyStatus}
-          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -1508,9 +1533,21 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateFrpPayStatus */
         UPDATE frp
         SET apply_status = #{applyStatus}
-          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -1520,9 +1557,21 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateInboarderPayStatus */
         UPDATE inboarder
         SET apply_status = #{applyStatus}
-          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -1532,9 +1581,21 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateOutboarderPayStatus */
         UPDATE outboarder
         SET apply_status = #{applyStatus}
-          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -1544,9 +1605,21 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateSailyachtPayStatus */
         UPDATE sailyacht
         SET apply_status = #{applyStatus}
-          , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
         <if test='cancelReason != null and cancelReason != ""'>
             , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -1564,16 +1637,19 @@
                            ,'수강중'
                            , LISTA.payStatus)
                        ) AS payStatus
+                   , IFNULL(LISTA.payMethod,'미결제') as payMethod
                    , LISTA.seq
                    , LISTA.final_regi_dttm
                    , LISTA.trainStartDttm
                    , LISTA.trainEndDttm
+                   , CASE WHEN DATEDIFF(LISTA.trainStartDttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END AS changeYn
               FROM ( SELECT @ROWNUM := 0) R
                  , ( SELECT '상시신청' AS trainName
                           , r.train_seq
                           , r.apply_status AS payStatus
                           , r.seq
                           , r.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = r.member_seq and p.table_seq = r.seq and p.train_seq = r.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = r.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = r.train_seq) AS trainEndDttm
                      FROM regular r
@@ -1585,6 +1661,7 @@
                           , b.apply_status AS payStatus
                           , b.seq
                           , b.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = b.member_seq and p.table_seq = b.seq and p.train_seq = b.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = b.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = b.train_seq) AS trainEndDttm
                      FROM boarder b
@@ -1596,6 +1673,7 @@
                           , f.apply_status AS payStatus
                           , f.seq
                           , f.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = f.member_seq and p.table_seq = f.seq and p.train_seq = f.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = f.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = f.train_seq) AS trainEndDttm
                      FROM frp f
@@ -1607,6 +1685,7 @@
 	                      , i.apply_status AS payStatus
 	                      , i.seq
 	                      , i.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = i.member_seq and p.table_seq = i.seq and p.train_seq = i.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = i.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = i.train_seq) AS trainEndDttm
 	                 FROM inboarder i
@@ -1618,6 +1697,7 @@
                           , o.apply_status AS payStatus
                           , o.seq
                           , o.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = o.member_seq and p.table_seq = o.seq and p.train_seq = o.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = o.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = o.train_seq) AS trainEndDttm
                      FROM outboarder o
@@ -1629,6 +1709,7 @@
                           , s.apply_status AS payStatus
                           , s.seq
                           , s.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = s.member_seq and p.table_seq = s.seq and p.train_seq = s.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = s.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = s.train_seq) AS trainEndDttm
                      FROM sailyacht s
@@ -1830,7 +1911,9 @@
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM boarder
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = b.member_seq AND p.table_seq = b.seq AND p.train_seq = b.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = b.train_seq) AS changeYn
+        FROM boarder b
         WHERE seq = #{seq}
     </select>
 
@@ -1867,7 +1950,9 @@
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM frp
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = f.member_seq AND p.table_seq = f.seq AND p.train_seq = f.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = f.train_seq) AS changeYn
+        FROM frp f
         WHERE seq = #{seq}
     </select>
 
@@ -1883,14 +1968,20 @@
                           , train_seq
                           , train_name
                           , tot_price
-                          , final_regi_dttm
+                          , appl_date
+                          , pay_method
                           , card_purchase_name
                           , card_num
+                          , vact_date
+                          , vact_name
+                          , vact_bank_name
+                          , vact_num
                           , pay_status
+                          , init_regi_dttm
                      FROM payment
                      WHERE member_seq = #{memberSeq}
 	              ) LISTA
-              ORDER BY LISTA.final_regi_dttm ASC
+              ORDER BY LISTA.init_regi_dttm ASC
              ) LISTB
         ORDER BY LISTB.rownum DESC
     </select>
@@ -2249,7 +2340,9 @@
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM inboarder
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = i.member_seq AND p.table_seq = i.seq AND p.train_seq = i.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = i.train_seq) AS changeYn
+        FROM inboarder i
         WHERE seq = #{seq}
     </select>
 
@@ -2359,7 +2452,9 @@
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM outboarder
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = o.member_seq AND p.table_seq = o.seq AND p.train_seq = o.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = o.train_seq) AS changeYn
+        FROM outboarder o
         WHERE seq = #{seq}
     </select>
 
@@ -2379,7 +2474,9 @@
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM sailyacht
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = s.member_seq AND p.table_seq = s.seq AND p.train_seq = s.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = s.train_seq) AS changeYn
+        FROM sailyacht s
         WHERE seq = #{seq}
     </select>
 
@@ -2458,6 +2555,48 @@
         DELETE FROM file
         WHERE id = #{id}
     </delete>
+
+    <select id="selectRegularPreCheck" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectRegularPreCheck */
+        SELECT COUNT(1)
+        FROM regular
+        WHERE member_seq = #{memberSeq}
+    </select>
+
+    <select id="selectBoarderPreCheck" parameterType="com.mtf.edumarine.dto.BoarderDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectBoarderPreCheck */
+        SELECT COUNT(1)
+        FROM boarder
+        WHERE member_seq = #{memberSeq}
+    </select>
+
+    <select id="selectFrpPreCheck" parameterType="com.mtf.edumarine.dto.FrpDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFrpPreCheck */
+        SELECT COUNT(1)
+        FROM frp
+        WHERE member_seq = #{memberSeq}
+    </select>
+
+    <select id="selectInboarderPreCheck" parameterType="com.mtf.edumarine.dto.InboarderDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectInboarderPreCheck */
+        SELECT COUNT(1)
+        FROM inboarder
+        WHERE member_seq = #{memberSeq}
+    </select>
+
+    <select id="selectOutboarderPreCheck" parameterType="com.mtf.edumarine.dto.OutboarderDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectOutboarderPreCheck */
+        SELECT COUNT(1)
+        FROM outboarder
+        WHERE member_seq = #{memberSeq}
+    </select>
+
+    <select id="selectSailyachtPreCheck" parameterType="com.mtf.edumarine.dto.SailyachtDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectSailyachtPreCheck */
+        SELECT COUNT(1)
+        FROM sailyacht
+        WHERE member_seq = #{memberSeq}
+    </select>
 
 </mapper>
 

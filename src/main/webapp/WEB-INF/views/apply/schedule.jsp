@@ -151,7 +151,7 @@
                             <li>
                                 <div class="gubun">교육연도</div>
                                 <c:set var="now" value="<%=new java.util.Date()%>"/>
-                                <div class="input"><input type="text" id="trainYear" value="<fmt:formatDate value="${now}" pattern="yyyy" />" <%--readonly--%>></div>
+                                <div class="input"><input type="text" id="trainYear" value="<fmt:formatDate value="${now}" pattern="yyyy" />" readonly></div>
                             </li>
                             <li>
                                 <div class="gubun">과정</div>
@@ -321,24 +321,10 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 <script src="<%request.getContextPath();%>/static/js/front/schedule.js?ver=<%=System.currentTimeMillis()%>"></script>
-
-<script>
-    $(function(){
-        let payResInfo_resultCode = '${payResInfo.resultCode}';
-        if(nvl(payResInfo_resultCode,'') !== ''){
-
-            if(payResInfo_resultCode === "0000"){
-                showMessage('', 'info', '교육 신청 결제 완료', '교육 신청 결제가 완료되었습니다.<br>상세 내역은 마이페이지에서 확인 가능합니다.', '');
-                return false;
-            }
-
-        }
-    })
-</script>
 
 </body>
 </html>

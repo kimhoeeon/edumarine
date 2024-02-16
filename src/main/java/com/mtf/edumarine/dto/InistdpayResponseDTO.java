@@ -55,4 +55,13 @@ public class InistdpayResponseDTO {
     private String CARD_PRTC_CODE;
     private String payDevice;
     private String merchantData;
+
+    // 가상계좌
+    private String VACT_Date;
+    private String VACT_Name;
+    private String VACT_InputName;
+    private String VACT_Time;
+    private String VACT_BankCode;
+    private String vactBankName;
+    private String VACT_Num;
 }

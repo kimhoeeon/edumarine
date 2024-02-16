@@ -21,4 +21,10 @@ public class InistdpayCancelRequestDTO {
     String currency; //통화 (WON, USD)
     String tax; //부가세
     String taxFree; //비과세
+
+    // 계좌 환불
+    // 전체
+    String refundAcctNum;
+    String refundBankCode;
+    String refundAcctName;
 }

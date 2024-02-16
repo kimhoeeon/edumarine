@@ -33,6 +33,10 @@ public class RegularDTO {
     String applyStatus; //신청상태
     String cancelDttm; //취소신청일시
     String cancelReason; //취소사유
+    String refundBankCode; //환불계좌은행코드
+    String refundBankName; //환불계좌은행명
+    String refundBankCustomerName; //환불계좌예금주명
+    String refundBankNumber; //환불계좌번호
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

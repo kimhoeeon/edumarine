@@ -1522,13 +1522,15 @@ if (document.documentElement) {
                                                     <div class="input-group">
                                                         <input type="text" id="gbn" name="gbn" value="${info.gbn}" class="form-control form-control-solid-bg" placeholder="교육과정명" readonly/>
                                                         <select id="gbn_select" class="form-select form-control-solid-bg ms-4" <c:if test="${info.gbn ne null}">disabled</c:if> >
-                                                            <option selected>직접입력</option>
+                                                            <option selected>- 교육과정명 선택 -</option>
                                                             <option value="상시신청" <c:if test="${info.gbn eq '상시신청'}">selected</c:if> >상시신청</option>
-                                                            <option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.gbn eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>
+                                                            <%--<option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.gbn eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>--%>
                                                             <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.gbn eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
                                                             <option value="해상엔진 자가정비 (선외기)" <c:if test="${info.gbn eq '해상엔진 자가정비 (선외기)'}">selected</c:if> >해상엔진 자가정비 (선외기)</option>
                                                             <option value="해상엔진 자가정비 (선내기)" <c:if test="${info.gbn eq '해상엔진 자가정비 (선내기)'}">selected</c:if> >해상엔진 자가정비 (선내기)</option>
                                                             <option value="해상엔진 자가정비 (세일요트)" <c:if test="${info.gbn eq '해상엔진 자가정비 (세일요트)'}">selected</c:if> >해상엔진 자가정비 (세일요트)</option>
+                                                            <option value="마리나 선박 선외기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선외기 정비사 실무과정'}">selected</c:if> >마리나 선박 선외기 정비사 실무과정</option>
+                                                            <option value="마리나 선박 선내기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선내기 정비사 실무과정'}">selected</c:if> >마리나 선박 선내기 정비사 실무과정</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1622,11 +1624,11 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">교육신청신원 (최초 등록시 '0', 수정불가항목)</label>
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">교육신청인원 (최초 등록시 '0', 수정불가항목)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input type="text" id="trainApplyCnt" name="trainApplyCnt" class="form-control form-control-lg form-control-solid-bg onlyNum" placeholder="교육신청신원"
+                                                    <input type="text" id="trainApplyCnt" name="trainApplyCnt" class="form-control form-control-lg form-control-solid-bg onlyNum" placeholder="교육신청인원"
                                                            value="${info.trainApplyCnt eq null ? 0 : info.trainApplyCnt}" disabled/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1689,13 +1691,14 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8 d-flex align-items-center">
+                                                    <input type="hidden" id="preClosingYn" value="${info.closingYn}">
                                                     <label class="me-5">
                                                         <input type="radio" name="closingYn" value="N" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.closingYn eq 'N'}">checked</c:if>/> 신청오픈
+                                                               <c:if test="${info.closingYn eq 'N'}">checked</c:if>/> 추가모집
                                                     </label>
                                                     <label>
                                                         <input type="radio" name="closingYn" value="Y" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.closingYn eq 'Y' or info.scheduleExposureYn eq null}">checked</c:if>/> 신청마감
+                                                               <c:if test="${info.closingYn eq 'Y' or info.scheduleExposureYn eq null}">checked</c:if>/> 조기마감
                                                     </label>
                                                 </div>
                                                 <!--end::Col-->

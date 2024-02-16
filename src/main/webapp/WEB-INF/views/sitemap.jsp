@@ -145,8 +145,8 @@
                     <div class="title">교육안내</div>
                     <div class="list">
                         <a href="/guide/guide01.do">전체 교육과정 소개</a>
-                        <a href="/guide/guide02.do">해상엔진 테크니션(선내기/선외기)</a>
-                        <a href="/guide/guide03.do">마리나선박 정비사 실기교육</a>
+                        <%--<a href="/guide/guide02.do">해상엔진 테크니션(선내기/선외기)</a>--%>
+                        <a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a>
                         <a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a>
                         <a href="/guide/guide05.do">위탁교육</a>
                         <a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a>
@@ -200,7 +200,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>

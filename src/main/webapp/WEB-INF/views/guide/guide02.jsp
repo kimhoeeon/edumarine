@@ -135,7 +135,7 @@
                 <ul class="lnb">
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <li class="on"><a href="/guide/guide02.do">해상엔진 테크니션</a></li>
-                    <li><a href="/guide/guide03.do">마리나선박 정비사 실기교육</a></li>
+                    <li><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
                     <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
@@ -382,7 +382,7 @@
                             <li>
                                 <div class="gubun">지원방법</div>
                                 <div class="naeyong">
-                                    <div class="text">홈페이지(<span class="underline">www.edumarine.org</span>)에서 신청</div>
+                                    <div class="text">홈페이지(<span class="underline"><a href="https://edumarine.org" target="_blank">www.edumarine.org</a></span>)에서 신청</div>
                                     <div class="small gray7">
                                         &lt;경기해양레저인력양성센터 홈페이지 → 교육신청&gt;
                                     </div>
@@ -611,14 +611,14 @@
                                     <li>
                                         <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
                                         <div class="text">E-mail. <span class="underline">edu@edumarine.org</span> 또는
-                                            https://yachtmnr.or.kr
+                                            <a href="https://yachtmnr.or.kr" target="_blank">https://yachtmnr.or.kr</a>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                             <div class="box_cmnt">
                                 상기 교육일정 및 교육내용은 변경될 수 있습니다.<br>
-                                변경시 경기해양레저인력양성센터 홈페이지 (<span class="underline">www.edumarine.org</span>)에 게시
+                                변경시 경기해양레저인력양성센터 홈페이지 (<span class="underline"><a href="https://edumarine.org" target="_blank">www.edumarine.org</a></span>)에 게시
                             </div>
                         </div>
                         <!-- guide_btn_box -->
@@ -653,7 +653,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>

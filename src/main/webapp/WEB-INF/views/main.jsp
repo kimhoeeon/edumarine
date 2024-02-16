@@ -145,6 +145,7 @@
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('S', '')" class="btn">검색</a>
                     </div>
                     <div class="hashtag">
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU09')">#마리나</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU07')">#선내기</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU06')">#선외기</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU08')">#세일요트</a>
@@ -233,7 +234,8 @@
                 <!-- //body_tit -->
                 <!-- tab_menu -->
                 <ul class="main_edu_tab tab_menu">
-                    <li class="on" data-tab="tab-1">해상엔진 테크니션</li>
+                    <%--<li data-tab="tab-1">해상엔진 테크니션</li>--%>
+                    <li class="on" data-tab="tab-6">마리나 선박 정비사 실무과정</li>
                     <li data-tab="tab-2">FRP 정비 테크니션</li>
                     <li data-tab="tab-3">선외기 자가정비과정</li>
                     <li data-tab="tab-4">선내기 자가정비과정</li>
@@ -241,7 +243,7 @@
                 </ul>
                 <!-- tab_menu -->
                 <!-- list -->
-                <div class="main_edu_list tab_content on" id="tab-1">
+                <div class="main_edu_list tab_content" id="tab-1">
                     <c:if test="${not empty engineList}">
                         <ul class="list_head">
                             <li>
@@ -410,6 +412,36 @@
                     </c:if>
                 </div>
                 <!-- //list -->
+                <!-- list -->
+                <div class="main_edu_list tab_content on" id="tab-6">
+                    <c:if test="${not empty marinaList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainMarina" items="${marinaList}" begin="0" end="${marinaList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="/apply/schedule.do">${mainMarina.gbn}</a></div>
+                                    <div class="chasi">${mainMarina.nextTime}</div>
+                                    <div class="periodApp">${fn:substring(mainMarina.applyStartDttm,2, mainMarina.applyStartDttm.length())} ~ ${fn:substring(mainMarina.applyEndDttm,2, mainMarina.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainMarina.trainStartDttm,2, mainMarina.trainStartDttm.length())} ~ ${fn:substring(mainMarina.trainEndDttm,2, mainMarina.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty marinaList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
+                </div>
+                <!-- //list -->
             </div>
         </div>
         <!-- //main_edu -->
@@ -508,10 +540,10 @@
         <div class="mainLayerPopup" id="id_popup_${popup.seq}"
              style="position:fixed; top:${popup.topPx}px; left:${imgLeftPosition}px; width:${popup.widthPx}px; display: none;">
             <div class="popupBox" style="padding:0;">
-                <c:if test="${popup.linkUrl ne null and popup.linkUrl ne ''}">
+                <c:if test="${popup.linkUrl eq null or popup.linkUrl eq ''}">
                     ${fn:replace(fn:replace(popup.content,'&lt;','<'),'&gt;','>')}
                 </c:if>
-                <c:if test="${popup.linkUrl eq null or popup.linkUrl eq ''}">
+                <c:if test="${popup.linkUrl ne null and popup.linkUrl ne ''}">
                     <a href="${popup.linkUrl}" target="_blank">
                         ${fn:replace(fn:replace(popup.content,'&lt;','<'),'&gt;','>')}
                     </a>

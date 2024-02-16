@@ -261,11 +261,11 @@ let DTCustomerRegular = function () {
             'paging' : false,
             'select': false,
             'ordering': true,
-            'order': [[0, 'desc']],
+            'order': [[1, 'desc']],
             'columnDefs': [
                 { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
                 {
-                    'targets': [1,2,3,4,6,7,8,9,10,11,12,13]/*'_all'*/,
+                    'targets': [0,1,2,3,4,6,7,8,9,10,11,12]/*'_all'*/,
                     'className': 'text-center'
                 },
                 {
@@ -286,26 +286,22 @@ let DTCustomerRegular = function () {
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderMajorCell(data, type, row); }
-                },
-                {
-                    'targets': 7,
                     'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 10,
                     'render': function (data, type, row) { return renderExperienceYnCell(data, type, row); }
                 },
                 {
-                    'targets': 13,
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -318,7 +314,6 @@ let DTCustomerRegular = function () {
                 { data: 'applyStatus'},
                 { data: 'grade'},
                 { data: 'applicationField'},
-                { data: 'major'},
                 { data: 'id'},
                 { data: 'name'},
                 { data: 'contact'},
@@ -545,18 +540,30 @@ let DTCustomerBoarder = function () {
                 },
                 {
                     'targets': 3,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 7,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -566,6 +573,7 @@ let DTCustomerBoarder = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
                 { data: 'id'},
@@ -576,6 +584,36 @@ let DTCustomerBoarder = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
+        }
+
+        return renderHTML;
     }
 
     function renderContactCell(data, type, row) {
@@ -606,14 +644,41 @@ let DTCustomerBoarder = function () {
 
     function renderApplyStatusCell(data, type, row) {
         let renderHTML = '';
+        let payMethod = row.payMethod;
+        let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
             renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }
 
-        renderHTML += applyStatus;
+        renderHTML += '<div>';
+        if(nvl(payMethod,'') !== ''){
+            if(payMethod === 'Card'){
+                renderHTML += '( 카드 )';
+            }else{
+                renderHTML += '( 계좌 )';
+            }
+        }else{
+            renderHTML += '( - )';
+        }
+        if(nvl(cancelGbn,'') !== ''){
+            if(cancelGbn === 'ALL'){
+                renderHTML += '<br>';
+                renderHTML += '( 전액 )';
+            }else{
+                renderHTML += '<br>';
+                renderHTML += '( 부분 )';
+            }
+        }else{
+            renderHTML += '<br>';
+            renderHTML += '( - )';
+        }
         renderHTML += '</div>';
 
         return renderHTML;
@@ -713,18 +778,30 @@ let DTCustomerFrp = function () {
                 },
                 {
                     'targets': 3,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 7,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -734,6 +811,7 @@ let DTCustomerFrp = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
                 { data: 'id'},
@@ -744,6 +822,36 @@ let DTCustomerFrp = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
+        }
+
+        return renderHTML;
     }
 
     function renderContactCell(data, type, row) {
@@ -774,14 +882,41 @@ let DTCustomerFrp = function () {
 
     function renderApplyStatusCell(data, type, row) {
         let renderHTML = '';
+        let payMethod = row.payMethod;
+        let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
             renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }
 
-        renderHTML += applyStatus;
+        renderHTML += '<div>';
+        if(nvl(payMethod,'') !== ''){
+            if(payMethod === 'Card'){
+                renderHTML += '( 카드 )';
+            }else{
+                renderHTML += '( 계좌 )';
+            }
+        }else{
+            renderHTML += '( - )';
+        }
+        if(nvl(cancelGbn,'') !== ''){
+            if(cancelGbn === 'ALL'){
+                renderHTML += '<br>';
+                renderHTML += '( 전액 )';
+            }else{
+                renderHTML += '<br>';
+                renderHTML += '( 부분 )';
+            }
+        }else{
+            renderHTML += '<br>';
+            renderHTML += '( - )';
+        }
         renderHTML += '</div>';
 
         return renderHTML;
@@ -881,18 +1016,22 @@ let DTCustomerOutboarder = function () {
                 },
                 {
                     'targets': 3,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -902,6 +1041,7 @@ let DTCustomerOutboarder = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
                 { data: 'id'},
@@ -911,6 +1051,16 @@ let DTCustomerOutboarder = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
     }
 
     function renderContactCell(data, type, row) {
@@ -941,14 +1091,41 @@ let DTCustomerOutboarder = function () {
 
     function renderApplyStatusCell(data, type, row) {
         let renderHTML = '';
+        let payMethod = row.payMethod;
+        let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
             renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }
 
-        renderHTML += applyStatus;
+        renderHTML += '<div>';
+        if(nvl(payMethod,'') !== ''){
+            if(payMethod === 'Card'){
+                renderHTML += '( 카드 )';
+            }else{
+                renderHTML += '( 계좌 )';
+            }
+        }else{
+            renderHTML += '( - )';
+        }
+        if(nvl(cancelGbn,'') !== ''){
+            if(cancelGbn === 'ALL'){
+                renderHTML += '<br>';
+                renderHTML += '( 전액 )';
+            }else{
+                renderHTML += '<br>';
+                renderHTML += '( 부분 )';
+            }
+        }else{
+            renderHTML += '<br>';
+            renderHTML += '( - )';
+        }
         renderHTML += '</div>';
 
         return renderHTML;
@@ -1048,18 +1225,22 @@ let DTCustomerInboarder = function () {
                 },
                 {
                     'targets': 3,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1069,6 +1250,7 @@ let DTCustomerInboarder = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
                 { data: 'id'},
@@ -1078,6 +1260,16 @@ let DTCustomerInboarder = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
     }
 
     function renderContactCell(data, type, row) {
@@ -1108,14 +1300,41 @@ let DTCustomerInboarder = function () {
 
     function renderApplyStatusCell(data, type, row) {
         let renderHTML = '';
+        let payMethod = row.payMethod;
+        let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
             renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }
 
-        renderHTML += applyStatus;
+        renderHTML += '<div>';
+        if(nvl(payMethod,'') !== ''){
+            if(payMethod === 'Card'){
+                renderHTML += '( 카드 )';
+            }else{
+                renderHTML += '( 계좌 )';
+            }
+        }else{
+            renderHTML += '( - )';
+        }
+        if(nvl(cancelGbn,'') !== ''){
+            if(cancelGbn === 'ALL'){
+                renderHTML += '<br>';
+                renderHTML += '( 전액 )';
+            }else{
+                renderHTML += '<br>';
+                renderHTML += '( 부분 )';
+            }
+        }else{
+            renderHTML += '<br>';
+            renderHTML += '( - )';
+        }
         renderHTML += '</div>';
 
         return renderHTML;
@@ -1215,18 +1434,22 @@ let DTCustomerSailyacht = function () {
                 },
                 {
                     'targets': 3,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1236,6 +1459,7 @@ let DTCustomerSailyacht = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
                 { data: 'id'},
@@ -1245,6 +1469,16 @@ let DTCustomerSailyacht = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
     }
 
     function renderContactCell(data, type, row) {
@@ -1275,14 +1509,41 @@ let DTCustomerSailyacht = function () {
 
     function renderApplyStatusCell(data, type, row) {
         let renderHTML = '';
+        let payMethod = row.payMethod;
+        let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
             renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
         }
 
-        renderHTML += applyStatus;
+        renderHTML += '<div>';
+        if(nvl(payMethod,'') !== ''){
+            if(payMethod === 'Card'){
+                renderHTML += '( 카드 )';
+            }else{
+                renderHTML += '( 계좌 )';
+            }
+        }else{
+            renderHTML += '( - )';
+        }
+        if(nvl(cancelGbn,'') !== ''){
+            if(cancelGbn === 'ALL'){
+                renderHTML += '<br>';
+                renderHTML += '( 전액 )';
+            }else{
+                renderHTML += '<br>';
+                renderHTML += '( 부분 )';
+            }
+        }else{
+            renderHTML += '<br>';
+            renderHTML += '( - )';
+        }
         renderHTML += '</div>';
 
         return renderHTML;

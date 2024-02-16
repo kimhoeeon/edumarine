@@ -1548,7 +1548,7 @@ if (document.documentElement) {
                                                 <div class="col-lg-8">
                                                     <select id="trainName" name="trainName" class="form-select form-control-solid-bg" <c:if test="${info ne null}">disabled</c:if>>
                                                         <option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.trainName eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>
-                                                        <option value="마리나선박 정비사 실기교육" <c:if test="${info.trainName eq '마리나선박 정비사 실기교육'}">selected</c:if> >마리나선박 정비사 실기교육</option>
+                                                        <option value="마리나 선박 정비사 실무교육" <c:if test="${info.trainName eq '마리나 선박 정비사 실무교육'}">selected</c:if> >마리나 선박 정비사 실무교육</option>
                                                         <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.trainName eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
                                                         <option value="위탁교육" <c:if test="${info.trainName eq '위탁교육'}">selected</c:if> >위탁교육</option>
                                                         <option value="해상엔진 자가정비 (선외기)" <c:if test="${info.trainName eq '해상엔진 자가정비 (선외기)'}">selected</c:if> >해상엔진 자가정비 (선외기)</option>
