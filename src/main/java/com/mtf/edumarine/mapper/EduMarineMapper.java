@@ -68,7 +68,7 @@ public interface EduMarineMapper {
 
     Integer updateMember(MemberDTO memberDTO);
 
-    ResumeDTO selectResumeSingle(String id);
+    ResumeDTO selectResumeSingle(String memberSeq);
 
     Integer updateResume(ResumeDTO resumeDTO);
 
@@ -221,4 +221,20 @@ public interface EduMarineMapper {
     Integer deleteFile(FileDTO fileDTO);
 
     String getMemberSalt(String id);
+
+    Integer updateMemberWithdraw(MemberDTO memberDTO);
+
+    Integer selectRegularPreCheck(RegularDTO regularDTO);
+
+    Integer selectBoarderPreCheck(BoarderDTO boarderDTO);
+
+    Integer selectFrpPreCheck(FrpDTO frpDTO);
+
+    Integer selectInboarderPreCheck(InboarderDTO inboarderDTO);
+
+    Integer selectOutboarderPreCheck(OutboarderDTO outboarderDTO);
+
+    Integer selectSailyachtPreCheck(SailyachtDTO sailyachtDTO);
+
+    void updateTrainClosing(String todate);
 }

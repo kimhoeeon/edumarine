@@ -55,8 +55,9 @@ $(function(){
                     let data_val = $(this).data('value');
                     checkbox_data_val += data_val;
 
-                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    let checkbox_data_status = data_val.split(' / ')[1];
                     checkbox_status += checkbox_data_status;
+
                     checkbox_val += $(this).val();
                     if((i+1) !== checkbox_len){
                         checkbox_data_val += '<br>';
@@ -121,8 +122,9 @@ $(function(){
                     let data_val = $(this).data('value');
                     checkbox_data_val += data_val;
 
-                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    let checkbox_data_status = data_val.split(' / ')[1];
                     checkbox_status += checkbox_data_status;
+
                     checkbox_val += $(this).val();
                     if((i+1) !== checkbox_len){
                         checkbox_data_val += '<br>';

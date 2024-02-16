@@ -1632,9 +1632,8 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
                                                     <th class="text-center min-w-75px">신청상태</th>
-                                                    <th class="text-center min-w-50px">등급</th>
+                                                    <th class="text-center min-w-75px">등급</th>
                                                     <th class="text-center min-w-250px">교육분야</th>
-                                                    <th class="text-center min-w-125px">전공</th>
                                                     <th class="text-center min-w-50px">아이디</th>
                                                     <th class="text-center min-w-50px">이름</th>
                                                     <th class="text-center min-w-100px">연락처</th>
@@ -1652,7 +1651,6 @@ if (document.documentElement) {
                                                     <td></td>
                                                     <td></td>
                                                     <td class="text-start"></td>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1999,6 +1997,7 @@ if (document.documentElement) {
                 <div class="modal-body py-lg-10 px-lg-10">
                     <!--begin::Input group-->
                     <div>
+                        * <strong>결제완료</strong> : (가상계좌일 경우) 현재 <strong class="text-danger">입금대기</strong> 상태인 경우에만 적용<br>
                         * <strong>수강확정</strong> : 현재 <strong class="text-danger">결제완료</strong> 상태인 경우에만 적용<br>
                         * <strong>수강완료</strong> : 현재 <strong class="text-danger">수강확정</strong> 상태인 경우에만 적용<br>
                         * <strong>환급대기</strong> : 현재 <strong class="text-danger">수강완료</strong> 상태인 경우에만 적용<br>
@@ -2034,6 +2033,7 @@ if (document.documentElement) {
                                         data-placeholder="- 신청 상태 -">
                                     <option></option>
                                     <option value="" disabled>- 신청 상태 -</option>
+                                    <option value="결제완료">결제완료</option>
                                     <option value="수강확정">수강확정</option>
                                     <option value="수강완료">수강완료</option>
                                     <option value="환급대기">환급대기</option>

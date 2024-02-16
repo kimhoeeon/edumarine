@@ -65,6 +65,13 @@ public class PaymentDTO {
     String cancelTid; //[부분]취소거래번호
     String prtcPrice; //[부분]취소금액
     String prtcRemains; //[부분]취소후남은금액
+    String vactDate; //입금기한날짜
+    String vactTime; //입금기한시간
+    String vactName; //예금주명
+    String vactInputName; //송금자명
+    String vactBankCode; //입금은행코드
+    String vactBankName; //입금은행명
+    String vactNum; //가상계좌번호
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

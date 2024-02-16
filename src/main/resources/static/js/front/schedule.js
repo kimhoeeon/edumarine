@@ -110,6 +110,7 @@ function searchPosts(pageNum, categoryValue) {
         $.each(results , function(i){
             let seq = results[i].seq;
             let gbn = results[i].gbn;
+            let nextTime = results[i].nextTime;
 
             let trainStartDttm = results[i].trainStartDttm;
             let trainEndDttm = results[i].trainEndDttm;
@@ -181,6 +182,14 @@ function searchPosts(pageNum, categoryValue) {
                             thumbnailImage = '/static/img/thumbnail_sale.jpg';
                             applyPath = '/apply/eduApply06.do';
                             break;
+                        case '마리나 선박 선외기 정비사 실무과정':
+                            thumbnailImage = '/static/img/thumbnail_marina_out.jpg';
+                            applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                            break;
+                        case '마리나 선박 선내기 정비사 실무과정':
+                            thumbnailImage = '/static/img/thumbnail_marina_in.jpg';
+                            applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                            break;
                         default:
                             break;
                     }
@@ -191,6 +200,14 @@ function searchPosts(pageNum, categoryValue) {
                         str += gbn;
                     str += '</div>';
                     str += '<ul class="description">';
+                        str += '<li>';
+                            str += '<div class="gubun">';
+                                str += '차시';
+                            str += '</div>';
+                            str += '<div class="naeyong">';
+                                str += nextTime;
+                            str += '</div>';
+                        str += '</li>';
                         str += '<li>';
                             str += '<div class="gubun">';
                                 str += '교육일정';
@@ -217,15 +234,21 @@ function searchPosts(pageNum, categoryValue) {
                         str += '</li>';
                         str += '<li>';
                             str += '<div class="gubun">';
-                                str += '교육인원(현 신청인원)';
+                                str += '교육인원';
+                            if(!applyPath.includes('yachtmnr')) {
+                                str += '(현 신청인원)';
+                            }
                             str += '</div>';
                             str += '<div class="naeyong">';
                                 str += '<span class="color">';
                                     str += trainCnt;
                                 str += '</span>';
+                                if(!applyPath.includes('yachtmnr')) {
                                     str += '(' + trainApplyCnt + ')';
+                                }
                             str += '</div>';
                         str += '</li>';
+
                         str += '<li>';
                             str += '<div class="gubun">';
                                 str += '기타';
@@ -238,9 +261,15 @@ function searchPosts(pageNum, categoryValue) {
                 str += '</div>';
                 if(trainBtnText === '교육신청'){
                     str += '<div class="btn">';
-                        str += '<a href="javascript:void(0);" onclick="f_apply_page_move(' + '\'' + seq + '\'' + ',' + '\'' + applyPath + '\'' + ')">';
+                        if(applyPath.includes('yachtmnr')){
+                            str += '<a href="' + applyPath + '" target="_blank">';
                             str += trainBtnText;
-                        str += '</a>';
+                            str += '</a>';
+                        }else{
+                            str += '<a href="javascript:void(0);" onclick="f_apply_page_move(' + '\'' + seq + '\'' + ',' + '\'' + applyPath + '\'' + ')">';
+                            str += trainBtnText;
+                            str += '</a>';
+                        }
                     str += '</div>';
                 }else{
                     str += '<div class="btn">';

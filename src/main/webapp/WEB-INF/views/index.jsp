@@ -98,7 +98,10 @@
 <body>
 <%--<jsp:forward page="main.jsp"/>--%>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
+<script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
+<script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function(){
         //실행내용

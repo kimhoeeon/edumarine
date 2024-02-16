@@ -264,7 +264,7 @@
                                 <div class="big">신청정보</div>
                             </div>
                             <ul class="form_list">
-                                <li>
+                                <li class="save_file_li">
                                     <div class="gubun req"><p>상반신 사진</p></div>
                                     <div class="naeyong">
                                         <div class="input form_file">
@@ -292,7 +292,7 @@
                                                     <img src="${bodyPhotoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                     <a href="/file/download.do?path=member/boarder/${bodyPhotoFile.folderPath}&fileName=${bodyPhotoFile.fullFileName}">${bodyPhotoFile.fileName}</a>
                                                     <input type="hidden" name="bodyPhotoUploadFile" id="${bodyPhotoFile.id}" value="${bodyPhotoFile.fullFilePath}">
-                                                    <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${bodyPhotoFile.id}')">X</button>
+                                                    <button type="button" class="file_remove_btn" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${bodyPhotoFile.id}')">X</button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -403,7 +403,7 @@
                                         <div class="cmnt">전공이 없을 시 '없음' 기재</div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="save_file_li">
                                     <div class="gubun req">
                                         <p>
                                             최종학교 졸업 (졸업예정)증명서
@@ -428,7 +428,7 @@
                                                     <img src="${gradeLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                     <a href="/file/download.do?path=member/boarder/${gradeLicenseFile.folderPath}&fileName=${gradeLicenseFile.fullFileName}">${gradeLicenseFile.fileName}</a>
                                                     <input type="hidden" name="gradeLicenseUploadFile" id="${gradeLicenseFile.id}" value="${gradeLicenseFile.fullFilePath}">
-                                                    <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${gradeLicenseFile.id}')">X</button>
+                                                    <button type="button" class="file_remove_btn" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${gradeLicenseFile.id}')">X</button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -500,7 +500,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
+                                    <li class="save_file_li">
                                         <div class="gubun">
                                             <p>관련분야 경력증명서</p>
                                         </div>
@@ -574,7 +574,7 @@
                                                 </div>
                                             </div>
                                         </li>
-                                        <li>
+                                        <li class="save_file_li">
                                             <div class="gubun">
                                                 <p>관련분야 경력증명서</p>
                                             </div>
@@ -600,7 +600,7 @@
                                                                     <img src="${careerLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                                     <a href="/file/download.do?path=member/boarder/${careerLicenseFile.folderPath}&fileName=${careerLicenseFile.fullFileName}">${careerLicenseFile.fileName}</a>
                                                                     <input type="hidden" name="careerLicenseUploadFile" id="${careerLicenseFile.id}" value="${careerLicenseFile.fullFilePath}">
-                                                                    <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${careerLicenseFile.id}')">X</button>
+                                                                    <button type="button" class="file_remove_btn" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${careerLicenseFile.id}')">X</button>
                                                                 </li>
                                                             </c:if>
                                                         </c:forEach>
@@ -847,9 +847,12 @@
                     <!-- form box -->
 
                     <div class="form_btn_box">
-                            <%--<a href="javascript:void(0);" class="btnSt03 apply_cancel_edu_btn">취소</a>--%>
-                        <a href="javascript:void(0);" value="${info.seq}" class="btnSt03 form_cancel_edu_btn">신청취소</a>
-                        <a href="javascript:void(0);" onclick="f_main_apply_eduApply02_modify_submit('${info.seq}');" class="btnSt01">수정하기</a>
+                        <input type="hidden" name="chg_changeYn" value="${info.changeYn}">
+                        <input type="hidden" name="chg_seq" value="${info.seq}">
+                        <input type="hidden" name="chg_trainName" value="해상엔진 테크니션 (선내기/선외기)">
+                        <input type="hidden" name="chg_payMethod" value="${info.payMethod}">
+                        <a href="javascript:void(0);" value="${info.seq}" class="btnSt03 form_apply_cancel_edu_btn">신청취소</a>
+                        <a href="javascript:void(0);" onclick="f_main_apply_eduApply02_modify_submit(this, '${info.seq}');" class="btnSt01">수정하기</a>
                     </div>
 
                     <!-- form_notice -->
@@ -893,13 +896,14 @@
                                     </div>
                                     <div class="btn_box">
                                         <a href="javascript:void(0);" class="btnSt03 btn_prev">이전</a>
-                                        <a href="javascript:void(0);" class="btnSt04 btn_next" onclick="f_edu_apply_cancel_btn('${info.seq}','해상엔진 테크니션 (선내기/선외기)')">확인</a>
+                                        <a href="javascript:void(0);" class="btnSt04 btn_next" onclick="f_edu_apply_cancel_btn('${info.seq}','해상엔진 테크니션 (선내기/선외기)','payStatus')">확인</a>
                                     </div>
                                 </div>
                                 <div class="box_2">
                                     <div class="text_box">
                                         취소 신청이 접수되었습니다.<br>
-                                        담당자 승인 후 5일 내로, 취소 여부가 확정되며<br>
+                                        담당자 승인 후 2주 이내<br>
+                                        교육비 환불 기준에 따라 취소됩니다.<br>
                                         취소 확정 여부는 추후 마이페이지를 통해<br>
                                         확인하실 수 있습니다.
                                     </div>
@@ -935,7 +939,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 <script>
@@ -947,6 +951,30 @@
         $('#birth-year option').prop('disabled',true);
         $('#birth-month option').prop('disabled',true);
         $('#birth-day option').prop('disabled',true);
+
+        let modYn = '${modYn}';
+        if(nvl(modYn,'') !== ''){
+            if(modYn === 'N'){
+                $('#content input[type=text]').prop('readonly', true);
+                $('#content textarea').prop('readonly', true);
+                $('#content input[type=radio]').prop('disabled',true);
+                $('#content select option').prop('disabled',true);
+
+                $('.save_file_li').hide(); //파일선택 li
+                $('.file_remove_btn').hide(); //저장된 파일 삭제 X버튼
+
+                $('.formAddBtn').hide(); //추가버튼
+                $('.form_btn_box').hide(); //취소,수정버튼
+
+                Swal.fire({
+                    title: '[교육 신청 정보]',
+                    html: '해당 교육은<br>마감 또는 관리자에 의해 삭제된 교육이므로,<br>정보 수정이 불가합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                });
+            }
+        }
     });
 </script>
 </c:if>

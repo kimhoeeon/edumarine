@@ -1506,7 +1506,7 @@ if (document.documentElement) {
                                         <div class="card-header border-0">
                                             <!--begin::Card title-->
                                             <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">상세 정보</h3>
+                                                <h3 class="fw-bold m-0">신청 정보</h3>
                                             </div>
                                             <!--end::Card title-->
                                         </div>
@@ -1514,6 +1514,18 @@ if (document.documentElement) {
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
 
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육차시</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" id="nextTime" name="nextTime" class="form-control form-control-lg form-control-solid-bg" placeholder="교육차시" value="${info.nextTime} 차시" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
@@ -1706,6 +1718,132 @@ if (document.documentElement) {
                                         <!--end::Card body-->
                                     </form>
                                     <!--end::form-->
+                                </div>
+                                <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">결제정보</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+
+                                        <c:if test="${paymentInfo ne null}">
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">결제방식</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <c:if test="${paymentInfo.payMethod eq 'Card'}">
+                                                        <c:set var="payMethod" value="카드"/>
+                                                    </c:if>
+                                                    <c:if test="${paymentInfo.payMethod eq 'VBank'}">
+                                                        <c:set var="payMethod" value="가상계좌"/>
+                                                    </c:if>
+                                                    <input type="text" name="payMethod" class="form-control form-control-lg form-control-solid-bg" placeholder="결제방식" value="${payMethod}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">결제정보</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <c:if test="${paymentInfo.payMethod eq 'Card'}">
+                                                        <input type="text" name="payMethod" class="form-control form-control-lg form-control-solid-bg" placeholder="결제방식" value="${paymentInfo.cardPurchaseName} (${paymentInfo.cardNum})" readonly/>
+                                                    </c:if>
+                                                    <c:if test="${paymentInfo.payMethod eq 'VBank'}">
+                                                        <input type="text" name="payMethod" class="form-control form-control-lg form-control-solid-bg" placeholder="결제방식" value="${paymentInfo.vactBankName} (${paymentInfo.vactNum})" readonly/>
+                                                    </c:if>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <fmt:parseDate var="applDate" value="${paymentInfo.applDate}" pattern="yyyyMMdd" />
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">승인일자</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="applDate" class="form-control form-control-lg form-control-solid-bg" placeholder="승인일자" value="<fmt:formatDate value="${applDate}" pattern="yyyy.MM.dd"/>" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">결제금액</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="totPrice" class="form-control form-control-lg form-control-solid-bg" placeholder="결제금액" value="<fmt:formatNumber value="${paymentInfo.totPrice}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/> 원" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">환불계좌 은행명</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="refundBankName" class="form-control form-control-lg form-control-solid-bg" placeholder="환불계좌 은행명" value="${info.refundBankName}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">환불계좌 예금주명</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="refundBankCustomerName" class="form-control form-control-lg form-control-solid-bg" placeholder="환불계좌 예금주명" value="${info.refundBankCustomerName}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">환불계좌번호</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="refundBankNumber" class="form-control form-control-lg form-control-solid-bg" placeholder="환불계좌번호" value="${info.refundBankNumber}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </c:if>
+                                        <c:if test="${paymentInfo eq null}">
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-12 col-form-label fw-semibold fs-6">결제정보 없음</label>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </c:if>
+                                    </div>
+                                    <!--end::Card body-->
                                 </div>
                                 <!--end::Basic info-->
 

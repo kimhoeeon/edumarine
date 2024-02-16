@@ -360,4 +360,12 @@ public interface EduMarineMngMapper {
     String getFaqSeq();
 
     Integer insertFaq(FaqDTO faqDTO);
+
+    void updateTrainApplyCnt(String seq);
+
+    PaymentDTO selectTrainPaymentInfo(PaymentDTO paymentRequestDTO);
+
+    Integer checkSubscriber(SubscriberDTO subscriberDTO);
+
+    List<TrainDTO> selectTrainNextTime(TrainDTO trainDTO);
 }

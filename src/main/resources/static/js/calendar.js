@@ -47,64 +47,68 @@ function f_train_calendar_select(category){
         let results = data;
         let str = '';
         let eventsObj = {};
-        $.each(results , function(i){
-            let seq = results[i].seq;
-            let gbn = results[i].gbn;
-            let category = results[i].category;
-            category = category.toString().replaceAll('과정','');
-            let trainStartDttm = results[i].trainStartDttm;
-            trainStartDttm = trainStartDttm.toString().replaceAll('.','-');
-            let trainEndDttm = results[i].trainEndDttm;
-            trainEndDttm = trainEndDttm.toString().replaceAll('.','-');
+        if(nvl(results,'') !== ''){
+            $.each(results , function(i){
+                let seq = results[i].seq;
+                let gbn = results[i].gbn;
+                let category = results[i].category;
+                category = category.toString().replaceAll('과정','');
+                let trainStartDttm = results[i].trainStartDttm;
+                trainStartDttm = trainStartDttm.toString().replaceAll('.','-');
+                let trainEndDttm = results[i].trainEndDttm;
+                trainEndDttm = trainEndDttm.toString().replaceAll('.','-');
 
-            let className = '';
-            let link = '';
-            switch (gbn){
-                case '해상엔진 테크니션 (선내기/선외기)':
-                    className = 'edu01';
-                    link = '/apply/eduApply02.do';
-                    break;
-                case 'FRP 레저보트 선체 정비 테크니션':
-                    className = 'edu02';
-                    link = '/apply/eduApply03.do';
-                    break;
-                case '해상엔진 자가정비 (선외기)':
-                    className = 'edu03';
-                    link = '/apply/eduApply05.do';
-                    break;
-                case '해상엔진 자가정비 (선내기)':
-                    className = 'edu04';
-                    link = '/apply/eduApply04.do';
-                    break;
-                case '해상엔진 자가정비 (세일요트)':
-                    className = 'edu05';
-                    link = '/apply/eduApply06.do';
-                    break;
-                default:
-                    break;
-            }
-
-            let eventsObjContent = {
-                text: '[' + category + ']' + gbn,
-                className: className,
-                link: link
-            };
-
-            if(eventsObj.hasOwnProperty(trainStartDttm)){
-                let newArr = [];
-                for(let i=0; i<eventsObj[trainStartDttm].length; i++){
-                    newArr.push(eventsObj[trainStartDttm][i]);
+                let className = '';
+                let link = '';
+                switch (gbn){
+                    case '해상엔진 테크니션 (선내기/선외기)':
+                        className = 'edu01';
+                        link = '/apply/eduApply02.do';
+                        break;
+                    case 'FRP 레저보트 선체 정비 테크니션':
+                        className = 'edu02';
+                        link = '/apply/eduApply03.do';
+                        break;
+                    case '해상엔진 자가정비 (선외기)':
+                        className = 'edu03';
+                        link = '/apply/eduApply05.do';
+                        break;
+                    case '해상엔진 자가정비 (선내기)':
+                        className = 'edu04';
+                        link = '/apply/eduApply04.do';
+                        break;
+                    case '해상엔진 자가정비 (세일요트)':
+                        className = 'edu05';
+                        link = '/apply/eduApply06.do';
+                        break;
+                    default:
+                        break;
                 }
-                newArr.push(eventsObjContent);
-                eventsObj[trainStartDttm] = newArr;
-            }else{
-                let eventsArr = [];
-                eventsArr.push(eventsObjContent);
-                eventsObj[trainStartDttm] = eventsArr;
-            }
 
+                let eventsObjContent = {
+                    text: '[' + category + ']' + gbn,
+                    className: className,
+                    link: link
+                };
+
+                if(eventsObj.hasOwnProperty(trainStartDttm)){
+                    let newArr = [];
+                    for(let i=0; i<eventsObj[trainStartDttm].length; i++){
+                        newArr.push(eventsObj[trainStartDttm][i]);
+                    }
+                    newArr.push(eventsObjContent);
+                    eventsObj[trainStartDttm] = newArr;
+                }else{
+                    let eventsArr = [];
+                    eventsArr.push(eventsObjContent);
+                    eventsObj[trainStartDttm] = eventsArr;
+                }
+
+                events = eventsObj;
+            });
+        }else{
             events = eventsObj;
-        });
+        }
     })
     .fail(function(xhr, status, errorThrown) {
         $('body').html("오류가 발생했습니다.")
@@ -145,14 +149,14 @@ function buildCalendar(eventsObj) {
         newDIV.innerText = nowDay.getDate(); // div 태그에 날짜 입력
     
         // 다음은 날짜별로 클래스를 지정하는 부분
-        if (nowDay.getDay() == 6) {
+        if (nowDay.getDay() === 6) {
             nowRow = tbody_Calendar.insertRow();
         }
     
         if (nowDay < today) {
             dateWrapper.className = "pastDay";
             dateWrapper.onclick = function () { choiceDate(newDIV, eventsObj); }
-        } else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) {
+        } else if (nowDay.getFullYear() === today.getFullYear() && nowDay.getMonth() === today.getMonth() && nowDay.getDate() === today.getDate()) {
             dateWrapper.className = "today";
             dateWrapper.onclick = function () { choiceDate(newDIV, eventsObj); }
         } else {
@@ -200,7 +204,8 @@ function choiceDate(newDIV, eventsObj) {
     choiceCalDay.innerText = nowMonth.getFullYear() + "년 " + (nowMonth.getMonth() + 1) + "월 " + newDIV.innerText + "일";
 
     // 선택한 날짜의 이벤트 가져오기
-    let dateString = nowMonth.getFullYear() + "-" + (nowMonth.getMonth() + 1) + "-" + selectedDateText.padStart(2, '0');
+    let dateString = nowMonth.getFullYear() + "-" + (nowMonth.getMonth() + 1).toString().padStart(2,'0') + "-" + selectedDateText.padStart(2, '0');
+    console.log(dateString, JSON.stringify(eventsObj) , eventsObj[dateString]);
     let selectedEvents = eventsObj[dateString];
 
     // 이벤트 목록을 노출하는 요소 가져오기

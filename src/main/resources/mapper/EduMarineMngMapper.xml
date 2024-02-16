@@ -4,7 +4,7 @@
 <mapper namespace="com.mtf.edumarine.mapper.EduMarineMngMapper">
 
     <select id="login" parameterType="com.mtf.edumarine.dto.AdminDTO" resultType="com.mtf.edumarine.dto.AdminDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.login */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.login */
         SELECT seq
              , login_yn
              , valid_yn
@@ -1442,7 +1442,7 @@
     </update>
 
     <select id="getBannerSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getBannerSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getBannerSeq */
         SELECT CONCAT('B', LPAD(nextval('banner_seq'), '7', '0'))
         FROM DUAL
     </select>
@@ -1724,10 +1724,10 @@
              , r.train_seq
              , m.grade
              , m.id
-             , m.name
+             , r.name
              , m.name_en
-             , m.phone
-             , m.email
+             , r.phone
+             , r.email
              , r.age_group
              , r.region
              , r.participation_path
@@ -1752,7 +1752,7 @@
         AND r.del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
               <if test='condition eq "NAME"'>
-                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+                  AND r.name LIKE BINARY CONCAT('%',#{searchText},'%')
               </if>
               <if test='condition eq "ID"'>
                   AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
@@ -1764,7 +1764,7 @@
         <if test='experienceYn != null and experienceYn != ""'>
             AND r.experience_yn = #{experienceYn}
         </if>
-        ORDER BY m.name, r.init_regi_dttm DESC
+        ORDER BY m.grade IS NULL, r.major IS NULL, r.name
     </select>
 
     <select id="selectRegularSingle" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
@@ -1772,12 +1772,16 @@
         SELECT r.seq
              , r.member_seq
              , r.train_seq
-             , m.name
-             , m.phone
-             , m.email
+             , m.grade
+             , m.id
+             , r.name
+             , m.name_en
+             , r.phone
+             , r.email
              , m.birth_year
              , m.birth_month
              , m.birth_day
+             , r.age_group
              , r.region
              , r.participation_path
              , r.first_application_field
@@ -1795,10 +1799,9 @@
              , r.final_regi_pic
              , r.final_regi_dttm
         FROM regular r
-        JOIN member m
+        LEFT JOIN member m
         ON r.member_seq = m.seq
         WHERE r.seq = #{seq}
-
     </select>
 
     <delete id="deleteRegular" parameterType="com.mtf.edumarine.dto.RegularDTO">
@@ -1895,10 +1898,10 @@
              , b.train_seq
              , m.grade
              , m.id
-             , m.name as nameKo
-             , m.name_en
-             , m.phone
-             , m.email
+             , b.name_ko
+             , b.name_en
+             , b.phone
+             , b.email
              , b.top_clothes_size
              , b.bottom_clothes_size
              , b.shoes_size
@@ -1926,17 +1929,22 @@
              , b.init_regi_dttm
              , b.final_regi_pic
              , b.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as cancelGbn
+             , t.next_time
         FROM boarder b
-        join member m
-        on b.member_seq = m.seq
+        LEFT JOIN member m
+        ON b.member_seq = m.seq
+        LEFT JOIN train t
+        ON b.train_seq = t.seq
         WHERE 1=1
           AND b.del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
               <if test='condition eq "NAMEKO"'>
-                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+                  AND b.name_ko LIKE BINARY CONCAT('%',#{searchText},'%')
               </if>
               <if test='condition eq "NAMEEN"'>
-                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+                  AND b.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
               </if>
               <if test='condition eq "ID"'>
                   AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
@@ -1948,7 +1956,10 @@
         <if test='jobSupportYn != null and jobSupportYn != ""'>
             AND b.job_support_gbn = #{jobSupportYn}
         </if>
-        ORDER BY b.init_regi_dttm DESC
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, b.name_ko
     </select>
 
     <select id="selectBoarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BoarderDTO">
@@ -1978,12 +1989,17 @@
              , apply_status
              , cancel_dttm
              , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
         FROM boarder
         WHERE seq = #{seq}
     </select>
@@ -2026,6 +2042,14 @@
         WHERE boarder_seq = #{boarderSeq}
     </select>
 
+    <update id="updateTrainApplyCnt" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrainApplyCnt */
+        UPDATE train
+        SET train_apply_cnt = train_apply_cnt - 1
+        WHERE seq = #{seq}
+        AND train_apply_cnt > 0
+    </update>
+
     <update id="updateBoarderApplyStatus" parameterType="com.mtf.edumarine.dto.BoarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBoarderApplyStatus */
         UPDATE boarder
@@ -2047,10 +2071,10 @@
              , f.train_seq
              , m.grade
              , m.id
-             , m.name as nameKo
-             , m.name_en
-             , m.phone
-             , m.email
+             , f.name_Ko
+             , f.name_en
+             , f.phone
+             , f.email
              , f.top_clothes_size
              , f.bottom_clothes_size
              , f.shoes_size
@@ -2078,9 +2102,14 @@
              , f.init_regi_dttm
              , f.final_regi_pic
              , f.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = f.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = f.seq) as cancelGbn
+             , t.next_time
         FROM frp f
-        join member m
+        LEFT JOIN member m
         on f.member_seq = m.seq
+        LEFT JOIN train t
+        ON f.train_seq = t.seq
         WHERE 1=1
           AND f.del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
@@ -2100,7 +2129,10 @@
         <if test='jobSupportYn != null and jobSupportYn != ""'>
             AND f.job_support_gbn = #{jobSupportYn}
         </if>
-        ORDER BY f.init_regi_dttm DESC
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, f.name_ko
     </select>
 
     <select id="selectFrpSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FrpDTO">
@@ -2130,12 +2162,17 @@
              , apply_status
              , cancel_dttm
              , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
         FROM frp
         WHERE seq = #{seq}
     </select>
@@ -2176,9 +2213,14 @@
              , o.init_regi_dttm
              , o.final_regi_pic
              , o.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = o.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = o.seq) as cancelGbn
+             , t.next_time
         FROM outboarder o
-        JOIN member m
+        LEFT JOIN member m
         ON o.member_seq = m.seq
+        LEFT JOIN train t
+        ON o.train_seq = t.seq
         WHERE 1=1
           AND o.del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
@@ -2195,7 +2237,10 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND o.apply_status = #{applyStatus}
         </if>
-        ORDER BY o.init_regi_dttm DESC
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, o.name_ko
     </select>
 
     <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
@@ -2208,12 +2253,17 @@
              , apply_status
              , cancel_dttm
              , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
         FROM outboarder
         WHERE seq = #{seq}
     </select>
@@ -2254,9 +2304,14 @@
              , i.init_regi_dttm
              , i.final_regi_pic
              , i.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = i.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = i.seq) as cancelGbn
+             , t.next_time
         FROM inboarder i
-        JOIN member m
+        LEFT JOIN member m
         ON i.member_seq = m.seq
+        LEFT JOIN train t
+        ON i.train_seq = t.seq
         WHERE 1=1
           AND i.del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
@@ -2273,7 +2328,10 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND i.apply_status = #{applyStatus}
         </if>
-        ORDER BY i.init_regi_dttm DESC
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, i.name_ko
     </select>
 
     <select id="selectInboarderSingle" parameterType="com.mtf.edumarine.dto.InboarderDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
@@ -2286,12 +2344,17 @@
              , apply_status
              , cancel_dttm
              , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
         FROM inboarder
         WHERE seq = #{seq}
     </select>
@@ -2313,7 +2376,7 @@
     </update>
 
     <select id="getInboarderSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getInboarderSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getInboarderSeq */
         SELECT CONCAT('I', LPAD(nextval('inboarder_seq'), '7', '0'))
         FROM DUAL
     </select>
@@ -2380,9 +2443,14 @@
              , s.init_regi_dttm
              , s.final_regi_pic
              , s.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as cancelGbn
+             , t.next_time
         FROM sailyacht s
-        JOIN member m
+        LEFT JOIN member m
         ON s.member_seq = m.seq
+        LEFT JOIN train t
+        ON s.train_seq = t.seq
         WHERE 1=1
           AND s.del_yn = 'N'
           <if test='searchText != null and searchText != ""'>
@@ -2399,7 +2467,10 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND s.apply_status = #{applyStatus}
         </if>
-        ORDER BY s.init_regi_dttm DESC
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, s.name_ko
     </select>
 
     <select id="selectSailyachtSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SailyachtDTO">
@@ -2412,12 +2483,17 @@
              , apply_status
              , cancel_dttm
              , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
         FROM sailyacht
         WHERE seq = #{seq}
     </select>
@@ -2539,7 +2615,7 @@
     </update>
 
     <select id="getTrainSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getTrainSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getTrainSeq */
         SELECT CONCAT('T', LPAD(nextval('train_seq'), '7', '0'))
         FROM DUAL
     </select>
@@ -2725,9 +2801,24 @@
              , card_gwcode
              , card_purchase_name
              , pay_device
+             , vact_date
+             , vact_time
+             , vact_name
+             , vact_input_name
+             , vact_bank_code
+             , vact_bank_name
+             , vact_num
              , result_code
              , result_msg
              , refund_reason
+             , cancel_gbn
+             , cancel_date
+             , cancel_time
+             , prtc_date
+             , prtc_time
+             , cancel_tid
+             , prtc_price
+             , prtc_remains
              , del_yn
              , note
              , init_regi_pic
@@ -2754,14 +2845,91 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="selectTrainPaymentInfo" parameterType="com.mtf.edumarine.dto.PaymentDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainPaymentInfo */
+        SELECT seq
+             , member_seq
+             , member_name
+             , member_phone
+             , table_seq
+             , train_seq
+             , train_name
+             , buyer_name
+             , buyer_tel
+             , buyer_email
+             , cust_email
+             , pay_sum
+             , tot_price
+             , good_name
+             , goods_name
+             , pay_status
+             , appl_date
+             , appl_time
+             , moid
+             , mid
+             , tid
+             , appl_num
+             , auth_signature
+             , event_code
+             , pay_method
+             , currency
+             , p_fn_nm
+             , card_num
+             , card_code
+             , card_corp_flag
+             , card_member_num
+             , card_appl_price
+             , card_point
+             , card_quota
+             , card_purchase_code
+             , card_prtc_code
+             , card_check_flag
+             , card_bank_code
+             , card_terminal_num
+             , card_use_point
+             , card_interest
+             , card_src_code
+             , card_gwcode
+             , card_purchase_name
+             , pay_device
+             , vact_date
+             , vact_time
+             , vact_name
+             , vact_input_name
+             , vact_bank_code
+             , vact_bank_name
+             , vact_num
+             , result_code
+             , result_msg
+             , refund_reason
+             , cancel_gbn
+             , cancel_date
+             , cancel_time
+             , prtc_date
+             , prtc_time
+             , cancel_tid
+             , prtc_price
+             , prtc_remains
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM payment
+        WHERE member_seq = #{memberSeq}
+        AND train_seq = #{trainSeq}
+        AND table_seq = #{tableSeq}
+    </select>
+
     <select id="getPaymentSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getPaymentSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getPaymentSeq */
         SELECT CONCAT('Y', LPAD(nextval('payment_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <select id="selectMemberSeq"  parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.selectMemberSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectMemberSeq */
         SELECT seq
         FROM member
         WHERE name = #{name}
@@ -2769,7 +2937,7 @@
     </select>
 
     <select id="selectTrainSeq"  parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.selectTrainSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectTrainSeq */
         SELECT seq
         FROM train
         WHERE gbn = #{gbn}
@@ -2905,14 +3073,22 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="checkSubscriber" parameterType="com.mtf.edumarine.dto.SubscriberDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.checkSubscriber */
+        SELECT COUNT(1)
+        FROM subscriber
+        WHERE email = <![CDATA[#{email}]]>
+        AND del_yn = 'N'
+    </select>
+
     <select id="getSubscriberSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getSubscriberSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getSubscriberSeq */
         SELECT CONCAT('S', LPAD(nextval('subscriber_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <insert id="insertSubscriber" parameterType="com.mtf.edumarine.dto.SubscriberDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSubscriber */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.insertSubscriber */
         INSERT INTO subscriber
         ( seq
         , email
@@ -3000,13 +3176,13 @@
     </select>
 
     <select id="getSmsSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getSmsSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getSmsSeq */
         SELECT CONCAT('D', LPAD(nextval('sms_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <insert id="insertSms" parameterType="com.mtf.edumarine.dto.SmsDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSms */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.insertSms */
         INSERT INTO sms
         ( seq
         , sms_group
@@ -3091,13 +3267,13 @@
     </update>
 
     <select id="getSmsTemplateSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getSmsTemplateSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getSmsTemplateSeq */
         SELECT CONCAT('T', LPAD(nextval('template_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <insert id="insertSmsTemplate" parameterType="com.mtf.edumarine.dto.TemplateDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSmsTemplate */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.insertSmsTemplate */
         INSERT INTO template
         ( seq
         , title
@@ -3259,13 +3435,13 @@
     </select>
 
     <select id="getDownloadSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getDownloadSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getDownloadSeq */
         SELECT CONCAT('W', LPAD(nextval('download_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <insert id="insertDownload" parameterType="com.mtf.edumarine.dto.DownloadDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.insertDownload */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.insertDownload */
         INSERT INTO download
         ( seq
         , download_file_name
@@ -3331,20 +3507,20 @@
     </select>
     
     <update id="updateTargetTableTrash" parameterType="com.mtf.edumarine.dto.TrashDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.updateTargetTableTrash */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.updateTargetTableTrash */
         UPDATE ${targetTable}
         SET del_yn = #{delYn}
         WHERE seq = #{targetSeq}
     </update>
 
     <select id="getTrashSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getTrashSeq */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getTrashSeq */
         SELECT CONCAT('H', LPAD(nextval('trash_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <insert id="insertTrash" parameterType="com.mtf.edumarine.dto.TrashDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.insertTrash */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.insertTrash */
         INSERT INTO trash
         ( seq
         , target_seq
@@ -3384,13 +3560,13 @@
     </delete>
 
     <select id="getFileId" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.getFileId */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.getFileId */
         SELECT CONCAT('F', LPAD(nextval('file_seq'), '7', '0'))
         FROM DUAL
     </select>
 
     <insert id="insertFileInfo" parameterType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.insertFileInfo */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.insertFileInfo */
         INSERT INTO file
         ( id
         , user_id
@@ -3426,7 +3602,7 @@
     </insert>
 
     <select id="selectFileUserIdList" parameterType="com.mtf.edumarine.dto.FileDTO" resultType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFileUserIdList */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectFileUserIdList */
         SELECT id
              , user_id
              , full_file_path
@@ -3446,7 +3622,7 @@
     </select>
 
     <update id="updateFileUseN" parameterType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.updateFileUseN */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.updateFileUseN */
         UPDATE file
         SET file_yn = 'N'
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -3454,12 +3630,21 @@
     </update>
 
     <update id="updateFileUserId" parameterType="com.mtf.edumarine.dto.FileDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.updateFileUserId */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.updateFileUserId */
         UPDATE file
         SET user_id = #{userId}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE id = #{id}
     </update>
+
+    <select id="selectTrainNextTime" parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectTrainNextTime */
+        SELECT next_time
+        FROM train
+        WHERE gbn = <![CDATA[#{gbn}]]>
+        GROUP BY next_time
+        ORDER BY next_time
+    </select>
 
 </mapper>
 

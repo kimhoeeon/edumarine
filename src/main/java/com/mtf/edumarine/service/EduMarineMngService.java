@@ -1,6 +1,8 @@
 package com.mtf.edumarine.service;
 
 import com.mtf.edumarine.dto.*;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -34,6 +36,9 @@ public interface EduMarineMngService {
     FileResponseDTO processUpdateFileUseN(FileDTO fileDTO);
 
     InistdpayCancelResponseDTO processApplyPaymentCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO);
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    InistdpayCancelResponseDTO processApplyPaymentVbankCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO);
 
     FileResponseDTO processInsertFileInfo(FileDTO fileDTO);
 
@@ -312,4 +317,10 @@ public interface EduMarineMngService {
     ResponseDTO processUpdateFaq(FaqDTO faqDTO);
 
     ResponseDTO processInsertFaq(FaqDTO faqDTO);
+
+    PaymentDTO processSelectTrainPaymentInfo(PaymentDTO paymentRequestDTO);
+
+    Integer processCheckSubscriber(SubscriberDTO subscriberDTO);
+
+    List<TrainDTO> processSelectTrainNextTime(TrainDTO trainDTO);
 }

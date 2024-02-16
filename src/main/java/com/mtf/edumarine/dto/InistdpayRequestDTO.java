@@ -31,4 +31,7 @@ public class InistdpayRequestDTO {
     private String trainSeq;
     private String memberId;
     private String tableSeq;
+    private String memberSeq;
+
+    private String continueYn;
 }

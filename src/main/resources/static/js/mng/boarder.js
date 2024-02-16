@@ -5,6 +5,32 @@
 
 $(function(){
 
+    // 차시 검색조건 Set
+    $("#condition_time").children('option:not(:gt(1))').remove();
+
+    let json = {
+        gbn: '해상엔진 테크니션 (선내기/선외기)'
+    }
+    $.ajax({
+        url: '/train/selectNextTime.do',
+        method: 'post',
+        data: JSON.stringify(json),
+        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+    })
+    .done(function (data, status){
+        let results = data;
+        if(nvl(results,'') !== ''){
+            $.each(results , function(i){
+                $('#condition_time').append($('<option>', {
+                    value: results[i].nextTime,
+                    text : results[i].nextTime + '차'
+                }));
+            })
+
+            $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
+        }
+    });
+
     /*// 이메일
     $('#email_select').on('change', function () {
         let selectedOption = $(this).val();
@@ -55,8 +81,9 @@ $(function(){
                     let data_val = $(this).data('value');
                     checkbox_data_val += data_val;
 
-                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    let checkbox_data_status = data_val.split(' / ')[1];
                     checkbox_status += checkbox_data_status;
+
                     checkbox_val += $(this).val();
                     if((i+1) !== checkbox_len){
                         checkbox_data_val += '<br>';
@@ -121,8 +148,9 @@ $(function(){
                     let data_val = $(this).data('value');
                     checkbox_data_val += data_val;
 
-                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    let checkbox_data_status = data_val.split(' / ')[1];
                     checkbox_status += checkbox_data_status;
+
                     checkbox_val += $(this).val();
                     if((i+1) !== checkbox_len){
                         checkbox_data_val += '<br>';
@@ -203,13 +231,16 @@ function f_customer_boarder_search(){
 
     let applyStatus = $('#condition_apply_status option:selected').val();
     let jobSupportYn = $('#condition_job_support_yn option:selected').val();
+    let time = $('#condition_time option:selected').val();
     if(nullToEmpty(searchText) === ''){
         jsonObj = {
+            time: time,
             applyStatus: applyStatus,
             jobSupportYn: jobSupportYn
         };
     }else{
         jsonObj = {
+            time: time,
             applyStatus: applyStatus,
             jobSupportYn: jobSupportYn,
             condition: condition ,
@@ -220,6 +251,9 @@ function f_customer_boarder_search(){
     let resData = ajaxConnect('/mng/customer/boarder/selectList.do', 'post', jsonObj);
 
     dataTbl.rows.add(resData).draw();
+
+    dataTbl.column(4).nodes().to$().addClass('d-flex');
+    dataTbl.column(4).nodes().to$().addClass('justify-content-center');
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
@@ -247,6 +281,7 @@ function f_customer_boarder_search_condition_init(){
     $('#search_text').val('');
     $('#condition_apply_status').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_job_support_yn').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_customer_boarder_search();
@@ -419,7 +454,7 @@ function f_customer_boarder_form_data_setting(){
 }
 
 function f_customer_boarder_valid(){
-    let nameKo = document.querySelector('#nameKo').value;
+    /*let nameKo = document.querySelector('#nameKo').value;
     let nameEn = document.querySelector('#nameEn').value;
     let phone = document.querySelector('#phone').value;
     let email = document.querySelector('#email').value;
@@ -428,11 +463,11 @@ function f_customer_boarder_valid(){
     let month = $('#month_select').val();
     let day = $('#day_select').val();
     let address = document.querySelector('#address').value;
-    let addressDetail = document.querySelector('#addressDetail').value;
+    let addressDetail = document.querySelector('#addressDetail').value;*/
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(nvl(nameKo,'') === ''){ showMessage('', 'error', '[등록 정보]', '이름(국문)을 입력해 주세요.', ''); return false; }
+    /*if(nvl(nameKo,'') === ''){ showMessage('', 'error', '[등록 정보]', '이름(국문)을 입력해 주세요.', ''); return false; }
     if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[등록 정보]', '이름(영문)을 입력해 주세요.', ''); return false; }
     if(nvl(phone,'') === ''){ showMessage('', 'error', '[등록 정보]', '연락처를 입력해 주세요.', ''); return false; }
     if(nvl(email,'') === ''){ showMessage('', 'error', '[등록 정보]', '이메일을 입력해 주세요.', ''); return false; }
@@ -441,7 +476,7 @@ function f_customer_boarder_valid(){
     if(nvl(month,'') === ''){ showMessage('', 'error', '[등록 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
     if(nvl(day,'') === ''){ showMessage('', 'error', '[등록 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
     if(nvl(address,'') === ''){ showMessage('', 'error', '[등록 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[등록 정보]', '상세주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[등록 정보]', '상세주소를 입력해 주세요.', ''); return false; }*/
     if(clothesSizeArr.length === 0){ showMessage('', 'error', '[등록 정보]', '작업복 사이즈를 하나 이상 선택해 주세요.', ''); return false; }
     if(participationPathArr.length === 0){ showMessage('', 'error', '[등록 정보]', '참여경로를 하나 이상 선택해 주세요.', ''); return false; }
 

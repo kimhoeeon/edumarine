@@ -1561,6 +1561,18 @@ if (document.documentElement) {
                                             <%--begin::신청상태--%>
                                             <div class="w-100 mw-150px">
                                                 <!--begin::Select2-->
+                                                <select id="condition_time" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 차시 -" onchange="f_customer_boarder_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 차시 -</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::신청상태--%>
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-150px">
+                                                <!--begin::Select2-->
                                                 <select id="condition_apply_status" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 신청상태 -" onchange="f_customer_boarder_search()">
@@ -1633,6 +1645,7 @@ if (document.documentElement) {
                                                     </th>
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
+                                                    <th class="text-center min-w-50px">차시</th>
                                                     <th class="text-center min-w-75px">신청상태</th>
                                                     <th class="text-center min-w-75px">등급</th>
                                                     <th class="text-center min-w-75px">아이디</th>
@@ -1645,6 +1658,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1914,8 +1928,9 @@ if (document.documentElement) {
                                         data-placeholder="- 환불 구분 -">
                                     <option></option>
                                     <option value="" disabled>- 환불 구분 -</option>
-                                    <option value="ALL">전액 환불</option>
-                                    <option value="PART">부분 환불</option>
+                                    <option value="ALL">전액 환불 (환불 기한 상관없이)</option>
+                                    <option value="PART">조건 환불 (환불 기한에 따라 환불)</option>
+                                    <option value="NOPAY">미결제환불</option>
                                 </select>
                                 <!--end::Select2-->
                             </div>
@@ -1979,6 +1994,7 @@ if (document.documentElement) {
                 <div class="modal-body py-lg-10 px-lg-10">
                     <!--begin::Input group-->
                     <div>
+                        * <strong>결제완료</strong> : (가상계좌일 경우) 현재 <strong class="text-danger">입금대기</strong> 상태인 경우에만 적용<br>
                         * <strong>수강확정</strong> : 현재 <strong class="text-danger">결제완료</strong> 상태인 경우에만 적용<br>
                         * <strong>수강완료</strong> : 현재 <strong class="text-danger">수강확정</strong> 상태인 경우에만 적용<br>
                         * <strong>환급대기</strong> : 현재 <strong class="text-danger">수강완료</strong> 상태인 경우에만 적용<br>
@@ -2014,6 +2030,7 @@ if (document.documentElement) {
                                         data-placeholder="- 신청 상태 -">
                                     <option></option>
                                     <option value="" disabled>- 신청 상태 -</option>
+                                    <option value="결제완료">결제완료</option>
                                     <option value="수강확정">수강확정</option>
                                     <option value="수강완료">수강완료</option>
                                     <option value="환급대기">환급대기</option>

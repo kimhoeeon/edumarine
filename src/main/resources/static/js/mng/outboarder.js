@@ -5,6 +5,32 @@
 
 $(function(){
 
+    // 차시 검색조건 Set
+    $("#condition_time").children('option:not(:gt(1))').remove();
+
+    let json = {
+        gbn: '해상엔진 자가정비 (선외기)'
+    }
+    $.ajax({
+        url: '/train/selectNextTime.do',
+        method: 'post',
+        data: JSON.stringify(json),
+        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+    })
+    .done(function (data, status){
+        let results = data;
+        if(nvl(results,'') !== ''){
+            $.each(results , function(i){
+                $('#condition_time').append($('<option>', {
+                    value: results[i].nextTime,
+                    text : results[i].nextTime + '차'
+                }));
+            })
+
+            $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
+        }
+    });
+
     /*// 이메일
     $('#email_select').on('change', function () {
         let selectedOption = $(this).val();
@@ -55,8 +81,9 @@ $(function(){
                     let data_val = $(this).data('value');
                     checkbox_data_val += data_val;
 
-                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    let checkbox_data_status = data_val.split(' / ')[1];
                     checkbox_status += checkbox_data_status;
+
                     checkbox_val += $(this).val();
                     if((i+1) !== checkbox_len){
                         checkbox_data_val += '<br>';
@@ -121,8 +148,9 @@ $(function(){
                     let data_val = $(this).data('value');
                     checkbox_data_val += data_val;
 
-                    let checkbox_data_status = data_val.substring(data_val.indexOf('/')+2);
+                    let checkbox_data_status = data_val.split(' / ')[1];
                     checkbox_status += checkbox_data_status;
+
                     checkbox_val += $(this).val();
                     if((i+1) !== checkbox_len){
                         checkbox_data_val += '<br>';
@@ -202,12 +230,15 @@ function f_customer_outboarder_search(){
     let searchText = $('#search_text').val();
 
     let applyStatus = $('#condition_apply_status option:selected').val();
+    let time = $('#condition_time option:selected').val();
     if(nullToEmpty(searchText) === ''){
         jsonObj = {
+            time: time,
             applyStatus: applyStatus
         };
     }else{
         jsonObj = {
+            time: time,
             applyStatus: applyStatus,
             condition: condition ,
             searchText: searchText
@@ -217,6 +248,9 @@ function f_customer_outboarder_search(){
     let resData = ajaxConnect('/mng/customer/outboarder/selectList.do', 'post', jsonObj);
 
     dataTbl.rows.add(resData).draw();
+
+    dataTbl.column(4).nodes().to$().addClass('d-flex');
+    dataTbl.column(4).nodes().to$().addClass('justify-content-center');
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
@@ -243,6 +277,7 @@ function f_customer_outboarder_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
     $('#condition_apply_status').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_customer_outboarder_search();

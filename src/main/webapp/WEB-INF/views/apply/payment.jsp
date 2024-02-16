@@ -373,10 +373,12 @@
 
     </div>
     <!-- //container -->
+    <c:set var="now" value="<%=new java.util.Date(new java.util.Date().getTime() + 60*60*24*1000*1)%>" />
+    <c:set var="sysDate"><fmt:formatDate value="${now}" pattern="yyyyMMdd"/></c:set>
 
     <form name="SendPayForm_id" id="SendPayForm_id" method="post">
         <input type="hidden" name="version" value="1.0">
-        <input type="hidden" name="gopaymethod" value="Card:Directbank:vbank">
+        <input type="hidden" name="gopaymethod" value="Card:vbank"><%--Card:vbank--%>
         <input type="hidden" name="mid" value="${payInfo.mid}">
         <input type="hidden" name="oid" value="${payInfo.oid}">
         <input type="hidden" name="price" value="${payInfo.price}">
@@ -390,10 +392,12 @@
         <input type="hidden" name="buyername" value="${payInfo.buyername}">
         <input type="hidden" name="buyertel" value="${payInfo.buyertel}">
         <input type="hidden" name="buyeremail" value="${payInfo.buyeremail}">
-        <input type="hidden" name="returnUrl" value="${payInfo.siteDomain}/apply/schedule.do">
-        <%--<input type="hidden" name="closeUrl" value="${payInfo.siteDomain}/close.do">--%>
-        <input type="hidden" name="acceptmethod" value="HPP(1):below1000:centerCd(Y):SKIN(#083274)">
+        <input type="hidden" name="returnUrl" value="${payInfo.siteDomain}/mypage/eduApplyInfo.do">
+        <input type="hidden" name="closeUrl" value=""><%--https://${payInfo.siteDomain}/mypage/eduApplyInfo.do--%>
+        <input type="hidden" name="acceptmethod" value="HPP(1):below1000:centerCd(Y):SKIN(#083274):vbank(${sysDate})">
         <input type="hidden" name="merchantData" value="${payInfo.tableSeq}">
+        <%--<input type="hidden" name="payViewType" value="popup">
+        <input type="hidden" name="popupUrl" value="${payInfo.siteDomain}/apply/payment.do">--%>
     </form>
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
@@ -408,7 +412,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <%-- 개발 --%>

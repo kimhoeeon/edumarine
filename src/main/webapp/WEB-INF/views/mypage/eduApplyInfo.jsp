@@ -109,6 +109,14 @@
 
 <body>
 
+<script>
+    window.onpageshow = function(event){
+        if(event.persisted || (window.performance && window.performance.navigation.type === 2)){
+            window.location.reload();
+        }
+    }
+</script>
+
 <c:if test="${status ne 'logon'}">
     <script>
         alert("로그인해 주세요.");
@@ -171,7 +179,6 @@
                                 <li>
                                     <div class="number">번호</div>
                                     <div class="subject">교육명</div>
-                                    <div class="venue">장소</div>
                                     <div class="state">신청현황</div>
                                     <div class="modify">신청서 수정</div>
                                 </li>
@@ -186,7 +193,6 @@
                                                 <div class="edu_period">${eduApplyInfo.trainStartDttm} ~ ${eduApplyInfo.trainEndDttm}</div>
                                                 <%--<div class="edu_time">00:00 ~ 00:00</div>--%>
                                             </div>
-                                            <%--<div class="venue">경기테크노파크(안산)</div>--%>
                                             <div class="state">${eduApplyInfo.payStatus}
                                                 <c:if test="${eduApplyInfo.payStatus eq '결제대기'}">
                                                     </br>
@@ -194,8 +200,9 @@
                                                 </c:if>
                                             </div>
                                             <div class="modify">
-                                                <a href="javascript:void(0);" value="${eduApplyInfo.seq}" class="btn_cancel form_cancel_edu_btn">취소</a>
-                                                <a href="javascript:void(0);" onclick="f_edu_apply_modify_btn('${eduApplyInfo.trainName}', '${eduApplyInfo.seq}')" class="btn_modify">수정</a>
+                                                <input type="hidden" name="changeYn" value="${eduApplyInfo.changeYn}">
+                                                <a href="javascript:void(0);" value="${eduApplyInfo.seq}" data-value="${eduApplyInfo.payMethod}" class="btn_cancel form_cancel_edu_btn">취소</a>
+                                                <a href="javascript:void(0);" onclick="f_edu_apply_modify_btn('${eduApplyInfo.trainStartDttm}', '${eduApplyInfo.trainName}', '${eduApplyInfo.seq}')" class="btn_modify">수정</a>
                                             </div>
                                         </li>
                                     </c:forEach>
@@ -220,7 +227,6 @@
                                 <li>
                                     <div class="number">번호</div>
                                     <div class="subject">교육명</div>
-                                    <div class="venue">장소</div>
                                     <div class="state">신청현황</div>
                                 </li>
                             </ul>
@@ -234,7 +240,6 @@
                                                 <div class="edu_period">${eduApplyInfoCancel.trainStartDttm} ~ ${eduApplyInfoCancel.trainEndDttm}</div>
                                                     <%--<div class="edu_time">00:00 ~ 00:00</div>--%>
                                             </div>
-                                                <%--<div class="venue">경기테크노파크(안산)</div>--%>
                                             <div class="state">${eduApplyInfoCancel.payStatus}</div>
                                         </li>
                                     </c:forEach>
@@ -257,7 +262,43 @@
                                     <div class="tit_box">교육 취소</div>
                                     <div class="text_box">[ <span class="train_name"></span> ]을 신청하셨습니다.<br>정말로 취소하시겠습니까?</div>
                                     <div class="cmnt_box"><span style="color: #C00000">취소 사유를 10자 이상 입력해 주세요!</span></div>
-                                    <div class="input_box"><input type="text" placeholder="취소 사유 10자 이상 입력" class="cancel_edu_reason">
+                                    <div class="input_box">
+                                        <input type="text" placeholder="취소 사유 10자 이상 입력" class="cancel_edu_reason">
+                                    </div>
+                                    <div class="refund_account_box">
+                                        <div class="input_box" style="text-align: left;">
+                                            <select id="cancel_edu_bank_select">
+                                                <option value="" selected disabled>환불계좌은행</option>
+                                                <option value="04">KB국민</option>
+                                                <option value="03">IBK기업</option>
+                                                <option value="11">NH농협</option>
+                                                <option value="88">신한</option>
+                                                <option value="53">씨티</option>
+                                                <option value="23">SC제일</option>
+                                                <option value="20">우리</option>
+                                                <option value="71">우체국</option>
+                                                <option value="45">새마을금고</option>
+                                                <option value="48">신협</option>
+                                                <option value="81">하나</option>
+                                                <option value="50">저축</option>
+                                                <option value="90">카카오뱅크</option>
+                                                <option value="89">케이뱅크</option>
+                                                <option value="92">토스뱅크</option>
+                                                <option value="39">경남</option>
+                                                <option value="34">광주</option>
+                                                <option value="31">대구</option>
+                                                <option value="32">부산</option>
+                                                <option value="07">수협</option>
+                                                <option value="37">전북</option>
+                                                <option value="35">제주</option>
+                                            </select>
+                                        </div>
+                                        <div class="input_box">
+                                            <input type="text" id="cancel_edu_bank_customer_name" placeholder="환불계좌 예금주명 입력">
+                                        </div>
+                                        <div class="input_box">
+                                            <input type="text" id="cancel_edu_bank_number" class="onlyNum" placeholder="환불계좌번호 입력">
+                                        </div>
                                     </div>
                                     <div class="btn_box">
                                         <a href="javascript:void(0);" class="btnSt03 btn_prev">이전</a>
@@ -267,7 +308,8 @@
                                 <div class="box_2">
                                     <div class="text_box">
                                         취소 신청이 접수되었습니다.<br>
-                                        담당자 승인 후 5일 내로, 취소 여부가 확정되며<br>
+                                        담당자 승인 후 2주 이내<br>
+                                        교육비 환불 기준에 따라 취소됩니다.<br>
                                         취소 확정 여부는 추후 마이페이지를 통해<br>
                                         확인하실 수 있습니다.
                                     </div>
@@ -302,8 +344,37 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
 </c:if>
+
+<script>
+    $(function(){
+        let payResInfo_resultCode = '${payResInfo.resultCode}';
+        let payResInfo_resultMsg = '${payResInfo.resultMsg}';
+        if(nvl(payResInfo_resultCode,'') !== ''){
+
+            if(payResInfo_resultCode === "0000"){
+                Swal.fire({
+                    title: '[교육 신청 결제 완료]',
+                    html: '교육 신청 결제가 완료되었습니다.<br>상세 내역은 마이페이지에서 확인 가능합니다.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/mypage/eduApplyInfo.do'; // 목록으로 이동
+                    }
+                });
+                return false;
+            }else{
+                showMessage('', 'error', '[교육 신청 결제 실패]', '교육 신청 결제가 실패하였습니다.<br>오류메시지 : [' + payResInfo_resultCode + '] ' + payResInfo_resultMsg, '');
+            }
+
+        }
+    })
+</script>
 </body>
 </html>

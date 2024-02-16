@@ -156,6 +156,7 @@
 
                     <!-- form box -->
                     <form id="joinForm" method="post" onsubmit="return false;">
+                        <input type="hidden" name="seq" value="${info.seq}">
                         <div class="form_box">
                             <div class="form_tit">
                                 <div class="big">회원정보 수정</div>
@@ -463,7 +464,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 <script>

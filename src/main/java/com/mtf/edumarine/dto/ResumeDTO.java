@@ -9,8 +9,9 @@ import lombok.ToString;
 @ToString
 public class ResumeDTO {
     Integer rownum; //연번
-    String id;
     String seq; //순번
+    String memberSeq;
+    String id;
     String nameKo; //이름
     String nameEn; //이름
     String phone; //연락처

@@ -7,6 +7,7 @@ import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineService;
+import org.apache.poi.ss.formula.functions.Today;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,12 @@ public class EduMarineController {
         /* 방문자 수 카운트 */
         eduMarineService.processStatisticsAccessor();
 
+        /* 교육 접수/일정 마감 체크 */
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy.MM.dd");
+        String todate = dateFormat1.format(new Date());
+        eduMarineService.processUpdateTrainClosing(todate);
+
+
         /* 팝업파일정보 */
         PopupDTO popupDTO = new PopupDTO();
         popupDTO.setUseYn("Y");
@@ -124,6 +131,18 @@ public class EduMarineController {
         saleDTO.setGbn("(세일요트)");
         List<TrainDTO> saleList = eduMarineService.processSelectTrainList(saleDTO);
         mv.addObject("saleList", saleList);
+
+        TrainDTO marinaInDTO = new TrainDTO();
+        marinaInDTO.setGbn("마리나 선박 선내기");
+        List<TrainDTO> marinaInList = eduMarineService.processSelectTrainList(marinaInDTO);
+
+        TrainDTO marinaOutDTO = new TrainDTO();
+        marinaOutDTO.setGbn("마리나 선박 선외기");
+        List<TrainDTO> marinaOutList = eduMarineService.processSelectTrainList(marinaOutDTO);
+
+        marinaInList.addAll(marinaOutList);
+
+        mv.addObject("marinaList", marinaInList);
 
         /* 공지사항 */
         NoticeDTO noticeDTO = new NoticeDTO();
@@ -246,7 +265,7 @@ public class EduMarineController {
     //***************************************************************************
 
     @RequestMapping(value = "/apply/schedule.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_schedule(HttpServletRequest request, HttpSession session, String searchText) {
+    public ModelAndView apply_schedule(String searchText) {
         System.out.println("EduMarineController > apply_schedule");
         ModelAndView mv = new ModelAndView();
         if(searchText != null && !"".equals(searchText)){
@@ -267,29 +286,14 @@ public class EduMarineController {
                 case "EDU08":
                     trainName = "해상엔진 자가정비 (세일요트)";
                     break;
+                case "EDU09":
+                    trainName = "마리나 선박";
+                    break;
                 default:
                     trainName = searchText;
                     break;
             }
             mv.addObject("searchText", trainName);
-        }
-
-        // 이니시스 결제 Response
-        System.out.println("이니시스 결제 Response resultCode : " + request.getParameter("resultCode"));
-        String resultCode = request.getParameter("resultCode");
-
-        if(resultCode != null && !"V801".equals(resultCode)){
-            System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
-            System.out.println("Session Id : " + session.getAttribute("id"));
-            if(session.getAttribute("id") != null){
-                String id = session.getAttribute("id").toString();
-                MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
-
-                InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO(memberInfo.getSeq(), request);
-                mv.addObject("payResInfo", inistdpayResponseDTO);
-            }else{
-                System.out.println("session getAttribute is null");
-            }
         }
 
         mv.setViewName("/apply/schedule");
@@ -331,6 +335,72 @@ public class EduMarineController {
 
         mv.setViewName("/apply/eduApply01");
         return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply01/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply01_preCheck(@RequestBody RegularDTO regularDTO) {
+        System.out.println("EduMarineController > apply_eduApply01_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectRegularPreCheck(regularDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply02/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply02_preCheck(@RequestBody BoarderDTO boarderDTO) {
+        System.out.println("EduMarineController > apply_eduApply02_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectBoarderPreCheck(boarderDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply03/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply03_preCheck(@RequestBody FrpDTO frpDTO) {
+        System.out.println("EduMarineController > apply_eduApply03_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectFrpPreCheck(frpDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply04/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply04_preCheck(@RequestBody InboarderDTO inboarderDTO) {
+        System.out.println("EduMarineController > apply_eduApply04_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectInboarderPreCheck(inboarderDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply05/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply05_preCheck(@RequestBody OutboarderDTO outboarderDTO) {
+        System.out.println("EduMarineController > apply_eduApply05_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectOutboarderPreCheck(outboarderDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply06/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply06_preCheck(@RequestBody SailyachtDTO sailyachtDTO) {
+        System.out.println("EduMarineController > apply_eduApply06_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectSailyachtPreCheck(sailyachtDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/apply/eduApply01/insert.do", method = RequestMethod.POST)
@@ -507,7 +577,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply04_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply04_modify(String seq) {
+    public ModelAndView mypage_eduApply04_modify(String seq, String modYn) {
         System.out.println("EduMarineController > mypage_eduApply04_modify");
         ModelAndView mv = new ModelAndView();
 
@@ -515,6 +585,11 @@ public class EduMarineController {
 
         if(info != null){
             mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
 
             MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
             mv.addObject("memberInfo", memberInfo);
@@ -554,7 +629,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply05_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply05_modify(String seq) {
+    public ModelAndView mypage_eduApply05_modify(String seq, String modYn) {
         System.out.println("EduMarineController > mypage_eduApply05_modify");
         ModelAndView mv = new ModelAndView();
 
@@ -562,6 +637,11 @@ public class EduMarineController {
 
         if(info != null){
             mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
 
             MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
             mv.addObject("memberInfo", memberInfo);
@@ -590,7 +670,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply06_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply06_modify(String seq) {
+    public ModelAndView mypage_eduApply06_modify(String seq, String modYn) {
         System.out.println("EduMarineController > mypage_eduApply06_modify");
         ModelAndView mv = new ModelAndView();
 
@@ -598,6 +678,11 @@ public class EduMarineController {
 
         if(info != null){
             mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
 
             MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
             mv.addObject("memberInfo", memberInfo);
@@ -1034,8 +1119,19 @@ public class EduMarineController {
     // mypage Folder
     //***************************************************************************
 
+    @RequestMapping(value = "/train/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<TrainDTO> mypage_resume_save(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineController > mypage_resume_save");
+        //System.out.println(memberDTO.toString());
+
+        TrainDTO responseDTO = eduMarineService.processSelectTrainSingle(trainDTO.getSeq());
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mypage/eduApplyInfo.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_eduApplyInfo(HttpSession session) {
+    public ModelAndView mypage_eduApplyInfo(HttpServletRequest request, HttpSession session) {
         System.out.println("EduMarineController > mypage_eduApplyInfo");
         ModelAndView mv = new ModelAndView();
 
@@ -1057,6 +1153,24 @@ public class EduMarineController {
                 // 교육취소내역
                 List<EduApplyInfoDTO> eduApplyInfoCancelList = eduMarineService.processSelectEduApplyInfoCancelList(memberSeq);
                 mv.addObject("eduApplyInfoCancelList", eduApplyInfoCancelList);
+            }
+        }
+
+        // 이니시스 결제 Response
+        System.out.println("이니시스 결제 Response resultCode : " + request.getParameter("resultCode"));
+        String resultCode = request.getParameter("resultCode");
+
+        if(resultCode != null && !"V801".equals(resultCode)){
+            System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
+            System.out.println("Session Id : " + session.getAttribute("id"));
+            if(session.getAttribute("id") != null){
+                String id = session.getAttribute("id").toString();
+                MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
+
+                InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO(memberInfo.getSeq(), request);
+                mv.addObject("payResInfo", inistdpayResponseDTO);
+            }else{
+                System.out.println("session getAttribute is null");
             }
         }
 
@@ -1095,16 +1209,21 @@ public class EduMarineController {
 
         if(session.getAttribute("id") != null){
             String id = session.getAttribute("id").toString();
-            ResumeDTO info = eduMarineService.processSelectResumeSingle(id);
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
             mv.addObject("info", info);
 
             if(info != null){
-                /* 첨부파일 정보 Set */
-                List<FileDTO> bodyPhotoFile = eduMarineService.processSelectFileList(info.getSeq());
-                if(bodyPhotoFile != null  && !bodyPhotoFile.isEmpty()){
-                    for (FileDTO fileDTO : bodyPhotoFile) {
-                        if ("bodyPhoto".equals(fileDTO.getNote())) {
-                            mv.addObject("bodyPhotoFile", fileDTO);
+                ResumeDTO resumeInfo = eduMarineService.processSelectResumeSingle(info.getSeq());
+                mv.addObject("resumeInfo", resumeInfo);
+
+                if(resumeInfo != null){
+                    /* 첨부파일 정보 Set */
+                    List<FileDTO> bodyPhotoFile = eduMarineService.processSelectFileList(info.getSeq());
+                    if(bodyPhotoFile != null  && !bodyPhotoFile.isEmpty()){
+                        for (FileDTO fileDTO : bodyPhotoFile) {
+                            if ("bodyPhoto".equals(fileDTO.getNote())) {
+                                mv.addObject("bodyPhotoFile", fileDTO);
+                            }
                         }
                     }
                 }
@@ -1173,6 +1292,23 @@ public class EduMarineController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/member/modify/withdraw.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> member_modify_withdraw(@RequestBody MemberDTO memberDTO, HttpSession session) {
+        System.out.println("EduMarineController > member_modify_withdraw");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateMemberWithdraw(memberDTO);
+
+        if(CommConstants.RESULT_CODE_SUCCESS.equals(responseDTO.getResultCode())){
+            System.out.println("session invalidate");
+            session.removeAttribute("status");
+            session.invalidate();
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/member/seq/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<MemberDTO> member_seq_selectSingle(@RequestBody MemberDTO memberDTO) {
@@ -1185,7 +1321,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply01_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply01_modify(String seq) {
+    public ModelAndView mypage_eduApply01_modify(String seq, String modYn) {
         System.out.println("EduMarineController > mypage_eduApply01_modify");
         ModelAndView mv = new ModelAndView();
 
@@ -1194,10 +1330,14 @@ public class EduMarineController {
         if(info != null){
             mv.addObject("info", info);
 
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
             MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
             mv.addObject("memberInfo", memberInfo);
         }
-
 
         mv.setViewName("/mypage/eduApply01_modify");
         return mv;
@@ -1215,7 +1355,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply02_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply02_modify(String seq) {
+    public ModelAndView mypage_eduApply02_modify(String seq, String modYn) {
         System.out.println("EduMarineController > mypage_eduApply02_modify");
         ModelAndView mv = new ModelAndView();
 
@@ -1224,6 +1364,11 @@ public class EduMarineController {
         if(info != null){
 
             mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
 
             MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
             mv.addObject("memberInfo", memberInfo);
@@ -1242,7 +1387,7 @@ public class EduMarineController {
 
             /* 첨부파일 정보 Set */
             List<FileDTO> careerLicenseList = new ArrayList<>();
-            List<FileDTO> fileList = eduMarineService.processSelectFileList(info.getSeq());
+            List<FileDTO> fileList = eduMarineService.processSelectFileList(info.getMemberSeq());
             if(fileList != null  && !fileList.isEmpty()){
                 for (FileDTO fileDTO : fileList) {
                     String fileNote = fileDTO.getNote().replaceAll("[0-9]", "");
@@ -1257,6 +1402,7 @@ public class EduMarineController {
 
                 mv.addObject("careerLicenseFileList", careerLicenseList);
             }
+
         }
 
         mv.setViewName("/mypage/eduApply02_modify");
@@ -1297,7 +1443,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply03_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply03_modify(String seq) {
+    public ModelAndView mypage_eduApply03_modify(String seq, String modYn) {
         System.out.println("EduMarineController > mypage_eduApply03_modify");
         ModelAndView mv = new ModelAndView();
 
@@ -1306,6 +1452,11 @@ public class EduMarineController {
         if(info != null){
 
             mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
 
             MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
             mv.addObject("memberInfo", memberInfo);
@@ -1324,7 +1475,7 @@ public class EduMarineController {
 
             /* 첨부파일 정보 Set */
             List<FileDTO> careerLicenseList = new ArrayList<>();
-            List<FileDTO> fileList = eduMarineService.processSelectFileList(info.getSeq());
+            List<FileDTO> fileList = eduMarineService.processSelectFileList(info.getMemberSeq());
             if(fileList != null  && !fileList.isEmpty()){
                 for (FileDTO fileDTO : fileList) {
                     String fileNote = fileDTO.getNote().replaceAll("[0-9]", "");
@@ -1571,7 +1722,7 @@ public class EduMarineController {
                 // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
                 String signature = SignatureUtil.makeSignature(signParam);
 
-                signParam.put("signKey",	"SU5JTElURV9UUklQTEVERVNfS0VZU1RS");		// 필수
+                signParam.put("signKey",	"elVJSjZPYWhaelBCVjlCSFYwbzdkQT09");		// 필수
 
                 // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
                 String verification = SignatureUtil.makeSignature(signParam);
@@ -1645,123 +1796,170 @@ public class EduMarineController {
         inistdpayResponseDTO = (InistdpayResponseDTO)convertMapToObject(resultMap, inistdpayResponseDTO);
         System.out.println(inistdpayResponseDTO.toString());
 
-        // 결제내역 테이블 Insert process
+        if("0000".equals(inistdpayResponseDTO.getResultCode())) {
+            // 결제내역 테이블 Insert process
 
-        String goodName = inistdpayResponseDTO.getGoodName(); // [T0000003]상시신청
-        String trainSeq = goodName.substring(goodName.indexOf("[")+1, goodName.indexOf("]")); // T0000003
-        String[] gbnArr = goodName.split("]"); // 상시신청
+            String goodName = inistdpayResponseDTO.getGoodName(); // [T0000003]상시신청
+            String trainSeq = goodName.substring(goodName.indexOf("[") + 1, goodName.indexOf("]")); // T0000003
+            String[] gbnArr = goodName.split("]"); // 상시신청
 
-        PaymentDTO paymentDTO = new PaymentDTO();
-        paymentDTO.setMemberSeq(memberSeq);
-        paymentDTO.setMemberName(inistdpayResponseDTO.getBuyerName());
-        paymentDTO.setMemberPhone(inistdpayResponseDTO.getBuyerTel());
-        paymentDTO.setTableSeq(merchantData);
-        paymentDTO.setTrainSeq(trainSeq);
-        paymentDTO.setTrainName(gbnArr[1]);
-        paymentDTO.setBuyerName(inistdpayResponseDTO.getBuyerName());
-        paymentDTO.setBuyerTel(inistdpayResponseDTO.getBuyerTel());
-        paymentDTO.setBuyerEmail(inistdpayResponseDTO.getBuyerEmail());
-        paymentDTO.setCustEmail(inistdpayResponseDTO.getCustEmail());
-        paymentDTO.setPaySum(Integer.valueOf(inistdpayResponseDTO.getTotPrice()));
-        paymentDTO.setTotPrice(inistdpayResponseDTO.getTotPrice());
-        paymentDTO.setGoodName(inistdpayResponseDTO.getGoodName());
-        paymentDTO.setGoodsName(inistdpayResponseDTO.getGoodsName());
-        paymentDTO.setApplDate(inistdpayResponseDTO.getApplDate());
-        paymentDTO.setApplTime(inistdpayResponseDTO.getApplTime());
-        paymentDTO.setMoid(inistdpayResponseDTO.getMOID());
-        paymentDTO.setMid(inistdpayResponseDTO.getMid());
-        paymentDTO.setTid(inistdpayResponseDTO.getTid());
-        paymentDTO.setApplNum(inistdpayResponseDTO.getApplNum());
-        paymentDTO.setAuthSignature(inistdpayResponseDTO.getAuthSignature());
-        paymentDTO.setEventCode(inistdpayResponseDTO.getEventCode());
-        paymentDTO.setPayMethod(inistdpayResponseDTO.getPayMethod());
-        paymentDTO.setCurrency(inistdpayResponseDTO.getCurrency());
-        paymentDTO.setPFnNm(inistdpayResponseDTO.getP_FN_NM());
-        paymentDTO.setCardNum(inistdpayResponseDTO.getCARD_Num());
-        paymentDTO.setCardCode(inistdpayResponseDTO.getCARD_Code());
-        paymentDTO.setCardCorpFlag(inistdpayResponseDTO.getCARD_CorpFlag());
-        paymentDTO.setCardMemberNum(inistdpayResponseDTO.getCARD_MemberNum());
-        paymentDTO.setCardApplPrice(inistdpayResponseDTO.getCARD_ApplPrice());
-        paymentDTO.setCardPoint(inistdpayResponseDTO.getCARD_Point());
-        paymentDTO.setCardQuota(inistdpayResponseDTO.getCARD_Quota());
-        paymentDTO.setCardPurchaseCode(inistdpayResponseDTO.getCARD_PurchaseCode());
-        paymentDTO.setCardPrtcCode(inistdpayResponseDTO.getCARD_PrtcCode());
-        paymentDTO.setCardCheckFlag(inistdpayResponseDTO.getCARD_CheckFlag());
-        paymentDTO.setCardBankCode(inistdpayResponseDTO.getCARD_BankCode());
-        paymentDTO.setCardTerminalNum(inistdpayResponseDTO.getCARD_TerminalNum());
-        paymentDTO.setCardUsePoint(inistdpayResponseDTO.getCARD_UsePoint());
-        paymentDTO.setCardInterest(inistdpayResponseDTO.getCARD_Interest());
-        paymentDTO.setCardSrcCode(inistdpayResponseDTO.getCARD_SrcCode());
-        paymentDTO.setCardGwcode(inistdpayResponseDTO.getCARD_GWCode());
-        paymentDTO.setCardPurchaseName(inistdpayResponseDTO.getCARD_PurchaseName());
-        paymentDTO.setPayDevice(inistdpayResponseDTO.getPayDevice());
-        paymentDTO.setResultCode(inistdpayResponseDTO.getResultCode());
-        paymentDTO.setResultMsg(inistdpayResponseDTO.getResultMsg());
+            PaymentDTO paymentDTO = new PaymentDTO();
+            paymentDTO.setMemberSeq(memberSeq);
+            paymentDTO.setMemberName(inistdpayResponseDTO.getBuyerName());
+            paymentDTO.setMemberPhone(inistdpayResponseDTO.getBuyerTel());
+            paymentDTO.setTableSeq(merchantData);
+            paymentDTO.setTrainSeq(trainSeq);
+            paymentDTO.setTrainName(gbnArr[1]);
+            paymentDTO.setBuyerName(inistdpayResponseDTO.getBuyerName());
+            paymentDTO.setBuyerTel(inistdpayResponseDTO.getBuyerTel());
+            paymentDTO.setBuyerEmail(inistdpayResponseDTO.getBuyerEmail());
+            paymentDTO.setCustEmail(inistdpayResponseDTO.getCustEmail());
+            paymentDTO.setPaySum(Integer.valueOf(inistdpayResponseDTO.getTotPrice()));
+            paymentDTO.setTotPrice(inistdpayResponseDTO.getTotPrice());
+            paymentDTO.setGoodName(inistdpayResponseDTO.getGoodName());
+            paymentDTO.setGoodsName(inistdpayResponseDTO.getGoodsName());
+            paymentDTO.setApplDate(inistdpayResponseDTO.getApplDate());
+            paymentDTO.setApplTime(inistdpayResponseDTO.getApplTime());
+            paymentDTO.setMoid(inistdpayResponseDTO.getMOID());
+            paymentDTO.setMid(inistdpayResponseDTO.getMid());
+            paymentDTO.setTid(inistdpayResponseDTO.getTid());
+            paymentDTO.setApplNum(inistdpayResponseDTO.getApplNum());
+            paymentDTO.setAuthSignature(inistdpayResponseDTO.getAuthSignature());
+            paymentDTO.setEventCode(inistdpayResponseDTO.getEventCode());
+            paymentDTO.setPayMethod(inistdpayResponseDTO.getPayMethod());
+            paymentDTO.setCurrency(inistdpayResponseDTO.getCurrency());
+            paymentDTO.setPFnNm(inistdpayResponseDTO.getP_FN_NM());
+            paymentDTO.setCardNum(inistdpayResponseDTO.getCARD_Num());
+            paymentDTO.setCardCode(inistdpayResponseDTO.getCARD_Code());
+            paymentDTO.setCardCorpFlag(inistdpayResponseDTO.getCARD_CorpFlag());
+            paymentDTO.setCardMemberNum(inistdpayResponseDTO.getCARD_MemberNum());
+            paymentDTO.setCardApplPrice(inistdpayResponseDTO.getCARD_ApplPrice());
+            paymentDTO.setCardPoint(inistdpayResponseDTO.getCARD_Point());
+            paymentDTO.setCardQuota(inistdpayResponseDTO.getCARD_Quota());
+            paymentDTO.setCardPurchaseCode(inistdpayResponseDTO.getCARD_PurchaseCode());
+            paymentDTO.setCardPrtcCode(inistdpayResponseDTO.getCARD_PrtcCode());
+            paymentDTO.setCardCheckFlag(inistdpayResponseDTO.getCARD_CheckFlag());
+            paymentDTO.setCardBankCode(inistdpayResponseDTO.getCARD_BankCode());
+            paymentDTO.setCardTerminalNum(inistdpayResponseDTO.getCARD_TerminalNum());
+            paymentDTO.setCardUsePoint(inistdpayResponseDTO.getCARD_UsePoint());
+            paymentDTO.setCardInterest(inistdpayResponseDTO.getCARD_Interest());
+            paymentDTO.setCardSrcCode(inistdpayResponseDTO.getCARD_SrcCode());
+            paymentDTO.setCardGwcode(inistdpayResponseDTO.getCARD_GWCode());
+            paymentDTO.setCardPurchaseName(inistdpayResponseDTO.getCARD_PurchaseName());
+            paymentDTO.setPayDevice(inistdpayResponseDTO.getPayDevice());
+            paymentDTO.setVactDate(inistdpayResponseDTO.getVACT_Date());
+            paymentDTO.setVactTime(inistdpayResponseDTO.getVACT_Time());
+            paymentDTO.setVactName(inistdpayResponseDTO.getVACT_Name());
+            paymentDTO.setVactInputName(inistdpayResponseDTO.getVACT_InputName());
+            paymentDTO.setVactBankCode(inistdpayResponseDTO.getVACT_BankCode());
+            paymentDTO.setVactBankName(inistdpayResponseDTO.getVactBankName());
+            paymentDTO.setVactNum(inistdpayResponseDTO.getVACT_Num());
+            paymentDTO.setResultCode(inistdpayResponseDTO.getResultCode());
+            paymentDTO.setResultMsg(inistdpayResponseDTO.getResultMsg());
 
-        if("0000".equals(inistdpayResponseDTO.getResultCode())){
-            paymentDTO.setPayStatus("결제완료");
-        }else{
-            paymentDTO.setPayStatus("결제실패");
-        }
+            if ("0000".equals(inistdpayResponseDTO.getResultCode())) {
+                String payStatus = "결제완료";
+                if ("VBank".equals(inistdpayResponseDTO.getPayMethod())) {
+                    payStatus = "입금대기";
+                }
+                paymentDTO.setPayStatus(payStatus);
+            }
 
-        ResponseDTO paymentResDto = eduMarineService.processInsertPayment(paymentDTO);
+            ResponseDTO paymentResDto = eduMarineService.processInsertPayment(paymentDTO);
 
-        if("0".equals(paymentResDto.getResultCode())){
-            if(paymentDTO.getTableSeq() != null && !"".equals(paymentDTO.getTableSeq())){
-                // 상시신청
-                // 해상엔진 테크니션 (선내기/선외기)
-                // FRP 레저보트 선체 정비 테크니션
-                // 해상엔진 자가정비 (선외기)
-                // 해상엔진 자가정비 (선내기)
-                // 해상엔진 자가정비 (세일요트)
-                if(paymentDTO.getTrainName().contains("상시")){
+            if ("0".equals(paymentResDto.getResultCode())) {
+                if (paymentDTO.getTableSeq() != null && !"".equals(paymentDTO.getTableSeq())) {
+                    // 상시신청
+                    // 해상엔진 테크니션 (선내기/선외기)
+                    // FRP 레저보트 선체 정비 테크니션
+                    // 해상엔진 자가정비 (선외기)
+                    // 해상엔진 자가정비 (선내기)
+                    // 해상엔진 자가정비 (세일요트)
+                    if (paymentDTO.getTrainName().contains("상시")) {
 
-                    // regular table
-                    RegularDTO regularDTO = new RegularDTO();
-                    regularDTO.setSeq(paymentDTO.getTableSeq());
-                    regularDTO.setApplyStatus(paymentDTO.getPayStatus());
-                    ResponseDTO result  = eduMarineService.processUpdateRegularPayStatus(regularDTO);
+                        // regular table
+                        RegularDTO regularDTO = new RegularDTO();
+                        regularDTO.setSeq(paymentDTO.getTableSeq());
+                        regularDTO.setApplyStatus(paymentDTO.getPayStatus());
+                        ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
 
-                }else if(paymentDTO.getTrainName().contains("(선내기/선외기)")){
+                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }
+                        }
 
-                    // boarder table
-                    BoarderDTO boarderDTO = new BoarderDTO();
-                    boarderDTO.setSeq(paymentDTO.getTableSeq());
-                    boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                    ResponseDTO result  = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
+                    } else if (paymentDTO.getTrainName().contains("(선내기/")) {
 
-                }else if(paymentDTO.getTrainName().contains("FRP")){
+                        // boarder table
+                        BoarderDTO boarderDTO = new BoarderDTO();
+                        boarderDTO.setSeq(paymentDTO.getTableSeq());
+                        boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                        ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
 
-                    // frp table
-                    FrpDTO frpDTO = new FrpDTO();
-                    frpDTO.setSeq(paymentDTO.getTableSeq());
-                    frpDTO.setApplyStatus(paymentDTO.getPayStatus());
-                    ResponseDTO result  = eduMarineService.processUpdateFrpPayStatus(frpDTO);
+                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }
+                        }
 
-                }else if(paymentDTO.getTrainName().contains("(선외기)")){
+                    } else if (paymentDTO.getTrainName().contains("FRP")) {
 
-                    // outboarder table
-                    OutboarderDTO outboarderDTO = new OutboarderDTO();
-                    outboarderDTO.setSeq(paymentDTO.getTableSeq());
-                    outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                    ResponseDTO result  = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
+                        // frp table
+                        FrpDTO frpDTO = new FrpDTO();
+                        frpDTO.setSeq(paymentDTO.getTableSeq());
+                        frpDTO.setApplyStatus(paymentDTO.getPayStatus());
+                        ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
 
-                }else if(paymentDTO.getTrainName().contains("(선내기)")){
+                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }
+                        }
 
-                    // inboarder table
-                    InboarderDTO inboarderDTO = new InboarderDTO();
-                    inboarderDTO.setSeq(paymentDTO.getTableSeq());
-                    inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                    ResponseDTO result  = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
+                    } else if (paymentDTO.getTrainName().contains("(선외기)")) {
 
-                }else if(paymentDTO.getTrainName().contains("(세일요트)")){
+                        // outboarder table
+                        OutboarderDTO outboarderDTO = new OutboarderDTO();
+                        outboarderDTO.setSeq(paymentDTO.getTableSeq());
+                        outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                        ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
 
-                    // sailyacht table
-                    SailyachtDTO sailyachtDTO = new SailyachtDTO();
-                    sailyachtDTO.setSeq(paymentDTO.getTableSeq());
-                    sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
-                    ResponseDTO result  = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }
+                        }
 
+                    } else if (paymentDTO.getTrainName().contains("(선내기)")) {
+
+                        // inboarder table
+                        InboarderDTO inboarderDTO = new InboarderDTO();
+                        inboarderDTO.setSeq(paymentDTO.getTableSeq());
+                        inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                        ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
+
+                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }
+                        }
+
+                    } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
+
+                        // sailyacht table
+                        SailyachtDTO sailyachtDTO = new SailyachtDTO();
+                        sailyachtDTO.setSeq(paymentDTO.getTableSeq());
+                        sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
+                        ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+
+                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -1822,6 +2020,7 @@ public class EduMarineController {
         inistdpayRequestDTO.setSiteDomain(siteDomain);
         mv.addObject("payInfo", inistdpayRequestDTO);
 
+        System.out.println(inistdpayRequestDTO.toString());
         mv.setViewName("/apply/payment");
         return mv;
     }

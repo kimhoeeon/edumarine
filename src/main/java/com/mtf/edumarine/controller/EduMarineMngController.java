@@ -1696,20 +1696,35 @@ public class EduMarineMngController {
                 mv.addObject("licenseList", licenseList);
 
                 /* 첨부파일 정보 Set */
-                FileDTO fileDTO = new FileDTO();
-                fileDTO.setUserId(boarderSeq);
-                List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-                if(fileList != null && !fileList.isEmpty()){
-                    for(FileDTO fileInfo : fileList){
-                        if("bodyPhoto".equals(fileInfo.getNote())){
-                            mv.addObject("bodyPhotoFileInfo", fileInfo);
-                        }else if("gradeLicense".equals(fileInfo.getNote())){
-                            mv.addObject("gradeLicenseFileInfo", fileInfo);
-                        }else if("careerLicense".equals(fileInfo.getNote())){
-                            mv.addObject("careerLicenseFileInfo", fileInfo);
+                if(memberInfo != null){
+
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setUserId(memberInfo.getSeq());
+                    List<FileDTO> careerLicenseList = new ArrayList<>();
+                    List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+                    if(fileList != null && !fileList.isEmpty()){
+                        for(FileDTO fileInfo : fileList){
+                            String fileNote = fileInfo.getNote().replaceAll("[0-9]", "");
+                            if("bodyPhoto".equals(fileNote)){
+                                mv.addObject("bodyPhotoFileInfo", fileInfo);
+                            }else if("gradeLicense".equals(fileNote)){
+                                mv.addObject("gradeLicenseFileInfo", fileInfo);
+                            }else if("careerLicense".equals(fileNote)){
+                                careerLicenseList.add(fileInfo);
+                            }
                         }
+                        mv.addObject("careerLicenseFileList", careerLicenseList);
                     }
+
                 }
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
             }
         }
 
@@ -1803,29 +1818,42 @@ public class EduMarineMngController {
                 MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
                 mv.addObject("memberInfo", memberInfo);
 
-                String boarderSeq = info.getSeq();
+                String frpSeq = info.getSeq();
 
-                List<CareerDTO> careerList = eduMarineMngService.processSelectCareerList(boarderSeq);
+                List<CareerDTO> careerList = eduMarineMngService.processSelectCareerList(frpSeq);
                 mv.addObject("careerList", careerList);
 
-                List<LicenseDTO> licenseList = eduMarineMngService.processSelectLicenseList(boarderSeq);
+                List<LicenseDTO> licenseList = eduMarineMngService.processSelectLicenseList(frpSeq);
                 mv.addObject("licenseList", licenseList);
 
                 /* 첨부파일 정보 Set */
-                FileDTO fileDTO = new FileDTO();
-                fileDTO.setUserId(boarderSeq);
-                List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
-                if(fileList != null && !fileList.isEmpty()){
-                    for(FileDTO fileInfo : fileList){
-                        if("bodyPhoto".equals(fileInfo.getNote())){
-                            mv.addObject("bodyPhotoFileInfo", fileInfo);
-                        }else if("gradeLicense".equals(fileInfo.getNote())){
-                            mv.addObject("gradeLicenseFileInfo", fileInfo);
-                        }else if("careerLicense".equals(fileInfo.getNote())){
-                            mv.addObject("careerLicenseFileInfo", fileInfo);
+                if(memberInfo != null) {
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setUserId(memberInfo.getSeq());
+                    List<FileDTO> careerLicenseList = new ArrayList<>();
+                    List<FileDTO> fileList = eduMarineMngService.processSelectFileUserIdList(fileDTO);
+                    if (fileList != null && !fileList.isEmpty()) {
+                        for (FileDTO fileInfo : fileList) {
+                            String fileNote = fileInfo.getNote().replaceAll("[0-9]", "");
+                            if ("bodyPhoto".equals(fileNote)) {
+                                mv.addObject("bodyPhotoFileInfo", fileInfo);
+                            } else if ("gradeLicense".equals(fileNote)) {
+                                mv.addObject("gradeLicenseFileInfo", fileInfo);
+                            } else if ("careerLicense".equals(fileNote)) {
+                                careerLicenseList.add(fileInfo);
+                            }
                         }
+                        mv.addObject("careerLicenseFileList", careerLicenseList);
                     }
                 }
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
             }
         }
 
@@ -1886,6 +1914,14 @@ public class EduMarineMngController {
                 reqMemberDTO.setSeq(info.getMemberSeq());
                 MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
                 mv.addObject("memberInfo", memberInfo);
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
             }
         }
 
@@ -1949,6 +1985,14 @@ public class EduMarineMngController {
                 reqMemberDTO.setSeq(info.getMemberSeq());
                 MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
                 mv.addObject("memberInfo", memberInfo);
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
             }
         }
 
@@ -2043,8 +2087,6 @@ public class EduMarineMngController {
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !"".equals(seq)){
-            SailyachtDTO sailyachtDTO = new SailyachtDTO();
-            sailyachtDTO.setSeq(seq);
             SailyachtDTO info = eduMarineMngService.processSelectSailyachtSingle(seq);
             mv.addObject("info", info);
 
@@ -2053,6 +2095,14 @@ public class EduMarineMngController {
                 reqMemberDTO.setSeq(info.getMemberSeq());
                 MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
                 mv.addObject("memberInfo", memberInfo);
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
             }
         }
 
@@ -2291,6 +2341,16 @@ public class EduMarineMngController {
         ResponseDTO responseDTO = eduMarineMngService.processUpdateSubscriber(subscriberDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/newsletter/subscriber/checkDuplicate.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> member_seq_selectSingle(@RequestBody SubscriberDTO subscriberDTO) {
+        System.out.println("EduMarineController > job_community_selectList");
+
+        Integer responseInfo = eduMarineMngService.processCheckSubscriber(subscriberDTO);
+
+        return new ResponseEntity<>(responseInfo, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/newsletter/subscriber/insert.do", method = RequestMethod.POST)
@@ -3105,6 +3165,17 @@ public class EduMarineMngController {
         SmsResponseDTO response = commService.smsSend_certNum(smsDTO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/train/selectNextTime.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<TrainDTO>> mng_education_train_selectNextTime(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_selectNextTime");
+        //System.out.println(searchDTO.toString());
+
+        List<TrainDTO> responseList = eduMarineMngService.processSelectTrainNextTime(trainDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
 }

@@ -156,7 +156,9 @@
 
                     <!-- form box -->
                     <form id="joinForm" method="post" onsubmit="return false;">
-                        <input type="hidden" name="seq" value="${info.seq}">
+                        <input type="hidden" name="seq" value="${resumeInfo.seq}">
+                        <input type="hidden" name="memberSeq" value="${info.seq}">
+                        <input type="hidden" name="id" value="${info.id}">
                         <div class="form_box">
                         <div class="form_tit">
                             <div class="big">나의 이력서</div>
@@ -166,8 +168,8 @@
                                 <div class="gubun req"><p>성명</p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <input type="text" id="nameKo" name="nameKo" value="${info.nameKo}" placeholder="국문" class="w50">
-                                        <input type="text" id="nameEn" name="nameEn" value="${info.nameEn}" placeholder="영문" class="w50" oninput="f_input_box_only_eng(this)">
+                                        <input type="text" id="nameKo" name="nameKo" value="${info.name}" placeholder="국문" class="w50" readonly>
+                                        <input type="text" id="nameEn" name="nameEn" value="${info.nameEn}" placeholder="영문" class="w50" readonly<%--oninput="f_input_box_only_eng(this)"--%>>
                                     </div>
                                 </div>
                             </li>
@@ -175,7 +177,7 @@
                                 <div class="gubun req"><p>연락처</p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <input type="text" id="phone" name="phone" value="${info.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50">
+                                        <input type="text" id="phone" name="phone" value="${info.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50" readonly>
                                     </div>
                                 </div>
                             </li>
@@ -183,10 +185,10 @@
                                 <div class="gubun req"><p>이메일 주소</p></div>
                                 <div class="naeyong">
                                     <div class="input form_email">
-                                        <input type="text" id="email" name="email" value="${fn:split(info.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1">
+                                        <input type="text" id="email" name="email" value="${fn:split(info.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1" readonly>
                                         <span>@</span>
-                                        <input type="text" id="domain" name="domain" value="${fn:split(info.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2">
-                                        <select class="email_select">
+                                        <input type="text" id="domain" name="domain" value="${fn:split(info.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2" readonly>
+                                        <select class="email_select" disabled>
                                             <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
                                             <option selected>직접입력</option>
                                             <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> >daum.net</option>
@@ -221,13 +223,13 @@
                                 <div class="gubun req"><p>생년월일</p></div>
                                 <div class="naeyong">
                                     <div class="input form_birth">
-                                        <select class="box" id="birth-year" name="birthYear" onchange="f_birth_age_calc()">
+                                        <select class="box" id="birth-year" name="birthYear" <%--onchange="f_birth_age_calc()"--%>>
                                             <option disabled selected>출생 연도</option>
                                         </select>
-                                        <select class="box" id="birth-month" name="birthMonth" onchange="f_birth_age_calc()">
+                                        <select class="box" id="birth-month" name="birthMonth" <%--onchange="f_birth_age_calc()"--%>>
                                             <option disabled selected>월</option>
                                         </select>
-                                        <select class="box" id="birth-day" name="birthDay" onchange="f_birth_age_calc()">
+                                        <select class="box" id="birth-day" name="birthDay" <%--onchange="f_birth_age_calc()"--%>>
                                             <option disabled selected>일</option>
                                         </select>
                                     </div>
@@ -237,18 +239,8 @@
                                 <div class="gubun req"><p>성별</p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <label><input type="radio" name="sex" value="남성" <c:if test="${info.sex eq '남성'}">checked</c:if> >남성</label>
-                                        <label><input type="radio" name="sex" value="여성" <c:if test="${info.sex eq '여성'}">checked</c:if> >여성</label>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="gubun"><p>연령</p><p></div>
-                                <div class="naeyong">
-                                    <div class="input">
-                                        만
-                                        <input type="text" id="age" name="age" value="${info.age}" class="onlyNum w50" placeholder="생년월일 선택 시 자동 입력됩니다." maxlength="2" readonly>
-                                        세
+                                        <label><input type="radio" name="sex" value="남성" <c:if test="${info.sex eq '남성'}">checked</c:if> disabled="disabled">남성</label>
+                                        <label><input type="radio" name="sex" value="여성" <c:if test="${info.sex eq '여성'}">checked</c:if> disabled="disabled">여성</label>
                                     </div>
                                 </div>
                             </li>
@@ -291,13 +283,13 @@
                                 <div class="naeyong">
                                     <div class="input form_address">
                                         <div class="address_box">
-                                            <input type="text" id="address" name="address" value="${info.address}" placeholder="주소">
-                                            <input type="button" onclick="execDaumPostcode('address','addressDetail')" value="주소 검색">
+                                            <input type="text" id="address" name="address" value="${info.address}" placeholder="주소" readonly="readonly">
+                                            <%--<input type="button" onclick="execDaumPostcode('address','addressDetail')" value="주소 검색">
                                             <div id="map" style="width:300px;height:300px;margin-top:10px;display:none">
-                                            </div>
+                                            </div>--%>
                                         </div>
                                         <div class="address_box">
-                                            <input type="text" id="addressDetail" name="addressDetail" value="${info.addressDetail}" placeholder="상세주소">
+                                            <input type="text" id="addressDetail" name="addressDetail" value="${info.addressDetail}" placeholder="상세주소" readonly="readonly">
                                         </div>
                                     </div>
                                 </div>
@@ -306,12 +298,12 @@
                                 <div class="gubun req"><p>상의 사이즈<span>(남여공용)</span></p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <label><input type="radio" name="topClothesSize" value="S" <c:if test="${info.topClothesSize eq 'S'}">checked</c:if> >S (90)</label>
-                                        <label><input type="radio" name="topClothesSize" value="M" <c:if test="${info.topClothesSize eq 'M'}">checked</c:if> >M (95)</label>
-                                        <label><input type="radio" name="topClothesSize" value="L" <c:if test="${info.topClothesSize eq 'L'}">checked</c:if> >L (100)</label>
-                                        <label><input type="radio" name="topClothesSize" value="XL" <c:if test="${info.topClothesSize eq 'XL'}">checked</c:if> >XL (105)</label>
-                                        <label><input type="radio" name="topClothesSize" value="XXL" <c:if test="${info.topClothesSize eq 'XXL'}">checked</c:if> >XXL (110)</label>
-                                        <label><input type="radio" name="topClothesSize" value="기타" <c:if test="${info.topClothesSize eq '기타'}">checked</c:if> >기타</label>
+                                        <label><input type="radio" name="topClothesSize" value="S" <c:if test="${resumeInfo.topClothesSize eq 'S'}">checked</c:if> >S (90)</label>
+                                        <label><input type="radio" name="topClothesSize" value="M" <c:if test="${resumeInfo.topClothesSize eq 'M'}">checked</c:if> >M (95)</label>
+                                        <label><input type="radio" name="topClothesSize" value="L" <c:if test="${resumeInfo.topClothesSize eq 'L'}">checked</c:if> >L (100)</label>
+                                        <label><input type="radio" name="topClothesSize" value="XL" <c:if test="${resumeInfo.topClothesSize eq 'XL'}">checked</c:if> >XL (105)</label>
+                                        <label><input type="radio" name="topClothesSize" value="XXL" <c:if test="${resumeInfo.topClothesSize eq 'XXL'}">checked</c:if> >XXL (110)</label>
+                                        <label><input type="radio" name="topClothesSize" value="기타" <c:if test="${resumeInfo.topClothesSize eq '기타'}">checked</c:if> >기타</label>
                                     </div>
                                 </div>
                             </li>
@@ -319,12 +311,12 @@
                                 <div class="gubun req"><p>하의 사이즈<span>(남여공용)</span></p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <label><input type="radio" name="bottomClothesSize" value="28" <c:if test="${info.bottomClothesSize eq '28'}">checked</c:if> >28</label>
-                                        <label><input type="radio" name="bottomClothesSize" value="30" <c:if test="${info.bottomClothesSize eq '30'}">checked</c:if> >30</label>
-                                        <label><input type="radio" name="bottomClothesSize" value="32" <c:if test="${info.bottomClothesSize eq '32'}">checked</c:if> >32</label>
-                                        <label><input type="radio" name="bottomClothesSize" value="34" <c:if test="${info.bottomClothesSize eq '34'}">checked</c:if> >34</label>
-                                        <label><input type="radio" name="bottomClothesSize" value="36" <c:if test="${info.bottomClothesSize eq '36'}">checked</c:if> >36</label>
-                                        <label><input type="radio" name="bottomClothesSize" value="기타" <c:if test="${info.bottomClothesSize eq '기타'}">checked</c:if> >기타</label>
+                                        <label><input type="radio" name="bottomClothesSize" value="28" <c:if test="${resumeInfo.bottomClothesSize eq '28'}">checked</c:if> >28</label>
+                                        <label><input type="radio" name="bottomClothesSize" value="30" <c:if test="${resumeInfo.bottomClothesSize eq '30'}">checked</c:if> >30</label>
+                                        <label><input type="radio" name="bottomClothesSize" value="32" <c:if test="${resumeInfo.bottomClothesSize eq '32'}">checked</c:if> >32</label>
+                                        <label><input type="radio" name="bottomClothesSize" value="34" <c:if test="${resumeInfo.bottomClothesSize eq '34'}">checked</c:if> >34</label>
+                                        <label><input type="radio" name="bottomClothesSize" value="36" <c:if test="${resumeInfo.bottomClothesSize eq '36'}">checked</c:if> >36</label>
+                                        <label><input type="radio" name="bottomClothesSize" value="기타" <c:if test="${resumeInfo.bottomClothesSize eq '기타'}">checked</c:if> >기타</label>
                                     </div>
                                 </div>
                             </li>
@@ -332,16 +324,16 @@
                                 <div class="gubun req"><p>안전화 사이즈<span>(남여공용)</span></p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <label><input type="radio" name="shoesSize" value="240" <c:if test="${info.shoesSize eq '240'}">checked</c:if> >240</label>
-                                        <label><input type="radio" name="shoesSize" value="245" <c:if test="${info.shoesSize eq '245'}">checked</c:if> >245</label>
-                                        <label><input type="radio" name="shoesSize" value="250" <c:if test="${info.shoesSize eq '250'}">checked</c:if> >250</label>
-                                        <label><input type="radio" name="shoesSize" value="255" <c:if test="${info.shoesSize eq '255'}">checked</c:if> >255</label>
-                                        <label><input type="radio" name="shoesSize" value="260" <c:if test="${info.shoesSize eq '260'}">checked</c:if> >260</label>
-                                        <label><input type="radio" name="shoesSize" value="265" <c:if test="${info.shoesSize eq '265'}">checked</c:if> >265</label>
-                                        <label><input type="radio" name="shoesSize" value="270" <c:if test="${info.shoesSize eq '270'}">checked</c:if> >270</label>
-                                        <label><input type="radio" name="shoesSize" value="275" <c:if test="${info.shoesSize eq '275'}">checked</c:if> >275</label>
-                                        <label><input type="radio" name="shoesSize" value="280" <c:if test="${info.shoesSize eq '280'}">checked</c:if> >280</label>
-                                        <label><input type="radio" name="shoesSize" value="기타" <c:if test="${info.shoesSize eq '기타'}">checked</c:if> >기타</label>
+                                        <label><input type="radio" name="shoesSize" value="240" <c:if test="${resumeInfo.shoesSize eq '240'}">checked</c:if> >240</label>
+                                        <label><input type="radio" name="shoesSize" value="245" <c:if test="${resumeInfo.shoesSize eq '245'}">checked</c:if> >245</label>
+                                        <label><input type="radio" name="shoesSize" value="250" <c:if test="${resumeInfo.shoesSize eq '250'}">checked</c:if> >250</label>
+                                        <label><input type="radio" name="shoesSize" value="255" <c:if test="${resumeInfo.shoesSize eq '255'}">checked</c:if> >255</label>
+                                        <label><input type="radio" name="shoesSize" value="260" <c:if test="${resumeInfo.shoesSize eq '260'}">checked</c:if> >260</label>
+                                        <label><input type="radio" name="shoesSize" value="265" <c:if test="${resumeInfo.shoesSize eq '265'}">checked</c:if> >265</label>
+                                        <label><input type="radio" name="shoesSize" value="270" <c:if test="${resumeInfo.shoesSize eq '270'}">checked</c:if> >270</label>
+                                        <label><input type="radio" name="shoesSize" value="275" <c:if test="${resumeInfo.shoesSize eq '275'}">checked</c:if> >275</label>
+                                        <label><input type="radio" name="shoesSize" value="280" <c:if test="${resumeInfo.shoesSize eq '280'}">checked</c:if> >280</label>
+                                        <label><input type="radio" name="shoesSize" value="기타" <c:if test="${resumeInfo.shoesSize eq '기타'}">checked</c:if> >기타</label>
                                     </div>
                                 </div>
                             </li>
@@ -349,11 +341,11 @@
                                 <div class="gubun req"><p>참여 경로</p></div>
                                 <div class="naeyong">
                                     <div class="input">
-                                        <label><input type="radio" name="participationPath" value="인터넷" <c:if test="${info.participationPath eq '인터넷'}">checked</c:if> >인터넷</label>
-                                        <label><input type="radio" name="participationPath" value="홈페이지" <c:if test="${info.participationPath eq '홈페이지'}">checked</c:if> >홈페이지</label>
-                                        <label><input type="radio" name="participationPath" value="홍보물" <c:if test="${info.participationPath eq '홍보물'}">checked</c:if> >홍보물</label>
-                                        <label><input type="radio" name="participationPath" value="지인추천" <c:if test="${info.participationPath eq '지인추천'}">checked</c:if> >지인추천</label>
-                                        <label><input type="radio" name="participationPath" value="기타" <c:if test="${info.participationPath eq '기타'}">checked</c:if> >기타</label>
+                                        <label><input type="radio" name="participationPath" value="인터넷" <c:if test="${resumeInfo.participationPath eq '인터넷'}">checked</c:if> >인터넷</label>
+                                        <label><input type="radio" name="participationPath" value="홈페이지" <c:if test="${resumeInfo.participationPath eq '홈페이지'}">checked</c:if> >홈페이지</label>
+                                        <label><input type="radio" name="participationPath" value="홍보물" <c:if test="${resumeInfo.participationPath eq '홍보물'}">checked</c:if> >홍보물</label>
+                                        <label><input type="radio" name="participationPath" value="지인추천" <c:if test="${resumeInfo.participationPath eq '지인추천'}">checked</c:if> >지인추천</label>
+                                        <label><input type="radio" name="participationPath" value="기타" <c:if test="${resumeInfo.participationPath eq '기타'}">checked</c:if> >기타</label>
                                     </div>
                                 </div>
                             </li>
@@ -391,7 +383,7 @@
 
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js"></script>
+<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 <script>
@@ -399,6 +391,10 @@
         $('#birth-year').val('${info.birthYear}');
         $('#birth-month').val('${info.birthMonth}');
         $('#birth-day').val('${info.birthDay}');
+
+        $('#birth-year option').prop('disabled',true);
+        $('#birth-month option').prop('disabled',true);
+        $('#birth-day option').prop('disabled',true);
     });
 </script>
 </c:if>
