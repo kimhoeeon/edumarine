@@ -1576,7 +1576,7 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 mh-375px overflow-y-scroll">
-                                                    <div class="fw-bold"><span class="mr10">조회 건수</span><span id="search_cnt" style="color: #009ef7;">0</span> 개 / <span class="mr10">선택</span><span class="select_cnt" style="color: #009ef7;">0</span> 개</div>
+                                                    <div class="fw-bold"><span class="mr10">조회 건수</span><span class="search_cnt" style="color: #009ef7;">0</span> 개 / <span class="mr10">선택</span><span class="select_cnt" style="color: #009ef7;">0</span> 개</div>
                                                     <!--begin::Table-->
                                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="sms_send_form_train_table">
                                                         <thead>
@@ -1639,7 +1639,7 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span id="smsRemain">90</span> / 90 Bytes 남음 )</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">90</span> / 90 Bytes 남음 )</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 d-flex align-items-center">
@@ -1737,7 +1737,7 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span id="smsRemain">90</span> / 90 Bytes 남음 )</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">90</span> / 90 Bytes 남음 )</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 d-flex align-items-center">
@@ -1801,7 +1801,7 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 mh-450px overflow-y-scroll">
-                                                    <div class="fw-bold"><span class="mr10">조회 건수</span><span id="search_cnt" style="color: #009ef7;">0</span> 개 / <span class="mr10">선택</span><span class="select_cnt" style="color: #009ef7;">0</span> 개</div>
+                                                    <div class="fw-bold"><span class="mr10">조회 건수</span><span class="search_cnt" style="color: #009ef7;">0</span> 개 / <span class="mr10">선택</span><span class="select_cnt" style="color: #009ef7;">0</span> 개</div>
                                                     <!--begin::Table-->
                                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="sms_send_form_excel_table">
                                                         <thead>
@@ -1858,7 +1858,7 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span id="smsRemain">90</span> / 90 Bytes 남음 )</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">90</span> / 90 Bytes 남음 )</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 d-flex align-items-center">

@@ -225,7 +225,7 @@ function loginFormSubmit() {
                                                         if (data.cpName === cpName && data.cpPhone === cpPhone) {
 
                                                             let jsonObj3 = {
-                                                                sender: '070-8949-8065',
+                                                                sender: '1811-7891',
                                                                 phone: cpPhone
                                                             }
 
@@ -1056,6 +1056,25 @@ function f_multi_resume_print(){
     }else{
         showMessage('', 'error', '[이력서 인쇄]', '출력할 이력서를 선택해주세요.', '');
     }
+}
+
+function loadingBarShow_time(time){
+    const loadingEl = document.createElement("div");
+    document.body.prepend(loadingEl);
+    loadingEl.classList.add("page-loader");
+    loadingEl.classList.add("flex-column");
+    loadingEl.classList.add("bg-dark");
+    loadingEl.classList.add("bg-opacity-25");
+    loadingEl.innerHTML = '<span class="spinner-border text-primary" role="status"></span><span class="text-gray-800 fs-6 fw-semibold mt-5">Loading...</span>';
+
+    // Show page loading
+    KTApp.showPageLoading();
+
+    // Hide after 3 seconds
+    setTimeout(function() {
+        KTApp.hidePageLoading();
+        loadingEl.remove();
+    }, time);
 }
 
 /*

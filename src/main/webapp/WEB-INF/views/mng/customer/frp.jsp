@@ -94,6 +94,14 @@
     <!--begin::custom Mng css-->
     <link href="<%request.getContextPath();%>/static/css/mngStyle.css" rel="stylesheet" type="text/css"/>
     <!--end::custom Mng css-->
+
+    <style>
+        #spinner { width: 100%; height: 100%; top: 0; left: 0; opacity: .6; background: silver; position: absolute; z-index: 9999; display: none;}
+        #spinner div { width: 100%; height: 100%; display: table; }
+        #spinner span { display: table-cell; text-align: center; vertical-align: middle; }
+        #spinner img { background: white; padding: 1em; border-radius: .7em; }
+    </style>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -132,6 +140,14 @@ if (document.documentElement) {
 </c:if>
 
 <c:if test="${status eq 'logon'}">
+
+    <div id="spinner">
+        <div>
+            <span>
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif">
+            </span>
+        </div>
+    </div>
 
     <!--begin::Page loading(append to body)-->
     <div class="page-loader flex-column bg-dark bg-opacity-25">
@@ -1493,6 +1509,14 @@ if (document.documentElement) {
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>Export as Excel</button>
+                                    <!--end::Export dropdown-->
+
+                                    <!--begin::Export dropdown-->
+                                    <button type="button" onclick="f_customer_frp_detail_excel_download('mng_customer_frp_table', 'FRP_정비테크니션_상세')" class="btn btn-warning btn-active-light-warning" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>전체 신청자 정보 상세 다운로드</button>
                                     <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->

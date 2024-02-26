@@ -1023,6 +1023,14 @@ let DTCustomerOutboarder = function () {
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                },
+                {
                     'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
@@ -1058,6 +1066,26 @@ let DTCustomerOutboarder = function () {
         let nextTime = row.nextTime;
         if(nvl(nextTime,'') !== ''){
             renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
         }
 
         return renderHTML;
@@ -1232,6 +1260,14 @@ let DTCustomerInboarder = function () {
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                },
+                {
                     'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
@@ -1267,6 +1303,26 @@ let DTCustomerInboarder = function () {
         let nextTime = row.nextTime;
         if(nvl(nextTime,'') !== ''){
             renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
         }
 
         return renderHTML;
@@ -1441,6 +1497,14 @@ let DTCustomerSailyacht = function () {
                     'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                },
+                {
                     'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
@@ -1476,6 +1540,26 @@ let DTCustomerSailyacht = function () {
         let nextTime = row.nextTime;
         if(nvl(nextTime,'') !== ''){
             renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
         }
 
         return renderHTML;

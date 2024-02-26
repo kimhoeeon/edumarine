@@ -368,4 +368,18 @@ public interface EduMarineMngMapper {
     Integer checkSubscriber(SubscriberDTO subscriberDTO);
 
     List<TrainDTO> selectTrainNextTime(TrainDTO trainDTO);
+
+    List<MemberDTO> selectExcelMemberDetailList();
+
+    List<RegularDTO> selectExcelRegularDetailList();
+
+    List<BoarderDetailDTO> selectExcelBoarderDetailList();
+
+    List<FrpDetailDTO> selectExcelFrpDetailList();
+
+    List<OutboarderDetailDTO> selectExcelOutboarderDetailList();
+
+    List<InboarderDetailDTO> selectExcelInboarderDetailList();
+
+    List<SailyachtDetailDTO> selectExcelSailyachtDetailList();
 }

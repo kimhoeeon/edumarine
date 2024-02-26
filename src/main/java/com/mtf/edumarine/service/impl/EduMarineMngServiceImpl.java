@@ -4763,6 +4763,54 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         return responseDTO;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<MemberDTO> processSelectExcelMemberDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelMemberDetailList");
+        return eduMarineMngMapper.selectExcelMemberDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<RegularDTO> processSelectExcelRegularDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelRegularDetailList");
+        return eduMarineMngMapper.selectExcelRegularDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<BoarderDetailDTO> processSelectExcelBoarderDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelBoarderDetailList");
+        return eduMarineMngMapper.selectExcelBoarderDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<FrpDetailDTO> processSelectExcelFrpDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelFrpDetailList");
+        return eduMarineMngMapper.selectExcelFrpDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<OutboarderDetailDTO> processSelectExcelOutboarderDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelOutboarderDetailList");
+        return eduMarineMngMapper.selectExcelOutboarderDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<InboarderDetailDTO> processSelectExcelInboarderDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelInboarderDetailList");
+        return eduMarineMngMapper.selectExcelInboarderDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<SailyachtDetailDTO> processSelectExcelSailyachtDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelSailyachtDetailList");
+        return eduMarineMngMapper.selectExcelSailyachtDetailList();
+    }
 
     /*******************************************
      * File

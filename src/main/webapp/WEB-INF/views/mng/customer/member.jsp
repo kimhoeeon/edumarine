@@ -1494,6 +1494,14 @@ if (document.documentElement) {
                                             <span class="path2"></span>
                                         </i>Export as Excel</button>
                                     <!--end::Export dropdown-->
+
+                                    <!--begin::Export dropdown-->
+                                    <button type="button" onclick="f_customer_member_detail_excel_download('mng_customer_member_table', '전체회원목록_상세')" class="btn btn-warning btn-active-light-warning" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>전체 회원 상세 다운로드</button>
+                                    <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
 

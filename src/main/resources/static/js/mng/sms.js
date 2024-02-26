@@ -64,8 +64,8 @@ $(function(){
 
         smsTemplateTitle.val('');
         smsTemplateContent.val('');
-        let remain = document.getElementById("smsRemain");
-        remain.innerText = String(90);
+        let remain = $('.smsRemain:visible');
+        remain.text(String(90));
 
         if (selectedOption === '미사용') {
             smsTemplateTitle.prop('disabled', true).val('');
@@ -358,7 +358,7 @@ function f_smsMng_sms_send(gbn){
                     let content = contentVal;
 
                     let jsonObj = {
-                        sender: '070-8949-8065', //미팅팬번호
+                        sender: '1811-7891', //해양레저인력양성센터
                         phone: phone,
                         content: content
                     }
@@ -373,7 +373,7 @@ function f_smsMng_sms_send(gbn){
                         smsGroup: getCurrentDate().substring(0, getCurrentDate().length-2),
                         phone: phone,
                         sender: '관리자',
-                        senderPhone: '070-8949-8065', //미팅팬번호
+                        senderPhone: '1811-7891', //해양레저인력양성센터
                         content: content,
                         sendResult: sendResult,
                         templateSeq: $('.sms_template_list option:selected').val(),
@@ -566,7 +566,7 @@ function f_train_gbn_sms_yn_target_list(el){
     dataTbl.rows.add(resData).draw();
 
     /* 조회 카운트 입력 */
-    $('span#search_cnt').text(resData.length);
+    $('span.search_cnt:visible').text(resData.length);
 
     /* DataTable Column tooltip Set */
     let jb = $('#sms_send_form_train_table tbody td');
@@ -772,7 +772,7 @@ function excelUpload(){
             }
         });
         /* 조회 카운트 입력 */
-        $('span#search_cnt').text(dataTbl.data().length);
+        $('span.search_cnt:visible').text(dataTbl.data().length);
 
         /* modal close fn */
         f_modal_close('kt_modal_excel_upload');
@@ -826,8 +826,8 @@ function f_sms_form_init(gbn){
     $('input[type=text]').val('');
     $('textarea').val('');
     $('input[type=checkbox]').prop('checked',false);
-    $('span#smsRemain').text('90');
-    $('span#search_cnt').text('0');
+    $('span.smsRemain:visible').text('90');
+    $('span.search_cnt:visible').text('0');
     $('.select_cnt').text('0');
     $('.sms_template_title').val('');
     $('.sms_template_list').val('').select2({minimumResultsForSearch: Infinity});

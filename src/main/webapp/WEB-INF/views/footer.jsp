@@ -56,7 +56,7 @@
                     </p>
                     <p class="text2">
                         <span class="gubun">대표번호</span>
-                        1811-2031
+                        1811-7891
                     </p>
                     <%--<p class="text2">
                         <span class="gubun">사무실</span>
@@ -64,7 +64,7 @@
                     </p>--%>
                     <p class="text2">
                         <span class="gubun">팩스</span>
-                        042-636-2892
+                        031-983-4396
                     </p>
                     <p class="text2">
                         <span class="gubun">이메일</span>

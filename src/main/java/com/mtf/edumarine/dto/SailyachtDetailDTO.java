@@ -7,32 +7,31 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RegularDTO {
+public class SailyachtDetailDTO {
     Integer rownum; //연번
-    String id;
     String seq; //순번
-    String memberSeq; //회원SEQ
-    String trainSeq; //교육SEQ
+    String memberSeq;
+    String trainSeq;
+    String memberStatus;
     String grade;
-    String name; //이름
+    String id;
+    String nameKo; //이름
     String nameEn; //이름
     String phone; //연락처
     String email; //이메일
     String birthYear; //출생년도
     String birthMonth; //출생월
     String birthDay; //출생일
-    String ageGroup; //연령대
-    String region; //거주지역
+    String sex;
+    String address; //주소
+    String addressDetail; //상세주소
+    String clothesSize; //작업복사이즈
     String participationPath; //참여경로
-    String firstApplicationField; //1순위 신청분야
-    String secondApplicationField; //2순위 신청분야
-    String thirdApplicationField; //2순위 신청분야
-    String desiredEducationTime; //희망교육시기
-    String major; //전공
-    String experienceYn; //경험유무
-    String applyStatus; //신청상태
+    String payYn; //결제여부
+    Integer paySum; //결제금액
+    String applyStatus;
     String cancelDttm; //취소신청일시
-    String cancelReason; //취소사유
+    String cancelReason;
     String refundBankCode; //환불계좌은행코드
     String refundBankName; //환불계좌은행명
     String refundBankCustomerName; //환불계좌예금주명
@@ -43,6 +42,4 @@ public class RegularDTO {
     String initRegiDttm; //최초 등록 일시
     String finalRegiPic; //최종 변경 담당자
     String finalRegiDttm; //최종 변경 일시
-
-    String memberStatus;
 }

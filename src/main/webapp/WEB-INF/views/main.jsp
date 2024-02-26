@@ -188,19 +188,19 @@
                             </a>
                         </li>
                         <li>
-                            <a href="">
+                            <a href="/apply/schedule.do">
                                 <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_02.png" alt="교육일정 아이콘"></div>
                                 <div class="text">교육일정</div>
                             </a>
                         </li>
                         <li>
-                            <a href="">
+                            <a href="javascript:void(0);" onclick="alert('준비 중입니다.');">
                                 <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_04.png" alt="수료증발급 아이콘"></div>
                                 <div class="text">수료증발급</div>
                             </a>
                         </li>
                         <li>
-                            <a href="">
+                            <a href="/job/community_list.do">
                                 <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_07.png" alt="커뮤니티 아이콘"></div>
                                 <div class="text">커뮤니티</div>
                             </a>
