@@ -323,4 +323,18 @@ public interface EduMarineMngService {
     Integer processCheckSubscriber(SubscriberDTO subscriberDTO);
 
     List<TrainDTO> processSelectTrainNextTime(TrainDTO trainDTO);
+
+    List<MemberDTO> processSelectExcelMemberDetailList();
+
+    List<RegularDTO> processSelectExcelRegularDetailList();
+
+    List<BoarderDetailDTO> processSelectExcelBoarderDetailList();
+
+    List<FrpDetailDTO> processSelectExcelFrpDetailList();
+
+    List<OutboarderDetailDTO> processSelectExcelOutboarderDetailList();
+
+    List<InboarderDetailDTO> processSelectExcelInboarderDetailList();
+
+    List<SailyachtDetailDTO> processSelectExcelSailyachtDetailList();
 }

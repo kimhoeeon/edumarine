@@ -8,6 +8,10 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -29,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDate;
@@ -2779,28 +2784,21 @@ public class EduMarineMngController {
         out.close();
     }
 
-    @RequestMapping(value = "/mng/directory/download.do", method = RequestMethod.GET)
-    public void directory_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("EduMarineMngController > directory_download");
+    @RequestMapping(value = "/mng/customer/member/excel/download.do", method = RequestMethod.GET)
+    public void customer_member_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_member_detail_excel_download");
         String fileName = req.getParameter("fileName");
-        String transferYear = req.getParameter("transferYear");
 
         // Workbook 생성
-        try(XSSFWorkbook workbook = new XSSFWorkbook()){ // Excel 2007 이상
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
 
             /* 엑셀 그리기 */
             final String[] colNames_ex = {
-                    "No",
-                    "승인여부", "입금여부",
-                    "회사명(국문)", "회사명(영문)",
-                    "주소", "상세주소",
-                    "대표자명", "전화",
-                    "홈페이지", "FAX", "사업자등록번호",
-                    "블로그", "페이스북", "인스타그램", "기타",
-                    "회사소개(국문)", "회사소개(영문)",
-                    "KIBS 참가목적(국문)", "KIBS 참가목적(영문)",
-                    "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    "전시품목명", "브랜드명", "실물보트수"
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "관심키워드", "SMS수신동의여부", "등록일",
+                    "수정일"
             };
 
             // 헤더 사이즈
@@ -2808,12 +2806,10 @@ public class EduMarineMngController {
                     3000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000
+                    5000
             };
+
+            workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
             //Font
@@ -2824,7 +2820,8 @@ public class EduMarineMngController {
             Font font9 = workbook.createFont();
             font9.setFontName("맑은 고딕");	//글씨체
             font9.setFontHeight((short)(9 * 20));	//사이즈
-            // 엑셀 헤더 셋팅 (참가업체정보)
+
+            // 엑셀 헤더 셋팅 default
             CellStyle headerStyle = workbook.createCellStyle();
             headerStyle.setAlignment(HorizontalAlignment.CENTER);
             headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -2832,10 +2829,11 @@ public class EduMarineMngController {
             headerStyle.setBorderLeft(BorderStyle.THIN);
             headerStyle.setBorderTop(BorderStyle.THIN);
             headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.PALE_BLUE.index);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
             headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             headerStyle.setFont(fontHeader);
-            // 엑셀 바디 셋팅 (참가업체정보)
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
             CellStyle bodyStyle = workbook.createCellStyle();
             bodyStyle.setAlignment(HorizontalAlignment.CENTER);
             bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -2844,106 +2842,46 @@ public class EduMarineMngController {
             bodyStyle.setBorderTop(BorderStyle.THIN);
             bodyStyle.setBorderBottom(BorderStyle.THIN);
             bodyStyle.setFont(font9);
-            // 엑셀 헤더 셋팅 (담당자정보)
-            CellStyle headerStyle_ch = workbook.createCellStyle();
-            headerStyle_ch.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_ch.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_ch.setBorderRight(BorderStyle.THIN);
-            headerStyle_ch.setBorderLeft(BorderStyle.THIN);
-            headerStyle_ch.setBorderTop(BorderStyle.THIN);
-            headerStyle_ch.setBorderBottom(BorderStyle.THIN);
-            headerStyle_ch.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_ch.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_ch.setFont(fontHeader);
-            // 엑셀 바디 셋팅 (담당자정보)
-            CellStyle bodyStyle_ch = workbook.createCellStyle();
-            bodyStyle_ch.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle_ch.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle_ch.setBorderRight(BorderStyle.THIN);
-            bodyStyle_ch.setBorderLeft(BorderStyle.THIN);
-            bodyStyle_ch.setBorderTop(BorderStyle.THIN);
-            bodyStyle_ch.setBorderBottom(BorderStyle.THIN);
-            bodyStyle_ch.setFont(font9);
-            bodyStyle_ch.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (전시정보)
-            CellStyle headerStyle_di = workbook.createCellStyle();
-            headerStyle_di.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_di.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_di.setBorderRight(BorderStyle.THIN);
-            headerStyle_di.setBorderLeft(BorderStyle.THIN);
-            headerStyle_di.setBorderTop(BorderStyle.THIN);
-            headerStyle_di.setBorderBottom(BorderStyle.THIN);
-            headerStyle_di.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.index);
-            headerStyle_di.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_di.setFont(fontHeader);
-            // 엑셀 바디 셋팅 (전시정보)
-            CellStyle bodyStyle_di = workbook.createCellStyle();
-            bodyStyle_di.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle_di.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle_di.setBorderRight(BorderStyle.THIN);
-            bodyStyle_di.setBorderLeft(BorderStyle.THIN);
-            bodyStyle_di.setBorderTop(BorderStyle.THIN);
-            bodyStyle_di.setBorderBottom(BorderStyle.THIN);
-            bodyStyle_di.setFont(font9);
-            bodyStyle_di.setWrapText(true); //개행
-
-            // 데이터 조회
-            /*DirectoryDTO directoryDTO = new DirectoryDTO();
-            directoryDTO.setTransferYear(transferYear);
-            List<DirectoryDTO> directoryList = kibsMngService.processSelectDirectoryList(directoryDTO);*/
+            bodyStyle.setWrapText(true); //개행
 
             //rows
             int rowCnt = 0;
-            int cellCnt = 0;
-            int listCount = 0;/*directoryList.size();*/
 
             // *** Sheet-------------------------------------------------
             // Sheet 생성
-            XSSFSheet sheet = workbook.createSheet("Directory");
+            SXSSFSheet sheet = workbook.createSheet("Member");
 
-            XSSFCell cell = null;
-            XSSFRow row = sheet.createRow(rowCnt++);
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
 
             // 헤더 정보 구성
-            // 참가업체정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,19));
-            XSSFCell mergeCell = row.createCell(0);
+            // 기본
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,15));
+            SXSSFCell mergeCell = row.createCell(0);
             mergeCell.setCellStyle(headerStyle);
-            mergeCell.setCellValue("참가업체정보");
-
-            // 담당자정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,20,25));
-            XSSFCell mergeCell2 = row.createCell(20);
-            mergeCell2.setCellStyle(headerStyle_ch);
-            mergeCell2.setCellValue("담당자정보");
-
-            // 전시정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,26,28));
-            XSSFCell mergeCell3 = row.createCell(26);
-            mergeCell3.setCellStyle(headerStyle_di);
-            mergeCell3.setCellValue("전시정보");
+            mergeCell.setCellValue("회원정보");
 
             row = sheet.createRow(rowCnt++);
             for (int i = 0; i < colNames_ex.length; i++) {
                 cell = row.createCell(i);
-                if(i < 20) {
-                    cell.setCellStyle(headerStyle);
-                }else if(i<26){
-                    cell.setCellStyle(headerStyle_ch);
-                }else{
-                    cell.setCellStyle(headerStyle_di);
-                }
+                cell.setCellStyle(headerStyle);
                 cell.setCellValue(colNames_ex[i]);
-                sheet.setColumnWidth(i, colWidths_ex[i]);	//column width 지정
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
             }
 
+            // 데이터 조회
+            List<MemberDTO> memberDetailList = eduMarineMngService.processSelectExcelMemberDetailList();
+
+            int cellCnt = 0;
+            int listCount = memberDetailList.size();
+
             //데이터 부분 생성
-            /*for(DirectoryDTO info : directoryList) {
+            for(MemberDTO info : memberDetailList) {
                 cellCnt = 0;
                 row = sheet.createRow(rowCnt++);
 
                 int nCount = 0;
-                String[] remark = info.getChargePersonName().split("\\^,");
+                String[] remark = info.getName().split("\\^");
 
                 //줄 높이 계산
                 for (String s : remark) {
@@ -2961,124 +2899,92 @@ public class EduMarineMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(listCount--);
-                // 승인여부
+
+                // 상태
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApprovalStatus());
-                // 입금여부
+                cell.setCellValue(info.getApplyStatus());
+
+                // 등급
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPrcYn());
-                // 회사명(국문)
+                cell.setCellValue(info.getGrade());
+
+                // 아이디
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyNameKo());
-                // 회사명(영문)
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyNameEn());
+                cell.setCellValue(info.getName());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
                 // 주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyAddress());
+                cell.setCellValue(info.getAddress());
+
                 // 상세주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyAddressDetail());
-                // 대표자
+                cell.setCellValue(info.getAddressDetail());
+
+                // 관심키워드
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyCeo());
-                // 전화
+                cell.setCellValue(info.getKeyword());
+
+                // SMS수신동의여부
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyTel());
-                // 홈페이지
+                String smsYn = "동의";
+                if("0".equals(info.getSmsYn())){
+                    smsYn = "미동의";
+                }
+                cell.setCellValue(smsYn);
+
+                // 등록일
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyHomepage());
-                // FAX
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyFax());
-                // 사업자등록번호
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyLicenseNum());
-                // 블로그
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsBlog());
-                // 페이스북
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsFacebook());
-                // 인스타그램
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsInstagram());
-                // 기타
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsEtc());
-                // 회사소개(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyIntroKo());
-                // 회사소개(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyIntroEn());
-                // KIBS 참가목적(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyPurposeKo());
-                // KIBS 참가목적(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyPurposeEn());
-                // 담당자명
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonName().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 담당자직위
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonPosition().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 담당자부서
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonDepart().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 담당자전화번호
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonTel().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 담당자휴대전화
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonPhone().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 담당자이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonEmail().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 전시품목
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayItem().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 브랜드명
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayBrand().replaceAll("\\^,","\n").replaceAll("\\^",""));
-                // 전시품목보트수
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayBoatCnt().replaceAll("\\^,","\n").replaceAll("\\^",""));
-            }*/
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
 
             //너비를 자동으로 다시 설정
             for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.autoSizeColumn(i);
-                sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1024);
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
             }
 
             // excel 파일 저장
@@ -3092,6 +2998,2359 @@ public class EduMarineMngController {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    @RequestMapping(value = "/mng/customer/regular/excel/download.do", method = RequestMethod.GET)
+    public void customer_regular_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_regular_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "회원상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "거주지역",
+                    "참여경로", "1순위 신청분야", "2순위 신청분야", "3순위 신청분야", "희망교육시기",
+                    "전공", "경험유무", "결제상태", "등록일", "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.LIME.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("Regular");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,18));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("상시신청 신청자정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                cell.setCellStyle(headerStyle);
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<RegularDTO> regularDetailList = eduMarineMngService.processSelectExcelRegularDetailList();
+
+            int cellCnt = 0;
+            int listCount = regularDetailList.size();
+
+            //데이터 부분 생성
+            for(RegularDTO info : regularDetailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getName().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(info.getMemberStatus() != null && !"".equals(info.getMemberStatus())){
+                    cell.setCellValue(info.getMemberStatus());
+                }else{
+                    cell.setCellValue("-");
+                }
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(info.getGrade() != null && !"".equals(info.getGrade())){
+                    cell.setCellValue(info.getGrade());
+                }else{
+                    cell.setCellValue("-");
+                }
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(info.getId() != null && !"".equals(info.getId())){
+                    cell.setCellValue(info.getId());
+                }else{
+                    cell.setCellValue("-");
+                }
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getName());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(info.getNameEn() != null && !"".equals(info.getNameEn())){
+                    cell.setCellValue(info.getNameEn());
+                }else{
+                    cell.setCellValue("-");
+                }
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(info.getBirthYear() != null && !"".equals(info.getBirthYear())){
+                    cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                }else{
+                    cell.setCellValue("-");
+                }
+
+                // 거주지역
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getRegion());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 1순위 신청분야
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFirstApplicationField());
+
+                // 2순위 신청분야
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSecondApplicationField());
+
+                // 3순위 신청분야
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getThirdApplicationField());
+
+                // 희망교육시기
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getDesiredEducationTime());
+
+                // 전공
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMajor());
+
+                // 경험유무
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                String experienceYn = "있음";
+                if("0".equals(info.getExperienceYn())){
+                    experienceYn = "없음";
+                }
+                cell.setCellValue(experienceYn);
+
+                // 결제상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(value = "/mng/customer/boarder/excel/download.do", method = RequestMethod.GET)
+    public void customer_boarder_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_boarder_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "상의사이즈", "하의사이즈", "안전화사이즈",
+                    "참여경로", "졸업구분", "학교명", "전공",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "병역", "미필사유",
+                    "장애인", "취업지원대상", "테크니션교육경험", "교육명",
+                    "지원동기", "향후 테크니션 업무 수행시의 인성 적합성 기술", "자격 및 경력, 대외 활동 사항",
+                    "교육수료 후 포부 (향후 자신의 진로 등)", "기타",
+                    "등록일", "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000,
+                    5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000,
+                    5000, 5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
+            CellStyle headerStyle_light_green = workbook.createCellStyle();
+            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_green.setFont(fontHeader);
+            headerStyle_light_green.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
+            CellStyle headerStyle_light_orange = workbook.createCellStyle();
+            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_orange.setFont(fontHeader);
+            headerStyle_light_orange.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("Boarder");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본/신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,18));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("기본/신청정보");
+
+            // 경력사항
+            sheet.addMergedRegion(new CellRangeAddress(0,0,19,23));
+            SXSSFCell mergeCell2 = row.createCell(19);
+            mergeCell2.setCellStyle(headerStyle_light_green);
+            mergeCell2.setCellValue("경력사항1");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,24,28));
+            SXSSFCell mergeCell2_2 = row.createCell(24);
+            mergeCell2_2.setCellStyle(headerStyle_light_green);
+            mergeCell2_2.setCellValue("경력사항2");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,29,33));
+            SXSSFCell mergeCell2_3 = row.createCell(29);
+            mergeCell2_3.setCellStyle(headerStyle_light_green);
+            mergeCell2_3.setCellValue("경력사항3");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,34,38));
+            SXSSFCell mergeCell2_4 = row.createCell(34);
+            mergeCell2_4.setCellStyle(headerStyle_light_green);
+            mergeCell2_4.setCellValue("경력사항4");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,39,43));
+            SXSSFCell mergeCell2_5 = row.createCell(39);
+            mergeCell2_5.setCellStyle(headerStyle_light_green);
+            mergeCell2_5.setCellValue("경력사항5");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,44,48));
+            SXSSFCell mergeCell2_6 = row.createCell(44);
+            mergeCell2_6.setCellStyle(headerStyle_light_green);
+            mergeCell2_6.setCellValue("경력사항6");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,49,53));
+            SXSSFCell mergeCell2_7 = row.createCell(49);
+            mergeCell2_7.setCellStyle(headerStyle_light_green);
+            mergeCell2_7.setCellValue("경력사항7");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,54,58));
+            SXSSFCell mergeCell2_8 = row.createCell(54);
+            mergeCell2_8.setCellStyle(headerStyle_light_green);
+            mergeCell2_8.setCellValue("경력사항8");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,59,63));
+            SXSSFCell mergeCell2_9 = row.createCell(59);
+            mergeCell2_9.setCellStyle(headerStyle_light_green);
+            mergeCell2_9.setCellValue("경력사항9");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,64,68));
+            SXSSFCell mergeCell2_10 = row.createCell(64);
+            mergeCell2_10.setCellStyle(headerStyle_light_green);
+            mergeCell2_10.setCellValue("경력사항10");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,69,73));
+            SXSSFCell mergeCell2_11 = row.createCell(69);
+            mergeCell2_11.setCellStyle(headerStyle_light_green);
+            mergeCell2_11.setCellValue("경력사항11");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,74,78));
+            SXSSFCell mergeCell2_12 = row.createCell(74);
+            mergeCell2_12.setCellStyle(headerStyle_light_green);
+            mergeCell2_12.setCellValue("경력사항12");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,79,83));
+            SXSSFCell mergeCell2_13 = row.createCell(79);
+            mergeCell2_13.setCellStyle(headerStyle_light_green);
+            mergeCell2_13.setCellValue("경력사항13");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,84,88));
+            SXSSFCell mergeCell2_14 = row.createCell(84);
+            mergeCell2_14.setCellStyle(headerStyle_light_green);
+            mergeCell2_14.setCellValue("경력사항14");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,89,93));
+            SXSSFCell mergeCell2_15 = row.createCell(89);
+            mergeCell2_15.setCellStyle(headerStyle_light_green);
+            mergeCell2_15.setCellValue("경력사항15");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,94,96));
+            SXSSFCell mergeCell3 = row.createCell(94);
+            mergeCell3.setCellStyle(headerStyle_light_orange);
+            mergeCell3.setCellValue("자격면허1");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,97,99));
+            SXSSFCell mergeCell3_2 = row.createCell(97);
+            mergeCell3_2.setCellStyle(headerStyle_light_orange);
+            mergeCell3_2.setCellValue("자격면허2");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,100,102));
+            SXSSFCell mergeCell3_3 = row.createCell(100);
+            mergeCell3_3.setCellStyle(headerStyle_light_orange);
+            mergeCell3_3.setCellValue("자격면허3");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,103,105));
+            SXSSFCell mergeCell3_4 = row.createCell(103);
+            mergeCell3_4.setCellStyle(headerStyle_light_orange);
+            mergeCell3_4.setCellValue("자격면허4");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,106,108));
+            SXSSFCell mergeCell3_5 = row.createCell(106);
+            mergeCell3_5.setCellStyle(headerStyle_light_orange);
+            mergeCell3_5.setCellValue("자격면허5");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,109,111));
+            SXSSFCell mergeCell3_6 = row.createCell(109);
+            mergeCell3_6.setCellStyle(headerStyle_light_orange);
+            mergeCell3_6.setCellValue("자격면허6");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,112,114));
+            SXSSFCell mergeCell3_7 = row.createCell(112);
+            mergeCell3_7.setCellStyle(headerStyle_light_orange);
+            mergeCell3_7.setCellValue("자격면허7");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,115,117));
+            SXSSFCell mergeCell3_8 = row.createCell(115);
+            mergeCell3_8.setCellStyle(headerStyle_light_orange);
+            mergeCell3_8.setCellValue("자격면허8");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,118,120));
+            SXSSFCell mergeCell3_9 = row.createCell(118);
+            mergeCell3_9.setCellStyle(headerStyle_light_orange);
+            mergeCell3_9.setCellValue("자격면허9");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,121,123));
+            SXSSFCell mergeCell3_10 = row.createCell(121);
+            mergeCell3_10.setCellStyle(headerStyle_light_orange);
+            mergeCell3_10.setCellValue("자격면허10");
+
+            // 상세정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,124,129));
+            SXSSFCell mergeCell4 = row.createCell(124);
+            mergeCell4.setCellStyle(headerStyle);
+            mergeCell4.setCellValue("상세정보");
+
+            // 자기소개서
+            sheet.addMergedRegion(new CellRangeAddress(0,0,130,134));
+            SXSSFCell mergeCell5 = row.createCell(130);
+            mergeCell5.setCellStyle(headerStyle);
+            mergeCell5.setCellValue("자기소개서");
+
+            // 상세정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,135,136));
+            SXSSFCell mergeCell6 = row.createCell(135);
+            mergeCell6.setCellStyle(headerStyle);
+            mergeCell6.setCellValue("상세정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                if(i<19){
+                    cell.setCellStyle(headerStyle);
+                }else if(i<94){
+                    cell.setCellStyle(headerStyle_light_green);
+                }else if(i<124){
+                    cell.setCellStyle(headerStyle_light_orange);
+                }else{
+                    cell.setCellStyle(headerStyle);
+                }
+
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<BoarderDetailDTO> detailList = eduMarineMngService.processSelectExcelBoarderDetailList();
+
+            int cellCnt = 0;
+            int listCount = detailList.size();
+
+            //데이터 부분 생성
+            for(BoarderDetailDTO info : detailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getNameKo().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMemberStatus());
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameKo());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
+                // 주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddress());
+
+                // 상세주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddressDetail());
+
+                // 상의사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getTopClothesSize());
+
+                // 하의사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBottomClothesSize());
+
+                // 안전화사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getShoesSize());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 졸업구분
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getGradeGbn());
+
+                // 학교명
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSchoolName());
+
+                // 전공
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMajor());
+
+                for(int i=0; i<15; i++) {
+                    // 근무처
+                    String[] careerPlaceSplit = new String[15];
+                    if (info.getCareerPlace() != null) {
+                        if (info.getCareerPlace().contains("^")) {
+                            careerPlaceSplit = info.getCareerPlace().split("\\^");
+                        } else {
+                            careerPlaceSplit[0] = info.getCareerPlace().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerPlaceSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerPlaceSplit, i));
+
+                    // 기간
+                    String[] careerDateSplit = new String[15];
+                    if (info.getCareerDate() != null) {
+                        if (info.getCareerDate().contains("^")) {
+                            careerDateSplit = info.getCareerDate().split("\\^");
+                        } else {
+                            careerDateSplit[0] = info.getCareerDate().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerDateSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerDateSplit, i));
+
+                    // 직위
+                    String[] careerPositionSplit = new String[15];
+                    if (info.getCareerPosition() != null) {
+                        if (info.getCareerPosition().contains("^")) {
+                            careerPositionSplit = info.getCareerPosition().split("\\^");
+                        } else {
+                            careerPositionSplit[0] = info.getCareerPosition().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerPositionSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerPositionSplit, i));
+
+                    // 담당업무
+                    String[] careerTaskSplit = new String[15];
+                    if (info.getCareerTask() != null) {
+                        if (info.getCareerTask().contains("^")) {
+                            careerTaskSplit = info.getCareerTask().split("\\^");
+                        } else {
+                            careerTaskSplit[0] = info.getCareerTask().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerTaskSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerTaskSplit, i));
+
+                    // 소재지
+                    String[] careerLocationSplit = new String[15];
+                    if (info.getCareerLocation() != null) {
+                        if (info.getCareerLocation().contains("^")) {
+                            careerLocationSplit = info.getCareerLocation().split("\\^");
+                        } else {
+                            careerLocationSplit[0] = info.getCareerLocation().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerLocationSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerLocationSplit, i));
+                }
+
+                for(int i=0; i<10; i++) {
+                    // 자격면허명
+                    String[] licenseNameSplit = new String[10];
+                    if (info.getLicenseName() != null) {
+                        if (info.getLicenseName().contains("^")) {
+                            licenseNameSplit = info.getLicenseName().split("\\^");
+                        } else {
+                            licenseNameSplit[0] = info.getLicenseName().replaceAll("\\^", "");
+                        }
+                    } else {
+                        licenseNameSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(licenseNameSplit, i));
+
+                    // 취득일
+                    String[] licenseDateSplit = new String[10];
+                    if (info.getLicenseDate() != null) {
+                        if (info.getLicenseDate().contains("^")) {
+                            licenseDateSplit = info.getLicenseDate().split("\\^");
+                        } else {
+                            licenseDateSplit[0] = info.getLicenseDate().replaceAll("\\^", "");
+                        }
+                    } else {
+                        licenseDateSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(licenseDateSplit, i));
+
+                    // 발행기관
+                    String[] licenseOrgSplit = new String[10];
+                    if (info.getLicenseOrg() != null) {
+                        if (info.getLicenseOrg().contains("^")) {
+                            licenseOrgSplit = info.getLicenseOrg().split("\\^");
+                        } else {
+                            licenseOrgSplit[0] = info.getLicenseOrg().replaceAll("\\^", "");
+                        }
+                    } else {
+                        licenseOrgSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(licenseOrgSplit, i));
+                }
+
+                // 병역
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMilitaryGbn());
+
+                // 병역(사유)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMilitaryReason());
+
+                // 장애인
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getDisabledGbn());
+
+                // 취업지원대상
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getJobSupportGbn());
+
+                // 테크니션교육경험
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getTechEduGbn());
+
+                // 테크니션교육경험(교육명)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getTechEduName());
+
+                // 지원동기
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyReason());
+
+                // 적합성 기술
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getTechReason());
+
+                // 활동사항
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getActivityReason());
+
+                // 포부
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPlanReason());
+
+                // 기타
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEtcReason());
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(value = "/mng/customer/frp/excel/download.do", method = RequestMethod.GET)
+    public void customer_frp_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_frp_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "상의사이즈", "하의사이즈", "안전화사이즈",
+                    "참여경로", "졸업구분", "학교명", "전공",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "근무처", "기간", "직위", "담당업무", "소재지",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "자격면허명", "취득일", "발행기관",
+                    "병역", "미필사유",
+                    "장애인", "취업지원대상", "알게된 경로", "기타 경로",
+                    "지원동기", "향후 테크니션 업무 수행시의 인성 적합성 기술", "자격 및 경력, 대외 활동 사항",
+                    "교육수료 후 포부 (향후 자신의 진로 등)", "기타",
+                    "등록일", "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000,
+                    5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000,
+                    5000, 5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
+            CellStyle headerStyle_light_green = workbook.createCellStyle();
+            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_green.setFont(fontHeader);
+            headerStyle_light_green.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
+            CellStyle headerStyle_light_orange = workbook.createCellStyle();
+            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_orange.setFont(fontHeader);
+            headerStyle_light_orange.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("FRP");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본/신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,18));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("기본/신청정보");
+
+            // 경력사항
+            sheet.addMergedRegion(new CellRangeAddress(0,0,19,23));
+            SXSSFCell mergeCell2 = row.createCell(19);
+            mergeCell2.setCellStyle(headerStyle_light_green);
+            mergeCell2.setCellValue("경력사항1");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,24,28));
+            SXSSFCell mergeCell2_2 = row.createCell(24);
+            mergeCell2_2.setCellStyle(headerStyle_light_green);
+            mergeCell2_2.setCellValue("경력사항2");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,29,33));
+            SXSSFCell mergeCell2_3 = row.createCell(29);
+            mergeCell2_3.setCellStyle(headerStyle_light_green);
+            mergeCell2_3.setCellValue("경력사항3");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,34,38));
+            SXSSFCell mergeCell2_4 = row.createCell(34);
+            mergeCell2_4.setCellStyle(headerStyle_light_green);
+            mergeCell2_4.setCellValue("경력사항4");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,39,43));
+            SXSSFCell mergeCell2_5 = row.createCell(39);
+            mergeCell2_5.setCellStyle(headerStyle_light_green);
+            mergeCell2_5.setCellValue("경력사항5");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,44,48));
+            SXSSFCell mergeCell2_6 = row.createCell(44);
+            mergeCell2_6.setCellStyle(headerStyle_light_green);
+            mergeCell2_6.setCellValue("경력사항6");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,49,53));
+            SXSSFCell mergeCell2_7 = row.createCell(49);
+            mergeCell2_7.setCellStyle(headerStyle_light_green);
+            mergeCell2_7.setCellValue("경력사항7");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,54,58));
+            SXSSFCell mergeCell2_8 = row.createCell(54);
+            mergeCell2_8.setCellStyle(headerStyle_light_green);
+            mergeCell2_8.setCellValue("경력사항8");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,59,63));
+            SXSSFCell mergeCell2_9 = row.createCell(59);
+            mergeCell2_9.setCellStyle(headerStyle_light_green);
+            mergeCell2_9.setCellValue("경력사항9");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,64,68));
+            SXSSFCell mergeCell2_10 = row.createCell(64);
+            mergeCell2_10.setCellStyle(headerStyle_light_green);
+            mergeCell2_10.setCellValue("경력사항10");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,69,73));
+            SXSSFCell mergeCell2_11 = row.createCell(69);
+            mergeCell2_11.setCellStyle(headerStyle_light_green);
+            mergeCell2_11.setCellValue("경력사항11");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,74,78));
+            SXSSFCell mergeCell2_12 = row.createCell(74);
+            mergeCell2_12.setCellStyle(headerStyle_light_green);
+            mergeCell2_12.setCellValue("경력사항12");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,79,83));
+            SXSSFCell mergeCell2_13 = row.createCell(79);
+            mergeCell2_13.setCellStyle(headerStyle_light_green);
+            mergeCell2_13.setCellValue("경력사항13");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,84,88));
+            SXSSFCell mergeCell2_14 = row.createCell(84);
+            mergeCell2_14.setCellStyle(headerStyle_light_green);
+            mergeCell2_14.setCellValue("경력사항14");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,89,93));
+            SXSSFCell mergeCell2_15 = row.createCell(89);
+            mergeCell2_15.setCellStyle(headerStyle_light_green);
+            mergeCell2_15.setCellValue("경력사항15");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,94,96));
+            SXSSFCell mergeCell3 = row.createCell(94);
+            mergeCell3.setCellStyle(headerStyle_light_orange);
+            mergeCell3.setCellValue("자격면허1");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,97,99));
+            SXSSFCell mergeCell3_2 = row.createCell(97);
+            mergeCell3_2.setCellStyle(headerStyle_light_orange);
+            mergeCell3_2.setCellValue("자격면허2");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,100,102));
+            SXSSFCell mergeCell3_3 = row.createCell(100);
+            mergeCell3_3.setCellStyle(headerStyle_light_orange);
+            mergeCell3_3.setCellValue("자격면허3");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,103,105));
+            SXSSFCell mergeCell3_4 = row.createCell(103);
+            mergeCell3_4.setCellStyle(headerStyle_light_orange);
+            mergeCell3_4.setCellValue("자격면허4");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,106,108));
+            SXSSFCell mergeCell3_5 = row.createCell(106);
+            mergeCell3_5.setCellStyle(headerStyle_light_orange);
+            mergeCell3_5.setCellValue("자격면허5");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,109,111));
+            SXSSFCell mergeCell3_6 = row.createCell(109);
+            mergeCell3_6.setCellStyle(headerStyle_light_orange);
+            mergeCell3_6.setCellValue("자격면허6");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,112,114));
+            SXSSFCell mergeCell3_7 = row.createCell(112);
+            mergeCell3_7.setCellStyle(headerStyle_light_orange);
+            mergeCell3_7.setCellValue("자격면허7");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,115,117));
+            SXSSFCell mergeCell3_8 = row.createCell(115);
+            mergeCell3_8.setCellStyle(headerStyle_light_orange);
+            mergeCell3_8.setCellValue("자격면허8");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,118,120));
+            SXSSFCell mergeCell3_9 = row.createCell(118);
+            mergeCell3_9.setCellStyle(headerStyle_light_orange);
+            mergeCell3_9.setCellValue("자격면허9");
+
+            // 자격면허
+            sheet.addMergedRegion(new CellRangeAddress(0,0,121,123));
+            SXSSFCell mergeCell3_10 = row.createCell(121);
+            mergeCell3_10.setCellStyle(headerStyle_light_orange);
+            mergeCell3_10.setCellValue("자격면허10");
+
+            // 상세정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,124,129));
+            SXSSFCell mergeCell4 = row.createCell(124);
+            mergeCell4.setCellStyle(headerStyle);
+            mergeCell4.setCellValue("상세정보");
+
+            // 자기소개서
+            sheet.addMergedRegion(new CellRangeAddress(0,0,130,134));
+            SXSSFCell mergeCell5 = row.createCell(130);
+            mergeCell5.setCellStyle(headerStyle);
+            mergeCell5.setCellValue("자기소개서");
+
+            // 상세정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,135,136));
+            SXSSFCell mergeCell6 = row.createCell(135);
+            mergeCell6.setCellStyle(headerStyle);
+            mergeCell6.setCellValue("상세정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                if(i<19){
+                    cell.setCellStyle(headerStyle);
+                }else if(i<94){
+                    cell.setCellStyle(headerStyle_light_green);
+                }else if(i<124){
+                    cell.setCellStyle(headerStyle_light_orange);
+                }else{
+                    cell.setCellStyle(headerStyle);
+                }
+
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<FrpDetailDTO> detailList = eduMarineMngService.processSelectExcelFrpDetailList();
+
+            int cellCnt = 0;
+            int listCount = detailList.size();
+
+            //데이터 부분 생성
+            for(FrpDetailDTO info : detailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getNameKo().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMemberStatus());
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameKo());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
+                // 주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddress());
+
+                // 상세주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddressDetail());
+
+                // 상의사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getTopClothesSize());
+
+                // 하의사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBottomClothesSize());
+
+                // 안전화사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getShoesSize());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 졸업구분
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getGradeGbn());
+
+                // 학교명
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSchoolName());
+
+                // 전공
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMajor());
+
+                for(int i=0; i<15; i++) {
+                    // 근무처
+                    String[] careerPlaceSplit = new String[15];
+                    if (info.getCareerPlace() != null) {
+                        if (info.getCareerPlace().contains("^")) {
+                            careerPlaceSplit = info.getCareerPlace().split("\\^");
+                        } else {
+                            careerPlaceSplit[0] = info.getCareerPlace().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerPlaceSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerPlaceSplit, i));
+
+                    // 기간
+                    String[] careerDateSplit = new String[15];
+                    if (info.getCareerDate() != null) {
+                        if (info.getCareerDate().contains("^")) {
+                            careerDateSplit = info.getCareerDate().split("\\^");
+                        } else {
+                            careerDateSplit[0] = info.getCareerDate().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerDateSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerDateSplit, i));
+
+                    // 직위
+                    String[] careerPositionSplit = new String[15];
+                    if (info.getCareerPosition() != null) {
+                        if (info.getCareerPosition().contains("^")) {
+                            careerPositionSplit = info.getCareerPosition().split("\\^");
+                        } else {
+                            careerPositionSplit[0] = info.getCareerPosition().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerPositionSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerPositionSplit, i));
+
+                    // 담당업무
+                    String[] careerTaskSplit = new String[15];
+                    if (info.getCareerTask() != null) {
+                        if (info.getCareerTask().contains("^")) {
+                            careerTaskSplit = info.getCareerTask().split("\\^");
+                        } else {
+                            careerTaskSplit[0] = info.getCareerTask().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerTaskSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerTaskSplit, i));
+
+                    // 소재지
+                    String[] careerLocationSplit = new String[15];
+                    if (info.getCareerLocation() != null) {
+                        if (info.getCareerLocation().contains("^")) {
+                            careerLocationSplit = info.getCareerLocation().split("\\^");
+                        } else {
+                            careerLocationSplit[0] = info.getCareerLocation().replaceAll("\\^", "");
+                        }
+                    } else {
+                        careerLocationSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(careerLocationSplit, i));
+                }
+
+                for(int i=0; i<10; i++) {
+                    // 자격면허명
+                    String[] licenseNameSplit = new String[10];
+                    if (info.getLicenseName() != null) {
+                        if (info.getLicenseName().contains("^")) {
+                            licenseNameSplit = info.getLicenseName().split("\\^");
+                        } else {
+                            licenseNameSplit[0] = info.getLicenseName().replaceAll("\\^", "");
+                        }
+                    } else {
+                        licenseNameSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(licenseNameSplit, i));
+
+                    // 취득일
+                    String[] licenseDateSplit = new String[10];
+                    if (info.getLicenseDate() != null) {
+                        if (info.getLicenseDate().contains("^")) {
+                            licenseDateSplit = info.getLicenseDate().split("\\^");
+                        } else {
+                            licenseDateSplit[0] = info.getLicenseDate().replaceAll("\\^", "");
+                        }
+                    } else {
+                        licenseDateSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(licenseDateSplit, i));
+
+                    // 발행기관
+                    String[] licenseOrgSplit = new String[10];
+                    if (info.getLicenseOrg() != null) {
+                        if (info.getLicenseOrg().contains("^")) {
+                            licenseOrgSplit = info.getLicenseOrg().split("\\^");
+                        } else {
+                            licenseOrgSplit[0] = info.getLicenseOrg().replaceAll("\\^", "");
+                        }
+                    } else {
+                        licenseOrgSplit[0] = "";
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(licenseOrgSplit, i));
+                }
+
+                // 병역
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMilitaryGbn());
+
+                // 병역(사유)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMilitaryReason());
+
+                // 장애인
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getDisabledGbn());
+
+                // 취업지원대상
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getJobSupportGbn());
+
+                // 알게된 경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getKnowPath());
+
+                // 기타 경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getKnowPathReason());
+
+                // 지원동기
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyReason());
+
+                // 적합성 기술
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getTechReason());
+
+                // 활동사항
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getActivityReason());
+
+                // 포부
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPlanReason());
+
+                // 기타
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEtcReason());
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(value = "/mng/customer/outboarder/excel/download.do", method = RequestMethod.GET)
+    public void customer_outboarder_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_outboarder_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "등록일",
+                    "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
+            CellStyle headerStyle_light_green = workbook.createCellStyle();
+            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_green.setFont(fontHeader);
+            headerStyle_light_green.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
+            CellStyle headerStyle_light_orange = workbook.createCellStyle();
+            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_orange.setFont(fontHeader);
+            headerStyle_light_orange.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("Outboarder");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본/신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,11));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("기본정보");
+
+            // 신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,13));
+            SXSSFCell mergeCell2 = row.createCell(12);
+            mergeCell2.setCellStyle(headerStyle_light_green);
+            mergeCell2.setCellValue("신청정보");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,14,15));
+            SXSSFCell mergeCell2_2 = row.createCell(14);
+            mergeCell2_2.setCellStyle(headerStyle);
+            mergeCell2_2.setCellValue("기본정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                if(i<12){
+                    cell.setCellStyle(headerStyle);
+                }else if(i<14){
+                    cell.setCellStyle(headerStyle_light_green);
+                }else{
+                    cell.setCellStyle(headerStyle);
+                }
+
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<OutboarderDetailDTO> detailList = eduMarineMngService.processSelectExcelOutboarderDetailList();
+
+            int cellCnt = 0;
+            int listCount = detailList.size();
+
+            //데이터 부분 생성
+            for(OutboarderDetailDTO info : detailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getNameKo().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMemberStatus());
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameKo());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
+                // 주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddress());
+
+                // 상세주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddressDetail());
+
+                // 작업복사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getClothesSize());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(value = "/mng/customer/inboarder/excel/download.do", method = RequestMethod.GET)
+    public void customer_inboarder_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_inboarder_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "등록일",
+                    "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
+            CellStyle headerStyle_light_green = workbook.createCellStyle();
+            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_green.setFont(fontHeader);
+            headerStyle_light_green.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
+            CellStyle headerStyle_light_orange = workbook.createCellStyle();
+            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_orange.setFont(fontHeader);
+            headerStyle_light_orange.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("Inboarder");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본/신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,11));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("기본정보");
+
+            // 신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,13));
+            SXSSFCell mergeCell2 = row.createCell(12);
+            mergeCell2.setCellStyle(headerStyle_light_green);
+            mergeCell2.setCellValue("신청정보");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,14,15));
+            SXSSFCell mergeCell2_2 = row.createCell(14);
+            mergeCell2_2.setCellStyle(headerStyle);
+            mergeCell2_2.setCellValue("기본정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                if(i<12){
+                    cell.setCellStyle(headerStyle);
+                }else if(i<14){
+                    cell.setCellStyle(headerStyle_light_green);
+                }else{
+                    cell.setCellStyle(headerStyle);
+                }
+
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<InboarderDetailDTO> detailList = eduMarineMngService.processSelectExcelInboarderDetailList();
+
+            int cellCnt = 0;
+            int listCount = detailList.size();
+
+            //데이터 부분 생성
+            for(InboarderDetailDTO info : detailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getNameKo().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMemberStatus());
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameKo());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
+                // 주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddress());
+
+                // 상세주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddressDetail());
+
+                // 작업복사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getClothesSize());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(value = "/mng/customer/sailyacht/excel/download.do", method = RequestMethod.GET)
+    public void customer_sailyacht_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_sailyacht_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "등록일",
+                    "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
+            CellStyle headerStyle_light_green = workbook.createCellStyle();
+            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_green.setFont(fontHeader);
+            headerStyle_light_green.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
+            CellStyle headerStyle_light_orange = workbook.createCellStyle();
+            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_orange.setFont(fontHeader);
+            headerStyle_light_orange.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("Sailyacht");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본/신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,11));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("기본정보");
+
+            // 신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,13));
+            SXSSFCell mergeCell2 = row.createCell(12);
+            mergeCell2.setCellStyle(headerStyle_light_green);
+            mergeCell2.setCellValue("신청정보");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,14,15));
+            SXSSFCell mergeCell2_2 = row.createCell(14);
+            mergeCell2_2.setCellStyle(headerStyle);
+            mergeCell2_2.setCellValue("기본정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                if(i<12){
+                    cell.setCellStyle(headerStyle);
+                }else if(i<14){
+                    cell.setCellStyle(headerStyle_light_green);
+                }else{
+                    cell.setCellStyle(headerStyle);
+                }
+
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<SailyachtDetailDTO> detailList = eduMarineMngService.processSelectExcelSailyachtDetailList();
+
+            int cellCnt = 0;
+            int listCount = detailList.size();
+
+            //데이터 부분 생성
+            for(SailyachtDetailDTO info : detailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getNameKo().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMemberStatus());
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameKo());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
+                // 주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddress());
+
+                // 상세주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddressDetail());
+
+                // 작업복사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getClothesSize());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private String convertValue(String[] splitVal, int index){
+        int length = splitVal.length;
+        String returnVal = "";
+        if(index < length){
+            returnVal = splitVal[index] == null ? "" : splitVal[index];
+        }
+        return returnVal;
     }
 
     /*********************** excel upload ***********************/

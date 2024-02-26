@@ -555,7 +555,7 @@
     .form_wrap .form_box .form_list > li .gubun {flex-basis: auto; font-size: 1.4rem; text-align: left; width: 100%;}
     .form_wrap .form_box .form_list > li .gubun p span {display: inline-block; margin-left: 3px; color: #555;}
     .form_wrap .form_box .form_list > li .naeyong {padding: 10px 0 15px;width: 100%;}
-    .form_wrap .form_box .form_list > li .naeyong .input input.w50 {flex: 1; width: 100%; max-width: 400px;}
+    .form_wrap .form_box .form_list > li .naeyong .input input.w50 {/*flex: 1; width: 100%;*/ max-width: 400px;}
     .form_wrap .form_box .form_list > li .cmnt {font-size: 1.2rem;}
     .form_wrap .form_box .form_list > li .cmnt::before {font-size: 8px; width: 14px; height: 14px; line-height: 14px;}
 

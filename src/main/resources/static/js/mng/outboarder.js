@@ -590,3 +590,83 @@ function f_apply_change_btn(){
     }
 
 }
+
+function f_customer_outboarder_detail_excel_download(tableId , name){
+
+    let dataCount = $('#' + tableId).DataTable().rows().count();
+    if(dataCount > 0){
+
+        Swal.fire({
+            title: '[전체 신청자 정보 상세 다운로드]',
+            html: '엑셀 다운로드 사유 입력 후 다운로드 가능합니다.<br>파일 > 파일관리 > 다운로드내역',
+            input: 'text',
+            inputPlaceholder: '엑셀 다운로드 사유를 입력해주세요.',
+            width: '70em',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '다운로드',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (result.value) {
+
+                    let downloadFileName = name + '_목록_excel_' + getCurrentDate();
+
+                    let jsonObj = {
+                        downloadFileName: downloadFileName,
+                        targetMenu: getTargetMenu(tableId),
+                        downloadReason: result.value
+                    }
+                    $.ajax({
+                        url: '/mng/file/download/insert.do',
+                        method: 'post',
+                        async: false,
+                        data: JSON.stringify(jsonObj),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (res) {
+                            if (res.resultCode === '0') {
+
+                                let fileName = downloadFileName + '.xlsx';
+
+                                $.ajax({
+                                    url: '/mng/customer/outboarder/excel/download.do?fileName=' + fileName,
+                                    method: 'get',
+                                    /*async: false,*/
+                                    xhrFields: {
+                                        responseType: 'blob'
+                                    },
+                                    contentType: 'application/json; charset=utf-8', //server charset 확인 필요
+                                    beforeSend : function(request){
+                                        // Performed before calling Ajax
+                                        $('#spinner').show();
+                                    },
+                                    success: function (blob) {
+                                        let link = document.createElement('a');
+                                        link.href = window.URL.createObjectURL(blob);
+                                        link.download = fileName;
+                                        link.click();
+
+                                        $('#spinner').hide();
+                                    },
+                                    error: function() {
+                                        // Do when ajax call fail
+                                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+                                        $('#spinner').hide();
+                                    }
+                                })
+
+                            }else{
+                                showMessage('', 'error', '에러 발생', '엑셀 다운로드 내역 저장에 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                            }
+                        }
+                    })
+                } else {
+                    alert('삭제 사유를 입력해주세요.');
+                }
+            }
+        })
+    }else{
+        showMessage('', 'info', '[전체 신청자 정보 상세 다운로드]', '엑셀로 추출할 데이터가 없습니다.', '');
+    }
+}
