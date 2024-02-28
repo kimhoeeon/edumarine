@@ -190,4 +190,10 @@ public interface EduMarineService {
     Integer processSelectSailyachtPreCheck(SailyachtDTO sailyachtDTO);
 
     void processUpdateTrainClosing(String todate);
+
+    ResponseDTO processCheckMember(MemberDTO memberDTO);
+
+    ResponseDTO processCheckCommunity(CommunityDTO communityDTO);
+
+    ResponseDTO processCheckReply(ReplyDTO replyDTO);
 }

@@ -3984,5 +3984,160 @@
         ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
     </select>
 
+    <select id="selectMemberCount" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectMemberCount */
+        SELECT COUNT(*) AS inCount
+        FROM member
+        WHERE apply_status = '회원'
+          AND del_yn = 'N'
+    </select>
+
+    <select id="selectTrainCount" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectTrainCount */
+        SELECT SUM(r.cnt) AS inCount
+        FROM (SELECT COUNT(*) AS cnt
+              FROM regular r
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND r.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND r.apply_status LIKE '%취소%'
+                </if>
+                AND r.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) as cnt
+              FROM boarder b
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND b.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND b.apply_status LIKE '%취소%'
+                </if>
+                AND b.apply_status NOT LIKE '%대기%'
+                AND b.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM frp f
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND f.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND f.apply_status LIKE '%취소%'
+                </if>
+                AND f.apply_status NOT LIKE '%대기%'
+                AND f.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM outboarder o
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND o.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND o.apply_status LIKE '%취소%'
+                </if>
+                AND o.apply_status NOT LIKE '%대기%'
+                AND o.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS CNT
+              FROM inboarder i
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND i.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND i.apply_status LIKE '%취소%'
+                </if>
+                AND i.apply_status NOT LIKE '%대기%'
+                AND i.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM sailyacht s
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND s.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND s.apply_status LIKE '%취소%'
+                </if>
+                AND s.apply_status NOT LIKE '%대기%'
+                AND s.del_yn = 'N'
+              ) r
+    </select>
+
+    <select id="selectStatisticsAccessorDay" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsAccessorDay */
+        SELECT DATE_FORMAT(in_dttm, '%Y.%m.%d') as x
+             , in_count as y
+        FROM statistics
+        WHERE gbn = #{gbn}
+        ORDER BY in_dttm
+    </select>
+
+    <select id="selectStatisticsAccessorMonth" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsAccessorMonth */
+        SELECT DATE_FORMAT(in_dttm, '%Y.%m') as x
+             , SUM(in_count) as y
+        FROM statistics
+        WHERE gbn = #{gbn}
+        GROUP BY DATE_FORMAT(in_dttm, '%Y.%m')
+        ORDER BY in_dttm ASC
+    </select>
+
+    <select id="selectStatisticsAccessorWeek" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsAccessorWeek */
+        SELECT CONCAT(
+                DATE_FORMAT(DATE_SUB(in_dttm, INTERVAL(DAYOFWEEK(in_dttm)-1) DAY), '%Y.%m.%d')
+            , ' - '
+            , DATE_FORMAT(DATE_SUB(in_dttm, INTERVAL(DAYOFWEEK(in_dttm)-7) DAY), '%Y.%m.%d')
+            ) as x
+             , SUM(in_count) AS y
+        FROM statistics
+        WHERE gbn = #{gbn}
+        GROUP BY x
+    </select>
+
+    <select id="selectStatisticsTrainMember" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsTrainMember */
+        SELECT GROUP_CONCAT(COALESCE(r.cnt, '0') SEPARATOR ',') AS inCount
+        FROM (SELECT COUNT(*) AS cnt
+              FROM regular r
+              WHERE r.apply_status NOT LIKE '%취소%'
+                and r.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM boarder b
+              WHERE b.apply_status NOT LIKE '%취소%'
+                and b.apply_status NOT LIKE '%대기%'
+                and b.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM frp f
+              WHERE f.apply_status NOT LIKE '%취소%'
+                and f.apply_status NOT LIKE '%대기%'
+                and f.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM outboarder o
+              WHERE o.apply_status NOT LIKE '%취소%'
+                and o.apply_status NOT LIKE '%대기%'
+                and o.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM inboarder i
+              WHERE i.apply_status NOT LIKE '%취소%'
+                and i.apply_status NOT LIKE '%대기%'
+                and i.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM sailyacht s
+              WHERE s.apply_status NOT LIKE '%취소%'
+                and s.apply_status NOT LIKE '%대기%'
+                and s.del_yn = 'N') r
+    </select>
+
 </mapper>
 

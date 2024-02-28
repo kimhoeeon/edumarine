@@ -148,6 +148,34 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         System.out.println("session 끊김");
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<StatisticsDTO> processSelectStatisticsAccessorDay(StatisticsDTO statisticsDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorDay");
+        return eduMarineMngMapper.selectStatisticsAccessorDay(statisticsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<StatisticsDTO> processSelectStatisticsAccessorMonth(StatisticsDTO statisticsDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorMonth");
+        return eduMarineMngMapper.selectStatisticsAccessorMonth(statisticsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<StatisticsDTO> processSelectStatisticsAccessorWeek(StatisticsDTO statisticsDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorWeek");
+        return eduMarineMngMapper.selectStatisticsAccessorWeek(statisticsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public StatisticsDTO processSelectStatisticsTrainMember(StatisticsDTO reqDto) {
+        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsTrainMember");
+        return eduMarineMngMapper.selectStatisticsTrainMember(reqDto);
+    }
+
     /* Board */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
@@ -4810,6 +4838,20 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     public List<SailyachtDetailDTO> processSelectExcelSailyachtDetailList() {
         System.out.println("EduMarineMngServiceImpl > processSelectExcelSailyachtDetailList");
         return eduMarineMngMapper.selectExcelSailyachtDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public StatisticsDTO processSelectMemberCount(StatisticsDTO statisticsDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectMemberCount");
+        return eduMarineMngMapper.selectMemberCount(statisticsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public StatisticsDTO processSelectTrainCount(StatisticsDTO trainDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectTrainCount");
+        return eduMarineMngMapper.selectTrainCount(trainDTO);
     }
 
     /*******************************************

@@ -136,7 +136,7 @@
                     <li class="on"><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <%--<li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>--%>
                     <li><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
+                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -158,27 +158,146 @@
                                 <div class="name">정규 과정</div>
                             </div>
                             <div class="cont_list">
-                                <ul>
-                                    <li class="list_top">
-                                        <div class="gubun">교육명</div>
-                                        <div class="naeyong">
-                                            <div class="item">해상엔진 테크니션 <span class="small">(선내기 및 선외기 통합과정)</span></div>
-                                            <div class="item">FRP 레저보트 선체정비 테크니션</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="gubun">교육대상</div>
-                                        <div class="naeyong">
-                                            <div class="item">해양레저분야 취/창업 희망자 <span class="small">(졸업 예정자 가능)</span></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="gubun">교육목적</div>
-                                        <div class="naeyong">
-                                            <div class="item">해양레저분야 테크니션 실무 역량 습득 및 취업기회 획득</div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <!-- 일반 -->
+                                <div class="table_wrap">
+                                    <div class="table_tit">
+                                        <div class="big">[ 일반 ]</div>
+                                        <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                    </div>
+                                    <div class="table">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th class="first"><div class="item">교육명</div></th>
+                                                <th><div class="item">마리나선박 선외기 정비사</div></th>
+                                                <th><div class="item">마리나선박 선내기 정비사</div></th>
+                                                <th><div class="item">마리나선박 FRP선체 정비사</div></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="first"><div class="item">교육대상</div></td>
+                                                <td colspan="3">
+                                                    <div class="item">자격증 취득 희망자 중 해양수산부 마리나업전문인력양성기관의 이론 교육과정 수료자</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육목적</div></td>
+                                                <td colspan="2">
+                                                    <div class="item list">
+                                                        <p>해상엔진 정비능력 습득</p>
+                                                        <p>기술서적 등 사용능력 습득</p>
+                                                        <p>수료 후 마리나선박 정비사 자격증 검정시험 응시자격 부여</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>FRP 선체 정비능력 습득</p>
+                                                        <p>기술서적 등 사용능력 습득</p>
+                                                        <p>수료 후 마리나선박 정비사 자격증 검정시험 응시자격 부여</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육내용</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 이해</p>
+                                                        <p>선외기 시스템 이해</p>
+                                                        <p>2행정 선외기 실습</p>
+                                                        <p>4행정 선외기 실습</p>
+                                                        <p>선외기 설치</p>
+                                                        <p>선외기 서비스 및 유지관리</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 이해</p>
+                                                        <p>디젤엔진 시스템</p>
+                                                        <p>선내기 정비 실습</p>
+                                                        <p>선내기 서비스 및 유지관리</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>FRP 선체의 이해</p>
+                                                        <p>선체 관리 및 정비</p>
+                                                        <p>FRP 적층 등 작업 기초</p>
+                                                        <p>선체 손상에 대한 수리 작업 기초</p>
+                                                        <p>도장</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- //일반 -->
+
+                                <!-- 심화 -->
+                                <div class="table_wrap">
+                                    <div class="table_tit">
+                                        <div class="big">[ 심화 ]</div>
+                                        <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                    </div>
+                                    <div class="table">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th class="first"><div class="item">교육명</div></th>
+                                                <th><div class="item">고마력 선외기 정비 중급 테크니션</div></th>
+                                                <th><div class="item">스턴드라이브 정비 전문가 과정</div></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="first"><div class="item">교육대상</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 테크니션 교육과정 수료생</p>
+                                                        <p>마리나선박 정비사 선외기/선내기 실무과정 수료생</p>
+                                                        <p>엔진관련 경력이 있으신 분</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 테크니션 교육과정 수료생</p>
+                                                        <p>마리나선박 정비사 선외기/선내기 실무과정 수료생</p>
+                                                        <p>엔진관련 경력이 있으신 분</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육목적</div></td>
+                                                <td>
+                                                    <div class="item">선외기 중급 테크니션 양성</div>
+                                                </td>
+                                                <td>
+                                                    <div class="item">스턴드라이브 전문인력 양성</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육내용</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>고마력 선외기 시스템에 대한 이해</p>
+                                                        <p>고마력 선외기 분해 및 조립 실습</p>
+                                                        <p>고마력 선외기 유지관리 및 고장진단에 대한 이해</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>스턴드라이브의 이해</p>
+                                                        <p>스턴드라이브의 정비 및 점검 방법</p>
+                                                        <p>스턴드라이브의 고장 및 조치사항</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- //심화 -->
                             </div>
                         </div>
                         <!-- //정규과정 -->
@@ -190,51 +309,78 @@
                                 <div class="name">단기 과정</div>
                             </div>
                             <div class="cont_list">
-                                <ul>
-                                    <li class="list_top">
-                                        <div class="gubun">교육명</div>
-                                        <div class="naeyong">
-                                            <div class="item">해상엔진 자가정비반</div>
-                                            <div class="item">위탁교육반</div>
-                                            <div class="item">해상엔진 전문화 과정</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="gubun">교육대상</div>
-                                        <div class="naeyong">
-                                            <div class="item list">
-                                                <p>레저 선박 소유자 등</p>
-                                            </div>
-                                            <div class="item list">
-                                                <p>해양레저 관련업 종사자 등</p>
-                                            </div>
-                                            <div class="item list">
-                                                <p>레저 선박 소유자</p>
-                                                <p>해양레저 관련업 종사자 등</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="gubun">교육목적</div>
-                                        <div class="naeyong">
-                                            <div class="item list">
-                                                <p>기초 이론교육</p>
-                                                <p>엔진 기초 유지관리</p>
-                                                <p>응급조치 방법</p>
-                                            </div>
-                                            <div class="item list">
-                                                <p>중급 이론교육</p>
-                                                <p>엔진 점검, 진단, 분석 능력</p>
-                                                <p>엔진 성능시험</p>
-                                            </div>
-                                            <div class="item list">
-                                                <p>중급 이론교육</p>
-                                                <p>엔진 점검, 진단, 분석 능력</p>
-                                                <p>엔진 설치 탈착</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <div class="table_wrap">
+                                    <div class="table_tit">
+                                        <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                    </div>
+                                    <div class="table">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th class="first"><div class="item">교육명</div></th>
+                                                <th><div class="item">해상엔진 응급조치교육</div></th>
+                                                <th><div class="item">해상엔진 기초정비교육</div></th>
+                                                <th><div class="item">자가정비 심화과정</div></th>
+                                                <th><div class="item">위탁교육</div></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="first"><div class="item">교육대상</div></td>
+                                                <td colspan="3">
+                                                    <div class="item list">
+                                                        <p>보트 및 요트 소유하신 분, 조종면허 소지하신 분 또는 취득 예정이신 분 등</p>
+                                                        <p>해상엔진 교육을 희망하는 일반인</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item">교육 희망하는 기관 및 단체</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육목적</div></td>
+                                                <td><div class="item">엔진 고장 등 발생시 대처능력 향상</div></td>
+                                                <td><div class="item">엔진 기본 유지관리 능력 향상</div></td>
+                                                <td><div class="item">고마력 선외기 유지관리능력 및 응급상황 발생시</div></td>
+                                                <td><div class="item">해상엔진에 대한 이해 및 점검 교육을 통한 업무능력 향상</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육내용</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>선외기/선내기/세일엔진 시스템 이해</p>
+                                                        <p>엔진 고장 사례별 고장 원인 분석방법</p>
+                                                        <p>고장 사례별 기본적인 대처방법</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>선외기/선내기/세일엔진 기초이론 이해</p>
+                                                        <p>선외기/선내기/세일엔진 부속시스템별 유지관리 실습</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>고마력 선외기 시스템이해</p>
+                                                        <p>부속시스템별 유지관리 실습</p>
+                                                        <p>엔진 고장 사례별 고장원인 분석방법</p>
+                                                        <p>고장 사례별 기본적인 대처 방법</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>교육기관 Needs에 맞는 맞춤 교육</p>
+                                                        <p>해상엔진 이론교육</p>
+                                                        <p>해상엔진 유지관리</p>
+                                                        <p>해상엔진 점검 및 진단 기초</p>
+                                                        <p>해상엔진 초급 정비</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- //단기과정 -->
@@ -255,7 +401,7 @@
                             </li>
                             <li>
                                 <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
-                                <div class="text">E-mail. edu@edumarine.org 또는 <a href="https://yachtmnr.or.kr" target="_blank">https://yachtmnr.or.kr</a></div>
+                                <div class="text">E-mail. edu@edumarine.org 또는 <a href="https://marinetech.kr" target="_blank">https://marinetech.kr</a></div>
                             </li>
                         </ul>
                     </div>

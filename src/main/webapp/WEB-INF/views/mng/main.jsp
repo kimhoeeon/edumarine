@@ -1601,8 +1601,9 @@ if (document.documentElement) {
                                             </h3>
                                             <div class="mt-5 mb-2">※ 각 메뉴를 통해 메인 사이트 내 <span class="text-primary fw-bold">정보를 관리</span> 할 수 있습니다.</div>
                                             <div class="mb-2">※ 각 메뉴의 기능의 <span class="text-primary fw-bold">오류 발생 시 개발사에 문의</span> 부탁드립니다.</div>
-                                            <%--<div class="mb-2">※ 통계(<span class="text-primary fw-bold">'전체'</span>) 항목은 {(참가기업수-참가취소)+(참관객수-참관취소)} 의 값입니다.</div>
-                                            <div>※ 그래프(<span class="text-primary fw-bold">'부스별 신청업체 수'</span>) 항목은 부스별 신청업체 수를 백분율로 표현한 그래프입니다.</div>--%>
+                                            <div class="mb-2">※ 회원수 통계는 탈퇴, 삭제 회원을 제외한 현재 회원 수입니다.</div>
+                                            <div class="mb-2">※ 교육신청(취소) 통계는 모든 교육과정에 대한 <span class="text-primary fw-bold">'결제완료' 한 교육신청자 수</span>입니다.</div>
+                                            <div>※ 그래프(<span class="text-primary fw-bold">'교육별 신청자 수'</span>) 항목은 취소자를 제외한 교육별 현 신청자 수를 백분율로 표현한 그래프입니다.</div>
                                         </div>
                                         <!--end::Card body-->
                                     </div>
@@ -1612,74 +1613,15 @@ if (document.documentElement) {
                             <!--end::Stats-->
 
                             <!--begin::Stats-->
-                            <%--<div class="row g-6 g-xl-9">
-                                <div class="col-lg-3 col-xxl-3 mb-xl-8">
-                                    <!--begin::Card-->
-                                    <div class="card h-100">
-                                        <!--begin::Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Heading-->
-                                            <div class="fs-2x fw-bold">참가기업 <span class="fs-3 text-danger">( 취소 )</span></div>
-                                            <div class="fs-7 fw-semibold text-gray-500 mb-7">* 참가 신청 기업 수 ( 취소 신청 기업 수 )</div>
-                                            <!--end::Heading-->
-                                            <div class="separator"></div>
-                                            <!--begin::Wrapper-->
-                                            <div class="d-flex flex-wrap justify-content-center mt-5">
-                                                <!--begin::Chart-->
-                                                <div class="fs-3x d-flex align-items-start">
-                                                    <div class="lh-sm fw-bolder">
-                                                        ${companyStat.inCount.split(',')[0] eq null ? 0 : companyStat.inCount.split(',')[0]}
-                                                            <span class="fs-3 text-danger">( ${companyStat.inCount.split(',')[1] eq null ? 0 : companyStat.inCount.split(',')[1]} )</span>
-                                                    </div>
-                                                </div>
-                                                <!--end::Chart-->
-                                            </div>
-                                            <!--end::Wrapper-->
-                                        </div>
-                                        <!--end::Card body-->
-                                    </div>
-                                    <!--end::Card-->
-                                </div>
-                                <div class="col-lg-3 col-xxl-3 mb-xl-8">
-                                    <!--begin::Card-->
-                                    <div class="card h-100">
-                                        <!--begin::Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Heading-->
-                                            <div class="fs-2x fw-bold">참관객 <span class="fs-3 text-danger">( 취소 )</span></div>
-                                            <div class="fs-7 fw-semibold text-gray-500 mb-7">* 참관객 수 ( 취소 참관객 수 )</div>
-                                            <!--end::Heading-->
-                                            <div class="separator"></div>
-                                            <!--begin::Wrapper-->
-                                            <div class="d-flex flex-wrap justify-content-center mt-5">
-                                                <!--begin::Chart-->
-                                                <div class="fs-3x d-flex align-items-start">
-                                                    <div class="lh-sm fw-bolder">
-                                                            ${visitorStat.inCount.split(',')[0] eq null ? 0 : visitorStat.inCount.split(',')[0]}
-                                                        <span class="fs-3 text-danger">( ${visitorStat.inCount.split(',')[1] eq null ? 0 : visitorStat.inCount.split(',')[1]} )</span>
-                                                    </div>
-                                                </div>
-                                                <!--end::Chart-->
-                                            </div>
-                                            <!--end::Wrapper-->
-                                        </div>
-                                        <!--end::Card body-->
-                                    </div>
-                                    <!--end::Card-->
-                                </div>
+                            <div class="row g-6 g-xl-9">
                                 <div class="col-lg-6 col-xxl-6 mb-xl-8">
                                     <!--begin::Card-->
                                     <div class="card h-100">
                                         <!--begin::Card body-->
                                         <div class="card-body p-9">
                                             <!--begin::Heading-->
-                                            <div class="fs-2x fw-bold">전체 <span class="fs-3">( 참가기업 + 참관객 ) <span class="text-danger">( 취소 )</span></span>
-                                                <div class="fs-4 fw-semibold text-gray-400 mb-7 d-inline-block float-end">
-                                                    <c:set var="now" value="<%=new java.util.Date()%>" />
-                                                    <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
-                                                </div>
-                                            </div>
-                                            <div class="fs-7 fw-semibold text-gray-500 mb-7">* 참가 기업 및 참관객 신청 수 ( 취소 신청 기업 및 취소 참관객 수 )</div>
+                                            <div class="fs-2x fw-bold">회원수<%-- <span class="fs-3 text-danger">( 취소 )</span>--%></div>
+                                            <div class="fs-7 fw-semibold text-gray-500 mb-7">* 전체 회원 수 (탈퇴, 삭제 회원 제외)</div>
                                             <!--end::Heading-->
                                             <div class="separator"></div>
                                             <!--begin::Wrapper-->
@@ -1687,9 +1629,10 @@ if (document.documentElement) {
                                                 <!--begin::Chart-->
                                                 <div class="fs-3x d-flex align-items-start">
                                                     <div class="lh-sm fw-bolder">
-                                                        ${(companyStat.inCount.split(',')[0] eq null ? 0 : companyStat.inCount.split(',')[0]) + visitorStat.inCount}
-                                                            <span class="fs-3 text-danger">( ${ (companyStat.inCount.split(',')[1] eq null ? 0 : companyStat.inCount.split(',')[1]) +
-                                                                    (visitorStat.inCount.split(',')[1] eq null ? 0 : visitorStat.inCount.split(',')[1])} )</span>
+                                                        ${memberStat.inCount.split(',')[0] eq null ? 0 : memberStat.inCount.split(',')[0]}
+                                                        <%--<span class="fs-3 text-danger">
+                                                            ( ${memberStat.inCount.split(',')[1] eq null ? 0 : memberStat.inCount.split(',')[1]} )
+                                                        </span>--%>
                                                     </div>
                                                 </div>
                                                 <!--end::Chart-->
@@ -1700,11 +1643,43 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Card-->
                                 </div>
-                            </div>--%>
+
+                                <div class="col-lg-6 col-xxl-6 mb-xl-8">
+                                    <!--begin::Card-->
+                                    <div class="card h-100">
+                                        <!--begin::Card body-->
+                                        <div class="card-body p-9">
+                                            <!--begin::Heading-->
+                                            <div class="fs-2x fw-bold">교육신청<%-- <span class="fs-3">( 참가기업 + 참관객 ) --%><span class="text-danger">( 취소 )</span></span>
+                                                <div class="fs-4 fw-semibold text-gray-400 mb-7 d-inline-block float-end">
+                                                    <c:set var="now" value="<%=new java.util.Date()%>" />
+                                                    <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+                                                </div>
+                                            </div>
+                                            <div class="fs-7 fw-semibold text-gray-500 mb-7">* 전체 교육 신청 수 ( 취소 신청 수 )</div>
+                                            <!--end::Heading-->
+                                            <div class="separator"></div>
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-wrap justify-content-center mt-5">
+                                                <!--begin::Chart-->
+                                                <div class="fs-3x d-flex align-items-start">
+                                                    <div class="lh-sm fw-bolder">
+                                                        ${trainStat.inCount} <span class="fs-3 text-danger">( ${trainCancelStat.inCount} )</span>
+                                                    </div>
+                                                </div>
+                                                <!--end::Chart-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                        <!--end::Card body-->
+                                    </div>
+                                    <!--end::Card-->
+                                </div>
+                            </div>
                             <!--end::Stats-->
 
                             <!--begin::Row-->
-                            <%--<div class="row g-5 g-xl-8">
+                            <div class="row g-5 g-xl-8">
 
                                 <div class="col-xl-6">
                                     <!--begin::Charts Widget 3-->
@@ -1714,14 +1689,14 @@ if (document.documentElement) {
 
                                             <h3 class="card-title align-items-start flex-column">
                                                 <span class="card-label fw-bold fs-3 mb-2">홈페이지 방문 현황</span>
-                                                <span class="fs-7 fw-semibold text-gray-500">* 사이트 방문자 수</span>
+                                                <span class="fs-7 fw-semibold text-gray-500">* 기간별 사이트 방문자 수</span>
                                             </h3>
 
                                             <!--begin::Toolbar-->
                                             <div class="homepage-visit card-toolbar" data-kt-buttons="true">
-                                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 active"
-                                                   id="kt_charts_widget_3_day_btn">Day</a>
                                                 <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1"
+                                                   id="kt_charts_widget_3_day_btn">Day</a>
+                                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1 active"
                                                    id="kt_charts_widget_3_week_btn">Week</a>
                                                 <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1"
                                                    id="kt_charts_widget_3_month_btn">Month</a>
@@ -1740,48 +1715,14 @@ if (document.documentElement) {
                                     <!--end::Charts Widget 3-->
                                 </div>
 
-
                                 <div class="col-xl-6">
                                     <!--begin::Charts Widget 4-->
                                     <div class="card card-xl-stretch">
                                         <!--begin::Header-->
                                         <div class="card-header border-0 pt-5">
                                             <h3 class="card-title align-items-start flex-column">
-                                                <span class="card-label fw-bold fs-3 mb-2">참가 신청 현황</span>
-                                                <span class="fs-7 fw-semibold text-gray-500">* 초록(참가기업) / 노랑(참관객)</span>
-                                            </h3>
-                                            <!--begin::Toolbar-->
-                                            <div class="participant-stat card-toolbar" data-kt-buttons="true">
-                                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 active"
-                                                   id="kt_charts_widget_4_day_btn">Day</a>
-                                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1"
-                                                   id="kt_charts_widget_4_week_btn">Week</a>
-                                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1"
-                                                   id="kt_charts_widget_4_month_btn">Month</a>
-                                            </div>
-                                            <!--end::Toolbar-->
-                                        </div>
-                                        <!--end::Header-->
-                                        <!--begin::Body-->
-                                        <div class="card-body">
-                                            <!--begin::Chart-->
-                                            <div id="kt_charts_widget_4_chart" style="height: 350px"></div>
-                                            <!--end::Chart-->
-                                        </div>
-                                        <!--end::Body-->
-                                    </div>
-                                    <!--end::Charts Widget 4-->
-                                </div>
-
-
-                                <div class="col-xl-6">
-                                    <!--begin::Charts Widget 4-->
-                                    <div class="card card-xl-stretch">
-                                        <!--begin::Header-->
-                                        <div class="card-header border-0 pt-5">
-                                            <h3 class="card-title align-items-start flex-column">
-                                                <span class="card-label fw-bold fs-3 mb-2">부스별 신청업체 수</span>
-                                                <span class="fs-7 fw-semibold text-gray-500">* 부스 신청 유형별 현황 백분율</span>
+                                                <span class="card-label fw-bold fs-3 mb-2">교육별 신청자 수</span>
+                                                <span class="fs-7 fw-semibold text-gray-500">* 교육별 신청자 수 백분율</span>
                                             </h3>
                                         </div>
                                         <!--end::Header-->
@@ -1796,29 +1737,7 @@ if (document.documentElement) {
                                     <!--end::Charts Widget 4-->
                                 </div>
 
-                                <div class="col-xl-6">
-                                    <!--begin::Charts Widget 4-->
-                                    <div class="card card-xl-stretch">
-                                        <!--begin::Header-->
-                                        <div class="card-header border-0 pt-5">
-                                            <h3 class="card-title align-items-start flex-column">
-                                                <span class="card-label fw-bold fs-3 mb-2">참가분야별 신청업체 수</span>
-                                                <span class="fs-7 fw-semibold text-gray-500">* 참가분야별 신청 현황 그래프</span>
-                                            </h3>
-                                        </div>
-                                        <!--end::Header-->
-                                        <!--begin::Body-->
-                                        <div class="card-body d-flex justify-content-end align-items-center pt-0">
-                                            <!--begin::Chart-->
-                                            <div id="kt_project_list_chart2"></div>
-                                            <!--end::Chart-->
-                                        </div>
-                                        <!--end::Body-->
-                                    </div>
-                                    <!--end::Charts Widget 4-->
-                                </div>
-
-                            </div>--%>
+                            </div>
                             <!--end::Row-->
                         </div>
                         <!--end::Content container-->

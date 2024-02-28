@@ -48,7 +48,7 @@
                     </p>
                     <p class="text2">
                         <span class="gubun">상호</span>
-                        경기해양레저인력양성센터
+                        케이워터운영관리(주)
                     </p>
                     <p class="text2">
                         <span class="gubun">대표자</span>
