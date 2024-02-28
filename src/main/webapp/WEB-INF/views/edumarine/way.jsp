@@ -171,7 +171,7 @@
                                 </li>
                                 <li>
                                     <div class="gubun">Fax</div>
-                                    <div class="naeyong">031-999-7890</div>
+                                    <div class="naeyong">031-999-7880</div>
                                 </li>
                                 <li>
                                     <div class="gubun">E-mail</div>
@@ -197,15 +197,15 @@
                                 </li>
                                 <li>
                                     <div class="gubun">Tel</div>
-                                    <div class="naeyong">031-999-7841</div>
+                                    <div class="naeyong">1811-7891</div>
                                 </li>
                                 <li>
                                     <div class="gubun">Fax</div>
-                                    <div class="naeyong">031-999-7890</div>
+                                    <div class="naeyong">031-999-7880</div>
                                 </li>
                                 <li>
                                     <div class="gubun">E-mail</div>
-                                    <div class="naeyong">ahn@waterway.or.kr</div>
+                                    <div class="naeyong">edu@edumarine.org</div>
                                 </li>
                             </ul>
                             <!-- guide_btn_box -->

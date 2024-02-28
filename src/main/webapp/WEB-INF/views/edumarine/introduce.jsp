@@ -229,11 +229,11 @@
                     </div>
                     <!-- //지원개요 -->
 
-                    <!-- 추친 체계 -->
+                    <!-- 추진 체계 -->
                     <div class="center_sec">
                         <!-- center_tit_box -->
                         <div class="center_tit_box">
-                            <div class="big">추친 체계</div>
+                            <div class="big">추진 체계</div>
                         </div>
                         <!-- //center_tit_box -->
                         <!-- center_info_2 -->
@@ -296,7 +296,7 @@
                         </div>
                         <!-- //center_info_2 -->
                     </div>
-                    <!-- //추친 체계 -->
+                    <!-- //추진 체계 -->
 
                     <!-- 기대효과 -->
                     <div class="center_sec">

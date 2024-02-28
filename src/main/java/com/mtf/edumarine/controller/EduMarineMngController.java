@@ -37,6 +37,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -85,10 +86,102 @@ public class EduMarineMngController {
         LocalDate now = LocalDate.now();
 
         // 연도, 월(문자열, 숫자), 일, 일(year 기준), 요일(문자열, 숫자)
-        String fullYear = String.valueOf(now.getYear() + 1);
-        /* 커밋 테스트 231011-2 */
+        String fullYear = String.valueOf(now.getYear());
+
+        /* 전체 회원수 */
+        StatisticsDTO memberStatDTO = new StatisticsDTO();
+        StatisticsDTO memberStat = eduMarineMngService.processSelectMemberCount(memberStatDTO);
+        mv.addObject("memberStat", memberStat);
+
+        /* 교육신청자 수 */
+        StatisticsDTO trainDTO = new StatisticsDTO();
+        trainDTO.setGbn("ALL");
+        StatisticsDTO trainStat = eduMarineMngService.processSelectTrainCount(trainDTO);
+        mv.addObject("trainStat", trainStat);
+
+        /* 교육신청 취소 수 */
+        StatisticsDTO trainCancelDTO = new StatisticsDTO();
+        trainCancelDTO.setGbn("CANCEL");
+        StatisticsDTO trainCancelStat = eduMarineMngService.processSelectTrainCount(trainCancelDTO);
+        mv.addObject("trainCancelStat", trainCancelStat);
+
         mv.setViewName("/mng/main");
         return mv;
+    }
+
+    @RequestMapping(value = "/mng/main/statistics/accessor/day.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<StatisticsDTO>> mng_main_statistics_accessor_day() {
+        System.out.println("EduMarineMngController > mng_main_statistics_accessor_day");
+        //System.out.println(searchDTO.toString());
+
+        String transferYear = String.valueOf(LocalDateTime.now().getYear());
+        StatisticsDTO reqDto = new StatisticsDTO();
+        reqDto.setGbn("Accessor");
+        List<StatisticsDTO> responseList = eduMarineMngService.processSelectStatisticsAccessorDay(reqDto);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/main/statistics/accessor/month.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<StatisticsDTO>> mng_main_statistics_accessor_month() {
+        System.out.println("EduMarineMngController > mng_main_statistics_accessor_month");
+        //System.out.println(searchDTO.toString());
+
+        String transferYear = String.valueOf(LocalDateTime.now().getYear());
+        StatisticsDTO reqDto = new StatisticsDTO();
+        reqDto.setGbn("Accessor");
+        List<StatisticsDTO> responseList = eduMarineMngService.processSelectStatisticsAccessorMonth(reqDto);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/main/statistics/accessor/week.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<StatisticsDTO>> mng_main_statistics_accessor_week() {
+        System.out.println("EduMarineMngController > mng_main_statistics_accessor_week");
+        //System.out.println(searchDTO.toString());
+
+        String transferYear = String.valueOf(LocalDateTime.now().getYear());
+        StatisticsDTO reqDto = new StatisticsDTO();
+        reqDto.setGbn("Accessor");
+        List<StatisticsDTO> responseList = eduMarineMngService.processSelectStatisticsAccessorWeek(reqDto);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/main/statistics/train/member.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<SplineStatisticsDTO> mng_main_statistics_company_booth() {
+        System.out.println("EduMarineMngController > mng_main_statistics_company_booth");
+        //System.out.println(searchDTO.toString());
+
+        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2024
+        StatisticsDTO reqDto = new StatisticsDTO();
+        StatisticsDTO info = eduMarineMngService.processSelectStatisticsTrainMember(reqDto);
+        String[] statSplit = info.getInCount().split(",");
+
+        SplineStatisticsDTO result = new SplineStatisticsDTO();
+        List<Integer> series = new ArrayList<>();
+        series.add(Integer.parseInt(statSplit[0])); //regular
+        series.add(Integer.parseInt(statSplit[1])); //boarder
+        series.add(Integer.parseInt(statSplit[2])); //frp
+        series.add(Integer.parseInt(statSplit[3])); //outboarder
+        series.add(Integer.parseInt(statSplit[4])); //inboarder
+        series.add(Integer.parseInt(statSplit[5])); //sailyacht
+        result.setSeries(series);
+
+        List<String> labels = new ArrayList<>();
+        labels.add("상시신청");
+        labels.add("해상엔진 테크니션 (선내기/선외기)");
+        labels.add("FRP 레저보트 선체 정비 테크니션");
+        labels.add("해상엔진 자가정비 (선외기)");
+        labels.add("해상엔진 자가정비 (선내기)");
+        labels.add("해상엔진 자가정비 (세일요트)");
+        result.setLabels(labels);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**

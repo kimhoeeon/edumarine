@@ -666,7 +666,7 @@ var KTWidgets = function () {
             chart.self.render();   
             chart.rendered = true;
 
-            $.getJSON('/mng/main/statistics/accessor/day.do', function(response) {
+            $.getJSON('/mng/main/statistics/accessor/week.do', function(response) {
                 chart.self.updateSeries([{
                     name: '방문자 수 ',
                     data: response

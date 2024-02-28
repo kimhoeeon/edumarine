@@ -237,4 +237,10 @@ public interface EduMarineMapper {
     Integer selectSailyachtPreCheck(SailyachtDTO sailyachtDTO);
 
     void updateTrainClosing(String todate);
+
+    Integer checkMember(MemberDTO memberDTO);
+
+    Integer checkCommunity(CommunityDTO communityDTO);
+
+    Integer checkReply(ReplyDTO replyDTO);
 }

@@ -375,6 +375,15 @@
             )
     </insert>
 
+    <select id="checkMember" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.checkMember */
+        SELECT COUNT(1)
+        FROM member
+        WHERE REPLACE(phone,'-','') = REPLACE(<![CDATA[#{phone}]]>,'-','')
+          AND del_yn = 'N'
+          AND apply_status != '탈퇴'
+    </select>
+
     <select id="checkMemberSingle" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="java.lang.Integer">
         /* com.mtf.edumarine.mapper.EduMarineMapper.checkMemberSingle */
         SELECT COUNT(1)
@@ -992,6 +1001,24 @@
         WHERE name = #{name}
         AND phone = #{phone}
         LIMIT 1
+    </select>
+
+    <select id="checkCommunity" parameterType="com.mtf.edumarine.dto.CommunityDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.checkCommunity */
+        SELECT COUNT(*)
+        FROM community
+        WHERE writer_key = #{writerKey}
+          AND write_date BETWEEN CONCAT(#{writeDate},' 00:00:00') AND CONCAT(#{writeDate},' 23:59:59')
+          AND del_yn = 'N'
+          AND writer != '관리자'
+    </select>
+
+    <select id="checkReply" parameterType="com.mtf.edumarine.dto.ReplyDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.checkReply */
+        SELECT COUNT(*)
+        FROM reply
+        WHERE writer = #{writer}
+          AND write_date BETWEEN CONCAT(#{writeDate},' 00:00:00') AND CONCAT(#{writeDate},' 23:59:59')
     </select>
 
     <select id="selectCommunityList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.CommunityDTO">

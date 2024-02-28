@@ -141,6 +141,76 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
+    public ResponseDTO processCheckMember(MemberDTO memberDTO) {
+        System.out.println("EduMarineServiceImpl > processCheckMember : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer check = eduMarineMapper.checkMember(memberDTO);
+            responseDTO.setCustomValue(String.valueOf(check));
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[login] processLoginExhibit Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public ResponseDTO processCheckCommunity(CommunityDTO communityDTO) {
+        System.out.println("EduMarineServiceImpl > processCheckCommunity : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String inDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // yyyy-MM-dd
+            communityDTO.setWriteDate(inDttm);
+            Integer check = eduMarineMapper.checkCommunity(communityDTO);
+            responseDTO.setCustomValue(String.valueOf(check));
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[Exception] processCheckCommunity Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public ResponseDTO processCheckReply(ReplyDTO replyDTO) {
+        System.out.println("EduMarineServiceImpl > processCheckReply : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String inDttm = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // yyyy-MM-dd
+            replyDTO.setWriteDate(inDttm);
+            Integer check = eduMarineMapper.checkReply(replyDTO);
+            responseDTO.setCustomValue(String.valueOf(check));
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[Exception] processCheckReply Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
     public ResponseDTO processCheckMemberSingle(MemberDTO memberDTO) {
         System.out.println("EduMarineServiceImpl > processCheckMemberSingle : ======");
         ResponseDTO responseDTO = new ResponseDTO();

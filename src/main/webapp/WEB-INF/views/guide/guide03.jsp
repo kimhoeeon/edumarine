@@ -136,7 +136,7 @@
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <%--<li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>--%>
                     <li class="on"><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
+                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -170,19 +170,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <ul class="info_box" style="max-width: 700px;">
-                                <li>
+                            <ul class="info_box">
+                                <li class="r3">
                                     <div class="tit">실무형 인재 양성</div>
                                     <div class="text">
                                         <p>기업요구에 맞춘 프로그램</p>
+                                        <p>근무현장 견학 및 실습</p>
                                         <p>산업종사자와 멘토링 시스템 구축</p>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="r4">
                                     <div class="tit">전문적 기술능력 배양</div>
                                     <div class="text">
                                         <p>이론 및 실기분야에 최정예 인력 양성</p>
                                         <p>산업현장에 필요한 전문적 기술 지도</p>
+                                        <p>교육생 사후 관리로 지속적 상위 프로그램 교육</p>
+                                    </div>
+                                </li>
+                                <li class="r3">
+                                    <div class="tit">취업성공 지원</div>
+                                    <div class="text">
+                                        <p>1 : 1 커리어 코칭</p>
+                                        <p>기본 역량강화 교육</p>
+                                        <p>진로결정 컨설팅 지원</p>
                                     </div>
                                 </li>
                             </ul>
@@ -206,12 +216,14 @@
                                         <col style="width: 20%;">
                                         <col>
                                         <col>
+                                        <col>
                                     </colgroup>
                                     <thead>
                                         <tr>
                                             <th>구분</th>
                                             <th>선외기 정비사 실무과정</th>
                                             <th>선내기 정비사 실무과정</th>
+                                            <th>FRP 선체 정비사 실무과정</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -241,6 +253,17 @@
                                                     </ul>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="box">
+                                                    <ul class="list">
+                                                        <li>FRP 선체의 이해</li>
+                                                        <li>선체 관리 및 정비</li>
+                                                        <li>FRP 적층 등 작업 기초</li>
+                                                        <li>선체 손상에 대한 수리 작업 기초</li>
+                                                        <li>도장</li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>교육기간</td>
@@ -259,8 +282,15 @@
                                                     <ul class="list">
                                                         <li>1차 : 2024.02.20(화) ~ 2024.03.19(화)</li>
                                                         <li>2차 : 2024.05.16(목) ~ 2024.06.13(목)</li>
-                                                        <li>3차 : 2024.08.05(월) ~ 2024.09.02(월)</li>
+                                                        <li>3차 : 2024.08.05(월) ~ 2024.09.03(화)</li>
                                                         <li>4차 : 2024.11.11(월) ~ 2024.12.06(금)</li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <ul class="list">
+                                                        <li>7 ~ 8월 中 2회</li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -272,12 +302,22 @@
                                                     <div class="text">20일 140시간 (4주, 1일 7시간)</div>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">10일 80시간 (2주, 1일 8시간)</div>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>교육시간</td>
                                             <td colspan="2">
                                                 <div class="box">
                                                     <div class="text">09:30 ~ 17:30 (단, 금요일 08:00 ~ 16:00)</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">09:00 ~ 18:00</div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -287,20 +327,28 @@
                                                 <div class="box">
                                                     <ul class="list">
                                                         <li>경기테크노파크(안산)</li>
-                                                        <li>경기해양레저인력양성센터</li>
-                                                        <li>선외기교육장</li>
+                                                        <%--<li>경기해양레저인력양성센터</li>
+                                                        <li>선외기교육장</li>--%>
                                                     </ul>
-                                                    <div class="small">경기도 안산시 상록구 해안로 705</div>
+                                                    <div class="small">경기도 안산시 상록구 해안로 705 경기테크노파크 P2동 212호</div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
                                                         <li>아라마리나(김포)</li>
-                                                        <li>경기해양레저인력양성센터</li>
-                                                        <li>선내기교육장</li>
+                                                        <%--<li>경기해양레저인력양성센터</li>
+                                                        <li>선내기교육장</li>--%>
                                                     </ul>
                                                     <div class="small">경기도 김포시 고촌읍 아라육로152번길 210</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <ul class="list">
+                                                        <li>인하공업전문대학교(인천)</li>
+                                                    </ul>
+                                                    <div class="small">인천광역시 미추홀구 인하로 100</div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -316,12 +364,22 @@
                                                     <div class="text">16명</div>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">10명</div>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>교육비</td>
                                             <td colspan="2">
                                                 <div class="box">
                                                     <div class="text">700,000원</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">300,000원</div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -361,7 +419,7 @@
                             <li>
                                 <div class="gubun">모집방법</div>
                                 <div class="naeyong">
-                                    <div class="text">마리나선박정비사 홈페이지 (<span class="underline"><a href="https://yachtmnr.or.kr" target="_blank">https://yachtmnr.or.kr</a></span>) 에서 신청</div>
+                                    <div class="text">마리나선박정비사 홈페이지 (<span class="underline"><a href="https://marinetech.kr" target="_blank">https://marinetech.kr</a></span>) 에서 신청</div>
                                 </div>
                             </li>
                             <li>
@@ -509,9 +567,9 @@
                         </div>
                         <!-- //guide_tit_box -->
                         <div class="cont_box">
-                            <div class="box_1">
+                            <%--<div class="box_1">
                                 <div class="tit">지원서 허위기재 등 부정행위를 한 자는 즉시 불합격 처리</div>
-                            </div>
+                            </div>--%>
                             <div class="box_2">
                                 <div class="tit">교육문의</div>
                                 <ul>
@@ -526,7 +584,7 @@
                                     <li>
                                         <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
                                         <div class="text">E-mail. <span class="underline">edu@edumarine.org</span> 또는
-                                            <a href="https://yachtmnr.or.kr" target="_blank">https://yachtmnr.or.kr</a>
+                                            <a href="https://marinetech.kr" target="_blank">https://marinetech.kr</a>
                                         </div>
                                     </li>
                                 </ul>

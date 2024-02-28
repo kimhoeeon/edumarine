@@ -136,7 +136,7 @@
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                     <%--<li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>--%>
                     <li><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
-                    <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
+                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
@@ -340,7 +340,7 @@
                         <!-- //guide_tit_box -->
                         <!-- guide_info_1 -->
                         <ul class="guide_info_1">
-                            <li>
+                            <%--<li>
                                 <div class="gubun">입금계좌</div>
                                 <div class="naeyong">
                                     <div class="text">국민은행 642201-04-092183 / 수자원환경산업진흥㈜</div>
@@ -351,7 +351,7 @@
                                 <div class="naeyong">
                                     <div class="text">해당차수 교육확정 안내 후 2일 이내 입금</div>
                                 </div>
-                            </li>
+                            </li>--%>
                             <li>
                                 <div class="gubun">교육비 환불규정</div>
                                 <div class="naeyong">
@@ -382,9 +382,9 @@
                         </div>
                         <!-- //guide_tit_box -->
                         <div class="cont_box">
-                            <div class="box_1">
+                            <%--<div class="box_1">
                                 <div class="tit">지원서 허위기재 등 부정행위를 한 자는 즉시 불합격 처리</div>
-                            </div>
+                            </div>--%>
                             <div class="box_2">
                                 <div class="tit">교육문의</div>
                                 <ul>
@@ -399,7 +399,7 @@
                                     <li>
                                         <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
                                         <div class="text">E-mail. <span class="underline">edu@edumarine.org</span> 또는
-                                            <a href="https://yachtmnr.or.kr" target="_blank">https://yachtmnr.or.kr</a>
+                                            <a href="https://marinetech.kr" target="_blank">https://marinetech.kr</a>
                                         </div>
                                     </li>
                                 </ul>

@@ -103,11 +103,9 @@
     .calendar_box {flex-direction: column;}
     .calBox {flex: auto}
     .calList {flex: auto;}
+
+    .guide_all .table_wrap .first {width: 100px;}
     
-
-    .guide_all .box {flex-direction: column; gap: 20px; }
-    .guide_all .box .guide_tit_box {flex-basis: auto;}
-
     .guide_all_inquiry {flex-direction: column; gap: 20px;}
     .guide_all_inquiry .tit_box {flex-basis: auto;}
 
@@ -435,15 +433,13 @@
     .choiceSkedList li {font-size: 1.2rem;}
     .choiceSkedList li:before {width: 5px; height: 5px; top: 5px;}
 
+    .guide_all .table_tit .big {font-size: 1.6rem;}
+    .guide_all .table_wrap .first {width: 80px;}
+    .guide_all .table_wrap .item {font-size: 1.2rem;}
+
+
 
     .guide_top_tit .big {font-size: 2.4rem;}
-
-    .guide_all .box .cont_list {overflow-x: auto;}
-    .guide_all .box .cont_list ul {min-width: 600px;}
-    .guide_all .box .cont_list .gubun {font-size: 1.4rem;}
-    .guide_all .box .cont_list .naeyong .small {font-size: 1.2rem;}
-    .guide_all .box .cont_list .naeyong .item {font-size: 1.4rem;}
-    .guide_all .box .cont_list .list_top .item {font-size: 1.6rem;}
 
     .guide_top_bnr .info_box {margin-top: 20px; flex-direction: column;}
     .guide_top_bnr .info_box:before,
@@ -524,6 +520,13 @@
 
 }
 
+@media screen and (max-width:600px){     
+    .guide_all .table_tit .mobile_cmnt {display: block;}
+    .guide_all .table_wrap .table {overflow-x: scroll;}
+    .guide_all .table_wrap table {min-width: 600px;}
+}
+
+
 @media (max-width: 480px){
     .body_tit {margin-bottom: 25px;}
     .body_tit .big {font-size: 2.4rem;}
@@ -578,10 +581,15 @@
     #popupCalendar .popup_box {padding: 30px 0 ;}
     .calBox .calRadio {text-align: center;}
 
+    .guide_all .table_wrap th,
+    .guide_all .table_wrap td {padding: 2px;}
+    .guide_all .table_tit {font-size: 1.6rem;}
+
     .guide_tit_box > div {font-size: 2rem;}
     .guide_tit_box .num {margin-right: 5px;}
 
     .guide_top_bnr .small br {display: none;}
+    
 
     .guide_all_inquiry .tit_box p {font-size: 2rem;}
     .guide_all_inquiry .cont_box {gap: 20px;}

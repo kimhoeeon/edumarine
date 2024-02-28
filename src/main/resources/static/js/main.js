@@ -371,7 +371,7 @@ function f_main_member_join(){
         if (result.isConfirmed) {
 
             $.ajax({
-                url: '/member/join/insert.do',
+                url: '/member/join/member/check.do',
                 method: 'POST',
                 async: false,
                 data: JSON.stringify(form),
@@ -379,7 +379,32 @@ function f_main_member_join(){
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     if (data.resultCode === "0") {
-                        window.location.href = '/member/complete.do';
+
+                        if(data.customValue === "0"){
+                            $.ajax({
+                                url: '/member/join/insert.do',
+                                method: 'POST',
+                                async: false,
+                                data: JSON.stringify(form),
+                                dataType: 'json',
+                                contentType: 'application/json; charset=utf-8',
+                                success: function (data) {
+                                    if (data.resultCode === "0") {
+                                        window.location.href = '/member/complete.do';
+                                    } else {
+                                        showMessage('', 'error', '에러 발생', '회원가입을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                    }
+                                },
+                                error: function (xhr, status) {
+                                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                                }
+                            })//ajax
+                        }else{
+
+                            showMessage('', 'info', '[회원가입]', '이미 가입된 회원 정보입니다.', '');
+
+                        }
+
                     } else {
                         showMessage('', 'error', '에러 발생', '회원가입을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                     }
@@ -388,6 +413,7 @@ function f_main_member_join(){
                     alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                 }
             })//ajax
+
         }
     });
 
@@ -1107,7 +1133,7 @@ function f_train_valid_yn(obj){
 function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email){
 
     // 교육 조회
-    let resData = ajaxConnectSimple('/train/selectSingle.do', 'post', {seq: tableSeq});
+    let resData = ajaxConnectSimple('/train/selectSingle.do', 'post', {seq: trainSeq});
 
     if(nvl(resData, '') !== '') {
 

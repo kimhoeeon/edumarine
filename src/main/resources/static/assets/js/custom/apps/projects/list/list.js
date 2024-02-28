@@ -23,8 +23,8 @@ let KTProjectList = function () {
                 labels: [],
                 chart: {
                     id: 'pieChart',
-                    width: 460,
-                    height: 350,
+                    width: 500,
+                    height: 400,
                     type: 'pie',
                 },
                 responsive: [{
@@ -44,7 +44,7 @@ let KTProjectList = function () {
             chart.self.render();
             chart.rendered = true;
 
-            $.getJSON('/mng/main/statistics/company/booth.do', function(response) {
+            $.getJSON('/mng/main/statistics/train/member.do', function(response) {
                 chart.self.updateOptions(
                         /*series: [10,20,30],
                         labels: ['Active', 'Completed', 'Yet to start']*/

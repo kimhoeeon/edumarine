@@ -189,7 +189,7 @@
                             <div class="reply_top">
                                 <div class="repley_number">댓글 ${replyList.size()}
                                     <c:if test="${id eq null}">
-                                        <span style="font-size: 1.4rem; color: #777; margin-left: 1.2rem;">댓글을 작성하시려면 로그인 해주세요.</span>
+                                        <span style="font-size: 1.4rem; color: #777; margin-left: 1.2rem;">댓글을 작성하시려면 <a href="/member/login.do">로그인</a> 해주세요.</span>
                                     </c:if>
                                 </div>
                                 <div href="javascript:void(0);" onclick="f_main_community_recommend_btn('${id}', '${info.seq}', this)"

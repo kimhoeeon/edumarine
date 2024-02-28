@@ -76,7 +76,6 @@ public class EduMarineController {
         String todate = dateFormat1.format(new Date());
         eduMarineService.processUpdateTrainClosing(todate);
 
-
         /* 팝업파일정보 */
         PopupDTO popupDTO = new PopupDTO();
         popupDTO.setUseYn("Y");
@@ -230,6 +229,17 @@ public class EduMarineController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/join");
         return mv;
+    }
+
+    @RequestMapping(value = "/member/join/member/check.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> member_join_member_check(@RequestBody MemberDTO memberDTO) {
+        System.out.println("EduMarineController > member_join_member_check");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processCheckMember(memberDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/member/join/insert.do", method = RequestMethod.POST)
@@ -1007,6 +1017,7 @@ public class EduMarineController {
 
             /* 추천 정보 */
             String id = String.valueOf(session.getAttribute("id"));
+            mv.addObject("id", id);
 
             RecommendDTO recommendReqDTO = new RecommendDTO();
             recommendReqDTO.setCommunitySeq(seq);
@@ -1029,6 +1040,28 @@ public class EduMarineController {
 
         mv.setViewName("/job/community_view");
         return mv;
+    }
+
+    @RequestMapping(value = "/job/community/write/check.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> job_community_write_check(@RequestBody CommunityDTO communityDTO) {
+        System.out.println("EduMarineController > job_community_write_check");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processCheckCommunity(communityDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/job/community/reply/check.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> job_community_reply_check(@RequestBody ReplyDTO replyDTO) {
+        System.out.println("EduMarineController > job_community_reply_check");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processCheckReply(replyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/job/community/reply/insert.do", method = RequestMethod.POST)
@@ -1065,9 +1098,11 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/job/community_write.do", method = RequestMethod.GET)
-    public ModelAndView job_community_write() {
+    public ModelAndView job_community_write(HttpSession session) {
         System.out.println("EduMarineController > job_community_write");
         ModelAndView mv = new ModelAndView();
+        String id = String.valueOf(session.getAttribute("id"));
+        mv.addObject("id", id);
         mv.setViewName("/job/community_write");
         return mv;
     }

@@ -54,7 +54,7 @@
                             <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
                             <%--<li><a href="/guide/guide02.do">해상엔진 테크니션 (선내기/선외기)</a></li>--%>
                             <li><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
-                            <li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>
+                            <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
                             <li><a href="/guide/guide05.do">위탁교육</a></li>
                             <li><a href="/guide/guide06.do">해상엔진 자가정비 (선외기)</a></li>
                             <li><a href="/guide/guide07.do">해상엔진 자가정비 (선내기)</a></li>

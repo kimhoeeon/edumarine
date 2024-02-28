@@ -337,4 +337,16 @@ public interface EduMarineMngService {
     List<InboarderDetailDTO> processSelectExcelInboarderDetailList();
 
     List<SailyachtDetailDTO> processSelectExcelSailyachtDetailList();
+
+    StatisticsDTO processSelectMemberCount(StatisticsDTO statisticsDTO);
+
+    StatisticsDTO processSelectTrainCount(StatisticsDTO trainDTO);
+
+    List<StatisticsDTO> processSelectStatisticsAccessorDay(StatisticsDTO reqDto);
+
+    List<StatisticsDTO> processSelectStatisticsAccessorMonth(StatisticsDTO reqDto);
+
+    List<StatisticsDTO> processSelectStatisticsAccessorWeek(StatisticsDTO reqDto);
+
+    StatisticsDTO processSelectStatisticsTrainMember(StatisticsDTO reqDto);
 }

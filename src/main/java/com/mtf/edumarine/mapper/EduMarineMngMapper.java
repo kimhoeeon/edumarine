@@ -382,4 +382,16 @@ public interface EduMarineMngMapper {
     List<InboarderDetailDTO> selectExcelInboarderDetailList();
 
     List<SailyachtDetailDTO> selectExcelSailyachtDetailList();
+
+    StatisticsDTO selectMemberCount(StatisticsDTO statisticsDTO);
+
+    StatisticsDTO selectTrainCount(StatisticsDTO trainDTO);
+
+    List<StatisticsDTO> selectStatisticsAccessorDay(StatisticsDTO statisticsDTO);
+
+    List<StatisticsDTO> selectStatisticsAccessorMonth(StatisticsDTO statisticsDTO);
+
+    List<StatisticsDTO> selectStatisticsAccessorWeek(StatisticsDTO statisticsDTO);
+
+    StatisticsDTO selectStatisticsTrainMember(StatisticsDTO reqDto);
 }
