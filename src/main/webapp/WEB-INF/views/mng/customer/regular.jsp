@@ -1662,7 +1662,7 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-50px">이름</th>
                                                     <th class="text-center min-w-100px">연락처</th>
                                                     <th class="text-center min-w-50px">연령대</th>
-                                                    <th class="text-center min-w-50px">경험유무</th>
+                                                    <th class="text-center min-w-50px">신청이력</th>
                                                     <th class="text-center min-w-125px">등록일시</th>
                                                     <th class="text-center min-w-75px">기능</th>
                                                 </tr>
@@ -1897,23 +1897,13 @@ if (document.documentElement) {
                             </div>
                             <!--end::Input group-->
 
-                            <!--begin::Input group-->
-                            <div>
-                                <!--begin::Label-->
-                                <label class="form-label">경험유무</label>
-                                <!--end::Label-->
-                                <!--begin::Col-->
-                                <div class="d-flex align-items-center">
-                                    <label class="me-5">
-                                        <input type="radio" name="md_experience_yn" value="1" class="form-check-input form-control-solid-bg" disabled> 있음
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="md_experience_yn" value="0" class="form-check-input form-control-solid-bg" disabled> 없음
-                                    </label>
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <!--end::Input group-->
+                            <!--begin::Menu separator-->
+                            <div class="separator my-2"></div>
+                            <!--end::Menu separator-->
+
+                            <div class="my-6"><h3>교육신청내역</h3></div>
+
+                            <div class="train_info_list"></div>
 
                         </div>
                         <!--end::Card header-->

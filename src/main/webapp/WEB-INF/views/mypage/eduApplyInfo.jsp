@@ -193,7 +193,15 @@
                                                 <div class="edu_period">${eduApplyInfo.trainStartDttm} ~ ${eduApplyInfo.trainEndDttm}</div>
                                                 <%--<div class="edu_time">00:00 ~ 00:00</div>--%>
                                             </div>
-                                            <div class="state">${eduApplyInfo.payStatus}
+                                            <div class="state">
+                                                <c:choose>
+                                                    <c:when test="${eduApplyInfo.trainName eq '상시신청' and eduApplyInfo.payStatus eq '결제완료'}">
+                                                        상시신청
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        ${eduApplyInfo.payStatus}
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <c:if test="${eduApplyInfo.payStatus eq '결제대기'}">
                                                     </br>
                                                     <a href="javascript:void(0);" onclick="f_main_apply_continue_payment('${eduApplyInfo.seq}', '${eduApplyInfo.trainSeq}', '${memberInfo.name}', '${memberInfo.phone}', '${memberInfo.email}')" class="btn_modify_2">이어서 결제</a>

@@ -1671,6 +1671,16 @@ public class EduMarineMngController {
         //System.out.println(searchDTO.toString());
 
         List<RegularDTO> responseList = eduMarineMngService.processSelectRegularList(searchDTO);
+        for(int i=0; i<responseList.size(); i++){
+            RegularDTO info = responseList.get(i);
+            if(info.getMemberSeq() != null){
+                List<RegularDTO.TrainInfo> trainInfoList = eduMarineMngService.processSelectRegularTrainInfoList(info);
+                if(trainInfoList != null){
+                    info.setTrainInfoList(trainInfoList);
+                }
+                responseList.set(i, info);
+            }
+        }
 
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
@@ -1682,6 +1692,12 @@ public class EduMarineMngController {
         //System.out.println(searchDTO.toString());
 
         RegularDTO response = eduMarineMngService.processSelectRegularSingle(regularDTO);
+        if(response.getMemberSeq() != null){
+            List<RegularDTO.TrainInfo> trainInfoList = eduMarineMngService.processSelectRegularTrainInfoList(response);
+            if(trainInfoList != null){
+                response.setTrainInfoList(trainInfoList);
+            }
+        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3165,7 +3181,7 @@ public class EduMarineMngController {
 
             // 헤더 정보 구성
             // 기본
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,18));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,19));
             SXSSFCell mergeCell = row.createCell(0);
             mergeCell.setCellStyle(headerStyle);
             mergeCell.setCellValue("상시신청 신청자정보");
@@ -3181,11 +3197,45 @@ public class EduMarineMngController {
             // 데이터 조회
             List<RegularDTO> regularDetailList = eduMarineMngService.processSelectExcelRegularDetailList();
 
+            for(int i=0; i<regularDetailList.size(); i++) {
+                RegularDTO info = regularDetailList.get(i);
+                if (info.getMemberSeq() != null) {
+                    Integer col_length = colNames_ex.length;
+                    List<RegularDTO.TrainInfo> trainInfoList = eduMarineMngService.processSelectRegularTrainInfoList(info);
+                    if (trainInfoList != null) {
+
+                        /* 엑셀 그리기 */
+                        String[] add_colNames_ex = {
+                                "교육신청일시", "교육명", "차시", "상태"
+                        };
+
+                        // 헤더 사이즈
+                        int[] add_colWidths_ex = {
+                                5000, 5000, 5000, 5000
+                        };
+
+                        // 엑셀 헤더 추가 세팅
+                        for(int j=0; j< trainInfoList.size(); j++){
+                            for(int z=0; z<4; z++){
+                                cell = row.createCell(z);
+                                cell.setCellStyle(headerStyle);
+                                cell.setCellValue(add_colNames_ex[z]);
+                                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(add_colWidths_ex[i]) + 1024));	//column width 지정
+                            }
+                        }
+
+                        info.setTrainInfoList(trainInfoList);
+                    }
+                    regularDetailList.set(i, info);
+                }
+            }
+
             int cellCnt = 0;
             int listCount = regularDetailList.size();
 
             //데이터 부분 생성
             for(RegularDTO info : regularDetailList) {
+
                 cellCnt = 0;
                 row = sheet.createRow(rowCnt++);
 
@@ -3327,6 +3377,25 @@ public class EduMarineMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getFinalRegiDttm());
+
+                if(info.getTrainInfoList() != null){
+                    for(int i=0; i<info.getTrainInfoList().size(); i++){
+                        RegularDTO.TrainInfo trainInfo = info.getTrainInfoList().get(i);
+                        for(int j=0; j<4; j++){
+                            cell = row.createCell(cellCnt++);
+                            cell.setCellStyle(bodyStyle);
+                            if(j == 0){
+                                cell.setCellValue(trainInfo.getInitRegidttm());
+                            }else if(j == 1){
+                                cell.setCellValue(trainInfo.getGbn());
+                            }else if(j == 2){
+                                cell.setCellValue(trainInfo.getNextTime());
+                            }else {
+                                cell.setCellValue(trainInfo.getApplyStatus());
+                            }
+                        }
+                    }
+                }
 
             }
 

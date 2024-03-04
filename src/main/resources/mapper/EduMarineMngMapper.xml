@@ -4069,7 +4069,7 @@
     </select>
 
     <select id="selectStatisticsAccessorDay" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsAccessorDay */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectStatisticsAccessorDay */
         SELECT DATE_FORMAT(in_dttm, '%Y.%m.%d') as x
              , in_count as y
         FROM statistics
@@ -4078,7 +4078,7 @@
     </select>
 
     <select id="selectStatisticsAccessorMonth" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsAccessorMonth */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectStatisticsAccessorMonth */
         SELECT DATE_FORMAT(in_dttm, '%Y.%m') as x
              , SUM(in_count) as y
         FROM statistics
@@ -4088,7 +4088,7 @@
     </select>
 
     <select id="selectStatisticsAccessorWeek" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsAccessorWeek */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectStatisticsAccessorWeek */
         SELECT CONCAT(
                 DATE_FORMAT(DATE_SUB(in_dttm, INTERVAL(DAYOFWEEK(in_dttm)-1) DAY), '%Y.%m.%d')
             , ' - '
@@ -4101,7 +4101,7 @@
     </select>
 
     <select id="selectStatisticsTrainMember" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
-        /* com.mtf.edumarine.mapper.EdumarineMngMapper..selectStatisticsTrainMember */
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectStatisticsTrainMember */
         SELECT GROUP_CONCAT(COALESCE(r.cnt, '0') SEPARATOR ',') AS inCount
         FROM (SELECT COUNT(*) AS cnt
               FROM regular r
@@ -4137,6 +4137,34 @@
               WHERE s.apply_status NOT LIKE '%취소%'
                 and s.apply_status NOT LIKE '%대기%'
                 and s.del_yn = 'N') r
+    </select>
+
+    <select id="selectRegularTrainInfoList" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO$TrainInfo">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectRegularTrainInfoList */
+        SELECT r.init_regi_dttm, t.gbn, t.next_time, r.apply_status
+        FROM (SELECT b.train_seq, b.apply_status, b.init_regi_dttm
+              FROM boarder b
+              WHERE b.member_seq = #{memberSeq}
+              UNION ALL
+              SELECT f.train_seq, f.apply_status, f.init_regi_dttm
+              FROM frp f
+              WHERE f.member_seq = #{memberSeq}
+              UNION ALL
+              SELECT o.train_seq, o.apply_status, o.init_regi_dttm
+              FROM outboarder o
+              WHERE o.member_seq = #{memberSeq}
+              UNION ALL
+              SELECT i.train_seq, i.apply_status, i.init_regi_dttm
+              FROM inboarder i
+              WHERE i.member_seq = #{memberSeq}
+              UNION ALL
+              SELECT s.train_seq, s.apply_status, s.init_regi_dttm
+              FROM sailyacht s
+              WHERE s.member_seq = #{memberSeq}
+              ) r
+        JOIN train t
+        ON r.train_seq = t.seq
+        WHERE t.del_yn = 'N'
     </select>
 
 </mapper>

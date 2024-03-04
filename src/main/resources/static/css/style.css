@@ -1025,7 +1025,7 @@ button {
     display: block; content: "·"; position: absolute; left: 0;
 }
 
-.guide_sec {padding: 60px 0; border-top: 1px solid #ededed; word-break: keep-all; }
+.guide_sec {padding: 60px 0; border-top: 1px solid #ededed; word-break: break-all; }
 .guide_sec  .guide_tit_box {margin-bottom: 20px !important;}
 .guide_sec > div,
 .guide_sec > ul {margin-bottom: 40px;}

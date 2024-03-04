@@ -349,4 +349,6 @@ public interface EduMarineMngService {
     List<StatisticsDTO> processSelectStatisticsAccessorWeek(StatisticsDTO reqDto);
 
     StatisticsDTO processSelectStatisticsTrainMember(StatisticsDTO reqDto);
+
+    List<RegularDTO.TrainInfo> processSelectRegularTrainInfoList(RegularDTO info);
 }
