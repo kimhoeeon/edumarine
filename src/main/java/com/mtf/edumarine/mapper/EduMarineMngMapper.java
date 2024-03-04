@@ -394,4 +394,6 @@ public interface EduMarineMngMapper {
     List<StatisticsDTO> selectStatisticsAccessorWeek(StatisticsDTO statisticsDTO);
 
     StatisticsDTO selectStatisticsTrainMember(StatisticsDTO reqDto);
+
+    List<RegularDTO.TrainInfo> selectRegularTrainInfoList(RegularDTO info);
 }

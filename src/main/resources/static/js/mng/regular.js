@@ -281,7 +281,95 @@ function f_customer_regular_detail_modal_set(seq){
             document.querySelector('#md_desired_education_time').value = resData.desiredEducationTime;
             document.querySelector('#md_major').value = resData.major;
 
-            $('input[type=radio][name=md_experience_yn][value=' + resData.experienceYn + ']').prop('checked',true);
+            // 교육신청내역 List
+
+            $('.train_info_list').empty();
+
+            let trainInfoList = resData.trainInfoList;
+            if(nvl(trainInfoList,'') !== ''){
+                for(let i=0; i<trainInfoList.length; i++){
+                    let init_label_el = document.createElement('label');
+                    init_label_el.classList.add('form-label');
+                    init_label_el.innerText = '교육신청일시';
+
+                    let init_input_el = document.createElement('input');
+                    init_input_el.type = 'text';
+                    init_input_el.classList.add('form-control');
+                    init_input_el.classList.add('form-control-lg');
+                    init_input_el.classList.add('form-control-solid-bg');
+                    init_input_el.name = 'md_init_regi_dttm';
+                    init_input_el.value = trainInfoList[i].initRegiDttm;
+                    init_input_el.placeholder = '교육신청일시';
+                    init_input_el.setAttribute('readonly','readonly');
+
+                    let gbn_label_el = document.createElement('label');
+                    gbn_label_el.classList.add('form-label');
+                    gbn_label_el.innerText = '교육명';
+
+                    let gbn_input_el = document.createElement('input');
+                    gbn_input_el.type = 'text';
+                    gbn_input_el.classList.add('form-control');
+                    gbn_input_el.classList.add('form-control-lg');
+                    gbn_input_el.classList.add('form-control-solid-bg');
+                    gbn_input_el.name = 'md_gbn';
+                    gbn_input_el.value = trainInfoList[i].gbn;
+                    gbn_input_el.placeholder = '교육명';
+                    gbn_input_el.setAttribute('readonly','readonly');
+
+                    let time_label_el = document.createElement('label');
+                    time_label_el.classList.add('form-label');
+                    time_label_el.innerText = '차시';
+
+                    let time_input_el = document.createElement('input');
+                    time_input_el.type = 'text';
+                    time_input_el.classList.add('form-control');
+                    time_input_el.classList.add('form-control-lg');
+                    time_input_el.classList.add('form-control-solid-bg');
+                    time_input_el.name = 'md_next_time';
+                    time_input_el.value = trainInfoList[i].nextTime;
+                    time_input_el.placeholder = '차시';
+                    time_input_el.setAttribute('readonly','readonly');
+
+                    let status_label_el = document.createElement('label');
+                    status_label_el.classList.add('form-label');
+                    status_label_el.innerText = '상태';
+
+                    let status_input_el = document.createElement('input');
+                    status_input_el.type = 'text';
+                    status_input_el.classList.add('form-control');
+                    status_input_el.classList.add('form-control-lg');
+                    status_input_el.classList.add('form-control-solid-bg');
+                    status_input_el.name = 'md_apply_status';
+                    status_input_el.value = trainInfoList[i].applyStatus;
+                    status_input_el.placeholder = '상태';
+                    status_input_el.setAttribute('readonly','readonly');
+
+                    let wrap_div_el = document.createElement('div');
+                    wrap_div_el.classList.add('mb-6');
+                    wrap_div_el.append(init_label_el);
+                    wrap_div_el.append(init_input_el);
+                    wrap_div_el.append(gbn_label_el);
+                    wrap_div_el.append(gbn_input_el);
+                    wrap_div_el.append(time_label_el);
+                    wrap_div_el.append(time_input_el);
+                    wrap_div_el.append(status_label_el);
+                    wrap_div_el.append(status_input_el);
+
+                    $('.train_info_list').append(wrap_div_el);
+                }
+
+            }else{
+                let label_el = document.createElement('label');
+                label_el.classList.add('form-label');
+                label_el.innerText = '교육신청내역 없음';
+                
+                let wrap_div_el = document.createElement('div');
+                wrap_div_el.classList.add('mb-6');
+                wrap_div_el.append(label_el);
+
+                $('.train_info_list').append(wrap_div_el);
+            }
+
         }else{
 
             //$('#kt_modal_modify_history').find('.modal-header').find('.closeBtn').click();
@@ -599,23 +687,34 @@ function f_customer_regular_detail_excel_download(tableId , name){
                         success: function (res) {
                             if (res.resultCode === '0') {
 
-                                /* 로딩페이지 */
-                                loadingBarShow_time(4000);
+                                let fileName = downloadFileName + '.xlsx';
 
-                                let form = document.createElement('form');
-                                form.setAttribute('action','/mng/customer/regular/excel/download.do');
-                                form.setAttribute('method','get');
+                                $.ajax({
+                                    url: '/mng/customer/regular/excel/download.do?fileName=' + fileName,
+                                    method: 'get',
+                                    /*async: false,*/
+                                    xhrFields: {
+                                        responseType: 'blob'
+                                    },
+                                    contentType: 'application/json; charset=utf-8', //server charset 확인 필요
+                                    beforeSend : function(request){
+                                        // Performed before calling Ajax
+                                        $('#spinner').show();
+                                    },
+                                    success: function (blob) {
+                                        let link = document.createElement('a');
+                                        link.href = window.URL.createObjectURL(blob);
+                                        link.download = fileName;
+                                        link.click();
 
-                                let obj = document.createElement('input');
-                                obj.setAttribute('type', 'hidden');
-                                obj.setAttribute('name', 'fileName');
-                                obj.setAttribute('value', 'all_regular_info_list_' + getCurrentDate() + '.xlsx');
-
-                                form.appendChild(obj);
-                                document.body.appendChild(form);
-                                form.submit();
-
-
+                                        $('#spinner').hide();
+                                    },
+                                    error: function() {
+                                        // Do when ajax call fail
+                                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+                                        $('#spinner').hide();
+                                    }
+                                })
 
                             }else{
                                 showMessage('', 'error', '에러 발생', '엑셀 다운로드 내역 저장에 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');

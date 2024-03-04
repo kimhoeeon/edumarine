@@ -298,7 +298,7 @@ let DTCustomerRegular = function () {
                 },
                 {
                     'targets': 10,
-                    'render': function (data, type, row) { return renderExperienceYnCell(data, type, row); }
+                    'render': function (data, type, row) { return renderTrainInfoListCell(data, type, row); }
                 },
                 {
                     'targets': 12,
@@ -318,21 +318,18 @@ let DTCustomerRegular = function () {
                 { data: 'name'},
                 { data: 'contact'},
                 { data: 'ageGroup'},
-                { data: 'experienceYn'},
+                { data: 'trainInfoList'},
                 { data: 'initRegiDttm' },
                 { data: 'actions' }
             ]
         });
     }
 
-    function renderExperienceYnCell(data, type, row){
-        let renderHTML = '';
-
-        let experienceYn = row.experienceYn;
-        if(experienceYn === '1'){
-            renderHTML = '있음';
-        }else{
-            renderHTML = '없음';
+    function renderTrainInfoListCell(data, type, row){
+        let renderHTML = 'X';
+        let trainInfoList = row.trainInfoList;
+        if(nvl(trainInfoList,'') !== ''){
+            renderHTML = 'O';
         }
 
         return renderHTML;
@@ -385,16 +382,21 @@ let DTCustomerRegular = function () {
     }
 
     function renderApplyStatusCell(data, type, row) {
-        let renderHTML = '';
+        let renderHTML = '-';
         let applyStatus = row.applyStatus;
-        if(applyStatus.includes('취소')){
+        /*if(applyStatus.includes('취소')){
             renderHTML += '<div class="badge badge-light-danger fw-bold">';
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
         }
 
         renderHTML += applyStatus;
-        renderHTML += '</div>';
+        renderHTML += '</div>';*/
+        if(nvl(applyStatus, '') !== ''){
+            renderHTML = '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '상시신청';
+            renderHTML += '</div>';
+        }
 
         return renderHTML;
     }

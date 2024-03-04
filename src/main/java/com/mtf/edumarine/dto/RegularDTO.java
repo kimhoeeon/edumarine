@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -45,4 +47,16 @@ public class RegularDTO {
     String finalRegiDttm; //최종 변경 일시
 
     String memberStatus;
+
+    public List<TrainInfo> trainInfoList;
+
+    @Getter
+    @Setter
+    @ToString
+    public static class TrainInfo {
+        private String initRegidttm;
+        private String gbn;
+        private String nextTime;
+        private String applyStatus;
+    }
 }

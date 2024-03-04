@@ -1600,10 +1600,11 @@ if (document.documentElement) {
                                                 <span class="text-muted fw-semibold fs-7">Information</span>
                                             </h3>
                                             <div class="mt-5 mb-2">※ 각 메뉴를 통해 메인 사이트 내 <span class="text-primary fw-bold">정보를 관리</span> 할 수 있습니다.</div>
-                                            <div class="mb-2">※ 각 메뉴의 기능의 <span class="text-primary fw-bold">오류 발생 시 개발사에 문의</span> 부탁드립니다.</div>
-                                            <div class="mb-2">※ 회원수 통계는 탈퇴, 삭제 회원을 제외한 현재 회원 수입니다.</div>
-                                            <div class="mb-2">※ 교육신청(취소) 통계는 모든 교육과정에 대한 <span class="text-primary fw-bold">'결제완료' 한 교육신청자 수</span>입니다.</div>
-                                            <div>※ 그래프(<span class="text-primary fw-bold">'교육별 신청자 수'</span>) 항목은 취소자를 제외한 교육별 현 신청자 수를 백분율로 표현한 그래프입니다.</div>
+                                            <div class="mb-2">※ 회원수 통계는 <span class="text-primary fw-bold">탈퇴, 삭제 회원을 제외</span>한 현재 회원 수입니다.</div>
+                                            <div class="mb-2">※ 교육신청 (취소) 통계는 모든 교육과정에 대한 <span class="text-primary fw-bold">'결제완료' 한 교육신청자 수</span>입니다.</div>
+                                            <div class="mb-2">※ 홈페이지 방문 현황 통계는 <span class="text-primary fw-bold">사용자가 메인페이지에 접근할 때 카운트</span> 되며, 기간별로 나타낸 그래프입니다.</div>
+                                            <div class="mb-2">※ 그래프(<span class="text-primary fw-bold">'교육별 신청자 수'</span>) 항목은 취소자를 제외한 교육별 현 신청자 수를 백분율로 표현한 그래프입니다.</div>
+                                            <div>※ 각 메뉴의 기능의 <span class="text-primary fw-bold">오류 발생 시 개발사에 문의</span> 부탁드립니다.</div>
                                         </div>
                                         <!--end::Card body-->
                                     </div>

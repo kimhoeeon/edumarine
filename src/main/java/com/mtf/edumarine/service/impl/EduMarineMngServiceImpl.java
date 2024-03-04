@@ -176,6 +176,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         return eduMarineMngMapper.selectStatisticsTrainMember(reqDto);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<RegularDTO.TrainInfo> processSelectRegularTrainInfoList(RegularDTO info) {
+        System.out.println("EduMarineMngServiceImpl > processSelectRegularTrainInfoList");
+        return eduMarineMngMapper.selectRegularTrainInfoList(info);
+    }
+
     /* Board */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
