@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
@@ -7,20 +7,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-368L9FRD5B"></script>
-    <script>   window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-    gtag('config', 'G-368L9FRD5B'); </script>
-
-    <meta name="google-site-verification" content="nOdgBX2kjgySRAVZjwMl-AmYg53q0GxLBOV_qEtG7jk" />
-
-    <meta name="naver-site-verification" content="8027433e606d42e31ef9e566afbd709c593e33bc" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="content-language" content="ko">
@@ -100,10 +86,14 @@
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="<%request.getContextPath();%>/static/css/payment/style.css">
+    <link rel="stylesheet" href="<%request.getContextPath();%>/static/css/payment/bootstrap.min.css">
+
     <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -123,12 +113,12 @@
     <div id="container">
 
         <!-- sub_top -->
-        <div class="sub_top sub_top_my">
+        <div class="sub_top sub_top_edu">
             <div class="inner">
                 <div class="sub_top_nav">
-                    <span class="home"><img src="<%request.getContextPath();%>/static/img/icon_home_mini.png" alt="홈 아이콘"></span><span>교육신청</span><span>상시접수</span>
+                    <span class="home"><img src="<%request.getContextPath();%>/static/img/icon_home_mini.png" alt="홈 아이콘"></span><span>교육신청</span><span>결제</span>
                 </div>
-                <h2 class="sub_top_title">상시접수</h2>
+                <h2 class="sub_top_title">결제페이지</h2>
             </div>
         </div>
         <!-- //sub_top -->
@@ -141,10 +131,8 @@
                 <div class="join_wrap form_wrap">
 
                     <!-- form box -->
-                    <form id="joinForm" method="post" onsubmit="return false;">
+                    <%--<form id="joinForm" method="post" onsubmit="return false;">
                         <input type="hidden" name="seq" value="${info.seq}">
-                        <input type="hidden" name="memberSeq" value="${info.memberSeq}">
-                        <input type="hidden" name="trainSeq" value="${info.trainSeq}">
 
                         <!-- form box -->
                         <div class="form_box">
@@ -159,7 +147,7 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" id="name" name="name" value="${memberInfo.name}" placeholder="이름 입력" class="w50" readonly>
+                                            <input type="text" id="name" name="name" value="${info.name}" placeholder="이름 입력" class="w50" readonly>
                                         </div>
                                     </div>
                                 </li>
@@ -169,7 +157,7 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" id="phone" name="phone" value="${memberInfo.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50" readonly>
+                                            <input type="text" id="phone" name="phone" value="${info.phone}" maxlength="13" placeholder="하이픈 자동 입력" class="onlyTel w50" readonly>
                                         </div>
                                     </div>
                                 </li>
@@ -179,11 +167,11 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input form_email">
-                                            <input type="text" id="email" name="email" value="${fn:split(memberInfo.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1" readonly>
+                                            <input type="text" id="email" name="email" value="${fn:split(info.email,'@')[0]}" placeholder="이메일 입력" class="email_input_1" readonly>
                                             <span>@</span>
-                                            <input type="text" id="domain" name="domain" value="${fn:split(memberInfo.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2" readonly>
+                                            <input type="text" id="domain" name="domain" value="${fn:split(info.email,'@')[1]}" placeholder="도메인 입력" class="email_input_2" readonly>
                                             <select class="email_select">
-                                                <c:set var="domain" value="${fn:split(memberInfo.email,'@')[1]}"/>
+                                                <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
                                                 <option selected disabled>직접입력</option>
                                                 <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> disabled>daum.net</option>
                                                 <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> disabled>nate.com</option>
@@ -227,7 +215,7 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" id="region" name="region" value="${info.region}" placeholder="시군구까지 입력" class="w50">
+                                            <input type="text" id="region" name="region" placeholder="시군구까지 입력" class="w50">
                                         </div>
                                     </div>
                                 </li>
@@ -235,11 +223,11 @@
                                     <div class="gubun req"><p>참여 경로</p></div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <label><input type="radio" name="participationPath" value="인터넷" <c:if test="${info.participationPath eq '인터넷'}">checked</c:if> >인터넷</label>
-                                            <label><input type="radio" name="participationPath" value="홈페이지" <c:if test="${info.participationPath eq '홈페이지'}">checked</c:if> >홈페이지</label>
-                                            <label><input type="radio" name="participationPath" value="홍보물" <c:if test="${info.participationPath eq '홍보물'}">checked</c:if> >홍보물</label>
-                                            <label><input type="radio" name="participationPath" value="지인추천" <c:if test="${info.participationPath eq '지인추천'}">checked</c:if> >지인추천</label>
-                                            <label><input type="radio" name="participationPath" value="기타" <c:if test="${info.participationPath eq '기타'}">checked</c:if> >기타</label>
+                                            <label><input type="radio" name="participationPath" value="인터넷" >인터넷</label>
+                                            <label><input type="radio" name="participationPath" value="홈페이지" >홈페이지</label>
+                                            <label><input type="radio" name="participationPath" value="홍보물" >홍보물</label>
+                                            <label><input type="radio" name="participationPath" value="지인추천" >지인추천</label>
+                                            <label><input type="radio" name="participationPath" value="기타" >기타</label>
                                         </div>
                                     </div>
                                 </li>
@@ -261,11 +249,11 @@
                                         <div class="input">
                                             <select id="firstApplicationField" name="firstApplicationField">
                                                 <option value="">교육 선택</option>
-                                                <option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.firstApplicationField eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>
-                                                <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.firstApplicationField eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                <option value="해상엔진 자가정비 (선외기)" <c:if test="${info.firstApplicationField eq '해상엔진 자가정비 (선외기)'}">selected</c:if> >해상엔진 자가정비 (선외기)</option>
-                                                <option value="해상엔진 자가정비 (선내기)" <c:if test="${info.firstApplicationField eq '해상엔진 자가정비 (선내기)'}">selected</c:if> >해상엔진 자가정비 (선내기)</option>
-                                                <option value="해상엔진 자가정비 (세일요트)" <c:if test="${info.firstApplicationField eq '해상엔진 자가정비 (세일요트)'}">selected</c:if> >해상엔진 자가정비 (세일요트)</option>
+                                                <option value="해상엔진 테크니션 (선내기/선외기)">해상엔진 테크니션 (선내기/선외기)</option>
+                                                <option value="FRP 레저보트 선체 정비 테크니션">FRP 레저보트 선체 정비 테크니션</option>
+                                                <option value="해상엔진 자가정비 (선외기)">해상엔진 자가정비 (선외기)</option>
+                                                <option value="해상엔진 자가정비 (선내기)">해상엔진 자가정비 (선내기)</option>
+                                                <option value="해상엔진 자가정비 (세일요트)">해상엔진 자가정비 (세일요트)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -278,11 +266,11 @@
                                         <div class="input">
                                             <select id="secondApplicationField" name="secondApplicationField">
                                                 <option value="">교육 선택</option>
-                                                <option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.secondApplicationField eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>
-                                                <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.secondApplicationField eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                <option value="해상엔진 자가정비 (선외기)" <c:if test="${info.secondApplicationField eq '해상엔진 자가정비 (선외기)'}">selected</c:if> >해상엔진 자가정비 (선외기)</option>
-                                                <option value="해상엔진 자가정비 (선내기)" <c:if test="${info.secondApplicationField eq '해상엔진 자가정비 (선내기)'}">selected</c:if> >해상엔진 자가정비 (선내기)</option>
-                                                <option value="해상엔진 자가정비 (세일요트)" <c:if test="${info.secondApplicationField eq '해상엔진 자가정비 (세일요트)'}">selected</c:if> >해상엔진 자가정비 (세일요트)</option>
+                                                <option value="해상엔진 테크니션 (선내기/선외기)">해상엔진 테크니션 (선내기/선외기)</option>
+                                                <option value="FRP 레저보트 선체 정비 테크니션">FRP 레저보트 선체 정비 테크니션</option>
+                                                <option value="해상엔진 자가정비 (선외기)">해상엔진 자가정비 (선외기)</option>
+                                                <option value="해상엔진 자가정비 (선내기)">해상엔진 자가정비 (선내기)</option>
+                                                <option value="해상엔진 자가정비 (세일요트)">해상엔진 자가정비 (세일요트)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -295,11 +283,11 @@
                                         <div class="input">
                                             <select id="thirdApplicationField" name="thirdApplicationField">
                                                 <option value="">교육 선택</option>
-                                                <option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.thirdApplicationField eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>
-                                                <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.thirdApplicationField eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                <option value="해상엔진 자가정비 (선외기)" <c:if test="${info.thirdApplicationField eq '해상엔진 자가정비 (선외기)'}">selected</c:if> >해상엔진 자가정비 (선외기)</option>
-                                                <option value="해상엔진 자가정비 (선내기)" <c:if test="${info.thirdApplicationField eq '해상엔진 자가정비 (선내기)'}">selected</c:if> >해상엔진 자가정비 (선내기)</option>
-                                                <option value="해상엔진 자가정비 (세일요트)" <c:if test="${info.thirdApplicationField eq '해상엔진 자가정비 (세일요트)'}">selected</c:if> >해상엔진 자가정비 (세일요트)</option>
+                                                <option value="해상엔진 테크니션 (선내기/선외기)">해상엔진 테크니션 (선내기/선외기)</option>
+                                                <option value="FRP 레저보트 선체 정비 테크니션">FRP 레저보트 선체 정비 테크니션</option>
+                                                <option value="해상엔진 자가정비 (선외기)">해상엔진 자가정비 (선외기)</option>
+                                                <option value="해상엔진 자가정비 (선내기)">해상엔진 자가정비 (선내기)</option>
+                                                <option value="해상엔진 자가정비 (세일요트)">해상엔진 자가정비 (세일요트)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -310,7 +298,7 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" id="desiredEducationTime" name="desiredEducationTime" value="${info.desiredEducationTime}" placeholder="희망 교육 시기" class="w100">
+                                            <input type="text" id="desiredEducationTime" name="desiredEducationTime" placeholder="희망 교육 시기" class="w100">
                                         </div>
                                     </div>
                                 </li>
@@ -320,7 +308,7 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" id="major" name="major" value="${info.major}" placeholder="전공" class="w50">
+                                            <input type="text" id="major" name="major" placeholder="전공" class="w50">
                                         </div>
                                     </div>
                                 </li>
@@ -330,26 +318,25 @@
                                     </div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <label><input type="radio" name="experienceYn" value="1" <c:if test="${info.experienceYn eq '1'}">checked</c:if> >있음</label>
-                                            <label><input type="radio" name="experienceYn" value="0" <c:if test="${info.experienceYn eq '0'}">checked</c:if> >없음</label>
+                                            <label><input type="radio" name="experienceYn" value="1">있음</label>
+                                            <label><input type="radio" name="experienceYn" value="0">없음</label>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
                         <!-- //form box -->
-
-                    </form>
+                    </form>--%>
                     <!-- form box -->
 
-                    <div class="form_btn_box">
-                        <input type="hidden" name="changeYn" value="Y">
-                        <a href="javascript:void(0);" value="${info.seq}" class="btnSt03 form_apply_cancel_edu_btn">신청취소</a>
-                        <a href="javascript:void(0);" onclick="f_main_apply_eduApply01_modify_submit('${info.seq}');" class="btnSt01">수정하기</a>
-                    </div>
+                    <%--<div class="form_btn_box">
+                        &lt;%&ndash;<a href="javascript:void(0);" class="btnSt03 apply_cancel_edu_btn">취소</a>&ndash;%&gt;
+                        <a href="/mypage/eduApplyInfo.do" class="btnSt03">초기화</a>
+                        <a href="javascript:void(0);" onclick="f_main_apply_eduApply01_submit('${seq}');" class="btnSt01">신청하기</a>
+                    </div>--%>
 
                     <!-- form_notice -->
-                    <div class="form_notice_box">
+                    <%--<div class="form_notice_box">
                         <div class="tit_box">교육비 환불 규정</div>
                         <div class="text_box">
                             <div class="box">
@@ -374,40 +361,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
                     <!-- //form_notice -->
-
-                    <!-- popupCancelEdu -->
-                    <div class="popup" id="popupCancelEdu">
-                        <div class="popup_inner popup_form">
-                            <div class="popup_box popup_form">
-                                <div class="box_1">
-                                    <div class="tit_box">교육 취소</div>
-                                    <div class="text_box">[ 상시신청 ]을 신청하셨습니다.<br>정말로 취소하시겠습니까?</div>
-                                    <div class="cmnt_box"><span style="color: #C00000">취소 사유를 10자 이상 입력해 주세요!</span></div>
-                                    <div class="input_box"><input type="text" placeholder="취소 사유 10자 이상 입력" class="cancel_edu_reason">
-                                    </div>
-                                    <div class="btn_box">
-                                        <a href="javascript:void(0);" class="btnSt03 btn_prev">이전</a>
-                                        <a href="javascript:void(0);" class="btnSt04 btn_next edu_cancel_btn">확인</a>
-                                    </div>
-                                </div>
-                                <div class="box_2">
-                                    <div class="text_box">
-                                        취소 신청이 접수되었습니다.<br>
-                                        담당자 승인 후 2주 이내<br>
-                                        교육비 환불 기준에 따라 취소됩니다.<br>
-                                        취소 확정 여부는 추후 마이페이지를 통해<br>
-                                        확인하실 수 있습니다.
-                                    </div>
-                                    <div class="btn_box">
-                                        <a href="javascript:void(0);" class="btnSt04 btn_confirm">확인</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- //popupCancelEdu -->
 
                 </div>
             </div>
@@ -417,6 +372,34 @@
 
     </div>
     <!-- //container -->
+    <c:set var="now" value="<%=new java.util.Date(new java.util.Date().getTime() + 60*60*24*1000*1)%>" />
+    <c:set var="sysDate"><fmt:formatDate value="${now}" pattern="yyyyMMdd"/></c:set>
+
+    <form name="mobileweb" id="" method="post" class="mt-5" accept-charset="euc-kr">
+        <input type="hidden" name="P_INI_PAYMENT" value="${payInfo.payMethod}">
+        <input type="hidden" name="P_MID" value="${payInfo.mid}">
+        <input type="hidden" name="P_OID" value="${payInfo.oid}">
+        <input type="hidden" name="P_AMT" value="${payInfo.price}">
+        <input type="hidden" name="P_GOODS" value="[${payInfo.trainSeq}]${payInfo.goodname}">
+        <input type="hidden" name="P_UNAME" value="${payInfo.buyername}">
+        <input type="hidden" name="P_MOBILE" value="${payInfo.buyertel}">
+        <input type="hidden" name="P_EMAIL" value="${payInfo.buyeremail}">
+        <input type="hidden" name="P_NEXT_URL" value="${payInfo.siteDomain}/mypage/eduApplyInfo.do">
+        <input type="hidden" name="P_NOTI_URL" value="${payInfo.siteDomain}/pc/payment/vbank/vacct/noti.do">
+        <input type="hidden" name="P_CHARSET" value="utf8">
+        <input type="hidden" name="P_RESERVED" value="centerCd=Y">
+        <input type="hidden" name="P_VBANK_DT" value="${sysDate}">
+        <input type="hidden" name="P_VBANK_TM" value="0000">
+        <input type="hidden" name="P_NOTI" value="${payInfo.trainSeq},${payInfo.tableSeq},${payInfo.goodname}">
+
+        <%--<input type="hidden" name="timestamp" value="${payInfo.timestamp}">
+        <input type="hidden" name="use_chkfake" value="${payInfo.useChkfake}">
+        <input type="hidden" name="signature" value="${payInfo.signature}">
+        <input type="hidden" name="verification" value="${payInfo.verification}">
+        <input type="hidden" name="mKey" value="${payInfo.mkey}">
+        <input type="hidden" name="currency" value="WON">
+        <input type="hidden" name="closeUrl" value="">--%>
+    </form>
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
@@ -433,36 +416,18 @@
 <script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
-<script>
-    $(function(){
-        $('#birth-year').val('${memberInfo.birthYear}');
-        $('#birth-month').val('${memberInfo.birthMonth}');
-        $('#birth-day').val('${memberInfo.birthDay}');
-
-        $('#birth-year option').prop('disabled',true);
-        $('#birth-month option').prop('disabled',true);
-        $('#birth-day option').prop('disabled',true);
-
-        let modYn = '${modYn}';
-        if(nvl(modYn,'') !== ''){
-            if(modYn === 'N'){
-                $('#content input[type=text]').prop('readonly', true);
-                $('#content input[type=radio]').prop('disabled',true);
-                $('#content select option').prop('disabled',true);
-
-                $('.form_btn_box').hide();
-
-                Swal.fire({
-                    title: '[교육 신청 정보]',
-                    html: '해당 교육은<br>마감 또는 관리자에 의해 삭제된 교육이므로,<br>정보 수정이 불가합니다.',
-                    icon: 'info',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: '확인'
-                });
+    <script type="text/javascript">
+        $(function(){
+            function on_pay() {
+                let myForm = document.mobileweb;
+                myForm.action = "https://mobile.inicis.com/smart/payment/";
+                myForm.target = "_self";
+                myForm.submit();
             }
-        }
-    });
-</script>
+
+            on_pay();
+        })
+    </script>
 </c:if>
 </body>
 </html>

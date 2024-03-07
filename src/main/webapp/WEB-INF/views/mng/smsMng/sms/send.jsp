@@ -70,7 +70,6 @@
     <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
@@ -1591,6 +1590,7 @@ if (document.documentElement) {
                                                             <th>tableSeq</th>
                                                             <th>trainSeq</th>
                                                             <th>memberSeq</th>
+                                                            <th class="text-center min-w-70px">교육차시</th>
                                                             <th class="text-center min-w-70px">ID</th>
                                                             <th class="text-center min-w-70px">이름(국문)</th>
                                                             <th class="text-center min-w-150px">연락처</th>
@@ -1599,6 +1599,7 @@ if (document.documentElement) {
                                                         </thead>
                                                         <tbody class="fw-semibold text-gray-600">
                                                         <tr>
+                                                            <td></td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>

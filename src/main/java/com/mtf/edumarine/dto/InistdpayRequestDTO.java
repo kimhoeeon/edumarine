@@ -32,6 +32,7 @@ public class InistdpayRequestDTO {
     private String memberId;
     private String tableSeq;
     private String memberSeq;
+    private String payMethod;
 
     private String continueYn;
 }

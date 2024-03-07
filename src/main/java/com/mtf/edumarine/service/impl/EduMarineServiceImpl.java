@@ -1087,6 +1087,12 @@ public class EduMarineServiceImpl implements EduMarineService {
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail] Seq : " + boarderDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(boarderDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(boarderDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
             }
 
         }catch (Exception e){
@@ -1114,6 +1120,12 @@ public class EduMarineServiceImpl implements EduMarineService {
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail] Seq : " + frpDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(frpDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(frpDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
             }
 
         }catch (Exception e){
@@ -1141,6 +1153,12 @@ public class EduMarineServiceImpl implements EduMarineService {
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail] Seq : " + inboarderDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(inboarderDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(inboarderDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
             }
 
         }catch (Exception e){
@@ -1168,6 +1186,12 @@ public class EduMarineServiceImpl implements EduMarineService {
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail] Seq : " + outboarderDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(outboarderDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(outboarderDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
             }
 
         }catch (Exception e){
@@ -1195,6 +1219,12 @@ public class EduMarineServiceImpl implements EduMarineService {
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail] Seq : " + sailyachtDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(sailyachtDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(sailyachtDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
             }
 
         }catch (Exception e){
@@ -1838,6 +1868,20 @@ public class EduMarineServiceImpl implements EduMarineService {
     public List<FaqDTO> processSelectFaqList(SearchDTO searchDTO) {
         System.out.println("EduMarineServiceImpl > processSelectFaqList");
         return eduMarineMapper.selectFaqList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public Integer processUpdatePaymentVbankNoti(PaymentDTO paymentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processUpdatePaymentVbankNoti");
+        return eduMarineMapper.updatePaymentVbankNoti(paymentDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public PaymentDTO processSelectPaymentVbankInfo(PaymentDTO paymentDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectPaymentVbankInfo");
+        return eduMarineMapper.selectPaymentVbankInfo(paymentDTO);
     }
 
     /*************************************************

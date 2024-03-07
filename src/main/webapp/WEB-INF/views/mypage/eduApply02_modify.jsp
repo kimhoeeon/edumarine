@@ -85,7 +85,6 @@
     <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
@@ -851,6 +850,7 @@
                         <input type="hidden" name="chg_seq" value="${info.seq}">
                         <input type="hidden" name="chg_trainName" value="해상엔진 테크니션 (선내기/선외기)">
                         <input type="hidden" name="chg_payMethod" value="${info.payMethod}">
+                        <input type="hidden" name="chg_applyStatus" value="${info.applyStatus}">
                         <a href="javascript:void(0);" value="${info.seq}" class="btnSt03 form_apply_cancel_edu_btn">신청취소</a>
                         <a href="javascript:void(0);" onclick="f_main_apply_eduApply02_modify_submit(this, '${info.seq}');" class="btnSt01">수정하기</a>
                     </div>
@@ -894,9 +894,44 @@
                                     <div class="cmnt_box"><span style="color: #C00000">취소 사유를 10자 이상 입력해 주세요!</span></div>
                                     <div class="input_box"><input type="text" placeholder="취소 사유 10자 이상 입력" class="cancel_edu_reason">
                                     </div>
+                                    <div class="refund_account_box">
+                                        <div class="input_box" style="text-align: left;">
+                                            <select id="cancel_edu_bank_select">
+                                                <option value="" selected disabled>환불계좌은행</option>
+                                                <option value="04">KB국민</option>
+                                                <option value="03">IBK기업</option>
+                                                <option value="11">NH농협</option>
+                                                <option value="88">신한</option>
+                                                <option value="53">씨티</option>
+                                                <option value="23">SC제일</option>
+                                                <option value="20">우리</option>
+                                                <option value="71">우체국</option>
+                                                <option value="45">새마을금고</option>
+                                                <option value="48">신협</option>
+                                                <option value="81">하나</option>
+                                                <option value="50">저축</option>
+                                                <option value="90">카카오뱅크</option>
+                                                <option value="89">케이뱅크</option>
+                                                <option value="92">토스뱅크</option>
+                                                <option value="39">경남</option>
+                                                <option value="34">광주</option>
+                                                <option value="31">대구</option>
+                                                <option value="32">부산</option>
+                                                <option value="07">수협</option>
+                                                <option value="37">전북</option>
+                                                <option value="35">제주</option>
+                                            </select>
+                                        </div>
+                                        <div class="input_box">
+                                            <input type="text" id="cancel_edu_bank_customer_name" placeholder="환불계좌 예금주명 입력">
+                                        </div>
+                                        <div class="input_box">
+                                            <input type="text" id="cancel_edu_bank_number" class="onlyNum" placeholder="환불계좌번호 입력">
+                                        </div>
+                                    </div>
                                     <div class="btn_box">
                                         <a href="javascript:void(0);" class="btnSt03 btn_prev">이전</a>
-                                        <a href="javascript:void(0);" class="btnSt04 btn_next" onclick="f_edu_apply_cancel_btn('${info.seq}','해상엔진 테크니션 (선내기/선외기)','payStatus')">확인</a>
+                                        <a href="javascript:void(0);" class="btnSt04 btn_next edu_cancel_btn">확인</a>
                                     </div>
                                 </div>
                                 <div class="box_2">

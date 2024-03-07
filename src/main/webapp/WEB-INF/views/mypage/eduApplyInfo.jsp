@@ -85,7 +85,6 @@
     <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
@@ -105,6 +104,7 @@
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -209,7 +209,7 @@
                                             </div>
                                             <div class="modify">
                                                 <input type="hidden" name="changeYn" value="${eduApplyInfo.changeYn}">
-                                                <a href="javascript:void(0);" value="${eduApplyInfo.seq}" data-value="${eduApplyInfo.payMethod}" class="btn_cancel form_cancel_edu_btn">취소</a>
+                                                <a href="javascript:void(0);" value="${eduApplyInfo.seq}" data-value="${eduApplyInfo.payMethod}" data-status="${eduApplyInfo.payStatus}" class="btn_cancel form_cancel_edu_btn">취소</a>
                                                 <a href="javascript:void(0);" onclick="f_edu_apply_modify_btn('${eduApplyInfo.trainStartDttm}', '${eduApplyInfo.trainName}', '${eduApplyInfo.seq}')" class="btn_modify">수정</a>
                                             </div>
                                         </li>
@@ -235,7 +235,7 @@
                                 <li>
                                     <div class="number">번호</div>
                                     <div class="subject">교육명</div>
-                                    <div class="state">신청현황</div>
+                                    <div class="state" style="flex-basis: 150px;">신청현황</div>
                                 </li>
                             </ul>
                             <ul class="list_body">
@@ -248,7 +248,7 @@
                                                 <div class="edu_period">${eduApplyInfoCancel.trainStartDttm} ~ ${eduApplyInfoCancel.trainEndDttm}</div>
                                                     <%--<div class="edu_time">00:00 ~ 00:00</div>--%>
                                             </div>
-                                            <div class="state">${eduApplyInfoCancel.payStatus}</div>
+                                            <div class="state" style="flex-basis: 150px;">${eduApplyInfoCancel.payStatus}</div>
                                         </li>
                                     </c:forEach>
                                 </c:if>
@@ -330,6 +330,37 @@
                     </div>
                     <!-- //popupCancelEdu -->
 
+                    <!-- popupPaySel -->
+                    <div class="popup" id="popupPaySel">
+                        <div class="popup_inner popup_form">
+                            <div class="popup_box popup_form">
+                                <div class="box_1">
+                                    <div class="tit_box">결제 수단 선택</div>
+                                    <div class="text_box">결제 수단을 선택해 주세요</div>
+                                    <div class="pay_select_box">
+                                        <div class="input_box" style="text-align: left;">
+                                            <input type="hidden" id="tableSeq" value="">
+                                            <input type="hidden" id="trainSeq" value="">
+                                            <input type="hidden" id="buyername" value="">
+                                            <input type="hidden" id="buyertel" value="">
+                                            <input type="hidden" id="buyeremail" value="">
+                                            <select id="pay_select" style="width: 100%">
+                                                <option value="" selected disabled>결제 수단</option>
+                                                <option value="CARD">신용카드</option>
+                                                <option value="VBANK">가상계좌(무통장입금)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="btn_box">
+                                        <a href="javascript:void(0);" class="btnSt03 btn_prev">취소</a>
+                                        <a href="javascript:void(0);" class="btnSt04" onclick="f_main_apply_payment_mobile(this);">확인</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //popupPaySel -->
+
                 </div>
             </div>
             <!-- //content -->
@@ -359,11 +390,13 @@
 
 <script>
     $(function(){
-        let payResInfo_resultCode = '${payResInfo.resultCode}';
-        let payResInfo_resultMsg = '${payResInfo.resultMsg}';
-        if(nvl(payResInfo_resultCode,'') !== ''){
+        let pc_payResInfo_resultCode = '${payResInfo.resultCode}';
+        let pc_payResInfo_resultMsg = '${payResInfo.resultMsg}';
+        let mo_payResInfo_resultCode = '${payResInfo.p_STATUS}';
+        let mo_payResInfo_resultMsg = '${payResInfo.p_RMESG1}';
+        if(nvl(pc_payResInfo_resultCode,'') !== '' || nvl(mo_payResInfo_resultCode,'') !== ''){
 
-            if(payResInfo_resultCode === "0000"){
+            if(pc_payResInfo_resultCode === "0000" || mo_payResInfo_resultCode === "00"){
                 Swal.fire({
                     title: '[교육 신청 결제 완료]',
                     html: '교육 신청 결제가 완료되었습니다.<br>상세 내역은 마이페이지에서 확인 가능합니다.',
@@ -378,10 +411,13 @@
                 });
                 return false;
             }else{
-                showMessage('', 'error', '[교육 신청 결제 실패]', '교육 신청 결제가 실패하였습니다.<br>오류메시지 : [' + payResInfo_resultCode + '] ' + payResInfo_resultMsg, '');
+                let code = nvl(pc_payResInfo_resultCode,'') === '' ? mo_payResInfo_resultCode : pc_payResInfo_resultCode;
+                let msg = nvl(pc_payResInfo_resultMsg,'') === '' ? mo_payResInfo_resultMsg : pc_payResInfo_resultMsg;
+                showMessage('', 'error', '[교육 신청 결제 실패]', '교육 신청 결제가 실패하였습니다.<br>오류메시지 : [' + code + '] ' + msg, '');
             }
 
         }
+
     })
 </script>
 </body>

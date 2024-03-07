@@ -661,7 +661,8 @@ let DTCustomerBoarder = function () {
 
         renderHTML += '<div>';
         if(nvl(payMethod,'') !== ''){
-            if(payMethod === 'Card'){
+            payMethod = payMethod.toString().toLowerCase();
+            if(payMethod.includes('card')){
                 renderHTML += '( 카드 )';
             }else{
                 renderHTML += '( 계좌 )';
@@ -899,7 +900,8 @@ let DTCustomerFrp = function () {
 
         renderHTML += '<div>';
         if(nvl(payMethod,'') !== ''){
-            if(payMethod === 'Card'){
+            payMethod = payMethod.toString().toLowerCase();
+            if(payMethod.includes('card')){
                 renderHTML += '( 카드 )';
             }else{
                 renderHTML += '( 계좌 )';
@@ -1136,7 +1138,8 @@ let DTCustomerOutboarder = function () {
 
         renderHTML += '<div>';
         if(nvl(payMethod,'') !== ''){
-            if(payMethod === 'Card'){
+            payMethod = payMethod.toString().toLowerCase();
+            if(payMethod.includes('card')){
                 renderHTML += '( 카드 )';
             }else{
                 renderHTML += '( 계좌 )';
@@ -1373,7 +1376,8 @@ let DTCustomerInboarder = function () {
 
         renderHTML += '<div>';
         if(nvl(payMethod,'') !== ''){
-            if(payMethod === 'Card'){
+            payMethod = payMethod.toString().toLowerCase();
+            if(payMethod.includes('card')){
                 renderHTML += '( 카드 )';
             }else{
                 renderHTML += '( 계좌 )';
@@ -1610,7 +1614,8 @@ let DTCustomerSailyacht = function () {
 
         renderHTML += '<div>';
         if(nvl(payMethod,'') !== ''){
-            if(payMethod === 'Card'){
+            payMethod = payMethod.toString().toLowerCase();
+            if(payMethod.includes('card')){
                 renderHTML += '( 카드 )';
             }else{
                 renderHTML += '( 계좌 )';
@@ -1988,15 +1993,23 @@ let DTEducationPayment = function () {
                     'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
                 },*/
                 {
-                    'targets': 7,
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
                     'render': function (data, type, row) { return renderPaySumCell(data, type, row); }
                 },
                 {
                     'targets': 9,
+                    'render': function (data, type, row) { return renderPayMethodCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
                     'render': function (data, type, row) { return renderStatusCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -2010,6 +2023,7 @@ let DTEducationPayment = function () {
                 { data: 'memberName'},
                 { data: 'memberPhone'},
                 { data: 'trainSeq'},
+                { data: 'nextTime'},
                 { data: 'trainName'},
                 { data: 'paySum'},
                 { data: 'payMethod'},
@@ -2018,6 +2032,26 @@ let DTEducationPayment = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderPayMethodCell(data, type, row){
+        let renderHTML = '미확인';
+        let payMethod = row.payMethod;
+        if(nvl(payMethod,'') !== ''){
+            if(payMethod.toString().toLowerCase().includes('card')){
+                renderHTML = '카드';
+            }else if(payMethod.toString().toLowerCase().includes('vbank')){
+                renderHTML = '가상계좌';
+            }else{
+                renderHTML = payMethod;
+            }
+        }
+
+        return renderHTML;
+    }
+
+    function renderNextTimeCell(data, type, row){
+        return row.nextTime + '차';
     }
 
     function renderCheckBoxCell(data, type, row){
@@ -3541,7 +3575,11 @@ let DTSmsMngSmsTrain = function () {
                     'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
                     'render': function (data, type, row) { return renderNameCell(data, type, row); }
                 },
                 { visible: false, targets: [2,3,4] },
@@ -3553,12 +3591,17 @@ let DTSmsMngSmsTrain = function () {
                 { data: 'tableSeq'},
                 { data: 'trainSeq'},
                 { data: 'memberSeq'},
+                { data: 'nextTime'},
                 { data: 'id'},
                 { data: 'name'},
                 { data: 'phone'},
                 { data: 'applyStatus'}
             ]
         });
+    }
+
+    function renderNextTimeCell(data, type, row){
+        return row.nextTime + '차';
     }
 
     function renderCheckBoxCell(data, type, row){

@@ -85,7 +85,6 @@
     <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
@@ -173,7 +172,7 @@
                                     <div class="subject">과정명</div>
                                     <div class="date">신청일(결제일)</div>
                                     <div class="method" style="flex-basis: 280px;">결제 정보</div>
-                                    <div class="state">결제 상태</div>
+                                    <div class="state" style="flex-basis: 130px;">결제 상태</div>
                                 </li>
                             </ul>
                             <ul class="list_body">
@@ -192,18 +191,18 @@
                                                 <fmt:formatDate value="${dateString}" pattern="yyyy.MM.dd" />
                                             </div>
                                             <div class="method" style="flex-basis: 280px;">
-                                                <c:if test="${info.payMethod eq 'Card'}">
+                                                <c:if test="${fn:contains(fn:toLowerCase(info.payMethod), 'card')}">
                                                     ${info.cardPurchaseName}<br>
                                                     (${info.cardNum})
                                                 </c:if>
-                                                <c:if test="${info.payMethod eq 'VBank'}">
+                                                <c:if test="${fn:contains(fn:toLowerCase(info.payMethod), 'vbank')}">
                                                     <fmt:parseDate var="dateString1" value="${info.vactDate}" pattern="yyyyMMdd" />
                                                     가상계좌<br>
                                                     (${info.vactBankName} / ${info.vactNum})<br>
-                                                    입급기한 : <fmt:formatDate value="${dateString1}" pattern="yyyy.MM.dd" />
+                                                    입금기한 : <fmt:formatDate value="${dateString1}" pattern="yyyy.MM.dd" />
                                                 </c:if>
                                             </div>
-                                            <div class="state">${info.payStatus}</div>
+                                            <div class="state" style="flex-basis: 130px;">${info.payStatus}</div>
                                         </li>
                                     </c:forEach>
                                 </c:if>

@@ -243,4 +243,12 @@ public interface EduMarineMapper {
     Integer checkCommunity(CommunityDTO communityDTO);
 
     Integer checkReply(ReplyDTO replyDTO);
+
+    Integer updatePaymentVbankNoti(PaymentDTO paymentDTO);
+
+    PaymentDTO selectPaymentVbankInfo(PaymentDTO paymentDTO);
+
+    PaymentDTO selectPaymentTableSeq(String seq);
+
+    void updatePayment(PaymentDTO paymentDTO);
 }
