@@ -7,7 +7,6 @@ import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineService;
-import org.apache.poi.ss.formula.functions.Today;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -1192,20 +1197,41 @@ public class EduMarineController {
         }
 
         // 이니시스 결제 Response
-        System.out.println("이니시스 결제 Response resultCode : " + request.getParameter("resultCode"));
-        String resultCode = request.getParameter("resultCode");
+        String pc_resultCode = request.getParameter("resultCode");
+        String mo_resultCode = request.getParameter("P_STATUS");
 
-        if(resultCode != null && !"V801".equals(resultCode)){
-            System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
-            System.out.println("Session Id : " + session.getAttribute("id"));
-            if(session.getAttribute("id") != null){
-                String id = session.getAttribute("id").toString();
-                MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
+        System.out.println("PC : " + pc_resultCode + " / MOBILE : " + mo_resultCode);
+        System.out.println(request.getParameter("P_RMESG1"));
 
-                InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO(memberInfo.getSeq(), request);
-                mv.addObject("payResInfo", inistdpayResponseDTO);
-            }else{
-                System.out.println("session getAttribute is null");
+        if(pc_resultCode != null && !"null".equals(pc_resultCode)){
+            System.out.println("이니시스 결제 Response pc_resultCode : " + pc_resultCode);
+            if(!"V801".equals(pc_resultCode)) { // 결제 도중 취소 코드 V801
+                System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
+                System.out.println("Session Id : " + session.getAttribute("id"));
+                if (session.getAttribute("id") != null) {
+                    String id = session.getAttribute("id").toString();
+                    MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
+
+                    InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("PC", memberInfo.getSeq(), request);
+                    mv.addObject("payResInfo", inistdpayResponseDTO);
+                } else {
+                    System.out.println("Session getAttribute is null , PC");
+                }
+            }
+        }else if(mo_resultCode != null && !"null".equals(mo_resultCode)){
+            System.out.println("이니시스 결제 Response mo_resultCode : " + mo_resultCode);
+            if(!"01".equals(mo_resultCode)) { // 결제 도중 취소 코드 01
+                System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
+                System.out.println("Session Id : " + session.getAttribute("id"));
+                if (session.getAttribute("id") != null) {
+                    String id = session.getAttribute("id").toString();
+                    MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
+
+                    InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("MOBILE", memberInfo.getSeq(), request);
+                    mv.addObject("payResInfo", inistdpayResponseDTO);
+                } else {
+                    System.out.println("Session getAttribute is null , MOBILE");
+                }
             }
         }
 
@@ -1699,304 +1725,550 @@ public class EduMarineController {
     // Common
     //***************************************************************************
 
-    private InistdpayResponseDTO getInistdpayResponseDTO(String memberSeq, HttpServletRequest request) {
-        Map<String, String> resultMap = new HashMap<String, String>();
+    private InistdpayResponseDTO getInistdpayResponseDTO(String deviceGbn, String memberSeq, HttpServletRequest request) {
+        InistdpayResponseDTO inistdpayResponseDTO = new InistdpayResponseDTO();
 
-        String merchantData = "";
-        try{
+        if(deviceGbn.equals("PC")) {
+            Map<String, String> resultMap = new HashMap<String, String>();
+            String merchantData = "";
+            try {
 
-            //#############################
-            // 인증결과 파라미터 일괄 수신
-            //#############################
-            request.setCharacterEncoding("UTF-8");
+                //#############################
+                // 인증결과 파라미터 일괄 수신
+                //#############################
+                request.setCharacterEncoding("UTF-8");
 
-            Map<String,String> paramMap = new Hashtable<String,String>();
+                Map<String, String> paramMap = new Hashtable<String, String>();
 
-            Enumeration elems = request.getParameterNames();
+                Enumeration elems = request.getParameterNames();
 
-            String temp = "";
+                String temp = "";
 
-            while(elems.hasMoreElements())
-            {
-                temp = (String) elems.nextElement();
-                paramMap.put(temp, request.getParameter(temp));
-            }
-
-            //##############################
-            // 인증성공 resultCode=0000 확인
-            // IDC센터 확인 [idc_name=fc,ks,stg]
-            // idc_name 으로 수신 받은 값 기준 properties 에 설정된 승인URL과 authURL 이 같은지 비교
-            // 승인URL은  https://manual.inicis.com 참조
-            //##############################
-
-            if("0000".equals(paramMap.get("resultCode")) && paramMap.get("authUrl").equals(ResourceBundle.getBundle("idc_name").getString(paramMap.get("idc_name")))){
-
-                System.out.println("####인증성공/승인요청####");
-
-                //############################################
-                // 1.전문 필드 값 설정(***가맹점 개발수정***)
-                //############################################
-
-                String mid 		= paramMap.get("mid");
-                String timestamp= SignatureUtil.getTimestamp();
-                String charset 	= "UTF-8";
-                String format 	= "JSON";
-                String authToken= paramMap.get("authToken");
-                String authUrl	= paramMap.get("authUrl");
-                String netCancel= paramMap.get("netCancelUrl");
-                merchantData = paramMap.get("merchantData");
-
-                //#####################
-                // 2.signature 생성
-                //#####################
-                Map<String, String> signParam = new HashMap<String, String>();
-
-                signParam.put("authToken",	authToken);		// 필수
-                signParam.put("timestamp",	timestamp);		// 필수
-
-                // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
-                String signature = SignatureUtil.makeSignature(signParam);
-
-                signParam.put("signKey",	"elVJSjZPYWhaelBCVjlCSFYwbzdkQT09");		// 필수
-
-                // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
-                String verification = SignatureUtil.makeSignature(signParam);
-
-                //#####################
-                // 3.API 요청 전문 생성
-                //#####################
-                Map<String, String> authMap = new Hashtable<String, String>();
-
-                authMap.put("mid"			,mid);			// 필수
-                authMap.put("authToken"		,authToken);	// 필수
-                authMap.put("signature"		,signature);	// 필수
-                authMap.put("verification"	,verification);	// 필수
-                authMap.put("timestamp"		,timestamp);	// 필수
-                authMap.put("charset"		,charset);		// default=UTF-8
-                authMap.put("format"		,format);
-
-                HttpUtil httpUtil = new HttpUtil();
-
-                try{
-                    //#####################
-                    // 4.API 통신 시작
-                    //#####################
-
-                    String authResultString = "";
-
-                    authResultString = httpUtil.processHTTP(authMap, authUrl);
-
-                    //############################################################
-                    //6.API 통신결과 처리(***가맹점 개발수정***)
-                    //############################################################
-
-                    String test = authResultString.replace(",", "&").replace(":", "=").replace("\"", "").replace(" ","").replace("\n", "").replace("}", "").replace("{", "");
-
-                    resultMap = ParseUtil.parseStringToMap(test); //문자열을 MAP형식으로 파싱
-
-                    // 수신결과를 파싱후 resultCode가 "0000"이면 승인성공 이외 실패
-                    //throw new Exception("강제 망취소 요청 Exception ");
-
-                } catch (Exception ex) {
-
-                    //####################################
-                    // 실패시 처리(***가맹점 개발수정***)
-                    //####################################
-
-                    //---- db 저장 실패시 등 예외처리----//
-                    System.out.println(ex.getMessage());
-
-                    //#####################
-                    // 망취소 API
-                    //#####################
-                    String netcancelResultString = httpUtil.processHTTP(authMap, netCancel);	// 망취소 요청 API url(고정, 임의 세팅 금지)
-
-                    System.out.println("## 망취소 API 결과 ##");
-
-                    // 망취소 결과 확인
-                    System.out.println("<p>"+netcancelResultString.replaceAll("<", "&lt;").replaceAll(">", "&gt;")+"</p>");
+                while (elems.hasMoreElements()) {
+                    temp = (String) elems.nextElement();
+                    paramMap.put(temp, request.getParameter(temp));
                 }
 
-            }else{
+                //##############################
+                // 인증성공 resultCode=0000 확인
+                // IDC센터 확인 [idc_name=fc,ks,stg]
+                // idc_name 으로 수신 받은 값 기준 properties 에 설정된 승인URL과 authURL 이 같은지 비교
+                // 승인URL은  https://manual.inicis.com 참조
+                //##############################
 
-                resultMap.put("resultCode", paramMap.get("resultCode"));
-                resultMap.put("resultMsg", paramMap.get("resultMsg"));
+                if ("0000".equals(paramMap.get("resultCode")) && paramMap.get("authUrl").equals(ResourceBundle.getBundle("idc_name").getString(paramMap.get("idc_name")))) {
+
+                    System.out.println("####인증성공/승인요청####");
+
+                    //############################################
+                    // 1.전문 필드 값 설정(***가맹점 개발수정***)
+                    //############################################
+
+                    String mid = paramMap.get("mid");
+                    String timestamp = SignatureUtil.getTimestamp();
+                    String charset = "UTF-8";
+                    String format = "JSON";
+                    String authToken = paramMap.get("authToken");
+                    String authUrl = paramMap.get("authUrl");
+                    String netCancel = paramMap.get("netCancelUrl");
+                    merchantData = paramMap.get("merchantData");
+
+                    //#####################
+                    // 2.signature 생성
+                    //#####################
+                    Map<String, String> signParam = new HashMap<String, String>();
+
+                    signParam.put("authToken", authToken);        // 필수
+                    signParam.put("timestamp", timestamp);        // 필수
+
+                    // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+                    String signature = SignatureUtil.makeSignature(signParam);
+
+                    signParam.put("signKey", "elVJSjZPYWhaelBCVjlCSFYwbzdkQT09");        // 필수
+
+                    // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+                    String verification = SignatureUtil.makeSignature(signParam);
+
+                    //#####################
+                    // 3.API 요청 전문 생성
+                    //#####################
+                    Map<String, String> authMap = new Hashtable<String, String>();
+
+                    authMap.put("mid", mid);            // 필수
+                    authMap.put("authToken", authToken);    // 필수
+                    authMap.put("signature", signature);    // 필수
+                    authMap.put("verification", verification);    // 필수
+                    authMap.put("timestamp", timestamp);    // 필수
+                    authMap.put("charset", charset);        // default=UTF-8
+                    authMap.put("format", format);
+
+                    HttpUtil httpUtil = new HttpUtil();
+
+                    try {
+                        //#####################
+                        // 4.API 통신 시작
+                        //#####################
+
+                        String authResultString = "";
+
+                        authResultString = httpUtil.processHTTP(authMap, authUrl);
+
+                        //############################################################
+                        //6.API 통신결과 처리(***가맹점 개발수정***)
+                        //############################################################
+
+                        String test = authResultString.replace(",", "&").replace(":", "=").replace("\"", "").replace(" ", "").replace("\n", "").replace("}", "").replace("{", "");
+
+                        resultMap = ParseUtil.parseStringToMap(test); //문자열을 MAP형식으로 파싱
+
+                        // 수신결과를 파싱후 resultCode가 "0000"이면 승인성공 이외 실패
+                        //throw new Exception("강제 망취소 요청 Exception ");
+
+                    } catch (Exception ex) {
+
+                        //####################################
+                        // 실패시 처리(***가맹점 개발수정***)
+                        //####################################
+
+                        //---- db 저장 실패시 등 예외처리----//
+                        System.out.println(ex.getMessage());
+
+                        //#####################
+                        // 망취소 API
+                        //#####################
+                        String netcancelResultString = httpUtil.processHTTP(authMap, netCancel);    // 망취소 요청 API url(고정, 임의 세팅 금지)
+
+                        System.out.println("## 망취소 API 결과 ##");
+
+                        // 망취소 결과 확인
+                        System.out.println("<p>" + netcancelResultString.replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "</p>");
+                    }
+
+                } else {
+
+                    resultMap.put("resultCode", paramMap.get("resultCode"));
+                    resultMap.put("resultMsg", paramMap.get("resultMsg"));
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
 
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        InistdpayResponseDTO inistdpayResponseDTO = new InistdpayResponseDTO();
-        inistdpayResponseDTO = (InistdpayResponseDTO)convertMapToObject(resultMap, inistdpayResponseDTO);
-        System.out.println(inistdpayResponseDTO.toString());
-
-        if("0000".equals(inistdpayResponseDTO.getResultCode())) {
-            // 결제내역 테이블 Insert process
-
-            String goodName = inistdpayResponseDTO.getGoodName(); // [T0000003]상시신청
-            String trainSeq = goodName.substring(goodName.indexOf("[") + 1, goodName.indexOf("]")); // T0000003
-            String[] gbnArr = goodName.split("]"); // 상시신청
-
-            PaymentDTO paymentDTO = new PaymentDTO();
-            paymentDTO.setMemberSeq(memberSeq);
-            paymentDTO.setMemberName(inistdpayResponseDTO.getBuyerName());
-            paymentDTO.setMemberPhone(inistdpayResponseDTO.getBuyerTel());
-            paymentDTO.setTableSeq(merchantData);
-            paymentDTO.setTrainSeq(trainSeq);
-            paymentDTO.setTrainName(gbnArr[1]);
-            paymentDTO.setBuyerName(inistdpayResponseDTO.getBuyerName());
-            paymentDTO.setBuyerTel(inistdpayResponseDTO.getBuyerTel());
-            paymentDTO.setBuyerEmail(inistdpayResponseDTO.getBuyerEmail());
-            paymentDTO.setCustEmail(inistdpayResponseDTO.getCustEmail());
-            paymentDTO.setPaySum(Integer.valueOf(inistdpayResponseDTO.getTotPrice()));
-            paymentDTO.setTotPrice(inistdpayResponseDTO.getTotPrice());
-            paymentDTO.setGoodName(inistdpayResponseDTO.getGoodName());
-            paymentDTO.setGoodsName(inistdpayResponseDTO.getGoodsName());
-            paymentDTO.setApplDate(inistdpayResponseDTO.getApplDate());
-            paymentDTO.setApplTime(inistdpayResponseDTO.getApplTime());
-            paymentDTO.setMoid(inistdpayResponseDTO.getMOID());
-            paymentDTO.setMid(inistdpayResponseDTO.getMid());
-            paymentDTO.setTid(inistdpayResponseDTO.getTid());
-            paymentDTO.setApplNum(inistdpayResponseDTO.getApplNum());
-            paymentDTO.setAuthSignature(inistdpayResponseDTO.getAuthSignature());
-            paymentDTO.setEventCode(inistdpayResponseDTO.getEventCode());
-            paymentDTO.setPayMethod(inistdpayResponseDTO.getPayMethod());
-            paymentDTO.setCurrency(inistdpayResponseDTO.getCurrency());
-            paymentDTO.setPFnNm(inistdpayResponseDTO.getP_FN_NM());
-            paymentDTO.setCardNum(inistdpayResponseDTO.getCARD_Num());
-            paymentDTO.setCardCode(inistdpayResponseDTO.getCARD_Code());
-            paymentDTO.setCardCorpFlag(inistdpayResponseDTO.getCARD_CorpFlag());
-            paymentDTO.setCardMemberNum(inistdpayResponseDTO.getCARD_MemberNum());
-            paymentDTO.setCardApplPrice(inistdpayResponseDTO.getCARD_ApplPrice());
-            paymentDTO.setCardPoint(inistdpayResponseDTO.getCARD_Point());
-            paymentDTO.setCardQuota(inistdpayResponseDTO.getCARD_Quota());
-            paymentDTO.setCardPurchaseCode(inistdpayResponseDTO.getCARD_PurchaseCode());
-            paymentDTO.setCardPrtcCode(inistdpayResponseDTO.getCARD_PrtcCode());
-            paymentDTO.setCardCheckFlag(inistdpayResponseDTO.getCARD_CheckFlag());
-            paymentDTO.setCardBankCode(inistdpayResponseDTO.getCARD_BankCode());
-            paymentDTO.setCardTerminalNum(inistdpayResponseDTO.getCARD_TerminalNum());
-            paymentDTO.setCardUsePoint(inistdpayResponseDTO.getCARD_UsePoint());
-            paymentDTO.setCardInterest(inistdpayResponseDTO.getCARD_Interest());
-            paymentDTO.setCardSrcCode(inistdpayResponseDTO.getCARD_SrcCode());
-            paymentDTO.setCardGwcode(inistdpayResponseDTO.getCARD_GWCode());
-            paymentDTO.setCardPurchaseName(inistdpayResponseDTO.getCARD_PurchaseName());
-            paymentDTO.setPayDevice(inistdpayResponseDTO.getPayDevice());
-            paymentDTO.setVactDate(inistdpayResponseDTO.getVACT_Date());
-            paymentDTO.setVactTime(inistdpayResponseDTO.getVACT_Time());
-            paymentDTO.setVactName(inistdpayResponseDTO.getVACT_Name());
-            paymentDTO.setVactInputName(inistdpayResponseDTO.getVACT_InputName());
-            paymentDTO.setVactBankCode(inistdpayResponseDTO.getVACT_BankCode());
-            paymentDTO.setVactBankName(inistdpayResponseDTO.getVactBankName());
-            paymentDTO.setVactNum(inistdpayResponseDTO.getVACT_Num());
-            paymentDTO.setResultCode(inistdpayResponseDTO.getResultCode());
-            paymentDTO.setResultMsg(inistdpayResponseDTO.getResultMsg());
+            inistdpayResponseDTO = (InistdpayResponseDTO) convertMapToObject(resultMap, inistdpayResponseDTO);
+            System.out.println("PC Inisis Payment Result : " + inistdpayResponseDTO.toString());
 
             if ("0000".equals(inistdpayResponseDTO.getResultCode())) {
-                String payStatus = "결제완료";
-                if ("VBank".equals(inistdpayResponseDTO.getPayMethod())) {
-                    payStatus = "입금대기";
+                // 결제내역 테이블 Insert process
+
+                String goodName = inistdpayResponseDTO.getGoodName(); // [T0000003]상시신청
+                String trainSeq = goodName.substring(goodName.indexOf("[") + 1, goodName.indexOf("]")); // T0000003
+                String[] gbnArr = goodName.split("]"); // 상시신청
+
+                PaymentDTO paymentDTO = new PaymentDTO();
+                paymentDTO.setMemberSeq(memberSeq);
+                paymentDTO.setMemberName(inistdpayResponseDTO.getBuyerName());
+                paymentDTO.setMemberPhone(inistdpayResponseDTO.getBuyerTel());
+                paymentDTO.setTableSeq(merchantData);
+                paymentDTO.setTrainSeq(trainSeq);
+                paymentDTO.setTrainName(gbnArr[1]);
+                paymentDTO.setBuyerName(inistdpayResponseDTO.getBuyerName());
+                paymentDTO.setBuyerTel(inistdpayResponseDTO.getBuyerTel());
+                paymentDTO.setBuyerEmail(inistdpayResponseDTO.getBuyerEmail());
+                paymentDTO.setCustEmail(inistdpayResponseDTO.getCustEmail());
+                paymentDTO.setPaySum(Integer.valueOf(inistdpayResponseDTO.getTotPrice()));
+                paymentDTO.setTotPrice(inistdpayResponseDTO.getTotPrice());
+                paymentDTO.setGoodName(inistdpayResponseDTO.getGoodName());
+                paymentDTO.setGoodsName(inistdpayResponseDTO.getGoodsName());
+                paymentDTO.setApplDate(inistdpayResponseDTO.getApplDate());
+                paymentDTO.setApplTime(inistdpayResponseDTO.getApplTime());
+                paymentDTO.setMoid(inistdpayResponseDTO.getMOID());
+                paymentDTO.setMid(inistdpayResponseDTO.getMid());
+                paymentDTO.setTid(inistdpayResponseDTO.getTid());
+                paymentDTO.setApplNum(inistdpayResponseDTO.getApplNum());
+                paymentDTO.setAuthSignature(inistdpayResponseDTO.getAuthSignature());
+                paymentDTO.setEventCode(inistdpayResponseDTO.getEventCode());
+                paymentDTO.setPayMethod(inistdpayResponseDTO.getPayMethod());
+                paymentDTO.setCurrency(inistdpayResponseDTO.getCurrency());
+                paymentDTO.setPFnNm(inistdpayResponseDTO.getP_FN_NM());
+                paymentDTO.setCardNum(inistdpayResponseDTO.getCARD_Num());
+                paymentDTO.setCardCode(inistdpayResponseDTO.getCARD_Code());
+                paymentDTO.setCardCorpFlag(inistdpayResponseDTO.getCARD_CorpFlag());
+                paymentDTO.setCardMemberNum(inistdpayResponseDTO.getCARD_MemberNum());
+                paymentDTO.setCardApplPrice(inistdpayResponseDTO.getCARD_ApplPrice());
+                paymentDTO.setCardPoint(inistdpayResponseDTO.getCARD_Point());
+                paymentDTO.setCardQuota(inistdpayResponseDTO.getCARD_Quota());
+                paymentDTO.setCardPurchaseCode(inistdpayResponseDTO.getCARD_PurchaseCode());
+                paymentDTO.setCardPrtcCode(inistdpayResponseDTO.getCARD_PrtcCode());
+                paymentDTO.setCardCheckFlag(inistdpayResponseDTO.getCARD_CheckFlag());
+                paymentDTO.setCardBankCode(inistdpayResponseDTO.getCARD_BankCode());
+                paymentDTO.setCardTerminalNum(inistdpayResponseDTO.getCARD_TerminalNum());
+                paymentDTO.setCardUsePoint(inistdpayResponseDTO.getCARD_UsePoint());
+                paymentDTO.setCardInterest(inistdpayResponseDTO.getCARD_Interest());
+                paymentDTO.setCardSrcCode(inistdpayResponseDTO.getCARD_SrcCode());
+                paymentDTO.setCardGwcode(inistdpayResponseDTO.getCARD_GWCode());
+                paymentDTO.setCardPurchaseName(inistdpayResponseDTO.getCARD_PurchaseName());
+                paymentDTO.setPayDevice(inistdpayResponseDTO.getPayDevice());
+                paymentDTO.setVactDate(inistdpayResponseDTO.getVACT_Date());
+                paymentDTO.setVactTime(inistdpayResponseDTO.getVACT_Time());
+                paymentDTO.setVactName(inistdpayResponseDTO.getVACT_Name());
+                paymentDTO.setVactInputName(inistdpayResponseDTO.getVACT_InputName());
+                paymentDTO.setVactBankCode(inistdpayResponseDTO.getVACT_BankCode());
+                paymentDTO.setVactBankName(inistdpayResponseDTO.getVactBankName());
+                paymentDTO.setVactNum(inistdpayResponseDTO.getVACT_Num());
+                paymentDTO.setResultCode(inistdpayResponseDTO.getResultCode());
+                paymentDTO.setResultMsg(inistdpayResponseDTO.getResultMsg());
+
+                if ("0000".equals(inistdpayResponseDTO.getResultCode())) {
+                    String payStatus = "결제완료";
+                    if ("vbank".equalsIgnoreCase(inistdpayResponseDTO.getPayMethod())) {
+                        payStatus = "입금대기";
+                    }
+                    paymentDTO.setPayStatus(payStatus);
                 }
-                paymentDTO.setPayStatus(payStatus);
-            }
 
-            ResponseDTO paymentResDto = eduMarineService.processInsertPayment(paymentDTO);
+                ResponseDTO paymentResDto = eduMarineService.processInsertPayment(paymentDTO);
 
-            if ("0".equals(paymentResDto.getResultCode())) {
-                if (paymentDTO.getTableSeq() != null && !"".equals(paymentDTO.getTableSeq())) {
-                    // 상시신청
-                    // 해상엔진 테크니션 (선내기/선외기)
-                    // FRP 레저보트 선체 정비 테크니션
-                    // 해상엔진 자가정비 (선외기)
-                    // 해상엔진 자가정비 (선내기)
-                    // 해상엔진 자가정비 (세일요트)
-                    if (paymentDTO.getTrainName().contains("상시")) {
+                if ("0".equals(paymentResDto.getResultCode())) {
+                    if (paymentDTO.getTableSeq() != null && !"".equals(paymentDTO.getTableSeq())) {
+                        // 상시신청
+                        // 해상엔진 테크니션 (선내기/선외기)
+                        // FRP 레저보트 선체 정비 테크니션
+                        // 해상엔진 자가정비 (선외기)
+                        // 해상엔진 자가정비 (선내기)
+                        // 해상엔진 자가정비 (세일요트)
+                        if (paymentDTO.getTrainName().contains("상시")) {
 
-                        // regular table
-                        RegularDTO regularDTO = new RegularDTO();
-                        regularDTO.setSeq(paymentDTO.getTableSeq());
-                        regularDTO.setApplyStatus(paymentDTO.getPayStatus());
-                        ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
+                            // regular table
+                            RegularDTO regularDTO = new RegularDTO();
+                            regularDTO.setSeq(paymentDTO.getTableSeq());
+                            regularDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
 
-                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
-                        }
 
-                    } else if (paymentDTO.getTrainName().contains("(선내기/")) {
+                        } else if (paymentDTO.getTrainName().contains("(선내기/")) {
 
-                        // boarder table
-                        BoarderDTO boarderDTO = new BoarderDTO();
-                        boarderDTO.setSeq(paymentDTO.getTableSeq());
-                        boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                        ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
+                            // boarder table
+                            BoarderDTO boarderDTO = new BoarderDTO();
+                            boarderDTO.setSeq(paymentDTO.getTableSeq());
+                            boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
 
-                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
-                        }
 
-                    } else if (paymentDTO.getTrainName().contains("FRP")) {
+                        } else if (paymentDTO.getTrainName().contains("FRP")) {
 
-                        // frp table
-                        FrpDTO frpDTO = new FrpDTO();
-                        frpDTO.setSeq(paymentDTO.getTableSeq());
-                        frpDTO.setApplyStatus(paymentDTO.getPayStatus());
-                        ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
+                            // frp table
+                            FrpDTO frpDTO = new FrpDTO();
+                            frpDTO.setSeq(paymentDTO.getTableSeq());
+                            frpDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
 
-                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
-                        }
 
-                    } else if (paymentDTO.getTrainName().contains("(선외기)")) {
+                        } else if (paymentDTO.getTrainName().contains("(선외기)")) {
 
-                        // outboarder table
-                        OutboarderDTO outboarderDTO = new OutboarderDTO();
-                        outboarderDTO.setSeq(paymentDTO.getTableSeq());
-                        outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                        ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
+                            // outboarder table
+                            OutboarderDTO outboarderDTO = new OutboarderDTO();
+                            outboarderDTO.setSeq(paymentDTO.getTableSeq());
+                            outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
 
-                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
-                        }
 
-                    } else if (paymentDTO.getTrainName().contains("(선내기)")) {
+                        } else if (paymentDTO.getTrainName().contains("(선내기)")) {
 
-                        // inboarder table
-                        InboarderDTO inboarderDTO = new InboarderDTO();
-                        inboarderDTO.setSeq(paymentDTO.getTableSeq());
-                        inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                        ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
+                            // inboarder table
+                            InboarderDTO inboarderDTO = new InboarderDTO();
+                            inboarderDTO.setSeq(paymentDTO.getTableSeq());
+                            inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
 
-                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
-                        }
 
-                    } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
+                        } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
 
-                        // sailyacht table
-                        SailyachtDTO sailyachtDTO = new SailyachtDTO();
-                        sailyachtDTO.setSeq(paymentDTO.getTableSeq());
-                        sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
-                        ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+                            // sailyacht table
+                            SailyachtDTO sailyachtDTO = new SailyachtDTO();
+                            sailyachtDTO.setSeq(paymentDTO.getTableSeq());
+                            sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
 
-                        if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                            if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
-                        }
 
+                        }
                     }
                 }
             }
+        }else if(deviceGbn.equals("MOBILE")){
+            HashMap<String, String> map = new HashMap<String, String>();
+            try {
+                /////////////////////////////////////////////////////////////////////////////
+                ///// 1. 변수 초기화 및 POST 인증값 받음                                 ////
+                /////////////////////////////////////////////////////////////////////////////
+                request.setCharacterEncoding("UTF-8");
+
+                String P_STATUS = request.getParameter("P_STATUS");            // 인증 상태
+                String P_RMESG1 = request.getParameter("P_RMESG1");            // 인증 결과 메시지
+                String P_TID = request.getParameter("P_TID");                // 인증 거래번호
+                String P_REQ_URL = request.getParameter("P_REQ_URL");        // 결제요청 URL
+                String P_NOTI = request.getParameter("P_NOTI");                // 기타주문정보
+
+                ////////////////////////////////////////////////////////////////////////////
+                // 인증성공 P_STATUS=00 확인
+                // IDC센터 확인 [idc_name=fc,ks,stg]
+                // idc_name 으로 수신 받은 값 기준 properties 에 설정된 승인URL과 P_REQ_URL 이 같은지 비교
+                // 승인URL은  https://manual.inicis.com 참조
+                ////////////////////////////////////////////////////////////////////////////
+
+                if (P_STATUS.equals("00") && P_REQ_URL.equals(ResourceBundle.getBundle("idc_name_m").getString(request.getParameter("idc_name")))) {
+
+                    /////////////////////////////////////////////////////////////////////////////
+                    ///// 2. 상점 아이디 설정 :                                              ////
+                    /////    결제요청 페이지에서 사용한 MID값과 동일하게 세팅해야 함...      ////
+                    /////////////////////////////////////////////////////////////////////////////
+
+                    String P_MID = P_TID.substring(10, 20);
+
+                    /////////////////////////////////////////////////////////////////////////////
+                    //// 3. 승인요청 :                                                      ////
+                    //// 	승인요청 API url (P_REQ_URL) 리스트 는 properties 에 세팅하여 사용합니다.
+                    //// 	idc_name 으로 수신 받은 센터 네임을 properties 에서 확인하여 승인요청하시면 됩니다.
+                    /////////////////////////////////////////////////////////////////////////////
+
+                    P_REQ_URL = P_REQ_URL + "?P_TID=" + P_TID + "&P_MID=" + P_MID;
+
+                    try {
+                        URL reqUrl = new URL(P_REQ_URL);
+                        HttpURLConnection conn = (HttpURLConnection) reqUrl.openConnection();
+
+                        if (conn != null) {
+                            conn.setRequestMethod("POST");
+                            conn.setDefaultUseCaches(false);
+                            conn.setDoOutput(true);
+
+                            if (conn.getDoOutput()) {
+                                conn.getOutputStream().flush();
+                                conn.getOutputStream().close();
+                            }
+
+                            conn.connect();
+
+                            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+
+                            String[] values = new String(br.readLine()).split("&");
+
+                            //System.out.println("mobile pay result ========================");
+                            for (String value : values) {
+
+                                // 승인결과를 파싱값 잘라 hashmap에 저장
+                                int i = value.indexOf("=");
+                                String key1 = value.substring(0, i);
+                                String value1 = value.substring(i + 1);
+                                map.put(key1, value1);
+
+                                //System.out.println(key1 + " / " + value1);
+                            }
+
+                            br.close();
+                        }
+
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
+
+                } else {
+
+                    map.put("P_STATUS", P_STATUS);
+                    map.put("P_RMESG1", P_RMESG1);
+
+                }
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+
+            inistdpayResponseDTO = (InistdpayResponseDTO) convertMapToObject(map, inistdpayResponseDTO);
+            System.out.println("MOBILE Inisis Payment Result : " + inistdpayResponseDTO.toString());
+
+            if ("00".equals(inistdpayResponseDTO.getP_STATUS())) {
+                // 결제내역 테이블 Insert process
+
+                String[] P_NOTI_ARR = inistdpayResponseDTO.getP_NOTI().split(","); //T0000030,O0000261,해상엔진 자가정비 (선외기)
+                String goodName = "[" + P_NOTI_ARR[0] + "]" + P_NOTI_ARR[2]; // [T0000030]해상엔진 자가정비 (선외기)
+                String trainSeq = P_NOTI_ARR[0]; // T0000030
+                String tableSeq = P_NOTI_ARR[1]; // O0000261
+                String trainName = P_NOTI_ARR[2]; // 해상엔진 자가정비 (선외기)
+
+                PaymentDTO paymentDTO = new PaymentDTO();
+                paymentDTO.setMemberSeq(memberSeq);
+                paymentDTO.setMemberName(inistdpayResponseDTO.getP_UNAME());
+                paymentDTO.setTableSeq(tableSeq);
+                paymentDTO.setTrainSeq(trainSeq);
+                paymentDTO.setTrainName(trainName);
+                paymentDTO.setBuyerName(inistdpayResponseDTO.getP_UNAME());
+                paymentDTO.setPaySum(Integer.valueOf(inistdpayResponseDTO.getP_AMT()));
+                paymentDTO.setTotPrice(inistdpayResponseDTO.getP_AMT());
+                paymentDTO.setGoodName(goodName);
+                paymentDTO.setGoodsName(goodName);
+                paymentDTO.setApplDate(inistdpayResponseDTO.getP_AUTH_DT().substring(0,8));
+                paymentDTO.setApplTime(inistdpayResponseDTO.getP_AUTH_DT().substring(8));
+                paymentDTO.setMoid(inistdpayResponseDTO.getP_OID());
+                paymentDTO.setMid(inistdpayResponseDTO.getP_MID());
+                paymentDTO.setTid(inistdpayResponseDTO.getP_TID());
+                paymentDTO.setApplNum(inistdpayResponseDTO.getP_AUTH_NO());
+                paymentDTO.setPayMethod(inistdpayResponseDTO.getP_TYPE());
+                paymentDTO.setPFnNm(inistdpayResponseDTO.getP_FN_NM());
+                paymentDTO.setCardNum(inistdpayResponseDTO.getP_CARD_NUM());
+                paymentDTO.setCardCode(inistdpayResponseDTO.getP_FN_CD1());
+                paymentDTO.setCardCorpFlag(inistdpayResponseDTO.getCARD_CorpFlag());
+                paymentDTO.setCardApplPrice(inistdpayResponseDTO.getP_CARD_APPLPRICE());
+                paymentDTO.setCardPurchaseCode(inistdpayResponseDTO.getP_CARD_PURCHASE_CODE());
+                paymentDTO.setCardPrtcCode(inistdpayResponseDTO.getP_CARD_PRTC_CODE());
+                paymentDTO.setCardCheckFlag(inistdpayResponseDTO.getP_CARD_CHECKFLAG());
+                paymentDTO.setCardBankCode(inistdpayResponseDTO.getP_CARD_ISSUER_CODE());
+                paymentDTO.setCardInterest(inistdpayResponseDTO.getP_CARD_INTEREST());
+                paymentDTO.setPayDevice("MOBILE");
+                paymentDTO.setVactDate(inistdpayResponseDTO.getP_VACT_DATE());
+                paymentDTO.setVactTime(inistdpayResponseDTO.getP_VACT_TIME());
+                paymentDTO.setVactName(inistdpayResponseDTO.getP_VACT_NAME());
+//                paymentDTO.setVactInputName(inistdpayResponseDTO.getVACT_InputName());
+                paymentDTO.setVactBankCode(inistdpayResponseDTO.getP_VACT_BANK_CODE());
+                paymentDTO.setVactBankName(inistdpayResponseDTO.getP_FN_NM());
+                paymentDTO.setVactNum(inistdpayResponseDTO.getP_VACT_NUM());
+                paymentDTO.setResultCode(inistdpayResponseDTO.getP_STATUS());
+                paymentDTO.setResultMsg(inistdpayResponseDTO.getP_RMESG1());
+
+                if ("00".equals(inistdpayResponseDTO.getP_STATUS())) {
+                    String payStatus = "결제완료";
+                    if ("vbank".equalsIgnoreCase(inistdpayResponseDTO.getP_TYPE())) {
+                        payStatus = "입금대기";
+                    }
+                    paymentDTO.setPayStatus(payStatus);
+                }
+
+                ResponseDTO paymentResDto = eduMarineService.processInsertPayment(paymentDTO);
+
+                if ("0".equals(paymentResDto.getResultCode())) {
+                    if (paymentDTO.getTableSeq() != null && !"".equals(paymentDTO.getTableSeq())) {
+                        // 상시신청
+                        // 해상엔진 테크니션 (선내기/선외기)
+                        // FRP 레저보트 선체 정비 테크니션
+                        // 해상엔진 자가정비 (선외기)
+                        // 해상엔진 자가정비 (선내기)
+                        // 해상엔진 자가정비 (세일요트)
+                        if (paymentDTO.getTrainName().contains("상시")) {
+
+                            // regular table
+                            RegularDTO regularDTO = new RegularDTO();
+                            regularDTO.setSeq(paymentDTO.getTableSeq());
+                            regularDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("(선내기/")) {
+
+                            // boarder table
+                            BoarderDTO boarderDTO = new BoarderDTO();
+                            boarderDTO.setSeq(paymentDTO.getTableSeq());
+                            boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("FRP")) {
+
+                            // frp table
+                            FrpDTO frpDTO = new FrpDTO();
+                            frpDTO.setSeq(paymentDTO.getTableSeq());
+                            frpDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("(선외기)")) {
+
+                            // outboarder table
+                            OutboarderDTO outboarderDTO = new OutboarderDTO();
+                            outboarderDTO.setSeq(paymentDTO.getTableSeq());
+                            outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("(선내기)")) {
+
+                            // inboarder table
+                            InboarderDTO inboarderDTO = new InboarderDTO();
+                            inboarderDTO.setSeq(paymentDTO.getTableSeq());
+                            inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
+
+                            // sailyacht table
+                            SailyachtDTO sailyachtDTO = new SailyachtDTO();
+                            sailyachtDTO.setSeq(paymentDTO.getTableSeq());
+                            sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
         }
 
         return inistdpayResponseDTO;
@@ -2055,8 +2327,66 @@ public class EduMarineController {
         inistdpayRequestDTO.setSiteDomain(siteDomain);
         mv.addObject("payInfo", inistdpayRequestDTO);
 
-        System.out.println(inistdpayRequestDTO.toString());
+        System.out.println("apply_payment : " + inistdpayRequestDTO.toString());
         mv.setViewName("/apply/payment");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/mobile/payment.do", method = RequestMethod.POST)
+    public ModelAndView apply_mobile_payment(InistdpayRequestDTO inistdpayRequestDTO) throws Exception {
+        System.out.println("EduMarineController > apply_mobile_payment");
+        ModelAndView mv = new ModelAndView();
+        TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(inistdpayRequestDTO.getTrainSeq());
+
+        //String mid					= "INIpayTest";		                    // 상점아이디
+        //String signKey			    = "SU5JTElURV9UUklQTEVERVNfS0VZU1RS";	// 웹 결제 signkey
+
+        String mid = "edumarin90";
+        String signKey = "elVJSjZPYWhaelBCVjlCSFYwbzdkQT09";
+
+        // 실제 Key
+        // 웹결제 signkey
+        // TmlKeFBiSjlpVUhkMldsMlJDWWdKQT09
+
+        String mKey = SignatureUtil.hash(signKey, "SHA-256");
+
+        String timestamp			= SignatureUtil.getTimestamp();			// util에 의해서 자동생성
+        String orderNumber			= mid + "_" + SignatureUtil.getTimestamp();	// 가맹점 주문번호(가맹점에서 직접 설정)
+        String price				= String.valueOf(trainDTO.getPaySum());								// 상품가격(특수기호 제외, 가맹점에서 직접 설정)
+
+        String use_chkfake			= "Y";									// verification 검증 여부 ('Y' , 'N')
+
+        Map<String, String> signParam = new HashMap<String, String>();
+
+        signParam.put("oid", orderNumber);
+        signParam.put("price", price);
+        signParam.put("timestamp", timestamp);
+
+        String signature = SignatureUtil.makeSignature(signParam);			// signature 대상: oid, price, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+
+        signParam.put("signKey", signKey);
+
+        String verification = SignatureUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+
+        /* 개발 */
+        /*String siteDomain = "http://localhost:8080";*/
+        /* 운영 */
+        String siteDomain = "https://edumarine.org";
+
+        inistdpayRequestDTO.setMid(mid);
+        inistdpayRequestDTO.setOid(orderNumber);
+        inistdpayRequestDTO.setPrice(String.valueOf(trainDTO.getPaySum()));
+        inistdpayRequestDTO.setTimestamp(timestamp);
+        inistdpayRequestDTO.setUseChkfake(use_chkfake);
+        inistdpayRequestDTO.setSignature(signature);
+        inistdpayRequestDTO.setVerification(verification);
+        inistdpayRequestDTO.setMkey(mKey);
+        inistdpayRequestDTO.setGoodname(trainDTO.getGbn());
+        inistdpayRequestDTO.setSiteDomain(siteDomain);
+        mv.addObject("payInfo", inistdpayRequestDTO);
+
+        System.out.println("apply_mobile_payment : " + inistdpayRequestDTO.toString());
+        mv.setViewName("/apply/payment_m");
         return mv;
     }
 
@@ -2081,6 +2411,303 @@ public class EduMarineController {
         }
         return obj;
     }
+
+    @RequestMapping(value = "/pc/payment/vbank/vacct/noti.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String payment_vbank_vacct_noti(HttpServletRequest request) {
+        System.out.println("EduMarineMngController > payment_vbank_vacct_noti");
+        String response = "";
+        /*******************************************************************************
+         * FILE NAME : vacctinput.jsp
+         * DATE : 2009.07
+         * 이니시스 가상계좌 입금내역 처리demon으로 넘어오는 파라메터를 control 하는 부분 입니다.
+         * [수신정보] 자세한 내용은 메뉴얼 참조
+         * 변수명           한글명
+         * no_tid           거래번호
+         * no_oid           주문번호
+         * cd_bank          거래발생 기관코드
+         * cd_deal          취급기관코드
+         * dt_trans         거래일자
+         * tm_trans         거래시각
+         * no_vacct         계좌번호
+         * amt_input        입금금액
+         * amt_check        미결제타점권금액
+         * flg_close        마감구분
+         * type_msg         거래구분
+         * nm_inputbank     입금은행명
+         * nm_input         입금자명
+         * dt_inputstd      입금기준일자
+         * dt_calculstd     정산기준일자
+         * dt_transbase     거래기준일자
+         * cl_trans         거래구분코드 "1100"
+         * cl_close         마감전후 구분,  0:마감점, 1마감후
+         * cl_kor           한글구분코드, 2:KSC5601
+         *
+         * (가상계좌채번시 현금영수증 자동발급신청시에만 전달)
+         * dt_cshr          현금영수증 발급일자
+         * tm_cshr          현금영수증 발급시간
+         * no_cshr_appl     현금영수증 발급번호
+         * no_cshr_tid      현금영수증 발급TID
+         *******************************************************************************/
+
+        /***********************************************************************************
+         * 이니시스가 전달하는 가상계좌이체의 결과를 수신하여 DB 처리 하는 부분 입니다.
+         * 필요한 파라메터에 대한 DB 작업을 수행하십시오.
+         ***********************************************************************************/
+
+        //PG에서 보냈는지 IP로 체크
+
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String REMOTE_IP = request.getRemoteAddr();
+            String PG_IP = REMOTE_IP.substring(0, 10);
+            if (PG_IP.equals("203.238.37") || PG_IP.equals("39.115.212") || PG_IP.equals("183.109.71")) {
+
+                //String file_path = "/home/was/INIpayJAVA/vacct";
+
+                String id_merchant = request.getParameter("id_merchant");
+                String no_tid = request.getParameter("no_tid");
+                String no_oid = request.getParameter("no_oid");
+                String no_vacct = request.getParameter("no_vacct");
+                String amt_input = request.getParameter("amt_input");
+                String nm_inputbank = request.getParameter("nm_inputbank");
+                String nm_input = request.getParameter("nm_input");
+
+                if(no_tid == null){
+                    String p_status = request.getParameter("P_STATUS");
+                    if("02".equals(p_status)){
+                        no_oid = request.getParameter("P_OID");
+                        no_vacct = request.getParameter("P_RMESG1");
+                        no_vacct = no_vacct.substring(no_vacct.indexOf('=')+1,no_vacct.indexOf('|'));
+                        amt_input = request.getParameter("P_AMT");
+                    }
+                }
+
+                // 매뉴얼을 보시고 추가하실 파라메터가 있으시면 아래와 같은 방법으로 추가하여 사용하시기 바랍니다.
+
+                // String value = reqeust.getParameter("전문의 필드명");
+
+                try {
+                    /*writeLog(file_path);*/
+
+                    //System.out.println("************************************************");
+                    //System.out.println("PageCall time : " + getTime());
+                    //System.out.println("ID_MERCHANT : " + id_merchant);
+                    //System.out.println("NO_TID : " + no_tid);
+                    //System.out.println("NO_OID : " + no_oid);
+                    //System.out.println("NO_VACCT : " + no_vacct);
+                    //System.out.println("AMT_INPUT : " + amt_input);
+                    //System.out.println("NM_INPUTBANK : " + nm_inputbank);
+                    //System.out.println("NM_INPUT : " + nm_input);
+                    //System.out.println("************************************************");
+
+                    /*
+                    ************************************************
+                    PageCall time : [18:32:08]
+                    ID_MERCHANT : edumarin90
+                    NO_TID : ININPGVBNKedumarin9020240306182322164144
+                    NO_OID : edumarin90_1709716699089
+                    NO_VACCT : 27489058118161
+                    AMT_INPUT : 2000
+                    NM_INPUTBANK : ��������
+                    NM_INPUT : ��ȸ��
+                    ************************************************
+                    */
+
+                    Boolean successFlag = true;
+
+                    PaymentDTO paymentDTO = new PaymentDTO();
+                    paymentDTO.setMoid(no_oid);
+                    paymentDTO.setVactNum(no_vacct);
+                    paymentDTO.setTotPrice(amt_input);
+                    paymentDTO.setPayStatus("결제완료");
+                    Integer updResult = eduMarineService.processUpdatePaymentVbankNoti(paymentDTO);
+                    if(updResult > 0){
+                        PaymentDTO payInfo = eduMarineService.processSelectPaymentVbankInfo(paymentDTO);
+
+                        String tableSeq = payInfo.getTableSeq();
+                        String trainSeq = payInfo.getTrainSeq();
+                        String trainName = payInfo.getTrainName();
+                        String applyStatus = "결제완료";
+
+                        if (trainName.contains("상시")) {
+
+                            // regular table
+                            RegularDTO regularDTO = new RegularDTO();
+                            regularDTO.setSeq(tableSeq);
+                            regularDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        } else if (trainName.contains("(선내기/")) {
+
+                            // boarder table
+                            BoarderDTO boarderDTO = new BoarderDTO();
+                            boarderDTO.setSeq(tableSeq);
+                            boarderDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        } else if (trainName.contains("FRP")) {
+
+                            // frp table
+                            FrpDTO frpDTO = new FrpDTO();
+                            frpDTO.setSeq(tableSeq);
+                            frpDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        } else if (trainName.contains("(선외기)")) {
+
+                            // outboarder table
+                            OutboarderDTO outboarderDTO = new OutboarderDTO();
+                            outboarderDTO.setSeq(tableSeq);
+                            outboarderDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        } else if (trainName.contains("(선내기)")) {
+
+                            // inboarder table
+                            InboarderDTO inboarderDTO = new InboarderDTO();
+                            inboarderDTO.setSeq(tableSeq);
+                            inboarderDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        } else if (trainName.contains("(세일요트)")) {
+
+                            // sailyacht table
+                            SailyachtDTO sailyachtDTO = new SailyachtDTO();
+                            sailyachtDTO.setSeq(tableSeq);
+                            sailyachtDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        }
+
+                    }
+
+
+                    //***********************************************************************************
+                    //
+                    //	위에서 상점 데이터베이스에 등록 성공유무에 따라서 성공시에는 "OK"를 이니시스로
+                    //	리턴하셔야합니다. 아래 조건에 데이터베이스 성공시 받는 FLAG 변수를 넣으세요
+                    //	(주의) OK를 리턴하지 않으시면 이니시스 지불 서버는 "OK"를 수신할때까지 계속 재전송을 시도합니다
+                    //	기타 다른 형태의 out.println(response.write)는 하지 않으시기 바랍니다
+                    //  System.out.println("====================" + successFlag + "====================");
+                    if (successFlag)
+                    {
+                        System.out.print("OK"); // 절대로 지우지 마세요
+                        response = "OK";
+                    }
+
+                } catch (Exception ex) {
+                    System.out.print(ex.getMessage());
+                }
+
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return response;
+    }
+
+    /*private String getDate() {
+        Calendar calendar = Calendar.getInstance();
+
+        StringBuffer times = new StringBuffer();
+        times.append(Integer.toString(calendar.get(Calendar.YEAR)));
+        if ((calendar.get(Calendar.MONTH) + 1) < 10) {
+            times.append("0");
+        }
+        times.append(Integer.toString(calendar.get(Calendar.MONTH) + 1));
+        if ((calendar.get(Calendar.DATE)) < 10) {
+            times.append("0");
+        }
+        times.append(Integer.toString(calendar.get(Calendar.DATE)));
+
+        return times.toString();
+    }
+
+    private String getTime() {
+        Calendar calendar = Calendar.getInstance();
+
+        StringBuffer times = new StringBuffer();
+
+        times.append("[");
+        if ((calendar.get(Calendar.HOUR_OF_DAY)) < 10) {
+            times.append("0");
+        }
+        times.append(Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)));
+        times.append(":");
+        if ((calendar.get(Calendar.MINUTE)) < 10) {
+            times.append("0");
+        }
+        times.append(Integer.toString(calendar.get(Calendar.MINUTE)));
+        times.append(":");
+        if ((calendar.get(Calendar.SECOND)) < 10) {
+            times.append("0");
+        }
+        times.append(Integer.toString(calendar.get(Calendar.SECOND)));
+        times.append("]");
+
+        return times.toString();
+    }
+
+    private void writeLog(String file_path) throws Exception {
+
+        File file = new File(file_path);
+        file.createNewFile();
+
+        FileWriter file2 = new FileWriter(file_path + "/vacctinput_" + getDate() + ".log", true);
+
+
+        file2.write("\n************************************************\n");
+        file2.write("PageCall time : " + getTime());
+        file2.write("\nID_MERCHANT : " + id_merchant);
+        file2.write("\nNO_TID : " + no_tid);
+        file2.write("\nNO_OID : " + no_oid);
+        file2.write("\nNO_VACCT : " + no_vacct);
+        file2.write("\nAMT_INPUT : " + amt_input);
+        file2.write("\nNM_INPUTBANK : " + nm_inputbank);
+        file2.write("\nNM_INPUT : " + nm_input);
+        file2.write("\n************************************************\n");
+
+        file2.close();
+
+    }*/
 
     @RequestMapping(value = "/payment/INIstdpay_pc_req.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView payment_INIstdpay_pc_req(@RequestBody InistdpayRequestDTO inistdpayRequestDTO) {

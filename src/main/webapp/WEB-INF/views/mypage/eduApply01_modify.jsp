@@ -85,7 +85,6 @@
     <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
@@ -390,7 +389,7 @@
                                     </div>
                                     <div class="btn_box">
                                         <a href="javascript:void(0);" class="btnSt03 btn_prev">이전</a>
-                                        <a href="javascript:void(0);" class="btnSt04 btn_next" onclick="f_edu_apply_cancel_btn('${info.seq}','상시신청','payStatus')">확인</a>
+                                        <a href="javascript:void(0);" class="btnSt04 btn_next edu_cancel_btn">확인</a>
                                     </div>
                                 </div>
                                 <div class="box_2">

@@ -2677,6 +2677,7 @@
              , r.memberName
              , r.memberPhone
              , r.train_seq
+             , r.nextTime
              , r.trainName
              , r.pay_sum
              , r.pay_method
@@ -2696,6 +2697,9 @@
                         FROM member m
                         WHERE m.seq = p.member_seq) AS memberPhone
                     , p.train_seq
+                    , ( SELECT t.next_time
+                        FROM train t
+                        WHERE t.seq = p.train_seq) AS nextTime
                     , ( SELECT t.gbn
                         FROM train t
                         WHERE t.seq = p.train_seq) AS trainName
@@ -2839,7 +2843,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePayment */
         UPDATE payment
         SET pay_status = #{payStatus}
+            <if test='refundReason != null and refundReason != ""'>
           , refund_reason = <![CDATA[#{refundReason}]]>
+            </if>
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3308,6 +3314,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendRegularList */
         SELECT r.seq AS tableSeq
              , r.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = r.train_seq ) as nextTime
              , m.seq AS memberSeq
              , m.id
              , m.name
@@ -3326,6 +3335,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendBoarderList */
         SELECT r.seq AS tableSeq
              , r.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = r.train_seq ) as nextTime
              , m.seq AS memberSeq
              , m.id
              , m.name
@@ -3344,6 +3356,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendFrpList */
         SELECT r.seq AS tableSeq
              , r.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = r.train_seq ) as nextTime
              , m.seq AS memberSeq
              , m.id
              , m.name
@@ -3362,6 +3377,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendOutboarderList */
         SELECT r.seq AS tableSeq
              , r.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = r.train_seq ) as nextTime
              , m.seq AS memberSeq
              , m.id
              , m.name
@@ -3380,6 +3398,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendInboarderList */
         SELECT r.seq AS tableSeq
              , r.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = r.train_seq ) as nextTime
              , m.seq AS memberSeq
              , m.id
              , m.name
@@ -3398,6 +3419,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendSailyachtList */
         SELECT r.seq AS tableSeq
              , r.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = r.train_seq ) as nextTime
              , m.seq AS memberSeq
              , m.id
              , m.name

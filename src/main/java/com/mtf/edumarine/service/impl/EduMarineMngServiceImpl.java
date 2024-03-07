@@ -1983,7 +1983,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
                                 if(trainDTO != null){
 
-                                    if("Card".equals(paymentDTO.getPayMethod())){
+                                    if("Card".equalsIgnoreCase(paymentDTO.getPayMethod()) || "VCard".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ // 전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -2057,7 +2057,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 }
                                             }
                                         }
-                                    }else if ("VBank".equals(paymentDTO.getPayMethod())){
+                                    }else if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ //전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -2172,9 +2172,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                         }else{
 
                             // 미결제취소 건 취소승인처리
-                            if( "미결제취소".equals(boarderInfo.getApplyStatus()) ) {
+                            /*if( "미결제취소".equals(boarderInfo.getApplyStatus()) ) {
                                 info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
-                            }
+                            }*/
 
                             // 결제대기 , 취소완료 건 취소승인처리
                             Integer result = eduMarineMngMapper.updateBoarderApplyStatus(info);
@@ -2233,8 +2233,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(boarderInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
-
                         }
 
                     }//regularInfo
@@ -2296,7 +2301,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
                                 if(trainDTO != null){
 
-                                    if("Card".equals(paymentDTO.getPayMethod())){
+                                    if("Card".equalsIgnoreCase(paymentDTO.getPayMethod()) || "VCard".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ // 전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -2370,7 +2375,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 }
                                             }
                                         }
-                                    }else if ("VBank".equals(paymentDTO.getPayMethod())){
+                                    }else if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ //전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -2486,9 +2491,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                         }else{
 
                             // 미결제취소 건 취소승인처리
-                            if( "미결제취소".equals(frpInfo.getApplyStatus()) ) {
+                            /*if( "미결제취소".equals(frpInfo.getApplyStatus()) ) {
                                 info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
-                            }
+                            }*/
 
                             // 결제대기 , 취소완료 건 취소승인처리
                             Integer result = eduMarineMngMapper.updateFrpApplyStatus(info);
@@ -2547,6 +2552,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(frpInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
 
                         }
@@ -2617,7 +2628,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
                                 if(trainDTO != null){
 
-                                    if("Card".equals(paymentDTO.getPayMethod())){
+                                    if("Card".equalsIgnoreCase(paymentDTO.getPayMethod()) || "VCard".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ // 전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -2691,7 +2702,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 }
                                             }
                                         }
-                                    }else if ("VBank".equals(paymentDTO.getPayMethod())){
+                                    }else if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ //전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -2807,9 +2818,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                         }else{
 
                             // 미결제취소 건 취소승인처리
-                            if( "미결제취소".equals(outboarderInfo.getApplyStatus()) ) {
+                            /*if( "미결제취소".equals(outboarderInfo.getApplyStatus()) ) {
                                 info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
-                            }
+                            }*/
 
                             // 결제대기 , 취소완료 건 취소승인처리
                             Integer result = eduMarineMngMapper.updateOutboarderApplyStatus(info);
@@ -2868,6 +2879,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(outboarderInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
 
                         }
@@ -3035,7 +3052,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
                                 if(trainDTO != null){
 
-                                    if("Card".equals(paymentDTO.getPayMethod())){
+                                    if("Card".equalsIgnoreCase(paymentDTO.getPayMethod()) || "VCard".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ // 전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -3109,7 +3126,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 }
                                             }
                                         }
-                                    }else if ("VBank".equals(paymentDTO.getPayMethod())){
+                                    }else if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ //전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -3225,9 +3242,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                         }else{
 
                             // 미결제취소 건 취소승인처리
-                            if( "미결제취소".equals(inboarderInfo.getApplyStatus()) ) {
+                            /*if( "미결제취소".equals(inboarderInfo.getApplyStatus()) ) {
                                 info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
-                            }
+                            }*/
 
                             // 결제대기 , 취소완료 건 취소승인처리
                             Integer result = eduMarineMngMapper.updateInboarderApplyStatus(info);
@@ -3288,6 +3305,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(inboarderInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
 
                         }
@@ -3358,7 +3381,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
                                 if(trainDTO != null){
 
-                                    if("Card".equals(paymentDTO.getPayMethod())){
+                                    if("Card".equalsIgnoreCase(paymentDTO.getPayMethod()) || "VCard".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ // 전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -3432,7 +3455,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 }
                                             }
                                         }
-                                    }else if ("VBank".equals(paymentDTO.getPayMethod())){
+                                    }else if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())){
                                         if("ALL".equals(info.getCancelGbn())){ //전체환불
                                             InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
                                             inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
@@ -3548,9 +3571,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                         }else{
 
                             // 미결제취소 건 취소승인처리
-                            if( "미결제취소".equals(sailyachtInfo.getApplyStatus()) ) {
+                            /*if( "미결제취소".equals(sailyachtInfo.getApplyStatus()) ) {
                                 info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
-                            }
+                            }*/
 
                             // 결제대기 , 취소완료 건 취소승인처리
                             Integer result = eduMarineMngMapper.updateSailyachtApplyStatus(info);
@@ -3609,6 +3632,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(sailyachtInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
 
                         }

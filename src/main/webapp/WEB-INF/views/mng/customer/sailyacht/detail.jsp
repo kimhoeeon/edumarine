@@ -70,7 +70,6 @@
     <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
@@ -1727,6 +1726,60 @@ if (document.documentElement) {
                                     <div class="card-header border-0">
                                         <!--begin::Card title-->
                                         <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">신청상태</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body border-top p-9">
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">상태</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" name="applyStatus" class="form-control form-control-lg form-control-solid-bg" placeholder="상태" value="${info.applyStatus}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">취소신청일시</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" name="cancelDttm" class="form-control form-control-lg form-control-solid-bg" placeholder="취소신청일시" value="${info.cancelDttm}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">취소사유</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <input type="text" name="cancelReason" class="form-control form-control-lg form-control-solid-bg" placeholder="취소사유" value="${info.cancelReason}" readonly/>
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                                <!--end::Basic info-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
                                             <h3 class="fw-bold m-0">결제정보</h3>
                                         </div>
                                         <!--end::Card title-->
@@ -1743,10 +1796,10 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <c:if test="${paymentInfo.payMethod eq 'Card'}">
+                                                    <c:if test="${fn:contains(fn:toLowerCase(paymentInfo.payMethod), 'card')}">
                                                         <c:set var="payMethod" value="카드"/>
                                                     </c:if>
-                                                    <c:if test="${paymentInfo.payMethod eq 'VBank'}">
+                                                    <c:if test="${fn:contains(fn:toLowerCase(paymentInfo.payMethod), 'vbank')}">
                                                         <c:set var="payMethod" value="가상계좌"/>
                                                     </c:if>
                                                     <input type="text" name="payMethod" class="form-control form-control-lg form-control-solid-bg" placeholder="결제방식" value="${payMethod}" readonly/>
@@ -1761,17 +1814,17 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <c:if test="${paymentInfo.payMethod eq 'Card'}">
+                                                    <c:if test="${fn:contains(fn:toLowerCase(paymentInfo.payMethod), 'card')}">
                                                         <input type="text" name="payMethod" class="form-control form-control-lg form-control-solid-bg" placeholder="결제방식" value="${paymentInfo.cardPurchaseName} (${paymentInfo.cardNum})" readonly/>
                                                     </c:if>
-                                                    <c:if test="${paymentInfo.payMethod eq 'VBank'}">
+                                                    <c:if test="${fn:contains(fn:toLowerCase(paymentInfo.payMethod), 'vbank')}">
                                                         <input type="text" name="payMethod" class="form-control form-control-lg form-control-solid-bg" placeholder="결제방식" value="${paymentInfo.vactBankName} (${paymentInfo.vactNum})" readonly/>
                                                     </c:if>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
-                                            <fmt:parseDate var="applDate" value="${paymentInfo.applDate}" pattern="yyyyMMdd" />
+                                            <fmt:parseDate var="applDate" value="${paymentInfo.applDate}${paymentInfo.applTime}" pattern="yyyyMMddHHmmss" />
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
@@ -1779,7 +1832,7 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input type="text" name="applDate" class="form-control form-control-lg form-control-solid-bg" placeholder="승인일자" value="<fmt:formatDate value="${applDate}" pattern="yyyy.MM.dd"/>" readonly/>
+                                                    <input type="text" name="applDate" class="form-control form-control-lg form-control-solid-bg" placeholder="승인일자" value="<fmt:formatDate value="${applDate}" pattern="yyyy-MM-dd HH:mm:ss"/>" readonly/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>

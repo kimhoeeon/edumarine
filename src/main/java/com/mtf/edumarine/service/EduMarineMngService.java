@@ -37,7 +37,6 @@ public interface EduMarineMngService {
 
     InistdpayCancelResponseDTO processApplyPaymentCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO);
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     InistdpayCancelResponseDTO processApplyPaymentVbankCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO);
 
     FileResponseDTO processInsertFileInfo(FileDTO fileDTO);
@@ -351,4 +350,5 @@ public interface EduMarineMngService {
     StatisticsDTO processSelectStatisticsTrainMember(StatisticsDTO reqDto);
 
     List<RegularDTO.TrainInfo> processSelectRegularTrainInfoList(RegularDTO info);
+
 }

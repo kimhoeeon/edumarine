@@ -85,7 +85,6 @@
     <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="<%request.getContextPath();%>/static/img/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
@@ -726,6 +725,37 @@
                         </div>
                     </div>
                     <!-- //form_notice -->
+
+                    <!-- popupPaySel -->
+                    <div class="popup" id="popupPaySel">
+                        <div class="popup_inner popup_form">
+                            <div class="popup_box popup_form">
+                                <div class="box_1">
+                                    <div class="tit_box">결제 수단 선택</div>
+                                    <div class="text_box">결제 수단을 선택해 주세요</div>
+                                    <div class="pay_select_box">
+                                        <div class="input_box" style="text-align: left;">
+                                            <input type="hidden" id="tableSeq" value="">
+                                            <input type="hidden" id="trainSeq" value="">
+                                            <input type="hidden" id="buyername" value="">
+                                            <input type="hidden" id="buyertel" value="">
+                                            <input type="hidden" id="buyeremail" value="">
+                                            <select id="pay_select" style="width: 100%">
+                                                <option value="" selected disabled>결제 수단</option>
+                                                <option value="CARD">신용카드</option>
+                                                <option value="VBANK">가상계좌(무통장입금)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="btn_box">
+                                        <a href="javascript:void(0);" class="btnSt03 btn_prev">취소</a>
+                                        <a href="javascript:void(0);" class="btnSt04" onclick="f_main_apply_payment_mobile(this);">확인</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //popupPaySel -->
 
                 </div>
             </div>

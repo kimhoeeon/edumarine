@@ -94,7 +94,7 @@ $(document).ready(function () {
 
 
     // 마이페이지 교육취소 팝업 - 오픈
-    $('.form_cancel_edu_btn').on('click', function () {
+    $(document).on("click",".form_cancel_edu_btn", function(event){
         let changeYn = $(this).siblings('input[type=hidden]').val();
         if(nvl(changeYn,'') !== '' && changeYn === 'Y'){
             $('#popupCancelEdu').addClass('on');
@@ -102,17 +102,21 @@ $(document).ready(function () {
             let trainName = $(this).parent().siblings('.subject').find('a').text();
             if(nvl(trainName,'') !== ''){
                 $('#popupCancelEdu').find('.train_name').text(trainName);
-
                 let seq = $(this).attr('value');
-                //let payStatus = $(this).parent().siblings('.state').text().trim();
+                let payStatus = $(this).data('status');
                 let payMethod = $(this).data('value');
-                if(payMethod === 'VBank'){
-                    $("#popupCancelEdu .refund_account_box").css("display", "block");
-                }else{
+                payMethod = payMethod.toLowerCase();
+                if(payMethod.includes('card')){
                     $("#popupCancelEdu .refund_account_box").css("display", "none");
+                }else{
+                    if(payStatus === '입금대기'){
+                        $("#popupCancelEdu .refund_account_box").css("display", "none");
+                    }else{
+                        $("#popupCancelEdu .refund_account_box").css("display", "block");
+                    }
                 }
 
-                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "')");
+                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "','" + payStatus + "')");
             }
         }else{
             Swal.fire({
@@ -127,24 +131,29 @@ $(document).ready(function () {
     });
 
     // 각 신청 페이지 신청 취소 버튼
-    $('.form_apply_cancel_edu_btn').on('click', function () {
+    $(document).on("click",".form_apply_cancel_edu_btn", function(event){
         let changeYn = $(this).siblings('input[type=hidden][name=chg_changeYn]').val();
         let seq = $(this).siblings('input[type=hidden][name=chg_seq]').val();
         let trainName = $(this).siblings('input[type=hidden][name=chg_trainName]').val();
         let payMethod = $(this).siblings('input[type=hidden][name=chg_payMethod]').val();
+        let applyStatus = $(this).siblings('input[type=hidden][name=chg_applyStatus]').val();
         if(changeYn === 'Y'){
             $('#popupCancelEdu').addClass('on');
 
             if(nvl(trainName,'') !== ''){
                 $('#popupCancelEdu').find('.train_name').text(trainName);
-
-                if(payMethod === 'VBank'){
-                    $("#popupCancelEdu .refund_account_box").css("display", "block");
-                }else{
+                payMethod = payMethod.toLowerCase();
+                if(payMethod.includes('card')){
                     $("#popupCancelEdu .refund_account_box").css("display", "none");
+                }else{
+                    if(applyStatus === '입금대기'){
+                        $("#popupCancelEdu .refund_account_box").css("display", "none");
+                    }else{
+                        $("#popupCancelEdu .refund_account_box").css("display", "block");
+                    }
                 }
 
-                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "')");
+                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "','" + applyStatus + "')");
             }
         }else{
             Swal.fire({
@@ -315,6 +324,13 @@ $(document).ready(function () {
         }else{
             $(this).parent().siblings('label').find('.check_etc_input').prop('disabled', true).val('');
         }
+    });
+
+    // 마이페이지 교육취소 팝업 - 취소버튼 클릭 시, input 값 초기화 및 닫힘
+    $("#popupPaySel .btn_prev").on("click", function () {
+        $('#popupPaySel #pay_select').val("");
+        $('#popupPaySel').removeClass('on');
+        $('#popupPaySel').find('input[type=hidden]').val('');
     });
 
     // 페이지 로드시 초기 설정

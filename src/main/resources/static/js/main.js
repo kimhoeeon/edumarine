@@ -1,5 +1,7 @@
 $(function(){
 
+    console.log('DEVICE : ' + deviceGbn());
+
     if(!window.location.href.includes('localhost')){
         if (window.location.protocol !== "https:") {
             window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
@@ -1130,6 +1132,18 @@ function f_train_valid_yn(obj){
     return true;
 }
 
+function deviceGbn(){
+    let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+
+    if (!isMobile) {
+        //모바일이 아닌 경우 스크립트
+        return 'PC';
+    } else {
+        //모바일인 경우 스크립트
+        return 'MOBILE';
+    }
+}
+
 function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email){
 
     // 교육 조회
@@ -1145,51 +1159,132 @@ function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email){
 
         }else{
 
-            // 결제모듈 Call
-            let paymentForm = document.createElement('form');
-            paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
-            paymentForm.setAttribute('action', '/apply/payment.do');
+            console.log('DEVICE : ' + deviceGbn());
 
-            let hiddenContinueYn = document.createElement('input');
-            hiddenContinueYn.setAttribute('type', 'hidden'); //값 입력
-            hiddenContinueYn.setAttribute('name', 'continueYn');
-            hiddenContinueYn.setAttribute('value', 'Y');
-            paymentForm.appendChild(hiddenContinueYn);
+            let device = deviceGbn();
 
-            let hiddenRegularSeq = document.createElement('input');
-            hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
-            hiddenRegularSeq.setAttribute('name', 'tableSeq');
-            hiddenRegularSeq.setAttribute('value', tableSeq);
-            paymentForm.appendChild(hiddenRegularSeq);
+            if(device === 'PC'){
 
-            let hiddenTrainSeq = document.createElement('input');
-            hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
-            hiddenTrainSeq.setAttribute('name', 'trainSeq');
-            hiddenTrainSeq.setAttribute('value', trainSeq);
-            paymentForm.appendChild(hiddenTrainSeq);
+                // 결제모듈 Call
+                let paymentForm = document.createElement('form');
+                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                paymentForm.setAttribute('action', '/apply/payment.do');
 
-            let hiddenBuyerName = document.createElement('input');
-            hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
-            hiddenBuyerName.setAttribute('name', 'buyername');
-            hiddenBuyerName.setAttribute('value', name);
-            paymentForm.appendChild(hiddenBuyerName);
+                let hiddenContinueYn = document.createElement('input');
+                hiddenContinueYn.setAttribute('type', 'hidden'); //값 입력
+                hiddenContinueYn.setAttribute('name', 'continueYn');
+                hiddenContinueYn.setAttribute('value', 'Y');
+                paymentForm.appendChild(hiddenContinueYn);
 
-            let hiddenBuyerTel = document.createElement('input');
-            hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
-            hiddenBuyerTel.setAttribute('name', 'buyertel');
-            hiddenBuyerTel.setAttribute('value', phone);
-            paymentForm.appendChild(hiddenBuyerTel);
+                let hiddenRegularSeq = document.createElement('input');
+                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                hiddenRegularSeq.setAttribute('value', tableSeq);
+                paymentForm.appendChild(hiddenRegularSeq);
 
-            let hiddenBuyerEmail = document.createElement('input');
-            hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
-            hiddenBuyerEmail.setAttribute('name', 'buyeremail');
-            hiddenBuyerEmail.setAttribute('value', email);
-            paymentForm.appendChild(hiddenBuyerEmail);
+                let hiddenTrainSeq = document.createElement('input');
+                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                hiddenTrainSeq.setAttribute('value', trainSeq);
+                paymentForm.appendChild(hiddenTrainSeq);
 
-            document.body.appendChild(paymentForm);
-            paymentForm.submit();
+                let hiddenBuyerName = document.createElement('input');
+                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                hiddenBuyerName.setAttribute('name', 'buyername');
+                hiddenBuyerName.setAttribute('value', name);
+                paymentForm.appendChild(hiddenBuyerName);
+
+                let hiddenBuyerTel = document.createElement('input');
+                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                hiddenBuyerTel.setAttribute('value', phone);
+                paymentForm.appendChild(hiddenBuyerTel);
+
+                let hiddenBuyerEmail = document.createElement('input');
+                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                hiddenBuyerEmail.setAttribute('value', email);
+                paymentForm.appendChild(hiddenBuyerEmail);
+
+                document.body.appendChild(paymentForm);
+                paymentForm.submit();
+
+            }else if(device === 'MOBILE'){
+                $('#popupPaySel').addClass('on');
+                $('#popupPaySel #tableSeq').val(tableSeq);
+                $('#popupPaySel #trainSeq').val(trainSeq);
+                $('#popupPaySel #buyername').val(name);
+                $('#popupPaySel #buyertel').val(phone);
+                $('#popupPaySel #buyeremail').val(email);
+            }
+
         }
     }
+}
+
+function f_main_apply_payment_mobile(el){
+
+    let payMethod = $('#popupPaySel #pay_select option:selected').val();
+    if(nvl(payMethod,'') === ''){
+        showMessage('', 'info', '[결제 수단 선택]', '결제 수단을 선택해 주세요.', '');
+        return false;
+    }
+
+    let tableSeq = $('#popupPaySel #tableSeq').val();
+    let trainSeq = $('#popupPaySel #trainSeq').val();
+    let name = $('#popupPaySel #buyername').val();
+    let phone = $('#popupPaySel #buyertel').val();
+    let email = $('#popupPaySel #buyeremail').val();
+
+    // 결제모듈 Call
+    let paymentForm = document.createElement('form');
+    paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+    paymentForm.setAttribute('action', '/apply/mobile/payment.do');
+
+    let hiddenContinueYn = document.createElement('input');
+    hiddenContinueYn.setAttribute('type', 'hidden'); //값 입력
+    hiddenContinueYn.setAttribute('name', 'continueYn');
+    hiddenContinueYn.setAttribute('value', 'Y');
+    paymentForm.appendChild(hiddenContinueYn);
+
+    let hiddenRegularSeq = document.createElement('input');
+    hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+    hiddenRegularSeq.setAttribute('name', 'tableSeq');
+    hiddenRegularSeq.setAttribute('value', tableSeq);
+    paymentForm.appendChild(hiddenRegularSeq);
+
+    let hiddenTrainSeq = document.createElement('input');
+    hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+    hiddenTrainSeq.setAttribute('name', 'trainSeq');
+    hiddenTrainSeq.setAttribute('value', trainSeq);
+    paymentForm.appendChild(hiddenTrainSeq);
+
+    let hiddenBuyerName = document.createElement('input');
+    hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+    hiddenBuyerName.setAttribute('name', 'buyername');
+    hiddenBuyerName.setAttribute('value', name);
+    paymentForm.appendChild(hiddenBuyerName);
+
+    let hiddenBuyerTel = document.createElement('input');
+    hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+    hiddenBuyerTel.setAttribute('name', 'buyertel');
+    hiddenBuyerTel.setAttribute('value', phone);
+    paymentForm.appendChild(hiddenBuyerTel);
+
+    let hiddenBuyerEmail = document.createElement('input');
+    hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+    hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+    hiddenBuyerEmail.setAttribute('value', email);
+    paymentForm.appendChild(hiddenBuyerEmail);
+
+    let hiddenPayMethod = document.createElement('input');
+    hiddenPayMethod.setAttribute('type', 'hidden'); //값 입력
+    hiddenPayMethod.setAttribute('name', 'payMethod');
+    hiddenPayMethod.setAttribute('value', payMethod);
+    paymentForm.appendChild(hiddenPayMethod);
+
+    document.body.appendChild(paymentForm);
+    paymentForm.submit();
 }
 
 function f_main_apply_eduApply01_submit(trainSeq){
@@ -1575,44 +1670,58 @@ function f_main_apply_eduApply02_submit(trainSeq){
                                 /* Read more about handling dismissals below */
                                 if (result.dismiss === Swal.DismissReason.timer) {
 
-                                    // 결제모듈 Call
-                                    let paymentForm = document.createElement('form');
-                                    paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
-                                    paymentForm.setAttribute('action', '/apply/payment.do');
+                                    let device = deviceGbn();
 
-                                    let hiddenRegularSeq = document.createElement('input');
-                                    hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenRegularSeq.setAttribute('name', 'tableSeq');
-                                    hiddenRegularSeq.setAttribute('value', data.customValue);
-                                    paymentForm.appendChild(hiddenRegularSeq);
+                                    if(device === 'PC'){
 
-                                    let hiddenTrainSeq = document.createElement('input');
-                                    hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenTrainSeq.setAttribute('name', 'trainSeq');
-                                    hiddenTrainSeq.setAttribute('value', trainSeq);
-                                    paymentForm.appendChild(hiddenTrainSeq);
+                                        // 결제모듈 Call
+                                        let paymentForm = document.createElement('form');
+                                        paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                        paymentForm.setAttribute('action', '/apply/payment.do');
 
-                                    let hiddenBuyerName = document.createElement('input');
-                                    hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenBuyerName.setAttribute('name', 'buyername');
-                                    hiddenBuyerName.setAttribute('value', form.nameKo);
-                                    paymentForm.appendChild(hiddenBuyerName);
+                                        let hiddenRegularSeq = document.createElement('input');
+                                        hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                        hiddenRegularSeq.setAttribute('value', data.customValue);
+                                        paymentForm.appendChild(hiddenRegularSeq);
 
-                                    let hiddenBuyerTel = document.createElement('input');
-                                    hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenBuyerTel.setAttribute('name', 'buyertel');
-                                    hiddenBuyerTel.setAttribute('value', form.phone);
-                                    paymentForm.appendChild(hiddenBuyerTel);
+                                        let hiddenTrainSeq = document.createElement('input');
+                                        hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                        hiddenTrainSeq.setAttribute('value', trainSeq);
+                                        paymentForm.appendChild(hiddenTrainSeq);
 
-                                    let hiddenBuyerEmail = document.createElement('input');
-                                    hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenBuyerEmail.setAttribute('name', 'buyeremail');
-                                    hiddenBuyerEmail.setAttribute('value', form.email);
-                                    paymentForm.appendChild(hiddenBuyerEmail);
+                                        let hiddenBuyerName = document.createElement('input');
+                                        hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenBuyerName.setAttribute('name', 'buyername');
+                                        hiddenBuyerName.setAttribute('value', form.nameKo);
+                                        paymentForm.appendChild(hiddenBuyerName);
 
-                                    document.body.appendChild(paymentForm);
-                                    paymentForm.submit();
+                                        let hiddenBuyerTel = document.createElement('input');
+                                        hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                        hiddenBuyerTel.setAttribute('value', form.phone);
+                                        paymentForm.appendChild(hiddenBuyerTel);
 
+                                        let hiddenBuyerEmail = document.createElement('input');
+                                        hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                        hiddenBuyerEmail.setAttribute('value', form.email);
+                                        paymentForm.appendChild(hiddenBuyerEmail);
+
+                                        document.body.appendChild(paymentForm);
+                                        paymentForm.submit();
+
+                                    }else if(device === 'MOBILE'){
+
+                                        $('#popupPaySel').addClass('on');
+                                        $('#popupPaySel #tableSeq').val(data.customValue);
+                                        $('#popupPaySel #trainSeq').val(trainSeq);
+                                        $('#popupPaySel #buyername').val(form.nameKo);
+                                        $('#popupPaySel #buyertel').val(form.phone);
+                                        $('#popupPaySel #buyeremail').val(form.email);
+
+                                    }
                                 }
                             });
 
@@ -2085,46 +2194,60 @@ function f_main_apply_eduApply03_submit(trainSeq){
                                 /* Read more about handling dismissals below */
                                 if (result.dismiss === Swal.DismissReason.timer) {
 
-                                    // 결제모듈 Call
-                                    let paymentForm = document.createElement('form');
-                                    paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
-                                    paymentForm.setAttribute('action', '/apply/payment.do');
+                                    let device = deviceGbn();
 
-                                    let hiddenRegularSeq = document.createElement('input');
-                                    hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenRegularSeq.setAttribute('name', 'tableSeq');
-                                    hiddenRegularSeq.setAttribute('value', data.customValue);
-                                    paymentForm.appendChild(hiddenRegularSeq);
+                                    if(device === 'PC') {
 
-                                    let hiddenTrainSeq = document.createElement('input');
-                                    hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenTrainSeq.setAttribute('name', 'trainSeq');
-                                    hiddenTrainSeq.setAttribute('value', trainSeq);
-                                    paymentForm.appendChild(hiddenTrainSeq);
+                                        // 결제모듈 Call
+                                        let paymentForm = document.createElement('form');
+                                        paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                        paymentForm.setAttribute('action', '/apply/payment.do');
 
-                                    let hiddenBuyerName = document.createElement('input');
-                                    hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenBuyerName.setAttribute('name', 'buyername');
-                                    hiddenBuyerName.setAttribute('value', form.nameKo);
-                                    paymentForm.appendChild(hiddenBuyerName);
+                                        let hiddenRegularSeq = document.createElement('input');
+                                        hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                        hiddenRegularSeq.setAttribute('value', data.customValue);
+                                        paymentForm.appendChild(hiddenRegularSeq);
 
-                                    let hiddenBuyerTel = document.createElement('input');
-                                    hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenBuyerTel.setAttribute('name', 'buyertel');
-                                    hiddenBuyerTel.setAttribute('value', form.phone);
-                                    paymentForm.appendChild(hiddenBuyerTel);
+                                        let hiddenTrainSeq = document.createElement('input');
+                                        hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                        hiddenTrainSeq.setAttribute('value', trainSeq);
+                                        paymentForm.appendChild(hiddenTrainSeq);
 
-                                    let hiddenBuyerEmail = document.createElement('input');
-                                    hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
-                                    hiddenBuyerEmail.setAttribute('name', 'buyeremail');
-                                    hiddenBuyerEmail.setAttribute('value', form.email);
-                                    paymentForm.appendChild(hiddenBuyerEmail);
+                                        let hiddenBuyerName = document.createElement('input');
+                                        hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenBuyerName.setAttribute('name', 'buyername');
+                                        hiddenBuyerName.setAttribute('value', form.nameKo);
+                                        paymentForm.appendChild(hiddenBuyerName);
 
-                                    document.body.appendChild(paymentForm);
-                                    paymentForm.submit();
+                                        let hiddenBuyerTel = document.createElement('input');
+                                        hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                        hiddenBuyerTel.setAttribute('value', form.phone);
+                                        paymentForm.appendChild(hiddenBuyerTel);
 
+                                        let hiddenBuyerEmail = document.createElement('input');
+                                        hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                        hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                        hiddenBuyerEmail.setAttribute('value', form.email);
+                                        paymentForm.appendChild(hiddenBuyerEmail);
+
+                                        document.body.appendChild(paymentForm);
+                                        paymentForm.submit();
+
+                                    }else if(device === 'MOBILE'){
+
+                                        $('#popupPaySel').addClass('on');
+                                        $('#popupPaySel #tableSeq').val(data.customValue);
+                                        $('#popupPaySel #trainSeq').val(trainSeq);
+                                        $('#popupPaySel #buyername').val(form.nameKo);
+                                        $('#popupPaySel #buyertel').val(form.phone);
+                                        $('#popupPaySel #buyeremail').val(form.email);
+
+                                    }
                                 }
-                            });
+                            })
 
                         }else if(data.resultCode === "99"){
 
@@ -2455,44 +2578,58 @@ function f_main_apply_eduApply04_submit(trainSeq){
                     success: function (data) {
                         if (data.resultCode === "0") {
 
-                            // 결제모듈 Call
-                            let paymentForm = document.createElement('form');
-                            paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
-                            paymentForm.setAttribute('action', '/apply/payment.do');
+                            let device = deviceGbn();
 
-                            let hiddenRegularSeq = document.createElement('input');
-                            hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
-                            hiddenRegularSeq.setAttribute('name', 'tableSeq');
-                            hiddenRegularSeq.setAttribute('value', data.customValue);
-                            paymentForm.appendChild(hiddenRegularSeq);
+                            if(device === 'PC'){
 
-                            let hiddenTrainSeq = document.createElement('input');
-                            hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
-                            hiddenTrainSeq.setAttribute('name', 'trainSeq');
-                            hiddenTrainSeq.setAttribute('value', trainSeq);
-                            paymentForm.appendChild(hiddenTrainSeq);
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
 
-                            let hiddenBuyerName = document.createElement('input');
-                            hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerName.setAttribute('name', 'buyername');
-                            hiddenBuyerName.setAttribute('value', form.nameKo);
-                            paymentForm.appendChild(hiddenBuyerName);
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
 
-                            let hiddenBuyerTel = document.createElement('input');
-                            hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerTel.setAttribute('name', 'buyertel');
-                            hiddenBuyerTel.setAttribute('value', form.phone);
-                            paymentForm.appendChild(hiddenBuyerTel);
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
 
-                            let hiddenBuyerEmail = document.createElement('input');
-                            hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerEmail.setAttribute('name', 'buyeremail');
-                            hiddenBuyerEmail.setAttribute('value', form.email);
-                            paymentForm.appendChild(hiddenBuyerEmail);
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
 
-                            document.body.appendChild(paymentForm);
-                            paymentForm.submit();
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
 
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
                         }else if(data.resultCode === "99"){
                             Swal.fire({
                                 title: '[신청 정보]',
@@ -2665,43 +2802,58 @@ function f_main_apply_eduApply05_submit(trainSeq){
                     success: function (data) {
                         if (data.resultCode === "0") {
 
-                            // 결제모듈 Call
-                            let paymentForm = document.createElement('form');
-                            paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
-                            paymentForm.setAttribute('action', '/apply/payment.do');
+                            let device = deviceGbn();
 
-                            let hiddenRegularSeq = document.createElement('input');
-                            hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
-                            hiddenRegularSeq.setAttribute('name', 'tableSeq');
-                            hiddenRegularSeq.setAttribute('value', data.customValue);
-                            paymentForm.appendChild(hiddenRegularSeq);
+                            if(device === 'PC'){
 
-                            let hiddenTrainSeq = document.createElement('input');
-                            hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
-                            hiddenTrainSeq.setAttribute('name', 'trainSeq');
-                            hiddenTrainSeq.setAttribute('value', trainSeq);
-                            paymentForm.appendChild(hiddenTrainSeq);
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
 
-                            let hiddenBuyerName = document.createElement('input');
-                            hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerName.setAttribute('name', 'buyername');
-                            hiddenBuyerName.setAttribute('value', form.nameKo);
-                            paymentForm.appendChild(hiddenBuyerName);
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
 
-                            let hiddenBuyerTel = document.createElement('input');
-                            hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerTel.setAttribute('name', 'buyertel');
-                            hiddenBuyerTel.setAttribute('value', form.phone);
-                            paymentForm.appendChild(hiddenBuyerTel);
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
 
-                            let hiddenBuyerEmail = document.createElement('input');
-                            hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerEmail.setAttribute('name', 'buyeremail');
-                            hiddenBuyerEmail.setAttribute('value', form.email);
-                            paymentForm.appendChild(hiddenBuyerEmail);
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
 
-                            document.body.appendChild(paymentForm);
-                            paymentForm.submit();
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
@@ -2875,43 +3027,58 @@ function f_main_apply_eduApply06_submit(trainSeq){
                     success: function (data) {
                         if (data.resultCode === "0") {
 
-                            // 결제모듈 Call
-                            let paymentForm = document.createElement('form');
-                            paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
-                            paymentForm.setAttribute('action', '/apply/payment.do');
+                            let device = deviceGbn();
 
-                            let hiddenRegularSeq = document.createElement('input');
-                            hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
-                            hiddenRegularSeq.setAttribute('name', 'tableSeq');
-                            hiddenRegularSeq.setAttribute('value', data.customValue);
-                            paymentForm.appendChild(hiddenRegularSeq);
+                            if(device === 'PC'){
 
-                            let hiddenTrainSeq = document.createElement('input');
-                            hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
-                            hiddenTrainSeq.setAttribute('name', 'trainSeq');
-                            hiddenTrainSeq.setAttribute('value', trainSeq);
-                            paymentForm.appendChild(hiddenTrainSeq);
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
 
-                            let hiddenBuyerName = document.createElement('input');
-                            hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerName.setAttribute('name', 'buyername');
-                            hiddenBuyerName.setAttribute('value', form.nameKo);
-                            paymentForm.appendChild(hiddenBuyerName);
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
 
-                            let hiddenBuyerTel = document.createElement('input');
-                            hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerTel.setAttribute('name', 'buyertel');
-                            hiddenBuyerTel.setAttribute('value', form.phone);
-                            paymentForm.appendChild(hiddenBuyerTel);
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
 
-                            let hiddenBuyerEmail = document.createElement('input');
-                            hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
-                            hiddenBuyerEmail.setAttribute('name', 'buyeremail');
-                            hiddenBuyerEmail.setAttribute('value', form.email);
-                            paymentForm.appendChild(hiddenBuyerEmail);
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
 
-                            document.body.appendChild(paymentForm);
-                            paymentForm.submit();
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
@@ -3022,8 +3189,8 @@ function f_main_schedule_search(searchGbn, searchText){
     }
 }
 
-function f_edu_apply_cancel_btn(seq, trainName, payMethod){
-    console.log(seq, trainName, payMethod);
+function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
+    //console.log(seq, trainName, payMethod);
 
     let cancelReason = $('.cancel_edu_reason').val().trim();
 
@@ -3035,7 +3202,8 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod){
         let bankName = '';
         let bankCustomerName = '';
         let bankNumber = '';
-        if(payMethod === 'VBank'){
+        payMethod = payMethod.toString().toLowerCase();
+        if(payMethod.includes('vbank') && paramApplyStatus !== '입금대기'){
             bankCode = $('#popupCancelEdu #cancel_edu_bank_select option:selected').val();
             bankName = $('#popupCancelEdu #cancel_edu_bank_select option:selected').text();
             bankCustomerName = $('#popupCancelEdu #cancel_edu_bank_customer_name').val();
@@ -3054,7 +3222,11 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod){
         let applyStatus = '취소신청';
 
         if(payMethod === '미결제'){
-            applyStatus = '미결제취소';
+            applyStatus = '취소완료(미결제)';
+        }
+
+        if(paramApplyStatus === '입금대기'){
+            applyStatus = '취소완료(미입금)';
         }
 
         //상시신청

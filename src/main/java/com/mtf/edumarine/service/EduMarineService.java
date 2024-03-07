@@ -196,4 +196,8 @@ public interface EduMarineService {
     ResponseDTO processCheckCommunity(CommunityDTO communityDTO);
 
     ResponseDTO processCheckReply(ReplyDTO replyDTO);
+
+    Integer processUpdatePaymentVbankNoti(PaymentDTO paymentDTO);
+
+    PaymentDTO processSelectPaymentVbankInfo(PaymentDTO paymentDTO);
 }

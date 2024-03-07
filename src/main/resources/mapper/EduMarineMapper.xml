@@ -2588,6 +2588,7 @@
         SELECT COUNT(1)
         FROM regular
         WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
     </select>
 
     <select id="selectBoarderPreCheck" parameterType="com.mtf.edumarine.dto.BoarderDTO" resultType="java.lang.Integer">
@@ -2595,6 +2596,7 @@
         SELECT COUNT(1)
         FROM boarder
         WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
     </select>
 
     <select id="selectFrpPreCheck" parameterType="com.mtf.edumarine.dto.FrpDTO" resultType="java.lang.Integer">
@@ -2602,6 +2604,7 @@
         SELECT COUNT(1)
         FROM frp
         WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
     </select>
 
     <select id="selectInboarderPreCheck" parameterType="com.mtf.edumarine.dto.InboarderDTO" resultType="java.lang.Integer">
@@ -2609,6 +2612,7 @@
         SELECT COUNT(1)
         FROM inboarder
         WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
     </select>
 
     <select id="selectOutboarderPreCheck" parameterType="com.mtf.edumarine.dto.OutboarderDTO" resultType="java.lang.Integer">
@@ -2616,6 +2620,7 @@
         SELECT COUNT(1)
         FROM outboarder
         WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
     </select>
 
     <select id="selectSailyachtPreCheck" parameterType="com.mtf.edumarine.dto.SailyachtDTO" resultType="java.lang.Integer">
@@ -2623,7 +2628,118 @@
         SELECT COUNT(1)
         FROM sailyacht
         WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
     </select>
+
+    <update id="updatePaymentVbankNoti" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.updatePaymentVbankNoti */
+        UPDATE payment
+        SET pay_status = #{payStatus}
+        WHERE moid = <![CDATA[#{moid}]]>
+          AND vact_num = <![CDATA[#{vactNum}]]>
+          AND tot_price = <![CDATA[#{totPrice}]]>
+          AND pay_status = '입금대기'
+    </update>
+
+    <select id="selectPaymentVbankInfo" parameterType="com.mtf.edumarine.dto.PaymentDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectPaymentVbankInfo */
+        SELECT member_seq
+             , table_seq
+             , train_seq
+             , train_name
+        FROM payment
+        WHERE del_yn = 'N'
+          AND moid = <![CDATA[#{moid}]]>
+          AND vact_num = <![CDATA[#{vactNum}]]>
+          AND tot_price = <![CDATA[#{totPrice}]]>
+    </select>
+
+    <select id="selectPaymentTableSeq" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectPaymentTableSeq */
+        SELECT seq
+             , member_seq
+             , member_name
+             , member_phone
+             , table_seq
+             , train_seq
+             , train_name
+             , buyer_name
+             , buyer_tel
+             , buyer_email
+             , cust_email
+             , pay_sum
+             , tot_price
+             , good_name
+             , goods_name
+             , pay_status
+             , appl_date
+             , appl_time
+             , moid
+             , mid
+             , tid
+             , appl_num
+             , auth_signature
+             , event_code
+             , pay_method
+             , currency
+             , p_fn_nm
+             , card_num
+             , card_code
+             , card_corp_flag
+             , card_member_num
+             , card_appl_price
+             , card_point
+             , card_quota
+             , card_purchase_code
+             , card_prtc_code
+             , card_check_flag
+             , card_bank_code
+             , card_terminal_num
+             , card_use_point
+             , card_interest
+             , card_src_code
+             , card_gwcode
+             , card_purchase_name
+             , pay_device
+             , vact_date
+             , vact_time
+             , vact_name
+             , vact_input_name
+             , vact_bank_code
+             , vact_bank_name
+             , vact_num
+             , result_code
+             , result_msg
+             , refund_reason
+             , cancel_gbn
+             , cancel_date
+             , cancel_time
+             , prtc_date
+             , prtc_time
+             , cancel_tid
+             , prtc_price
+             , prtc_remains
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM payment
+        WHERE table_seq = #{tableSeq}
+    </select>
+
+    <update id="updatePayment" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updatePayment */
+        UPDATE payment
+        SET pay_status = #{payStatus}
+        <if test='refundReason != null and refundReason != ""'>
+            , refund_reason = <![CDATA[#{refundReason}]]>
+        </if>
+        , note = #{note}
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
 
 </mapper>
 
