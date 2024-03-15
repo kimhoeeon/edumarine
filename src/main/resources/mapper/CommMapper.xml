@@ -3,14 +3,41 @@
 
 <mapper namespace="com.mtf.edumarine.mapper.CommMapper">
 
-    <select id="getCommCodeList" parameterType="com.mtf.edumarine.dto.CommCodeDTO" resultType="com.mtf.edumarine.dto.CommCodeDTO">
-        <!-- com.mtf.edumarinearine.mapper.CommMapper.getCommCodeList -->
-        SELECT comm_cd_val
-        , use_yn
-        , cd_note_1
-        FROM comm_code
-        WHERE comm_cd_nm = #{commCdNm}
-        ORDER BY comm_cd_val ASC
+    <select id="getTemplateContent" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.TemplateDTO">
+        /* com.mtf.edumarine.mapper.CommMapper.getTemplateContent */
+        SELECT seq
+             , title
+             , content
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM template
+        WHERE note = #{target}
+        AND del_yn = 'N'
+        LIMIT 1
+    </select>
+
+    <select id="getSmsSendingJoinList" parameterType="com.mtf.edumarine.dto.SmsNotificationDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.CommMapper.getSmsSendingJoinList */
+        SELECT phone
+        FROM member
+        WHERE sms_yn = '1'
+          AND del_yn = 'N'
+          AND apply_status != '탈퇴'
+          AND seq = #{seq}
+    </select>
+
+    <select id="getSmsSendingKeywordList" parameterType="com.mtf.edumarine.dto.SmsNotificationDTO" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.CommMapper.getSmsSendingKeywordList */
+        SELECT phone
+        FROM member
+        WHERE sms_yn = '1'
+          AND del_yn = 'N'
+          AND apply_status != '탈퇴'
+          AND keyword LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
 </mapper>

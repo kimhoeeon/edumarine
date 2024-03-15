@@ -1551,30 +1551,6 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육일정 (시작)</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input class="form-control form-control-solid" id="trainStartDttm" name="trainStartDttm" placeholder="교육시작일" value="${info.trainStartDttm}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육일정 (종료)</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input class="form-control form-control-solid" id="trainEndDttm" name="trainEndDttm" placeholder="교육종료일" value="${info.trainEndDttm}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
                                                 <label class="col-lg-4 col-form-label fw-semibold fs-6 required">접수기간 (시작)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
@@ -1592,6 +1568,30 @@ if (document.documentElement) {
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
                                                     <input class="form-control form-control-solid" id="applyEndDttm" name="applyEndDttm" placeholder="접수종료일" value="${info.applyEndDttm}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육일정 (시작)</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input class="form-control form-control-solid" id="trainStartDttm" name="trainStartDttm" placeholder="교육시작일" value="${info.trainStartDttm}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육일정 (종료)</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input class="form-control form-control-solid" id="trainEndDttm" name="trainEndDttm" placeholder="교육종료일" value="${info.trainEndDttm}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -1785,6 +1785,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/train.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 

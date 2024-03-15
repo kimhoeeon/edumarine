@@ -2079,7 +2079,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
                                                 eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
                                             }
-                                        }else{
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
                                             //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                                             String cancelDttm = boarderInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
                                             String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
@@ -2397,7 +2397,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
                                                 eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
                                             }
-                                        }else{
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
                                             //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                                             String cancelDttm = frpInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
                                             String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
@@ -2724,7 +2724,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
                                                 eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
                                             }
-                                        }else{
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
                                             //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                                             String cancelDttm = outboarderInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
                                             String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
@@ -3148,7 +3148,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
                                                 eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
                                             }
-                                        }else{
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
                                             //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                                             String cancelDttm = inboarderInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
                                             String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
@@ -3477,7 +3477,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                                 updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
                                                 eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
                                             }
-                                        }else{
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
                                             //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                                             String cancelDttm = sailyachtInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
                                             String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd

@@ -1,11 +1,17 @@
 package com.mtf.edumarine.mapper;
 
-import com.mtf.edumarine.dto.CommCodeDTO;
+import com.mtf.edumarine.dto.SmsNotificationDTO;
+import com.mtf.edumarine.dto.TemplateDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface CommMapper {
-    List<CommCodeDTO> getCommCodeList(CommCodeDTO commCodeDTO);
+    TemplateDTO getTemplateContent(String target);
+
+    String getSmsSendingJoinList(SmsNotificationDTO smsNotificationDTO);
+
+    List<String> getSmsSendingKeywordList(SmsNotificationDTO smsNotificationDTO);
+
 }

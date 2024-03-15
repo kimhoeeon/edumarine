@@ -1838,7 +1838,7 @@ if (document.documentElement) {
                             <!--end::Input group-->
 
                             <!--begin::Input group-->
-                            <div>
+                            <div class="mb-6">
                                 <!--begin::Label-->
                                 <label class="form-label">연간 일정표 등록 여부</label>
                                 <!--end::Label-->

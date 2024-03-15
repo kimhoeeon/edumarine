@@ -293,6 +293,29 @@ function f_education_train_save(seq) {
                             contentType: 'application/json; charset=utf-8',
                             success: function (data) {
                                 if (data.resultCode === "0") {
+
+                                    let gbn = $('#gbn').val();
+                                    let keyword = '';
+                                    switch (gbn){
+                                        case '해상엔진 자가정비 (선외기)':
+                                            keyword = '선외기';
+                                            break;
+                                        case '해상엔진 자가정비 (선내기)':
+                                            keyword = '선내기';
+                                            break;
+                                        case '마리나 선박 선외기 정비사 실무과정':
+                                        case '마리나 선박 선내기 정비사 실무과정':
+                                            keyword = '마리나선박';
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    if(keyword !== ''){
+                                        let keywordJson = { keyword : keyword };
+                                        f_sms_notify_sending('8', keywordJson); // 8 키워드알림 템플릿
+                                    }
+
                                     Swal.fire({
                                         title: '교육 정보 등록',
                                         text: "교육 정보가 등록되었습니다.",
@@ -367,7 +390,7 @@ function f_education_train_valid() {
     let paySum = document.querySelector('#paySum').value;
     let trainCnt = document.querySelector('#trainCnt').value;
 
-    if (nvl(gbn, '') === '') {
+    if (nvl(gbn, '- 교육과정명 선택 -') === '- 교육과정명 선택 -') {
         showMessage('', 'error', '[등록 정보]', '교육과정명을 선택해 주세요.', '');
         return false;
     }

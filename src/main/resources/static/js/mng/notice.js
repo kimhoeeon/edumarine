@@ -256,6 +256,28 @@ function f_board_notice_save(seq){
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
                             if (data.resultCode === "0") {
+
+                                let title = $('#title').val();
+                                let keyword = '';
+
+                                //선내기 선외기 마리나선박 정비 취업
+                                if(title.includes('선내기')){
+                                    keyword = '선내기';
+                                }else if(title.includes('선외기')){
+                                    keyword = '선외기';
+                                }else if(title.includes('마리나선박')){
+                                    keyword = '마리나선박';
+                                }else if(title.includes('정비')){
+                                    keyword = '정비';
+                                }else if(title.includes('취업')){
+                                    keyword = '취업';
+                                }
+
+                                if(keyword !== ''){
+                                    let keywordJson = { keyword : keyword };
+                                    f_sms_notify_sending('8', keywordJson); // 8 키워드알림 템플릿
+                                }
+
                                 Swal.fire({
                                     title: '공지사항 정보 등록',
                                     text: "공지사항 정보가 등록되었습니다.",

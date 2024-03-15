@@ -1814,6 +1814,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/notice.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
