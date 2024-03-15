@@ -95,6 +95,11 @@ $(function(){
         $(this).val($(this).val().replaceAll(exp, ''));
     });
 
+    $('#smsYn').on('change', function(){
+        if(!$("#smsYn").is(":checked")){
+            alert('SMS 알림서비스 미동의 시\n가입 및 교육 신청 안내, 게시물 키워드 알림 등\nSMS 서비스가 제한됩니다.');
+        }
+    });
 
 })
 
@@ -383,6 +388,7 @@ function f_main_member_join(){
                     if (data.resultCode === "0") {
 
                         if(data.customValue === "0"){
+
                             $.ajax({
                                 url: '/member/join/insert.do',
                                 method: 'POST',
@@ -390,11 +396,17 @@ function f_main_member_join(){
                                 data: JSON.stringify(form),
                                 dataType: 'json',
                                 contentType: 'application/json; charset=utf-8',
-                                success: function (data) {
-                                    if (data.resultCode === "0") {
-                                        window.location.href = '/member/complete.do';
+                                success: function (data1) {
+                                    if (data1.resultCode === "0") {
+
+                                        let seqJson = { seq : data1.customValue };
+                                        f_sms_notify_sending('1', seqJson); // 1 회원가입완료 템플릿
+
+                                        setTimeout(function(){
+                                            window.location.href = '/member/complete.do';
+                                        }, 2000);
                                     } else {
-                                        showMessage('', 'error', '에러 발생', '회원가입을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                        showMessage('', 'error', '에러 발생', '회원가입을 실패하였습니다. 관리자에게 문의해주세요. ' + data1.resultMessage, '');
                                     }
                                 },
                                 error: function (xhr, status) {
@@ -3357,6 +3369,57 @@ function f_edu_apply_modify_btn(trainStartDttm, trainName, seq){
 /**************************************************************
  * COMMON
  * ************************************************************/
+const sender = '1811-7891'; //해양레저인력양성센터
+/*
+* 회원가입 직후
+* 수강신청 후
+* 결제 후
+* 취소신청 후
+* 취소완료 후
+* 가상계좌 안내
+* 수업 개설 2일전 교육안내
+* 키워드 게시물 알람
+* */
+function smsSend(targetGbn){
+
+    let targetList = ajaxConnect('', 'post', {});
+
+    if(targetList.length > 0) {
+
+        for (let i = 0; i < targetList.length; i++) {
+            //resData[i].seq;
+            //resData[i].title;
+            let phone = '';
+            let content = '';
+
+            let smsSendObj = {
+                sender: sender,
+                phone: phone,
+                content: content
+            }
+
+            let sendResult = '성공';
+            let smsSendRes = ajaxConnect('/sms/send.do', 'post', smsSendObj);
+            if (smsSendRes.result_code !== 1) {
+                sendResult = '실패';
+            }
+
+            let smsRstObj = {
+                smsGroup: getCurrentDate().substring(0, getCurrentDate().length-2),
+                phone: phone,
+                sender: '관리자',
+                senderPhone: sender,
+                content: content,
+                sendResult: sendResult,
+                templateSeq: $('.sms_template_list option:selected').val(),
+            }
+
+            let smsRstRes = ajaxConnect('/mng/smsMng/sms/insert.do', 'post', smsRstObj);
+
+        }
+    }
+
+}
 
 function f_train_payment_submit(){
 
@@ -3639,27 +3702,6 @@ function f_file_remove(el, fileId){
     if(resData.resultCode === "0"){
         $(el).parent().remove();
     }
-}
-
-function makeJsonFormat(data){
-    let returnJsonObj;
-    let receiverArr = [];
-
-    $.each(data , function(i){
-        let receiverObj = {
-            email: data[i].chargePersonEmail //받는이 메일주소
-        }
-        receiverArr.push(receiverObj);
-    });
-
-    returnJsonObj = {
-        subject: '[SIPA 스마트산업진흥협회] 참가업체 접수 완료', //제목
-        body: '',//본문
-        template: '6', //템플릿 번호
-        receiver: receiverArr
-    }
-
-    return returnJsonObj;
 }
 
 function getCurrentDate(timeYn) {

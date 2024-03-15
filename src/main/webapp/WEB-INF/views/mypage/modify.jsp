@@ -407,7 +407,7 @@
                             <p>
                                 <label>
                                     <input type="checkbox" id="smsYn" name="smsYn" class="f_privcy_chk" <c:if test="${info.smsYn eq '1'}">checked</c:if> />
-                                    (선택) SMS 알림서비스 동의
+                                    (선택) SMS 알림서비스 동의 (가입, 신청 안내, 게시물 키워드 알림 등)
                                 </label>
                             </p>
                         </div>

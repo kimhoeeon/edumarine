@@ -418,7 +418,7 @@
                             <p>
                                 <label>
                                     <input type="checkbox" id="smsYn" name="smsYn" class="f_privcy_chk" checked>
-                                    (선택) SMS 알림서비스 동의
+                                    (선택) SMS 알림서비스 동의 (가입, 신청 안내, 게시물 키워드 알림 등)
                                 </label>
                             </p>
                         </div>
@@ -452,6 +452,7 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="<%request.getContextPath();%>/static/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>

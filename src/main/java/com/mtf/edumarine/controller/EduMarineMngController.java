@@ -2526,6 +2526,7 @@ public class EduMarineMngController {
     public ModelAndView mng_smsMng_sms_send() {
         out.println("EduMarineMngController > mng_smsMng_sms_send");
         ModelAndView mv = new ModelAndView();
+
         mv.setViewName("/mng/smsMng/sms/send");
         return mv;
     }
@@ -5584,6 +5585,26 @@ public class EduMarineMngController {
         SmsResponseDTO response = commService.smsSend_certNum(smsDTO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/sms/send/notify/getContent.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> sms_send_notify_getContent(@RequestBody SmsNotificationDTO smsNotificationDTO) {
+        out.println("EduMarineMngController > sms_send_notify_getContent");
+        //System.out.println(fileDTO.toString());
+
+        String response = commService.smsSendNotifyContent(smsNotificationDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/sms/send/notify/sending.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> sms_send_notify_sending(@RequestBody SmsNotificationDTO smsNotificationDTO) {
+        out.println("EduMarineMngController > sms_send_notify_sending");
+        //System.out.println(fileDTO.toString());
+        String result = commService.smsSendNotifySending(smsNotificationDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/train/selectNextTime.do", method = RequestMethod.POST)

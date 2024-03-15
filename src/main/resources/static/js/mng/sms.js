@@ -18,6 +18,8 @@ $(function(){
             $('#template_title').val('');
             $('#template_list').val('').select2({minimumResultsForSearch: Infinity});
             $('#template_content').val('');
+            $('#smsType').text('단문 (SMS)');
+            $('#templateRemain').text('0');
         });
 
         myModalEl.addEventListener('show.bs.modal', event => {
@@ -39,7 +41,7 @@ $(function(){
         templateContent.val('');
 
         let remain = document.getElementById("templateRemain");
-        remain.innerText = String(90);
+        remain.innerText = String(0);
 
         if (selectedOption === '신규등록') {
             templateTitle.prop('disabled', false).val('');
@@ -52,33 +54,34 @@ $(function(){
                 templateContent.val(resData.content);
 
                 let temp_str = resData.content;
-                remain.innerText = String(90 - getByte(temp_str));
+                remain.innerText = String(getByte(temp_str));
             }
         }
     });
 
     $('.sms_template_list').on('change', function () {
         let selectedOption = $(this).val();
-        let smsTemplateTitle = $('.sms_template_title');
-        let smsTemplateContent = $('.sms_template_content');
+        let smsTemplateTitle = $('.sms_template_title:visible');
+        let smsTemplateContent = $('.sms_template_content:visible');
 
         smsTemplateTitle.val('');
         smsTemplateContent.val('');
+        $('.smsType:visible').text('단문 (SMS)');
         let remain = $('.smsRemain:visible');
-        remain.text(String(90));
+        remain.text(String(0));
 
         if (selectedOption === '미사용') {
             smsTemplateTitle.prop('disabled', true).val('');
         } else {
-            smsTemplateTitle.prop('disabled', true).val('');
-            let templateSeq = $('.sms_template_list').val();
+            smsTemplateTitle.prop('disabled', true).val($(this).text());
+            let templateSeq = $('.sms_template_list:visible').val();
             if(nvl(templateSeq,'') !== '' && templateSeq !== '미사용'){
                 let resData = ajaxConnect('/mng/smsMng/sms/template/selectSingle.do', 'post', {seq:templateSeq});
                 smsTemplateTitle.val(resData.title);
                 smsTemplateContent.val(resData.content);
 
                 let temp_str = resData.content;
-                remain.innerText = String(90 - getByte(temp_str));
+                remain.text(String(getByte(temp_str)));
             }
         }
     });
@@ -93,16 +96,19 @@ $(function(){
                 $('#sms_send_form_train').show();
                 $('#sms_send_form_member').hide();
                 $('#sms_send_form_excel').hide();
+                f_sms_template_list_set('');
                 break;
             case 'MEMBER':
                 $('#sms_send_form_train').hide();
                 $('#sms_send_form_member').show();
                 $('#sms_send_form_excel').hide();
+                f_sms_template_list_set('');
                 break;
             case 'EXCEL':
                 $('#sms_send_form_train').hide();
                 $('#sms_send_form_member').hide();
                 $('#sms_send_form_excel').show();
+                f_sms_template_list_set('');
                 break;
             default:
                 break;
@@ -191,6 +197,36 @@ $(function(){
         $('.select_cnt').text(selectCnt);
     })
 
+    let toolTipTxt = '';
+    toolTipTxt += '교육명 : %eduName%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '교육차시 : %eduTime%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '교육일시 : %eduDate%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '교육비 : %eduPrice%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '가상계좌은행 : %bank%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '가상계좌번호 : %vacctNum%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '가상계좌주 : %vacctName%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '가상계좌입금기한 : %vacctLimit%';
+    toolTipTxt += '<br>';
+    toolTipTxt += '키워드 : %keyword%';
+
+    let options = {
+        html: true,
+        container: 'body',
+        trigger: 'click',
+        content: function () {
+            return toolTipTxt;
+        }
+
+    };
+    $('#replaceTooltip').popover(options);
+
 });
 
 function f_sms_template_list_set(gbn){
@@ -205,11 +241,14 @@ function f_sms_template_list_set(gbn){
                 $('#template_list').append('<option value=' + resData[i].seq +'>' + resData[i].title +'</option>');
             }
         }else{
-            $('.sms_template_list').children('option:not(:lt(2))').remove();
+            let newOption = new Option('미사용', '미사용', false, false);
+            $('.sms_template_list:visible').append(newOption);
 
             for(let i=0; i<resData.length; i++) {
-                $('.sms_template_list').append('<option value=' + resData[i].seq +'>' + resData[i].title +'</option>');
+                $('.sms_template_list:visible').append('<option value=' + resData[i].seq + '>' + resData[i].title +'</option>').trigger('change');
             }
+
+            $('.sms_template_list:visible').val('').select2({minimumResultsForSearch: Infinity});
         }
     }
 }
@@ -602,40 +641,28 @@ function f_sms_phone_remove_btn(el){
 
 function templateByteChk(content){
     let temp_str = content.value;
-    let remain = document.getElementById("templateRemain");
+    let remain = $('#templateRemain:visible');
+    let smsType = $('#smsType:visible');
 
-    remain.innerText = String(90 - getByte(temp_str));
-    //남은 바이트수를 표시 하기
-    if(remain.innerText < 0) {
-        alert("템플릿 내용은 " + 90 + " Byte 를 초과할 수 없습니다.");
-
-        while(remain.innerText < 0) {
-            temp_str = temp_str.substring(0, temp_str.length-1);
-            content.value = temp_str;
-            remain.innerText = String(90 - getByte(temp_str));
-        }
-
-        content.focus();
+    remain.text(String(getByte(temp_str)));
+    if(Number.parseInt(remain.text()) <= 90){
+        smsType.text('단문 (SMS)');
+    }else if(Number.parseInt(remain.text()) > 90){
+        smsType.text('장문 (LMS)');
     }
-
 }
 
 function smsByteChk(el){
     let temp_str = $(el).val();
     let remain = $(el).parent().siblings('label').find('span');
+    let smsType = $('.smsType:visible');
 
-    remain.text(String(90 - getByte(temp_str)));
+    remain.text(String(getByte(temp_str)));
     //남은 바이트수를 표시 하기
-    if(remain.text() < 0) {
-        alert("SMS 내용은 " + 90 + " Byte 를 초과할 수 없습니다.");
-
-        while(remain.text() < 0) {
-            temp_str = temp_str.substring(0, temp_str.length-1);
-            $(el).text(temp_str);
-            remain.text(String(90 - getByte(temp_str)));
-        }
-
-        $(el).focus();
+    if(Number.parseInt(remain.text()) <= 90){
+        smsType.text('단문 (SMS)');
+    }else if(Number.parseInt(remain.text()) > 90){
+        smsType.text('장문 (LMS)');
     }
 }
 
@@ -826,7 +853,8 @@ function f_sms_form_init(gbn){
     $('input[type=text]').val('');
     $('textarea').val('');
     $('input[type=checkbox]').prop('checked',false);
-    $('span.smsRemain:visible').text('90');
+    $('span.smsRemain:visible').text('0');
+    $('span.smsType:visible').text('단문 (SMS)');
     $('span.search_cnt:visible').text('0');
     $('.select_cnt').text('0');
     $('.sms_template_title').val('');

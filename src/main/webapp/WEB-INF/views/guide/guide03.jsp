@@ -428,6 +428,10 @@
                                         <li>마리나 선외기 정비사 실무과정 : 교육시작 한달 전</li>
                                         <li>마리나 선내기 정비사 실무과정 : 교육시작 한달 전</li>
                                     </ul>
+                                    <div class="img">
+                                        <img src="<%request.getContextPath();%>/static/img/img_guide_marina.png" class="pc">
+                                        <img src="<%request.getContextPath();%>/static/img/img_guide_marina_m.png" class="m">
+                                    </div>
                                 </div>
                             </li>
                             <li>

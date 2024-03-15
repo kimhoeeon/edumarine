@@ -9,7 +9,7 @@ package com.mtf.edumarine.constants;
 public class CommConstants {
 
     /* SMS Sender */
-    public static final String SMS_SENDER_NUM = "0269529497";
+    public static final String SMS_SENDER_NUM = "1811-7891";
 
     /* 결과 코드*/
     public static final String RESULT_CODE_SUCCESS = "0";

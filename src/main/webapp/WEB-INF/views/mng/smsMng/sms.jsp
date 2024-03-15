@@ -1700,10 +1700,22 @@ if (document.documentElement) {
                         <!--end::Col-->
                     </div>
                     <!--end::Input group-->
+                    <div class="row mb-3">
+                        <div class="d-flex justify-content-end">
+                            <!--begin::Label-->
+                            <label class="col-lg-2 col-form-label fw-semibold fs-6">문자유형 : <span id="smsType">단문 (SMS)<%--장문 (LMS)--%></span></label>
+                            <!--end::Label-->
+                            <%-- 치환문자 안내 --%>
+                            <button type="button" id="replaceTooltip" class="btn btn-secondary" data-toggle="popover" title="<strong>치환문자 안내<strong>">
+                                치환문자 안내
+                            </button>
+                            <%-- 치환문자 안내 --%>
+                        </div>
+                    </div>
                     <!--begin::Input group-->
                     <div class="row mb-6">
                         <!--begin::Label-->
-                        <label class="col-lg-4 col-form-label fw-semibold fs-6">템플릿 내용 ( <span id="templateRemain">90</span> / 90 Bytes 남음 )</label>
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">템플릿 내용 ( <span id="templateRemain">0</span> Bytes )</label>
                         <!--end::Label-->
                         <!--begin::Col-->
                         <textarea id="template_content" name="template_content" class="form-control form-control-solid-bg resize-none h-200px"
@@ -1760,6 +1772,7 @@ if (document.documentElement) {
     <!--begin::Javascript-->
 
     <script>var hostUrl = "<%request.getContextPath();%>/static/assets/";</script>
+
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="<%request.getContextPath();%>/static/assets/plugins/global/plugins.bundle.js"></script>
     <script src="<%request.getContextPath();%>/static/assets/js/scripts.bundle.js"></script>

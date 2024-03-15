@@ -1,7 +1,7 @@
 /* 공통적용 */
 html { scroll-behavior: smooth; } 
 img { max-width: 100%; } 
-input, button { -webkit-appearance: none; -moz-appearance: none; appearance: none; } 
+input, button, select { -webkit-appearance: none; -moz-appearance: none; appearance: none; } 
 
 input[type="text"],
 input[type="password"],
@@ -10,7 +10,12 @@ input[type="email"],
 input[type="tel"] {border: 0; border: 1px solid #ddd; padding: 10px; height: 45px; border-radius: 5px;}  
 
 textarea { width: 100%; resize: none; height: 100px; border: 0; border: 1px solid #ddd; padding: 10px; border-radius: 5px;} 
-select { padding: 10px; border: 1px solid #ddd; height:45px; border-radius: 5px; background: #fff;}
+select {
+    padding: 0 30px 0 10px; height: 45px; line-height: 45px;
+    border: 1px solid #ddd; border-radius: 5px;
+    background:url('../img/icon_select_arr.png') no-repeat #fff calc(100% - 10px) 50%/13px auto;
+
+}
 select option {line-height: 30px;}
 
 input::placeholder,
@@ -580,12 +585,12 @@ button {
 /* faq 추가 20240201 */
 .board_wrap .board_faq_wrap {margin: 40px auto 0; max-width: 1020px;}
 .board_wrap .board_faq { border-top: 2px solid #083274; }
-.board_wrap .board_faq li>div { padding: 25px 40px 21px 60px; position: relative; }
-.board_wrap .board_faq li>div:before {
+.board_wrap .board_faq > li > div { padding: 25px 40px 21px 60px; position: relative; }
+.board_wrap .board_faq > li > div:before {
     display: block; content: ""; position: absolute; left: 10px; top: 18px; width: 32px; height: 32px;
     background-size: 32px 32px; background-repeat: no-repeat; background-position: center center;
 }
-.board_wrap .board_faq li { border-bottom: 1px solid #ddd; }
+.board_wrap .board_faq > li { border-bottom: 1px solid #ddd; }
 .board_wrap .board_faq .ask { font-size: 1.6rem;}
 .board_wrap .board_faq .ask:before { background-image: url('../img/icon_faq_q.png'); }
 .board_wrap .board_faq .ask:after {
@@ -692,7 +697,7 @@ button {
 .form_wrap .form_box .form_tit .big {font-size: 2rem;}
 .form_wrap .form_box .form_tit .small {font-size: 1.6rem; color: #555;}
 .form_wrap .form_box .form_list {display: flex; flex-wrap: wrap;}
-.form_wrap .form_box .form_list > li {display: flex; align-items: stretch; border-bottom: 1px solid #ddd; width: 100%;}
+.form_wrap .form_box .form_list > li {display: flex; align-items: stretch; border-bottom: 1px solid #ddd; width: 100%; min-height: 75px;}
 .form_wrap .form_box .form_list > li.w50 {width: 50%;}
 .form_wrap .form_box .form_list > li > div { display: flex; flex-direction: column; justify-content: center; font-size: 1.4rem;}
 .form_wrap .form_box .form_list > li .gubun {padding:15px 10px; flex-basis: 150px; background: #EBF3FF; text-align: center; word-break: keep-all;}
@@ -710,9 +715,9 @@ button {
     position: absolute; left: 0; top: 0; background: #083274; color: #fff; border-radius: 50px; 
 }
 .form_wrap .form_box .form_list > li .cmnt.text_red {color: #C00000;}
-.form_wrap .form_box .form_list > li .check_etc_input {height: 30px; width: 130px;}
+.form_wrap .form_box .form_list > li .check_etc_input {height: 40px; width: 130px; margin-left: 3px;}
 
-.form_wrap .form_box .form_list .form_list_tit {background: #083274; padding: 15px 10px 10px; color: #fff; margin-top: 10px; position: relative;}
+.form_wrap .form_box .form_list .form_list_tit {background: #083274; padding: 15px 10px 10px; color: #fff; margin-top: 10px; position: relative; min-height: unset;}
 .form_wrap .form_box .form_list .form_list_tit .del_btn {font-size: 1.4rem; position: absolute; right: 15px; cursor: pointer;}
 .form_wrap .form_box .formAddBtn {display: flex; justify-content: flex-end;}
 .form_wrap .form_box .formAddBtn span {
@@ -737,6 +742,15 @@ button {
 } 
 .form_wrap .form_box .form_file.upload_name { margin-right: 10px; width: calc(100% - 90px); max-width: 311px;}
 
+.form_wrap .form_box .form_file .btn_add,
+.form_wrap .form_box .form_file .btn_delete {width: 45px; height: 45px; border: 1px solid #083274; border-radius: 5px; position: relative;}
+.form_wrap .form_box .form_file .btn_add::before,
+.form_wrap .form_box .form_file .btn_delete::before {
+    display: block; content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 20px; height: 20px;
+}
+.form_wrap .form_box .form_file .btn_add::before {background: url(../img/icon_content_add.png) no-repeat center center / cover;}
+.form_wrap .form_box .form_file .btn_delete::before {background: url(../img/icon_content_minus.png) no-repeat center center / cover;}
+
 .form_wrap .form_box .form_address { display: flex; flex-direction: column; align-items: flex-start !important;} 
 .form_wrap .form_box .form_address .address_box { display: flex; gap:10px; max-width:500px; width: 100%;} 
 .form_wrap .form_box .form_address .address_box input[type="text"] {flex: 1; } 
@@ -757,7 +771,15 @@ button {
 }
 .form_wrap .form_box .form_privacy_inner .box .table th {background:#ededed;}
 .form_wrap .form_box .form_privacy_check {padding: 20px 0; border-bottom: 1px solid #ddd;}
+.form_wrap .form_box .form_privacy_check.sp_btw {display: flex; justify-content: space-between; flex-wrap: wrap;}
 .form_wrap .form_box .form_privacy_check p {margin-top: 10px; font-size: 1.4rem;}
+.form_wrap .form_box .form_privacy_check .cmnt {padding-left: 20px; position: relative;}
+.form_wrap .form_box .form_privacy_check .cmnt::before {
+    display: block; content: "!"; width: 15px; height: 15px; line-height: 16px; text-align: center;
+    background: #083274; border-radius: 100px; color: #fff; font-size: 9px;
+    position: absolute; left: 0;
+}
+
 
 .form_wrap .form_btn_box {display: flex; justify-content: center; gap: 10px;;}
 .form_wrap .form_delete_id {display: flex; justify-content: flex-end; margin-top: 40px;}
@@ -790,6 +812,8 @@ button {
     width: max-content; max-width:100%; background: #fff; position: absolute; left: 0; top: 100%;
     text-align: left; display: none; z-index: 1;
 } 
+
+.form_wrap .form_bot_cmnt {margin-top: 40px; color: #777; font-size: 1.4rem; text-align: center;}
 
 #popupDeleteId .cmnt_box {display: none;}
 #popupCancelEdu .cmnt_box {display: none;}
@@ -1025,7 +1049,7 @@ button {
     display: block; content: "·"; position: absolute; left: 0;
 }
 
-.guide_sec {padding: 60px 0; border-top: 1px solid #ededed; word-break: break-all; }
+.guide_sec {padding: 60px 0; border-top: 1px solid #ededed; word-break: keep-all; }
 .guide_sec  .guide_tit_box {margin-bottom: 20px !important;}
 .guide_sec > div,
 .guide_sec > ul {margin-bottom: 40px;}
@@ -1098,6 +1122,8 @@ button {
 }
 .guide_info_2 .naeyong .small {font-size: 1.4rem;}
 .guide_info_2 .naeyong .gray7 {color: #777;}
+.guide_info_2 .naeyong .img {padding: 10px; max-width: 700px;}
+.guide_info_2 .naeyong .img .m {display: none;}
 .guide_info_2 .underline {border-bottom: 1px solid #000;}
 
 .guide_info_3 {display: flex; flex-direction: column; gap: 40px;}
@@ -1160,6 +1186,43 @@ button {
 }
 .guide_btn_box .btn_box a:before {background: url('../img/icon_guide_btn_01.png') no-repeat center center / cover; margin-right: 5px;}
 .guide_btn_box .btn_box a:after {background: url('../img/icon_guide_btn_02.png') no-repeat center center / cover; margin-left: 5px;}
+
+
+/* 교육안내 템플릿화 과정안내, 신청자격안내 */
+.guide_tp_01 .mobile_cmnt {font-size: 1.4rem; position: relative; padding-left: 20px; margin-bottom: 10px; display: none;}
+.guide_tp_01 .mobile_cmnt::before {
+    display: inline-block; content: "!"; width: 14px; height: 14px; line-height: 14px; font-size: 10px;
+    background: #083274; border-radius: 100px; color: #fff; text-align: center;
+    position: absolute; left: 0; top: 2px;
+}
+
+.guide_tp_01 .table table {
+    border-radius: 5px; table-layout: fixed; width: 100%; overflow: hidden;
+    box-shadow: 0 0 0 2px #083274; border-collapse: collapse;
+}
+.guide_tp_01 .table th,
+.guide_tp_01 .table td {vertical-align: middle; font-size: 1.5rem; padding: 20px; border: 1px solid #E6ECF5; word-break: break-all;}
+.guide_tp_01 .table th {text-align: center; background: #F9FBFF;}
+.guide_tp_01 .table .gubun {width: 20%; max-width: 150px; text-align: center;}
+.guide_tp_01 .table .item.list {display: flex; flex-direction: column; gap: 8px;}
+.guide_tp_01 .table .item.list p {padding-left: 10px; position: relative;}
+.guide_tp_01 .table .item.list p::before {position: absolute; left: 0; display: block; content: "·";}
+.guide_tp_01 .table .address {font-size: 1.4rem; color: #555; margin-top: 3px;}
+.guide_tp_01 .table .cmnt {display: flex; flex-direction: column; gap: 3px; margin-top: 3px;}
+.guide_tp_01 .table .cmnt p {color: #555; font-size: 1.4rem;}
+
+.guide_tp_02 ul {border-radius: 5px; background: #F9FBFF; border: 2px solid #E6ECF5; padding: 20px; display: flex; flex-direction: column; gap: 20px;}
+.guide_tp_02 li {display: flex; font-size: 1.5rem;}
+.guide_tp_02 .gubun {flex-basis: 100px; flex-shrink: 0; color: #083274;}
+.guide_tp_02 .gubun::before {display: inline-block; content: "·"; margin-right: 5px;}
+.guide_tp_02 .item.list {display: flex; flex-direction: column; gap: 8px;}
+.guide_tp_02 .item.list p {padding-left: 15px; position: relative;}
+.guide_tp_02 .item.list p::before {position: absolute; left: 0; display: block; content: "-";}
+.guide_tp_02 .cmnt {display: flex; flex-direction: column; gap: 3px; margin-top: 3px;}
+.guide_tp_02 .cmnt p {color: #555; font-size: 1.4rem;}
+.guide_tp_02 .url {text-decoration: underline;}
+.guide_tp_02 .img {margin: 10px; max-width: 650px;}
+.guide_tp_02 .img .m {display: none;}
 
 .center_top {padding-bottom: 60px; word-break: keep-all;}
 .center_sec {padding: 70px 0 60px; border-top: 1px solid #ededed; word-break: keep-all;}
@@ -1283,5 +1346,89 @@ button {
 .center_way_map .info_list {margin-top: 30px;}
 .center_way_map .info_list li {padding-left: 100px; font-size: 1.6rem; position: relative; margin:10px 0;}
 .center_way_map .info_list .gubun {position: absolute; left: 0; color: #555;}
+
+
+.recruit_top_wrap {margin-bottom: 40px;}
+.recruit_top {background: #f5f5f5; padding: 30px; display: flex; flex-direction: column; gap: 20px; border-radius: 10px;}
+.recruit_top_item {display: flex; align-items: center;}
+.recruit_top_item .gubun {flex-basis: 120px; flex-shrink: 0;}
+.recruit_top_item .naeyong label {margin: 5px  20px 5px 0;}
+.recruit_top_item .search {display: flex; align-items: center; gap: 10px; flex:  1 0 0;}
+.recruit_top_item .search select {border: 0;}
+.recruit_top_item .search .search_bar {max-width: 500px; flex: 1 0 0;}
+.recruit_top_item .search .search_bar input {width: 100%; border: 0;}
+.recruit_top_item .search .search_btn {
+    width: 45px; height: 45px; background: #083274; border-radius: 5px;
+    cursor: pointer; position: relative;
+}
+.recruit_top_item .search .search_btn::before {
+    display: block; content: ""; width: 24px; height: 24px;
+    position: absolute; top: 50%; left:50%; transform: translate(-50%,-50%);
+    background: url('../img/icon_search_white.png') no-repeat center center / cover; 
+}
+
+.recruit_list_wrap {margin-top: 10px; border-top: 2px solid #083274;}
+.recruit_list {margin-top: 30px; display: flex; flex-wrap: wrap; gap: 20px;}
+.recruit_item {width: calc(33.333% - 14px); background: #f9f9f9; border-radius: 5px; border: 1px solid #ededed;}
+.recruit_item > a {padding: 20px; display: block; width: 100%; height: 100%; display: flex; flex-direction: column; gap: 10px;}
+.recruit_item .logo {width: 100px; display: flex; align-items: center; aspect-ratio: 3 / 2; background: #fff; padding: 10px; border: 1px solid #ededed; margin-bottom: 5px; border-radius: 5px;} 
+.recruit_item .logo img {max-height: 40px;}
+.recruit_item .company {display: flex; flex-wrap: wrap; gap: 5px;}
+.recruit_item .company .name {font-size: 1.4rem; font-weight: 700;}
+.recruit_item .company .biznum {font-size: 1.2rem; color: #777;}
+.recruit_item .subject {
+    font-size: 1.4rem; overflow: hidden; text-overflow: ellipsis; height: 40px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.recruit_item .desc {font-size: 1.2rem; color: #777;}
+.recruit_item .desc span::after {display: inline-block; content: "·"; margin: 0 2px;}
+.recruit_item .desc span:last-child::after {display: none;}
+
+.recruit_btn_wrap {display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px;}
+.recruit_btn_wrap .btn_reg {width: 120px; height: 40px; line-height: 40px; font-size: 1.4rem;}
+.recruit_btn_wrap .modify_code {width: 120px; height: 28px; font-size: 1.2rem;}
+.recruit_btn_wrap .btn_modify {height: 28px; line-height: 28px; background: #999; color: #fff; font-size: 1.2rem; padding: 0 10px; border-radius: 5px;}
+
+.recruit_view_tit {padding-bottom: 10px; border-bottom: 2px solid #083274;}
+.recruit_view_tit .company {font-size: 1.6rem;}
+.recruit_view_tit .subject {font-size: 3.2rem; font-weight: 700; margin-top: 7px;}
+
+.recruit_sec_tit {margin-bottom: 10px;}
+.recruit_sec_tit .big {font-size: 2rem;}
+
+.recruit_cp_wrap {margin-top: 60px;}
+.recruit_cp_top {display: flex; align-items: flex-start; gap: 60px; padding-bottom: 30px; border-bottom: 1px solid #ddd;}
+.recruit_cp_top .logo_box {
+    flex-basis: 300px; flex-shrink: 0; border: 1px solid #ddd; aspect-ratio: 3 / 2;
+    display: flex; align-items: center; justify-content: center; padding: 30px;
+}
+.recruit_cp_top .info_box {flex: 1 0 0; margin-top: 10px;}
+.recruit_cp_top .info_box .company {font-size: 2rem; margin-bottom: 20px;}
+.recruit_cp_top .info_box .list {display: flex; flex-wrap: wrap; gap: 15px; font-size: 1.4rem;}
+.recruit_cp_top .info_box .list li {width: 100%; display: flex;}
+.recruit_cp_top .info_box .list li.w50 {width: calc(50% - 15px);}
+.recruit_cp_top .info_box .list .gubun {flex-basis: 80px; flex-shrink: 0; color: #777;}
+.recruit_cp_bot {padding: 30px 0; border-bottom: 1px solid #ddd; }
+.recruit_cp_bot .photo_box {display: flex; gap: 20px;}
+.recruit_cp_bot .photo_box .photo {width: 100%; aspect-ratio: 3 / 2; overflow: hidden; position: relative;}
+.recruit_cp_bot .photo_box .photo img {
+    object-fit: cover; width: 100%; height: 100%;
+}
+
+.recruit_info_wrap {margin-top: 60px;}
+.recruit_info_list {border-top: 1px solid #083274; display: flex; flex-wrap: wrap; padding-bottom: 30px; border-bottom: 1px solid #ddd;}
+.recruit_info_list li {
+    width: 100%; border-bottom: 1px solid #ddd; min-height: 52px;
+    display: flex;
+}
+.recruit_info_list li.w50 {width: 50%;}
+.recruit_info_list li .gubun {
+    background: #EBF3FF; flex-basis: 180px; flex-shrink: 0; padding:15px 10px 10px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.recruit_info_list li .naeyong {
+    flex: 1 0 0; padding:15px 15px 10px;
+    display: flex; flex-direction: column; justify-content: center;
+}
 
 .swal2-container { z-index: 99999 !important; }

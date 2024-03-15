@@ -1630,17 +1630,30 @@ if (document.documentElement) {
                                                             data-hide-search="true" data-allow-clear="true"
                                                             data-placeholder="- 템플릿 선택 -">
                                                         <option></option>
-                                                        <option value="미사용" selected>미사용</option>
-                                                            <%--<option value="T0000002">testTemp</option>--%>
+                                                        <option value="" disabled>템플릿 선택</option>
+                                                        <%--<option value="미사용">미사용</option>--%>
+                                                        <%--<option value="T0000002">testTemp</option>--%>
                                                     </select>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <div class="row mb-3">
+                                                <div class="d-flex justify-content-end">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">문자유형 : <span class="smsType">단문 (SMS)<%--장문 (LMS)--%></span></label>
+                                                    <!--end::Label-->
+                                                        <%-- 치환문자 안내 --%>
+                                                    <button type="button" id="replaceTooltip" class="btn btn-secondary" data-toggle="popover" title="<strong>치환문자 안내<strong>">
+                                                        치환문자 안내
+                                                    </button>
+                                                        <%-- 치환문자 안내 --%>
+                                                </div>
+                                            </div>
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">90</span> / 90 Bytes 남음 )</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">0</span> Bytes )</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 d-flex align-items-center">
@@ -1728,17 +1741,30 @@ if (document.documentElement) {
                                                             data-hide-search="true" data-allow-clear="true"
                                                             data-placeholder="- 템플릿 선택 -">
                                                         <option></option>
-                                                        <option value="미사용" selected>미사용</option>
+                                                        <option value="" disabled>템플릿 선택</option>
+                                                        <%--<option value="미사용">미사용</option>--%>
                                                             <%--<option value="T0000002">testTemp</option>--%>
                                                     </select>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <div class="row mb-3">
+                                                <div class="d-flex justify-content-end">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">문자유형 : <span class="smsType">단문 (SMS)<%--장문 (LMS)--%></span></label>
+                                                    <!--end::Label-->
+                                                        <%-- 치환문자 안내 --%>
+                                                    <button type="button" id="replaceTooltip" class="btn btn-secondary" data-toggle="popover" title="<strong>치환문자 안내<strong>">
+                                                        치환문자 안내
+                                                    </button>
+                                                        <%-- 치환문자 안내 --%>
+                                                </div>
+                                            </div>
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">90</span> / 90 Bytes 남음 )</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">0</span> Bytes )</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 d-flex align-items-center">
@@ -1849,17 +1875,30 @@ if (document.documentElement) {
                                                             data-hide-search="true" data-allow-clear="true"
                                                             data-placeholder="- 템플릿 선택 -">
                                                         <option></option>
-                                                        <option value="미사용" selected>미사용</option>
+                                                        <option value="" disabled>템플릿 선택</option>
+                                                        <%--<option value="미사용">미사용</option>--%>
                                                             <%--<option value="T0000002">testTemp</option>--%>
                                                     </select>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <div class="row mb-3">
+                                                <div class="d-flex justify-content-end">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">문자유형 : <span class="smsType">단문 (SMS)<%--장문 (LMS)--%></span></label>
+                                                    <!--end::Label-->
+                                                        <%-- 치환문자 안내 --%>
+                                                    <button type="button" id="replaceTooltip" class="btn btn-secondary" data-toggle="popover" title="<strong>치환문자 안내<strong>">
+                                                        치환문자 안내
+                                                    </button>
+                                                        <%-- 치환문자 안내 --%>
+                                                </div>
+                                            </div>
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">90</span> / 90 Bytes 남음 )</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용<br>( <span class="smsRemain">0</span> Bytes )</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10 d-flex align-items-center">

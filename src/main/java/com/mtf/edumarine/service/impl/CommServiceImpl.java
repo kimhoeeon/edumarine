@@ -1,11 +1,15 @@
 package com.mtf.edumarine.service.impl;
 
 import com.google.gson.Gson;
-import com.mtf.edumarine.dto.CommCodeDTO;
+import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.SmsDTO;
+import com.mtf.edumarine.dto.SmsNotificationDTO;
 import com.mtf.edumarine.dto.SmsResponseDTO;
+import com.mtf.edumarine.dto.TemplateDTO;
 import com.mtf.edumarine.mapper.CommMapper;
 import com.mtf.edumarine.service.CommService;
+import com.mtf.edumarine.service.EduMarineMngService;
+import lombok.Setter;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -15,32 +19,29 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 public class CommServiceImpl implements CommService {
-    private final SqlSession sqlSession;
 
-    public CommServiceImpl(SqlSession ss) {
-        this.sqlSession = ss;
-    }
+    @Setter(onMethod_ = {@Autowired})
+    private CommMapper commMapper;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
-    @Override
-    public List<CommCodeDTO> getCommCodeList(CommCodeDTO commCodeDTO) {
-        System.out.println("CommServiceImpl > getCommCodeList : ======");
-        CommMapper dm = sqlSession.getMapper(CommMapper.class);
-        return dm.getCommCodeList(commCodeDTO);
+    private final EduMarineMngService eduMarineMngService;
+
+    @Autowired
+    public CommServiceImpl(EduMarineMngService eduMarineMngService) {
+        this.eduMarineMngService = eduMarineMngService;
     }
 
     /**
@@ -48,10 +49,7 @@ public class CommServiceImpl implements CommService {
      * */
     @Override
     public SmsResponseDTO smsSend(SmsDTO smsDTO) {
-        String senderParam = smsDTO.getSender();
-        if(senderParam.contains("-")){
-            senderParam = senderParam.replaceAll("-","");
-        }
+        String senderParam = CommConstants.SMS_SENDER_NUM;
         String receiverParam = smsDTO.getPhone();
         if(receiverParam.contains("-")){
             receiverParam = receiverParam.replaceAll("-","");
@@ -84,7 +82,7 @@ public class CommServiceImpl implements CommService {
             sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
             sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
             sms.put("testmode_yn", ""); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
-            sms.put("title", "해양레저인력양성센터"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
+            sms.put("title", "경기해양레저인력양성센터"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
 
             String image = "";
             //image = "/tmp/pic_57f358af08cf7_sms_.jpg"; // MMS 이미지 파일 위치
@@ -151,10 +149,7 @@ public class CommServiceImpl implements CommService {
                 + "[ " + certNum + " ]\n"
                 + "본인 확인 인증번호를 입력해주세요!";
 
-        String senderParam = smsDTO.getSender();
-        if(senderParam.contains("-")){
-            senderParam = senderParam.replaceAll("-","");
-        }
+        String senderParam = CommConstants.SMS_SENDER_NUM;
         String receiverParam = smsDTO.getPhone();
         if(receiverParam.contains("-")){
             receiverParam = receiverParam.replaceAll("-","");
@@ -187,7 +182,7 @@ public class CommServiceImpl implements CommService {
             sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
             sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
             sms.put("testmode_yn", ""); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
-            sms.put("title", "EDU marine"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
+            sms.put("title", "[EDU marine]"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
 
             String image = "";
             //image = "/tmp/pic_57f358af08cf7_sms_.jpg"; // MMS 이미지 파일 위치
@@ -256,6 +251,93 @@ public class CommServiceImpl implements CommService {
 
         System.out.println("인증번호 : " + numStr);
         return numStr.toString();
+    }
+
+    @Override
+    public String smsSendNotifySending(SmsNotificationDTO smsNotificationDTO){
+
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+
+        String content = smsNotificationDTO.getContent();
+        String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+
+        if(content != null && !"".equals(content)){
+
+            if ("1".equals(smsNotificationDTO.getTarget())) { // 회원가입 안내
+                String phone = commMapper.getSmsSendingJoinList(smsNotificationDTO);
+
+                if(phone != null && !"".equals(phone)){
+                    SmsDTO smsDTO = new SmsDTO();
+                    smsDTO.setPhone(phone);
+                    smsDTO.setContent(content);
+                    SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
+
+                    String result = "성공";
+                    if(responseDTO.getResult_code() != 1){
+                        result = "실패";
+                    }
+
+                    SmsDTO smsResultDTO = new SmsDTO();
+                    smsResultDTO.setSmsGroup(nowDate);
+                    smsResultDTO.setPhone(phone);
+                    smsResultDTO.setSender("관리자");
+                    smsResultDTO.setSenderPhone(CommConstants.SMS_SENDER_NUM);
+                    smsResultDTO.setContent(content);
+                    smsResultDTO.setSendResult(result);
+                    smsResultDTO.setTemplateSeq("T0000004");
+                    eduMarineMngService.processInsertSms(smsResultDTO);
+                }
+
+            }else if ("8".equals(smsNotificationDTO.getTarget())) { // 키워드 알림
+                List<String> targetList = commMapper.getSmsSendingKeywordList(smsNotificationDTO);
+                for(String phone : targetList){
+                    SmsDTO smsDTO = new SmsDTO();
+                    smsDTO.setPhone(phone);
+                    smsDTO.setContent(content);
+                    SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
+
+                    String result = "성공";
+                    if(responseDTO.getResult_code() != 1){
+                        result = "실패";
+                    }
+
+                    SmsDTO smsResultDTO = new SmsDTO();
+                    smsResultDTO.setSmsGroup(nowDate);
+                    smsResultDTO.setPhone(phone);
+                    smsResultDTO.setSender("관리자");
+                    smsResultDTO.setSenderPhone(CommConstants.SMS_SENDER_NUM);
+                    smsResultDTO.setContent(content);
+                    smsResultDTO.setSendResult(result);
+                    smsResultDTO.setTemplateSeq("T0000011");
+                    eduMarineMngService.processInsertSms(smsResultDTO);
+                }
+            }
+        }
+
+        return resultCode;
+    }
+
+    @Override
+    public String smsSendNotifyContent(SmsNotificationDTO smsNotificationDTO){
+        String content = null;
+
+        String target = smsNotificationDTO.getTarget();
+        if(target != null && !"".equals(target)){
+
+            if("1".equals(target)) { // 회원가입 직후
+                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                if(templateDTO != null){
+                    content = templateDTO.getContent();
+                }
+            }else if("8".equals(target)){ // 키워드 알림
+                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                if(templateDTO != null){
+                    content = templateDTO.getContent().replace("%keyword%", smsNotificationDTO.getKeyword());
+                }
+            }
+
+        }
+        return content;
     }
 
     public String uniToKor(String uni){
