@@ -273,7 +273,7 @@ function searchPosts(pageNum, categoryValue) {
                     str += '</div>';
                 }else{
                     str += '<div class="btn">';
-                        str += '<a href="javascript:void(0);" onclick="alert(' + '\'' + trainBtnText + ' 되었습니다.'+ '\')" style="background-color: #555; cursor: unset">';
+                        str += '<a href="javascript:void(0);" onclick="alert(' + '\'' + trainBtnText + ' 인 교육입니다.'+ '\')" style="background-color: #555; cursor: unset">';
                             str += trainBtnText;
                         str += '</a>';
                     str += '</div>';

@@ -9,8 +9,11 @@ import lombok.ToString;
 @ToString
 public class SmsNotificationDTO {
     String target;
-    String seq;
+    String seq; //memberSeq
     String content; //내용
+    String trainSeq;
+    String paymentSeq;
+    String trainTable;
 
     //치환문자
     String eduName; //교육명

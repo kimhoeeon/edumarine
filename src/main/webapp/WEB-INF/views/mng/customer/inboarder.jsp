@@ -2112,9 +2112,46 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/inboarder.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <script>
+
+        $(document).ready(function() {
+
+            // 차시 검색조건 Set
+            $("#condition_time").children('option:not(:gt(1))').remove();
+
+            let json = {
+                gbn: '해상엔진 자가정비 (선내기)'
+            }
+            $.ajax({
+                url: '/train/selectNextTime.do',
+                method: 'post',
+                data: JSON.stringify(json),
+                contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+            })
+            .done(function (data, status){
+                let results = data;
+                if(nvl(results,'') !== ''){
+                    $.each(results , function(i){
+                        $('#condition_time').append($('<option>', {
+                            value: results[i].nextTime,
+                            text : results[i].nextTime + '차'
+                        }));
+                    })
+
+                    $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
+                }
+            }).always(function() {
+                let nextTime = '${nextTime}';
+                if(nvl(nextTime,'') !== ''){
+                    $('#condition_time').val(nextTime).trigger('change');
+                }
+            });
+
+        });
+
         document.addEventListener("keyup", function(event) {
             if (event.key === 'Enter') {
                 f_customer_inboarder_search();

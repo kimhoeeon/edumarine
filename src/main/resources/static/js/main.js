@@ -1367,6 +1367,10 @@ function f_main_apply_eduApply01_submit(trainSeq){
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
                             Swal.fire({
                                 title: '[신청 정보]',
                                 html: '신청이 완료되었습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
@@ -1655,6 +1659,9 @@ function f_main_apply_eduApply02_submit(trainSeq){
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
 
                             let seq = memberSeq;
 
@@ -2180,6 +2187,9 @@ function f_main_apply_eduApply03_submit(trainSeq){
                     success: function (data) {
                         if (data.resultCode === "0") {
 
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
                             let seq = memberSeq;
 
                             /* 파일 업로드 */
@@ -2590,6 +2600,9 @@ function f_main_apply_eduApply04_submit(trainSeq){
                     success: function (data) {
                         if (data.resultCode === "0") {
 
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
                             let device = deviceGbn();
 
                             if(device === 'PC'){
@@ -2813,6 +2826,9 @@ function f_main_apply_eduApply05_submit(trainSeq){
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
 
                             let device = deviceGbn();
 
@@ -3038,6 +3054,9 @@ function f_main_apply_eduApply06_submit(trainSeq){
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
 
                             let device = deviceGbn();
 

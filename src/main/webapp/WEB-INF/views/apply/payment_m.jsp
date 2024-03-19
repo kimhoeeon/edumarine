@@ -389,7 +389,7 @@
         <input type="hidden" name="P_CHARSET" value="utf8">
         <input type="hidden" name="P_RESERVED" value="centerCd=Y">
         <input type="hidden" name="P_VBANK_DT" value="${sysDate}">
-        <input type="hidden" name="P_VBANK_TM" value="0000">
+        <input type="hidden" name="P_VBANK_TM" value="2359">
         <input type="hidden" name="P_NOTI" value="${payInfo.trainSeq},${payInfo.tableSeq},${payInfo.goodname}">
 
         <%--<input type="hidden" name="timestamp" value="${payInfo.timestamp}">

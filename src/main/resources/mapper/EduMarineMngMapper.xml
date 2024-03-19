@@ -2748,6 +2748,11 @@
              , p.pay_sum
              , p.pay_status
              , p.refund_reason
+             , p.vact_bank_name
+             , p.vact_num
+             , p.vact_name
+             , p.vact_date
+             , p.vact_time
              , p.del_yn
              , p.note
              , p.init_regi_pic

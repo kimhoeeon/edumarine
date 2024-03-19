@@ -480,3 +480,46 @@ function f_education_train_early_closing(seq) {
     });
 
 }
+
+function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
+    console.log(gbn, nextTime, trainApplyCnt);
+
+    if(trainApplyCnt === '0'){
+        showMessage('', 'info', '[신청명단보기]', '현재 신청자가 없는 교육입니다.', '');
+        return;
+    }
+
+    let link = '';
+    switch (gbn){
+        case '상시신청':
+            link = '/mng/customer/regular.do'
+            break;
+        case '해상엔진 테크니션 (선내기/선외기)':
+            link = '/mng/customer/boarder.do';
+            break;
+        case 'FRP 레저보트 선체 정비 테크니션':
+            link = '/mng/customer/frp.do';
+            break;
+        case '해상엔진 자가정비 (선외기)':
+            link = '/mng/customer/outboarder.do';
+            break;
+        case '해상엔진 자가정비 (선내기)':
+            link = '/mng/customer/inboarder.do';
+            break;
+        case '해상엔진 자가정비 (세일요트)':
+            link = '/mng/customer/sailyacht.do';
+            break;
+        default:
+            break;
+    }
+
+    if(nvl(link,'') !== ''){
+        if(gbn === '상시신청'){
+            window.location.href = link;
+        }else{
+            window.location.href = link + '?nextTime=' + nextTime;
+        }
+    }else{
+        showMessage('', 'info', '[신청명단보기]', '신청 명단 페이지가 존재하지 않습니다.', '');
+    }
+}
