@@ -5,44 +5,6 @@
 
 $(function(){
 
-    // 차시 검색조건 Set
-    $("#condition_time").children('option:not(:gt(1))').remove();
-
-    let json = {
-        gbn: '해상엔진 자가정비 (세일요트)'
-    }
-    $.ajax({
-        url: '/train/selectNextTime.do',
-        method: 'post',
-        data: JSON.stringify(json),
-        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
-    })
-    .done(function (data, status){
-        let results = data;
-        if(nvl(results,'') !== ''){
-            $.each(results , function(i){
-                $('#condition_time').append($('<option>', {
-                    value: results[i].nextTime,
-                    text : results[i].nextTime + '차'
-                }));
-            })
-
-            $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
-        }
-    });
-
-    /*// 이메일
-    $('#email_select').on('change', function () {
-        let selectedOption = $(this).val();
-        let domain = $('#domain');
-
-        if (selectedOption === '직접입력') {
-            domain.prop('disabled', false).val('');
-        } else {
-            domain.prop('disabled', true).val(selectedOption);
-        }
-    });*/
-
     // 출생년월일
     $('#year_select, #month_select').on('change', function () {
         lastDay('1'); //년과 월에 따라 마지막 일 구하기
@@ -502,6 +464,7 @@ function f_apply_cancel_btn(){
                     let idSplit = idArr.split(',');
                     let statusSplit = statusArr.split(',');
                     let jsonArr = [];
+                    let smsArr = [];
                     for(let i=0; i<idSplit.length; i++){
                         let jsonObj = {
                             seq: idSplit[i],
@@ -512,6 +475,13 @@ function f_apply_cancel_btn(){
 
                         jsonArr.push(jsonObj);
 
+                        let smsObj = {
+                            seq: idSplit[i],
+                            trainTable: 'sailyacht'
+                        }
+
+                        smsArr.push(smsObj);
+
                     } // for
 
                     let resData = ajaxConnect('/mng/customer/sailyacht/status/update.do', 'post', jsonArr);
@@ -519,6 +489,12 @@ function f_apply_cancel_btn(){
                     if(resData.resultCode !== "0"){
                         showMessage('', 'error', '에러 발생', '취소 승인을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                     }else{
+
+                        for (let j=0; j<smsArr.length; j++){
+                            let obj = smsArr[j];
+                            f_sms_notify_sending('5', obj); // 5 취소완료 후
+                        }
+
                         showMessage('', 'info', '취소 승인', '취소 승인처리가 정상 완료되었습니다.', '');
 
                         $('#kt_modal_apply_status_cancel').modal('hide');

@@ -40,5 +40,56 @@
           AND keyword LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
+    <select id="getSmsSendingTrainNotiList" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.CommMapper.getSmsSendingTrainNotiList */
+        SELECT r.train_seq as seq
+             , r.member_seq as memberSeq
+             , m.phone
+             , t.gbn
+             , t.train_start_dttm
+             , t.train_end_dttm
+             , t.next_time
+        FROM (SELECT r.train_seq
+                   , r.member_seq
+              FROM regular r
+              WHERE r.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT b.train_seq
+                   , b.member_seq
+              FROM boarder b
+              WHERE b.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT f.train_seq
+                   , f.member_seq
+              FROM frp f
+              WHERE f.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT i.train_seq
+                   , i.member_seq
+              FROM inboarder i
+              WHERE i.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT o.train_seq
+                   , o.member_seq
+              FROM outboarder o
+              WHERE o.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT s.train_seq
+                   , s.member_seq
+              FROM sailyacht s
+              WHERE s.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              ) r
+        JOIN member m
+        ON r.member_seq = m.seq
+        JOIN train t
+        ON r.train_seq = t.seq
+        WHERE m.sms_yn = '1'
+          AND m.del_yn = 'N'
+          AND m.apply_status != '탈퇴'
+          AND t.closing_yn = 'N'
+          AND t.del_yn = 'N'
+          AND TIMESTAMPDIFF(DAY, DATE_FORMAT(NOW(), '%Y.%m.%d'), DATE_FORMAT(t.train_start_dttm, '%Y.%m.%d')) = 2
+    </select>
+
 </mapper>
 

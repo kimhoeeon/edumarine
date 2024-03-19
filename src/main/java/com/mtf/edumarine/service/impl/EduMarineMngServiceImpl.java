@@ -2182,6 +2182,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(boarderInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
                         }
 
@@ -2501,6 +2507,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(frpInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
                         }
 
@@ -2828,6 +2840,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(outboarderInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
                         }
 
@@ -3252,6 +3270,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(inboarderInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
                         }
 
@@ -3581,6 +3605,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 resultCode = CommConstants.RESULT_CODE_FAIL;
                                 resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                 break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(sailyachtInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
                             }
                         }
 

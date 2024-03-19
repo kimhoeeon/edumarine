@@ -373,7 +373,7 @@
     </div>
     <!-- //container -->
     <c:set var="now" value="<%=new java.util.Date(new java.util.Date().getTime() + 60*60*24*1000*1)%>" />
-    <c:set var="sysDate"><fmt:formatDate value="${now}" pattern="yyyyMMdd"/></c:set>
+    <c:set var="sysDate"><fmt:formatDate value="${now}" pattern="yyyyMMdd235959"/></c:set>
 
     <form name="SendPayForm_id" id="SendPayForm_id" method="post">
         <input type="hidden" name="version" value="1.0">

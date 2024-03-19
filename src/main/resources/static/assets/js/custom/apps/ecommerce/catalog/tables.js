@@ -1919,12 +1919,18 @@ let DTEducationTrain = function () {
     function renderActionsCell(data, type, row){
         //console.log(row.id);
         let seq = row.seq;
+        let gbn = row.gbn;
+        let nextTime = row.nextTime;
+        let trainApplyCnt = row.trainApplyCnt;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
         renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
         renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
         renderHTML += '<a onclick="f_education_train_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_education_train_apply_list(' + '\'' + gbn + '\'' + ',' + '\'' + nextTime + '\'' + ',' + '\'' + trainApplyCnt + '\'' + ')" class="menu-link px-3">신청명단보기</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_education_train_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';

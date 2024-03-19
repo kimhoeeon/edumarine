@@ -2,6 +2,7 @@ package com.mtf.edumarine;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -10,6 +11,7 @@ import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Base64;
 
+@EnableScheduling
 @SpringBootApplication
 public class EduMarineApplication {
 

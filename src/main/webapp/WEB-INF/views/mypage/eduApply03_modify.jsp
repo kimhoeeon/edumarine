@@ -964,6 +964,7 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="<%request.getContextPath();%>/static/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 <script>

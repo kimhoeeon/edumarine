@@ -1625,7 +1625,7 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-150px">교육일정</th>
                                                     <th class="text-center min-w-150px">접수일정</th>
                                                     <th class="text-center min-w-75px">교육비</th>
-                                                    <th class="text-center min-w-75px">교육인원(현 신청인원)</th>
+                                                    <th class="text-center min-w-75px">교육인원(현 인원)</th>
                                                     <th class="text-center min-w-75px">상태</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
                                                     <th class="text-center min-w-100px">기능</th>

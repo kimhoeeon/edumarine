@@ -2,10 +2,7 @@ package com.mtf.edumarine.service.impl;
 
 import com.google.gson.Gson;
 import com.mtf.edumarine.constants.CommConstants;
-import com.mtf.edumarine.dto.SmsDTO;
-import com.mtf.edumarine.dto.SmsNotificationDTO;
-import com.mtf.edumarine.dto.SmsResponseDTO;
-import com.mtf.edumarine.dto.TemplateDTO;
+import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.mapper.CommMapper;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineMngService;
@@ -27,6 +24,9 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -46,13 +46,13 @@ public class CommServiceImpl implements CommService {
 
     /**
      * 단건 전송용
-     * */
+     */
     @Override
     public SmsResponseDTO smsSend(SmsDTO smsDTO) {
         String senderParam = CommConstants.SMS_SENDER_NUM;
         String receiverParam = smsDTO.getPhone();
-        if(receiverParam.contains("-")){
-            receiverParam = receiverParam.replaceAll("-","");
+        if (receiverParam.contains("-")) {
+            receiverParam = receiverParam.replaceAll("-", "");
         }
 
         String result = "";
@@ -117,10 +117,10 @@ public class CommServiceImpl implements CommService {
 
             HttpResponse res = client.execute(post);
 
-            if(res != null){
+            if (res != null) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent(), encodingType));
                 String buffer = null;
-                while((buffer = in.readLine())!=null){
+                while ((buffer = in.readLine()) != null) {
                     result += buffer;
                 }
                 in.close();
@@ -140,7 +140,7 @@ public class CommServiceImpl implements CommService {
 
     /**
      * 단건 전송용
-     * */
+     */
     @Override
     public SmsResponseDTO smsSend_certNum(SmsDTO smsDTO) {
 
@@ -151,8 +151,8 @@ public class CommServiceImpl implements CommService {
 
         String senderParam = CommConstants.SMS_SENDER_NUM;
         String receiverParam = smsDTO.getPhone();
-        if(receiverParam.contains("-")){
-            receiverParam = receiverParam.replaceAll("-","");
+        if (receiverParam.contains("-")) {
+            receiverParam = receiverParam.replaceAll("-", "");
         }
 
         String result = "";
@@ -218,10 +218,10 @@ public class CommServiceImpl implements CommService {
             HttpResponse res = client.execute(post);
 
 
-            if(res != null){
+            if (res != null) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent(), encodingType));
                 String buffer = null;
-                while((buffer = in.readLine())!=null){
+                while ((buffer = in.readLine()) != null) {
                     result += buffer;
                 }
                 in.close();
@@ -242,9 +242,9 @@ public class CommServiceImpl implements CommService {
 
     public String sendSMS() {
 
-        Random rand  = new Random();
+        Random rand = new Random();
         StringBuilder numStr = new StringBuilder();
-        for(int i=0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
             String ran = Integer.toString(rand.nextInt(10));
             numStr.append(ran);
         }
@@ -254,26 +254,26 @@ public class CommServiceImpl implements CommService {
     }
 
     @Override
-    public String smsSendNotifySending(SmsNotificationDTO smsNotificationDTO){
+    public String smsSendNotifySending(SmsNotificationDTO smsNotificationDTO) {
 
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
 
         String content = smsNotificationDTO.getContent();
         String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
 
-        if(content != null && !"".equals(content)){
+        if (content != null && !"".equals(content)) {
 
             if ("1".equals(smsNotificationDTO.getTarget())) { // 회원가입 안내
                 String phone = commMapper.getSmsSendingJoinList(smsNotificationDTO);
 
-                if(phone != null && !"".equals(phone)){
+                if (phone != null && !"".equals(phone)) {
                     SmsDTO smsDTO = new SmsDTO();
                     smsDTO.setPhone(phone);
                     smsDTO.setContent(content);
                     SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
 
                     String result = "성공";
-                    if(responseDTO.getResult_code() != 1){
+                    if (responseDTO.getResult_code() != 1) {
                         result = "실패";
                     }
 
@@ -288,16 +288,162 @@ public class CommServiceImpl implements CommService {
                     eduMarineMngService.processInsertSms(smsResultDTO);
                 }
 
-            }else if ("8".equals(smsNotificationDTO.getTarget())) { // 키워드 알림
-                List<String> targetList = commMapper.getSmsSendingKeywordList(smsNotificationDTO);
-                for(String phone : targetList){
+            } else if ("2".equals(smsNotificationDTO.getTarget())) { // 수강신청 후
+                String phone = commMapper.getSmsSendingJoinList(smsNotificationDTO);
+
+                if (phone != null && !"".equals(phone)) {
                     SmsDTO smsDTO = new SmsDTO();
                     smsDTO.setPhone(phone);
                     smsDTO.setContent(content);
                     SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
 
                     String result = "성공";
-                    if(responseDTO.getResult_code() != 1){
+                    if (responseDTO.getResult_code() != 1) {
+                        result = "실패";
+                    }
+
+                    SmsDTO smsResultDTO = new SmsDTO();
+                    smsResultDTO.setSmsGroup(nowDate);
+                    smsResultDTO.setPhone(phone);
+                    smsResultDTO.setSender("관리자");
+                    smsResultDTO.setSenderPhone(CommConstants.SMS_SENDER_NUM);
+                    smsResultDTO.setContent(content);
+                    smsResultDTO.setSendResult(result);
+                    smsResultDTO.setTemplateSeq("T0000005");
+                    eduMarineMngService.processInsertSms(smsResultDTO);
+                }
+
+            } else if ("5".equals(smsNotificationDTO.getTarget())) { // 취소완료 후
+                String trainTableName = smsNotificationDTO.getTrainTable();
+                String phone = "";
+                switch (trainTableName){
+                    case "boarder":
+                        BoarderDTO boarderDTO = eduMarineMngService.processSelectBoarderSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq1 = new SmsNotificationDTO();
+                        smsReq1.setSeq(boarderDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq1);
+                        break;
+                    case "frp":
+                        FrpDTO frpDTO = eduMarineMngService.processSelectFrpSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq2 = new SmsNotificationDTO();
+                        smsReq2.setSeq(frpDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq2);
+                        break;
+                    case "outboarder":
+                        OutboarderDTO outboarderDTO = eduMarineMngService.processSelectOutboarderSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq3 = new SmsNotificationDTO();
+                        smsReq3.setSeq(outboarderDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq3);
+                        break;
+                    case "inboarder":
+                        InboarderDTO inboarderReq = new InboarderDTO();
+                        inboarderReq.setSeq(smsNotificationDTO.getSeq());
+                        InboarderDTO inboarderDTO = eduMarineMngService.processSelectInboarderSingle(inboarderReq);
+                        SmsNotificationDTO smsReq4 = new SmsNotificationDTO();
+                        smsReq4.setSeq(inboarderDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq4);
+                        break;
+                    case "sailyacht":
+                        SailyachtDTO sailyachtDTO = eduMarineMngService.processSelectSailyachtSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq5 = new SmsNotificationDTO();
+                        smsReq5.setSeq(sailyachtDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq5);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (phone != null && !"".equals(phone)) {
+                    SmsDTO smsDTO = new SmsDTO();
+                    smsDTO.setPhone(phone);
+                    smsDTO.setContent(content);
+                    SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
+
+                    String result = "성공";
+                    if (responseDTO.getResult_code() != 1) {
+                        result = "실패";
+                    }
+
+                    SmsDTO smsResultDTO = new SmsDTO();
+                    smsResultDTO.setSmsGroup(nowDate);
+                    smsResultDTO.setPhone(phone);
+                    smsResultDTO.setSender("관리자");
+                    smsResultDTO.setSenderPhone(CommConstants.SMS_SENDER_NUM);
+                    smsResultDTO.setContent(content);
+                    smsResultDTO.setSendResult(result);
+                    smsResultDTO.setTemplateSeq("T0000008");
+                    eduMarineMngService.processInsertSms(smsResultDTO);
+                }
+
+            } else if ("6".equals(smsNotificationDTO.getTarget())) { // 가상계좌 안내
+                String phone = commMapper.getSmsSendingJoinList(smsNotificationDTO);
+
+                if (phone != null && !"".equals(phone)) {
+                    SmsDTO smsDTO = new SmsDTO();
+                    smsDTO.setPhone(phone);
+                    smsDTO.setContent(content);
+                    SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
+
+                    String result = "성공";
+                    if (responseDTO.getResult_code() != 1) {
+                        result = "실패";
+                    }
+
+                    SmsDTO smsResultDTO = new SmsDTO();
+                    smsResultDTO.setSmsGroup(nowDate);
+                    smsResultDTO.setPhone(phone);
+                    smsResultDTO.setSender("관리자");
+                    smsResultDTO.setSenderPhone(CommConstants.SMS_SENDER_NUM);
+                    smsResultDTO.setContent(content);
+                    smsResultDTO.setSendResult(result);
+                    smsResultDTO.setTemplateSeq("T0000009");
+                    eduMarineMngService.processInsertSms(smsResultDTO);
+                }
+
+            } else if ("7".equals(smsNotificationDTO.getTarget())) { // 수업 개설 2일전 교육안내
+                List<TrainDTO> targetList = commMapper.getSmsSendingTrainNotiList();
+                if(targetList != null){
+                    for(TrainDTO trainDTO : targetList){
+                        if (trainDTO.getPhone() != null && !"".equals(trainDTO.getPhone())) {
+
+                            String eduDate = trainDTO.getTrainStartDttm() + '~' + trainDTO.getTrainEndDttm();
+                            content = content.replace("%eduName%", trainDTO.getGbn())
+                                    .replace("%eduTime%", String.valueOf(trainDTO.getNextTime()))
+                                    .replace("%eduDate%", eduDate);
+
+                            SmsDTO smsDTO = new SmsDTO();
+                            smsDTO.setPhone(trainDTO.getPhone());
+                            smsDTO.setContent(content);
+                            SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
+
+                            String result = "성공";
+                            if (responseDTO.getResult_code() != 1) {
+                                result = "실패";
+                            }
+
+                            SmsDTO smsResultDTO = new SmsDTO();
+                            smsResultDTO.setSmsGroup(nowDate);
+                            smsResultDTO.setPhone(trainDTO.getPhone());
+                            smsResultDTO.setSender("관리자");
+                            smsResultDTO.setSenderPhone(CommConstants.SMS_SENDER_NUM);
+                            smsResultDTO.setContent(content);
+                            smsResultDTO.setSendResult(result);
+                            smsResultDTO.setTemplateSeq("T0000010");
+                            eduMarineMngService.processInsertSms(smsResultDTO);
+                        }
+                    }
+                }
+
+            } else if ("8".equals(smsNotificationDTO.getTarget())) { // 키워드 알림
+                List<String> targetList = commMapper.getSmsSendingKeywordList(smsNotificationDTO);
+                for (String phone : targetList) {
+                    SmsDTO smsDTO = new SmsDTO();
+                    smsDTO.setPhone(phone);
+                    smsDTO.setContent(content);
+                    SmsResponseDTO responseDTO = smsSend(smsDTO); // sms sending method
+
+                    String result = "성공";
+                    if (responseDTO.getResult_code() != 1) {
                         result = "실패";
                     }
 
@@ -318,20 +464,113 @@ public class CommServiceImpl implements CommService {
     }
 
     @Override
-    public String smsSendNotifyContent(SmsNotificationDTO smsNotificationDTO){
+    public String smsSendNotifyContent(SmsNotificationDTO smsNotificationDTO) {
         String content = null;
 
         String target = smsNotificationDTO.getTarget();
-        if(target != null && !"".equals(target)){
+        if (target != null && !"".equals(target)) {
 
-            if("1".equals(target)) { // 회원가입 직후
+            if ("1".equals(target)) { // 회원가입 직후
                 TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if(templateDTO != null){
+                if (templateDTO != null) {
                     content = templateDTO.getContent();
                 }
-            }else if("8".equals(target)){ // 키워드 알림
+            } else if ("2".equals(target)) { // 수강신청 후
                 TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if(templateDTO != null){
+                if (templateDTO != null) {
+                    TrainDTO trainReq = new TrainDTO();
+                    trainReq.setSeq(smsNotificationDTO.getTrainSeq());
+                    TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
+                    content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
+                            .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
+                            .replace("%eduDate%", trainRes.getTrainStartDttm() + "-" + trainRes.getTrainEndDttm())
+                    ;
+                }
+            } else if ("5".equals(target)) { // 취소완료 후
+                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                if (templateDTO != null) {
+
+                    String trainTableName = smsNotificationDTO.getTrainTable();
+                    String trainSeq = "";
+                    switch (trainTableName){
+                        case "boarder":
+                            BoarderDTO boarderDTO = eduMarineMngService.processSelectBoarderSingle(smsNotificationDTO.getSeq());
+                            trainSeq = boarderDTO.getTrainSeq();
+                            break;
+                        case "frp":
+                            FrpDTO frpDTO = eduMarineMngService.processSelectFrpSingle(smsNotificationDTO.getSeq());
+                            trainSeq = frpDTO.getTrainSeq();
+                            break;
+                        case "outboarder":
+                            OutboarderDTO outboarderDTO = eduMarineMngService.processSelectOutboarderSingle(smsNotificationDTO.getSeq());
+                            trainSeq = outboarderDTO.getTrainSeq();
+                            break;
+                        case "inboarder":
+                            InboarderDTO inboarderReq = new InboarderDTO();
+                            inboarderReq.setSeq(smsNotificationDTO.getSeq());
+                            InboarderDTO inboarderDTO = eduMarineMngService.processSelectInboarderSingle(inboarderReq);
+                            trainSeq = inboarderDTO.getTrainSeq();
+                            break;
+                        case "sailyacht":
+                            SailyachtDTO sailyachtDTO = eduMarineMngService.processSelectSailyachtSingle(smsNotificationDTO.getSeq());
+                            trainSeq = sailyachtDTO.getTrainSeq();
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if(!"".equals(trainSeq)){
+                        DecimalFormat df = new DecimalFormat("###,###");
+
+                        TrainDTO trainReq = new TrainDTO();
+                        trainReq.setSeq(trainSeq);
+                        TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
+                        content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
+                                .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
+                                .replace("%eduPrice%", df.format(trainRes.getPaySum()))
+                        ;
+                    }
+                }
+            } else if ("6".equals(target)) { // 가상계좌 안내
+                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                if (templateDTO != null) {
+                    TrainDTO trainReq = new TrainDTO();
+                    trainReq.setSeq(smsNotificationDTO.getTrainSeq());
+                    TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
+                    content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
+                            .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
+                    ;
+
+                    PaymentDTO payReq = new PaymentDTO();
+                    payReq.setSeq(smsNotificationDTO.getPaymentSeq());
+                    PaymentDTO payRes = eduMarineMngService.processSelectPaymentSingle(payReq);
+                    content = content.replace("%vacctBank%", payRes.getVactBankName())
+                            .replace("%vacctNum%", payRes.getVactNum())
+                            .replace("%vacctName%", payRes.getVactName())
+                    ;
+
+                    String vactDate = payRes.getVactDate().concat(payRes.getVactTime());
+                    SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                    SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    // String 타입을 Date 타입으로 변환
+                    Date formatDate = null;
+                    try {
+                        formatDate = dtFormat.parse(vactDate);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+                    String newVactDate = newDtFormat.format(formatDate);
+                    content = content.replace("%vacctLimit%", newVactDate);
+                }
+            } else if ("7".equals(target)){ // 수업 개설 2일전 교육안내
+                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                if (templateDTO != null) {
+                    content = templateDTO.getContent();
+                }
+            } else if ("8".equals(target)) { // 키워드 알림
+                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                if (templateDTO != null) {
                     content = templateDTO.getContent().replace("%keyword%", smsNotificationDTO.getKeyword());
                 }
             }
@@ -340,15 +579,16 @@ public class CommServiceImpl implements CommService {
         return content;
     }
 
-    public String uniToKor(String uni){
+
+    public String uniToKor(String uni) {
         StringBuilder result = new StringBuilder();
 
-        for(int i=0; i<uni.length(); i++){
-            if(uni.charAt(i) == '\\' &&  uni.charAt(i+1) == 'u'){
-                Character c = (char)Integer.parseInt(uni.substring(i+2, i+6), 16);
+        for (int i = 0; i < uni.length(); i++) {
+            if (uni.charAt(i) == '\\' && uni.charAt(i + 1) == 'u') {
+                Character c = (char) Integer.parseInt(uni.substring(i + 2, i + 6), 16);
                 result.append(c);
-                i+=5;
-            }else{
+                i += 5;
+            } else {
                 result.append(uni.charAt(i));
             }
         }

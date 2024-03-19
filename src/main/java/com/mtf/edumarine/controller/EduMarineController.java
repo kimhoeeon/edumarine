@@ -1930,6 +1930,22 @@ public class EduMarineController {
 
                 if ("0".equals(paymentResDto.getResultCode())) {
                     if (paymentDTO.getTableSeq() != null && !"".equals(paymentDTO.getTableSeq())) {
+
+                        if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())) {
+                            // 가상계좌 입금안내 SMS Noti
+                            SmsNotificationDTO smsNotiReq = new SmsNotificationDTO();
+                            smsNotiReq.setTarget("6"); // note
+                            smsNotiReq.setPaymentSeq(paymentResDto.getCustomValue());
+                            smsNotiReq.setTrainSeq(trainSeq);
+                            String smsNotiContent = commService.smsSendNotifyContent(smsNotiReq);
+
+                            SmsNotificationDTO smsSendReq = new SmsNotificationDTO();
+                            smsSendReq.setTarget("6");
+                            smsSendReq.setSeq(memberSeq);
+                            smsSendReq.setContent(smsNotiContent);
+                            commService.smsSendNotifySending(smsSendReq);
+                        }
+
                         // 상시신청
                         // 해상엔진 테크니션 (선내기/선외기)
                         // FRP 레저보트 선체 정비 테크니션
@@ -2174,6 +2190,22 @@ public class EduMarineController {
 
                 if ("0".equals(paymentResDto.getResultCode())) {
                     if (paymentDTO.getTableSeq() != null && !"".equals(paymentDTO.getTableSeq())) {
+
+                        if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())) {
+                            // 가상계좌 입금안내 SMS Noti
+                            SmsNotificationDTO smsNotiReq = new SmsNotificationDTO();
+                            smsNotiReq.setTarget("6"); // note
+                            smsNotiReq.setPaymentSeq(paymentResDto.getCustomValue());
+                            smsNotiReq.setTrainSeq(trainSeq);
+                            String smsNotiContent = commService.smsSendNotifyContent(smsNotiReq);
+
+                            SmsNotificationDTO smsSendReq = new SmsNotificationDTO();
+                            smsSendReq.setTarget("6");
+                            smsSendReq.setSeq(memberSeq);
+                            smsSendReq.setContent(smsNotiContent);
+                            commService.smsSendNotifySending(smsSendReq);
+                        }
+
                         // 상시신청
                         // 해상엔진 테크니션 (선내기/선외기)
                         // FRP 레저보트 선체 정비 테크니션

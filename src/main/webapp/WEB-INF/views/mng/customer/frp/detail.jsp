@@ -2615,6 +2615,7 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/frp.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 

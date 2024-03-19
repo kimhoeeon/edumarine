@@ -18,4 +18,5 @@ public interface CommService {
     String smsSendNotifyContent(SmsNotificationDTO smsNotificationDTO);
 
     String smsSendNotifySending(SmsNotificationDTO smsNotificationDTO);
+
 }
