@@ -91,5 +91,57 @@
           AND TIMESTAMPDIFF(DAY, DATE_FORMAT(NOW(), '%Y.%m.%d'), DATE_FORMAT(t.train_start_dttm, '%Y.%m.%d')) = 2
     </select>
 
+    <select id="selectMemberGradeUpdateTarget" resultType="com.mtf.edumarine.dto.MemberGradeDTO">
+        /* com.mtf.edumarine.mapper.CommMapper.selectMemberGradeUpdateTarget */
+        SELECT rs.seq
+             , rs.apply_status
+             , rs.name
+             , rs.sms_yn
+             , rs.grade
+             , (CASE
+                    WHEN sms_yn = 1 OR regularCnt = 1
+                        THEN CASE
+                                 WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 THEN '교육생(단기)'
+                                 WHEN boarderCnt = 1 OR frpCnt = 1 THEN '교육생(정규)'
+                                 ELSE '관심사용자'
+                        END
+                    ELSE '일반회원'
+            END) AS afterGrade
+        FROM (SELECT m.seq
+                   , m.apply_status
+                   , m.name
+                   , m.sms_yn
+                   , m.grade
+                   , (SELECT COUNT(*)
+                      FROM regular r
+                      WHERE r.member_seq = m.seq AND r.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS regularCnt
+                   , (SELECT COUNT(*)
+                      FROM boarder b
+                      WHERE b.member_seq = m.seq AND b.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS boarderCnt
+                   , (SELECT COUNT(*)
+                      FROM frp f
+                      WHERE f.member_seq = m.seq AND f.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS frpCnt
+                   , (SELECT COUNT(*)
+                      FROM outboarder o
+                      WHERE o.member_seq = m.seq AND o.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS outboarderCnt
+                   , (SELECT COUNT(*)
+                      FROM inboarder i
+                      WHERE i.member_seq = m.seq AND i.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS inboarderCnt
+                   , (SELECT COUNT(*)
+                      FROM sailyacht s
+                      WHERE s.member_seq = m.seq AND s.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS sailyachtCnt
+              FROM member m
+              WHERE m.apply_status != '탈퇴'
+                AND m.del_yn = 'N') rs
+    </select>
+
+    <update id="updateMemberGrade" parameterType="com.mtf.edumarine.dto.MemberGradeDTO">
+        /* com.mtf.edumarine.mapper.CommMapper.updateMemberGrade */
+        UPDATE member
+        SET grade = #{afterGrade}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
 </mapper>
 
