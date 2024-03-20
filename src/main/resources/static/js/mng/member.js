@@ -277,15 +277,23 @@ function f_customer_member_form_data_setting(){
 
     let form = JSON.parse(JSON.stringify($('#dataForm').serializeObject()));
 
+    let birth = form.birth;
+    if(nvl(birth,'') !== ''){
+        form.birthYear = birth.toString().split('-')[0];
+        form.birthMonth = birth.toString().split('-')[1];
+        form.birthDay = birth.toString().split('-')[2];
+    }
+
     //이메일
     form.email = form.email + '@' + $('#domain').val();
 
     //관심키워드
+    let keywordCheckbox = $('input[type=checkbox][name=keyword]:checked');
     let keyword = '';
-    let keywordArr = form.keyword;
+    let keywordArr = keywordCheckbox;
     let keywordArrLen = keywordArr.length;
     for(let i=0; i<keywordArrLen; i++){
-        keyword += keywordArr[i];
+        keyword += keywordArr.eq(i).val();
         if((i+1) !== keywordArrLen){
             keyword += ',';
         }
@@ -310,18 +318,30 @@ function f_customer_member_form_data_setting(){
 }
 
 function f_customer_member_valid(){
+    let applyStatus = document.querySelector('#applyStatus').value;
+    let grade = document.querySelector('#grade').value;
     let id = document.querySelector('#id').value;
     let password = document.querySelector('#password').value;
     let name = document.querySelector('#name').value;
     let phone = document.querySelector('#phone').value;
+    let birth = document.querySelector('#birth').value;
+    let sex = document.querySelector('#sex').value;
+    let address = document.querySelector('#address').value;
+    let addressDetail = document.querySelector('#addressDetail').value;
     let email = document.querySelector('#email').value;
     let domain = document.querySelector('#domain').value;
     let keywordArr = $('input[type=checkbox][name=keyword]:checked');
 
+    if(nvl(applyStatus,"") === ""){ showMessage('', 'error', '[등록 정보]', '상태(회원/탈퇴)를 입력해 주세요.', ''); return false; }
+    if(nvl(grade,"") === ""){ showMessage('', 'error', '[등록 정보]', '등급을 입력해 주세요.', ''); return false; }
     if(nvl(id,"") === ""){ showMessage('', 'error', '[등록 정보]', '아이디를 입력해 주세요.', ''); return false; }
     if(nvl(password,"") === ""){ showMessage('', 'error', '[등록 정보]', '비밀번호를 입력해 주세요.', ''); return false; }
     if(nvl(name,"") === ""){ showMessage('', 'error', '[등록 정보]', '이름을 입력해 주세요.', ''); return false; }
     if(nvl(phone,"") === ""){ showMessage('', 'error', '[등록 정보]', '연락처를 입력해 주세요.', ''); return false; }
+    if(nvl(birth,"") === ""){ showMessage('', 'error', '[등록 정보]', '생년월일을 YYYY-MM-DD 형태로 입력해 주세요.', ''); return false; }
+    if(nvl(sex,"") === ""){ showMessage('', 'error', '[등록 정보]', '성별(남성/여성)을 입력해 주세요.', ''); return false; }
+    if(nvl(address,"") === ""){ showMessage('', 'error', '[등록 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,"") === ""){ showMessage('', 'error', '[등록 정보]', '상세주소를 입력해 주세요.', ''); return false; }
     if(nvl(email,"") === ""){ showMessage('', 'error', '[등록 정보]', '이메일을 입력해 주세요.', ''); return false; }
     if(nvl(domain,"") === ""){ showMessage('', 'error', '[등록 정보]', '이메일 도메인을 입력해 주세요.', ''); return false; }
     if(keywordArr.length === 0){ showMessage('', 'error', '[등록 정보]', '관심 키워드를 하나 이상 선택해 주세요.', ''); return false; }

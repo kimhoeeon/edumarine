@@ -1514,6 +1514,30 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">상태</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" id="applyStatus" name="applyStatus" class="form-control form-control-lg form-control-solid-bg" placeholder="상태" value="${info.applyStatus}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">등급</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" id="grade" name="grade" class="form-control form-control-lg form-control-solid-bg" placeholder="등급" value="${info.grade}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
                                                 <label class="col-lg-4 col-form-label fw-semibold fs-6 required">아이디</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
@@ -1524,6 +1548,7 @@ if (document.documentElement) {
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <c:if test="${info.id ne null}">
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
@@ -1531,19 +1556,23 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input type="text" id="password" name="password" class="form-control form-control-lg form-control-solid-bg" placeholder="비밀번호" value="${info.password}"/>
+                                                    <input type="text" id="password" name="password" class="form-control form-control-lg form-control-solid-bg" placeholder="비밀번호" value="${info.password}" disabled/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            </c:if>
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-4 col-form-label fw-semibold fs-6 required">이름</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-4">
                                                     <input type="text" id="name" name="name" class="form-control form-control-lg form-control-solid-bg" placeholder="이름" value="${info.name}"/>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <input type="text" id="nameEn" name="nameEn" class="form-control form-control-lg form-control-solid-bg" placeholder="이름" value="${info.nameEn}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -1556,6 +1585,68 @@ if (document.documentElement) {
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
                                                     <input type="text" id="phone" name="phone" class="form-control form-control-lg form-control-solid-bg onlyTel" placeholder="연락처" value="${info.phone}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">생년월일</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <c:set var="birth" value=""/>
+                                                    <c:if test="${info.id ne null}">
+                                                        <c:set var="birth" value="${info.birthYear}-${info.birthMonth}-${info.birthDay}"/>
+                                                    </c:if>
+                                                    <input type="text" id="birth" name="birth" class="form-control form-control-lg form-control-solid-bg" placeholder="생년월일 (YYYY-MM-DD)" value="${birth}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">성별</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" id="sex" name="sex" class="form-control form-control-lg form-control-solid-bg" placeholder="성별" value="${info.sex}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">주소</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <!--begin::Row-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-12">
+                                                            <input type="text" id="address" name="address" class="form-control form-control-lg form-control-solid-bg" placeholder="주소" value="${info.address}"/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                            <%--<!--begin::Col-->
+                                                            <div class="col-lg-2">
+                                                                <button type="button" class="btn btn-primary" onclick="execDaumPostcode('address','addressDetail')">주소 검색</button>
+                                                            </div>
+                                                            <!--end::Col-->--%>
+                                                    </div>
+                                                    <!--end::Row-->
+                                                    <!--begin::Row-->
+                                                    <div class="row mt-3">
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-12">
+                                                            <input type="text" id="addressDetail" name="addressDetail" class="form-control form-control-lg form-control-solid-bg" value="${info.addressDetail}" placeholder="상세주소"/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                    </div>
+                                                    <!--end::Row-->
                                                 </div>
                                                 <!--end::Col-->
                                             </div>

@@ -1569,7 +1569,8 @@ if (document.documentElement) {
                                                     <option value="" disabled>- 등급 -</option>
                                                     <option value="일반회원">일반회원</option>
                                                     <option value="관심사용자">관심사용자</option>
-                                                    <option value="교육생">교육생</option>
+                                                    <option value="교육생(단기)">교육생(단기)</option>
+                                                    <option value="교육생(정규)">교육생(정규)</option>
                                                     <option value="수료생">수료생</option>
                                                 </select>
                                                 <!--end::Select2-->

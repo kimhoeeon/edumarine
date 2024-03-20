@@ -596,6 +596,19 @@ public class CommServiceImpl implements CommService {
     }
 
     @Override
+    public void updateMemberGrade(){
+        List<MemberGradeDTO> memberGradeTargetList = commMapper.selectMemberGradeUpdateTarget();
+        for(MemberGradeDTO member : memberGradeTargetList){
+            String grade = member.getGrade();
+            String afterGrade = member.getAfterGrade();
+            if(!Objects.equals(grade, afterGrade)){
+                System.out.println("[Member grade update] seq : " + member.getSeq() + " , name : " + member.getName() + " , grade : " + member.getGrade() + " -> " + member.getAfterGrade());
+                commMapper.updateMemberGrade(member);
+            }
+        }
+    }
+
+    @Override
     public String getSystemicSiteMap() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" +

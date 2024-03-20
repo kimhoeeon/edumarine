@@ -1530,7 +1530,9 @@
     <select id="selectMemberSingle" parameterType="com.mtf.edumarine.dto.MemberDTO" resultType="com.mtf.edumarine.dto.MemberDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectMemberSingle */
         SELECT seq
+             , apply_status
              , id
+             , salt
              , password
              , grade
              , name
@@ -1564,7 +1566,7 @@
     <update id="updateMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateMember */
         UPDATE member
-        SET password = <![CDATA[#{password}]]>
+        SET apply_status = #{applyStatus}
           , grade = #{grade}
           , name = #{name}
           , name_en = #{nameEn}

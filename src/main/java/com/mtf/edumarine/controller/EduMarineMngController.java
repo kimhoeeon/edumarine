@@ -5614,6 +5614,7 @@ public class EduMarineMngController {
     @Scheduled(cron = "0 0 14 * * ?", zone = "Asia/Seoul") /* 초 분 시 일 월 요일 */
     @GetMapping("/sms/send/notify/train.do")
     public void sms_send_notify_train() {
+        System.out.println("EduMarineMngController > sms_send_notify_train");
         /*commService.insertData();*/
         // 수업 개설일 2일 전 SMS Noti 발송
         // 매 14시에 대상 조회 후 발송
@@ -5627,6 +5628,13 @@ public class EduMarineMngController {
         smsNotificationDTO.setTarget(targetNum);
         smsNotificationDTO.setContent(smsNotiContent);
         commService.smsSendNotifySending(smsNotificationDTO);
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Seoul") /* 초 분 시 일 월 요일 */
+    @GetMapping("/member/grade/update.do")
+    public void member_grade_update() {
+        System.out.println("EduMarineMngController > member_grade_update");
+        commService.updateMemberGrade();
     }
 
     @RequestMapping(value = "/train/selectNextTime.do", method = RequestMethod.POST)

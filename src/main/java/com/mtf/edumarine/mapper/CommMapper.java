@@ -1,5 +1,6 @@
 package com.mtf.edumarine.mapper;
 
+import com.mtf.edumarine.dto.MemberGradeDTO;
 import com.mtf.edumarine.dto.SmsNotificationDTO;
 import com.mtf.edumarine.dto.TemplateDTO;
 import com.mtf.edumarine.dto.TrainDTO;
@@ -16,4 +17,8 @@ public interface CommMapper {
     List<String> getSmsSendingKeywordList(SmsNotificationDTO smsNotificationDTO);
 
     List<TrainDTO> getSmsSendingTrainNotiList();
+
+    List<MemberGradeDTO> selectMemberGradeUpdateTarget();
+
+    void updateMemberGrade(MemberGradeDTO member);
 }
