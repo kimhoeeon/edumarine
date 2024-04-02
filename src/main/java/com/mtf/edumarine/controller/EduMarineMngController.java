@@ -2315,6 +2315,244 @@ public class EduMarineMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/education/template.do", method = RequestMethod.GET)
+    public ModelAndView mng_education_train_template(String tapName) {
+        System.out.println("EduMarineMngController > mng_education_train_template");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("tapName", tapName);
+        // 마리나
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateMarinaInfoList = eduMarineMngService.processSelectTrainTemplateList("marina");
+        if(trainTemplateMarinaInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> daysList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> timeList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> placeList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> placeDetailList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> personsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> payList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> recruitPeriodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> completeConditionList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateMarinaInfoList){
+                if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    daysList.add(info);
+                }else if(info.getSmall().equals("time")){
+                    timeList.add(info);
+                }else if(info.getSmall().equals("place")){
+                    placeList.add(info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    placeDetailList.add(info);
+                }else if(info.getSmall().equals("persons")){
+                    personsList.add(info);
+                }else if(info.getSmall().equals("pay")){
+                    payList.add(info);
+                }else if(info.getSmall().equals("right")){
+                    mv.addObject("m_right", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("m_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("m_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("m_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    recruitPeriodList.add(info);
+                }else if(info.getSmall().equals("completeCondition")){
+                    completeConditionList.add(info);
+                }
+
+            } //for
+
+            mv.addObject("m_contentsList", contentsList);
+            mv.addObject("m_periodList", periodList);
+            mv.addObject("m_daysList", daysList);
+            mv.addObject("m_timeList", timeList);
+            mv.addObject("m_placeList", placeList);
+            mv.addObject("m_placeDetailList", placeDetailList);
+            mv.addObject("m_personsList", personsList);
+            mv.addObject("m_payList", payList);
+            mv.addObject("m_recruitPeriodList", recruitPeriodList);
+            mv.addObject("m_completeConditionList", completeConditionList);
+
+        } //마리나
+
+        //위탁교육
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateCommissionInfoList = eduMarineMngService.processSelectTrainTemplateList("commission");
+        if(trainTemplateCommissionInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> placeList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateCommissionInfoList) {
+                if (info.getSmall().equals("target")) {
+                    targetList.add(info);
+                } else if (info.getSmall().equals("contents")) {
+                    contentsList.add(info);
+                } else if (info.getSmall().equals("period")) {
+                    periodList.add(info);
+                } else if (info.getSmall().equals("place")) {
+                    placeList.add(info);
+                }
+            }
+
+            mv.addObject("c_targetList", targetList);
+            mv.addObject("c_contentsList", contentsList);
+            mv.addObject("c_periodList", periodList);
+            mv.addObject("c_placeList", placeList);
+            
+        } //위탁교육
+
+        //선외기
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateOutboarderInfoList = eduMarineMngService.processSelectTrainTemplateList("outboarder");
+        if(trainTemplateOutboarderInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateOutboarderInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("o_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("o_time", info);
+                }else if(info.getSmall().equals("place")){
+                    mv.addObject("o_place", info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    mv.addObject("o_placeDetail", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("o_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("o_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("o_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("o_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("o_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("o_recruitPeriod", info);
+                }
+
+            } //for
+
+            mv.addObject("o_targetList", targetList);
+            mv.addObject("o_contentsList", contentsList);
+            mv.addObject("o_periodList", periodList);
+
+        } //선외기
+
+        //선내기
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateInboarderInfoList = eduMarineMngService.processSelectTrainTemplateList("inboarder");
+        if(trainTemplateInboarderInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateInboarderInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("i_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("i_time", info);
+                }else if(info.getSmall().equals("place")){
+                    mv.addObject("i_place", info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    mv.addObject("i_placeDetail", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("i_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("i_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("i_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("i_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("i_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("i_recruitPeriod", info);
+                }
+
+            } //for
+
+            mv.addObject("i_targetList", targetList);
+            mv.addObject("i_contentsList", contentsList);
+            mv.addObject("i_periodList", periodList);
+
+        } //선내기
+
+        //세일요트
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateSailyachtInfoList = eduMarineMngService.processSelectTrainTemplateList("sailyacht");
+        if(trainTemplateSailyachtInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateSailyachtInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("s_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("s_time", info);
+                }else if(info.getSmall().equals("place")){
+                    mv.addObject("s_place", info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    mv.addObject("s_placeDetail", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("s_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("s_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("s_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("s_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("s_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("s_recruitPeriod", info);
+                }
+
+            } //for
+
+            mv.addObject("s_targetList", targetList);
+            mv.addObject("s_contentsList", contentsList);
+            mv.addObject("s_periodList", periodList);
+
+        } //세일요트
+
+        mv.setViewName("/mng/education/template");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/education/template/save.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_education_train_template_save(@RequestBody TrainTemplateDTO templateInfo) {
+        System.out.println("EduMarineMngController > mng_education_train_template_save");
+
+        ResponseDTO responseDTO = eduMarineMngService.processSaveTrainTemplate(templateInfo);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/education/payment.do", method = RequestMethod.GET)
     public ModelAndView mng_education_payment() {
         System.out.println("EduMarineMngController > mng_education_payment");

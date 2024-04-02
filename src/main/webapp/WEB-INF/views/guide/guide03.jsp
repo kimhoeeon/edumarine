@@ -220,9 +220,9 @@
                                     <thead>
                                         <tr>
                                             <th>구분</th>
-                                            <th>선외기 정비사 실무과정</th>
-                                            <th>선내기 정비사 실무과정</th>
-                                            <th>FRP 선체 정비사 실무과정</th>
+                                            <th>선외기 정비사 실무교육</th>
+                                            <th>선내기 정비사 실무교육</th>
+                                            <th>FRP 선체 정비사 실무교육</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -231,35 +231,33 @@
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>해양레저산업 현황</li>
-                                                        <li>선외기 해상엔진 이해</li>
-                                                        <li>선외기 시스템 이해</li>
-                                                        <li>2-Stroke 선외기 실습</li>
-                                                        <li>4-Stroke 선외기 실습</li>
-                                                        <li>선외기 설치 및 유지관리</li>
+                                                        <c:forEach var="info" items="${m_contentsList}" begin="0" end="${m_contentsList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>해양레저산업 현황</li>
-                                                        <li>선내기 해상엔진 이해</li>
-                                                        <li>선외기 시스템 이해</li>
-                                                        <li>4-Stroke 디젤엔진 시스템 이해</li>
-                                                        <li>4-Stroke 디젤엔진 실습</li>
-                                                        <li>선내기 유지관리</li>
+                                                        <c:forEach var="info" items="${m_contentsList}" begin="0" end="${m_contentsList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>FRP 선체의 이해</li>
-                                                        <li>선체 관리 및 정비</li>
-                                                        <li>FRP 적층 등 작업 기초</li>
-                                                        <li>선체 손상에 대한 수리 작업 기초</li>
-                                                        <li>도장</li>
+                                                        <c:forEach var="info" items="${m_contentsList}" begin="0" end="${m_contentsList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -269,54 +267,106 @@
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>1차 : 2024.01.08(월) ~ 2024.02.02(금)</li>
-                                                        <li>2차 : 2024.04.02(화) ~ 2024.04.30(화)</li>
-                                                        <li>3차 : 2024.07.01(월) ~ 2024.07.26(금)</li>
-                                                        <li>4차 : 2024.09.23(월) ~ 2024.10.22(화)</li>
+                                                        <c:forEach var="info" items="${m_periodList}" begin="0" end="${m_periodList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>1차 : 2024.02.20(화) ~ 2024.03.19(화)</li>
-                                                        <li>2차 : 2024.05.16(목) ~ 2024.06.13(목)</li>
-                                                        <li>3차 : 2024.08.05(월) ~ 2024.09.03(화)</li>
-                                                        <li>4차 : 2024.11.11(월) ~ 2024.12.06(금)</li>
+                                                        <c:forEach var="info" items="${m_periodList}" begin="0" end="${m_periodList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>7 ~ 8월 中 2회</li>
+                                                        <c:forEach var="info" items="${m_periodList}" begin="0" end="${m_periodList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>교육일수</td>
-                                            <td colspan="2">
+                                            <td>
                                                 <div class="box">
-                                                    <div class="text">20일 140시간 (4주, 1일 7시간)</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_daysList}" begin="0" end="${m_daysList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">10일 80시간 (2주, 1일 8시간)</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_daysList}" begin="0" end="${m_daysList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_daysList}" begin="0" end="${m_daysList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>교육시간</td>
-                                            <td colspan="2">
+                                            <td>
                                                 <div class="box">
-                                                    <div class="text">09:30 ~ 17:30 (단, 금요일 08:00 ~ 16:00)</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_timeList}" begin="0" end="${m_timeList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">09:00 ~ 18:00</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_timeList}" begin="0" end="${m_timeList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_timeList}" begin="0" end="${m_timeList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -325,29 +375,55 @@
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>경기테크노파크(안산)</li>
-                                                        <%--<li>경기해양레저인력양성센터</li>
-                                                        <li>선외기교육장</li>--%>
+                                                        <c:forEach var="info" items="${m_placeList}" begin="0" end="${m_placeList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
-                                                    <div class="small">경기도 안산시 상록구 해안로 705 경기테크노파크 P2동 212호</div>
+                                                    <div class="small">
+                                                        <c:forEach var="info" items="${m_placeDetailList}" begin="0" end="${m_placeDetailList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>아라마리나(김포)</li>
-                                                        <%--<li>경기해양레저인력양성센터</li>
-                                                        <li>선내기교육장</li>--%>
+                                                        <c:forEach var="info" items="${m_placeList}" begin="0" end="${m_placeList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
-                                                    <div class="small">경기도 김포시 고촌읍 아라육로152번길 210</div>
+                                                    <div class="small">
+                                                        <c:forEach var="info" items="${m_placeDetailList}" begin="0" end="${m_placeDetailList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>인하공업전문대학교(인천)</li>
+                                                        <c:forEach var="info" items="${m_placeList}" begin="0" end="${m_placeList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                <li>${info.value}</li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
-                                                    <div class="small">인천광역시 미추홀구 인하로 100</div>
+                                                    <div class="small">
+                                                        <c:forEach var="info" items="${m_placeDetailList}" begin="0" end="${m_placeDetailList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -355,30 +431,71 @@
                                             <td>교육인원</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">16명</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_personsList}" begin="0" end="${m_personsList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">16명</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_personsList}" begin="0" end="${m_personsList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">10명</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_personsList}" begin="0" end="${m_personsList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>교육비</td>
-                                            <td colspan="2">
+                                            <td>
                                                 <div class="box">
-                                                    <div class="text">700,000원</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_payList}" begin="0" end="${m_payList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'outboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">300,000원</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_payList}" begin="0" end="${m_payList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'inboarder'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${m_payList}" begin="0" end="${m_payList.size()}" step="1" varStatus="status">
+                                                            <c:if test="${info.middle eq 'frp'}">
+                                                                ${info.value}
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -404,29 +521,29 @@
                                 <div class="gubun">지원자격</div>
                                 <div class="naeyong">
                                     <div class="text">
-                                        마리나선박정비사 홈페이지에서 필수과목 및 공통과목, 전공과목을 온라인교육으로 수강 완료한 자<br>
-                                        (단, 2023년도만 온라인교육 수강 완료 전 신청 가능하나, 모집마감일까지 수강 완료하여야 정상적인 교육신청으로 처리됨.)
+                                        ${m_right.value}
                                     </div>
                                 </div>
                             </li>
                             <li>
-                                <div class="gubun">모집방법</div>
+                                <div class="gubun">신청방법</div>
                                 <div class="naeyong">
-                                    <div class="text">선착순 모집</div>
+                                    <div class="text">${m_applyMethod.value} (<span class="underline"><a href="${m_applyMethodUrl.value}" target="_blank">${m_applyMethodUrl.value}</a></span>)</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집방법</div>
                                 <div class="naeyong">
-                                    <div class="text">마리나선박정비사 홈페이지 (<span class="underline"><a href="https://marinetech.kr" target="_blank">https://marinetech.kr</a></span>) 에서 신청</div>
+                                    <div class="text">${m_recruitMethod.value}</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집기간</div>
                                 <div class="naeyong">
                                     <ul class="list">
-                                        <li>마리나 선외기 정비사 실무과정 : 교육시작 한달 전</li>
-                                        <li>마리나 선내기 정비사 실무과정 : 교육시작 한달 전</li>
+                                        <c:forEach var="info" items="${m_recruitPeriodList}" begin="0" end="${m_recruitPeriodList.size()}" step="1" varStatus="status">
+                                            <li>${info.value}</li>
+                                        </c:forEach>
                                     </ul>
                                     <div class="img">
                                         <img src="<%request.getContextPath();%>/static/img/img_guide_marina.png" class="pc">
@@ -438,12 +555,9 @@
                                 <div class="gubun">수료조건</div>
                                 <div class="naeyong">
                                     <ul class="list">
-                                        <li>출석률 85% 이상 (총 20일 중 17일 이상 출석)</li>
-                                        <li>학습 평가등급 C등급(60% 이상) 이상 획득</li>
-                                        <li>무단결석 2회 초과의 경우 수료대상에서 제외</li>
-                                        <li>최종 학습평가결과가 합격등급 60% 미만일 경우, 단순히 본 교육과정을 수강한 것으로 처리 함<br>
-                                            (수료증 미수여 및 교육비 환불 불가)
-                                        </li>
+                                        <c:forEach var="info" items="${m_completeConditionList}" begin="0" end="${m_completeConditionList.size()}" step="1" varStatus="status">
+                                            <li>${info.value}</li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </li>

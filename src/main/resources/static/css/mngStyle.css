@@ -91,76 +91,61 @@
     text-shadow: none;
 }
 
-#kt_participant_company_table thead tr th,
-#kt_participant_company_table tbody tr td {
-    min-width: 125px;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.form_chuga {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 50px;
-}
-
-.form_chuga_list {
-    border: 1px solid #ddd;
-    border-bottom: 5px solid #1D5CAD;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.form_chuga_list .cont {
-    width: calc(100% - 180px);
-}
-
-.form_chuga_list .cont .name {
-    font-size: 1.8rem;
-    line-height: 2.4rem;
-    font-weight: 700;
-}
-
-.form_chuga_list .cont .gubun {
-    margin-top: 5px;
-}
-
-.form_chuga_list .modifyFormList,
-.form_chuga_list .delFormList {
-    font-size: 1.4rem;
-    padding: 10px;
-    width: 80px;
-    text-align: center;
-    margin-left: 10px;
-    cursor: pointer;
-}
-
-.form_chuga_list .modifyFormList {
-    background: #1D5CAD;
-    color: #fff;
-}
-
-.form_chuga_list .delFormList {
-    background: #888;
-    color: #fff;
-}
-
 .lock_scroll {
     overflow: hidden;
 }
 
-.onlinePrdBox .onlinePrdAdd,
-.onlinePrdBox .onlinePrdDel {
-    border:1px solid #ccc; width: 44px; height: 44px; display: inline-block; vertical-align: top;
-    text-indent: -9999px;
+/* 교육안내 템플릿화 과정안내, 신청자격안내 */
+.guide_tp_01 .mobile_cmnt {font-size: 1.4rem; position: relative; padding-left: 20px; margin-bottom: 10px; display: none;}
+.guide_tp_01 .mobile_cmnt::before {
+    display: inline-block; content: "!"; width: 14px; height: 14px; line-height: 14px; font-size: 10px;
+    background: #083274; border-radius: 100px; color: #fff; text-align: center;
+    position: absolute; left: 0; top: 2px;
 }
-.onlinePrdBox .onlinePrdAdd {
+
+.guide_tp_01 { margin-bottom: 30px; }
+.guide_tp_01 .table table {
+    border-radius: 5px; table-layout: fixed; width: 100%; overflow: hidden;
+    box-shadow: 0 0 0 2px #083274; border-collapse: collapse;
+}
+.guide_tp_01 .table th,
+.guide_tp_01 .table td {vertical-align: middle; font-size: 1.5rem; padding: 20px !important; border: 1px solid #E6ECF5; word-break: break-all;}
+.guide_tp_01 .table th {text-align: center; background: #F9FBFF;}
+.guide_tp_01 .table .gubun {width: 20%; max-width: 150px; text-align: center;}
+.guide_tp_01 .table .item.list {display: flex; flex-direction: column; gap: 8px;}
+.guide_tp_01 .table .item.list p {padding-left: 10px; position: relative;}
+.guide_tp_01 .table .item.list p::before {position: absolute; left: 0; display: block; content: "·";}
+.guide_tp_01 .table .address {font-size: 1.4rem; color: #555; margin-top: 3px;}
+.guide_tp_01 .table .cmnt {display: flex; flex-direction: column; margin-top: 5px;}
+.guide_tp_01 .table .cmnt p {color: #555; font-size: 1.1rem;}
+
+.guide_tp_02 ul {border-radius: 5px; background: #F9FBFF; border: 2px solid #E6ECF5; padding: 20px; display: flex; flex-direction: column; gap: 20px;}
+.guide_tp_02 li {display: flex; font-size: 1.5rem;}
+.guide_tp_02 li .naeyong {width: 100%;}
+.guide_tp_02 .gubun {flex-basis: 130px; flex-shrink: 0; color: #083274; padding-top: 10px; }
+.guide_tp_02 .gubun::before {display: inline-block; content: "·"; margin-right: 5px;}
+.guide_tp_02 .item.list {display: flex; flex-direction: column; gap: 8px;}
+.guide_tp_02 .item.list p {padding-left: 15px; position: relative;}
+.guide_tp_02 .item.list p::before {position: absolute; left: 0; display: block; content: "-";}
+.guide_tp_02 .cmnt {display: flex; flex-direction: column; margin-top: 5px;}
+.guide_tp_02 .cmnt p {color: #555; font-size: 1.1rem;}
+.guide_tp_02 .url {text-decoration: underline;}
+.guide_tp_02 .img {margin: 10px; max-width: 650px;}
+.guide_tp_02 .img .m {display: none;}
+
+/*.guide_tp_01 .contentAddBtn {
     background: url(../img/icon_form_add.svg) no-repeat center center / 44px 44px;
 }
-.onlinePrdBox .onlinePrdDel {
+.guide_tp_01 .contentDelBtn {
     background: url(../img/icon_form_del.svg) no-repeat center center / 44px 44px;
 }
+
+.guide_tp_01 .contentAddBtn, .contentDelBtn {
+    border: 1px solid #ccc;
+    width: 44px;
+    height: 44px;
+    display: inline-block;
+    vertical-align: top;
+    text-indent: -9999px;
+}*/
+

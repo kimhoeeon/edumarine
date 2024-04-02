@@ -351,4 +351,7 @@ public interface EduMarineMngService {
 
     List<RegularDTO.TrainInfo> processSelectRegularTrainInfoList(RegularDTO info);
 
+    ResponseDTO processSaveTrainTemplate(TrainTemplateDTO templateInfo);
+
+    List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major);
 }

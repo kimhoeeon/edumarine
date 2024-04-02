@@ -251,4 +251,6 @@ public interface EduMarineMapper {
     PaymentDTO selectPaymentTableSeq(String seq);
 
     void updatePayment(PaymentDTO paymentDTO);
+
+    List<TrainTemplateDTO.TrainTemplateInfo> selectTrainTemplateList(String major);
 }

@@ -200,4 +200,6 @@ public interface EduMarineService {
     Integer processUpdatePaymentVbankNoti(PaymentDTO paymentDTO);
 
     PaymentDTO processSelectPaymentVbankInfo(PaymentDTO paymentDTO);
+
+    List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major);
 }

@@ -4198,5 +4198,46 @@
         WHERE t.del_yn = 'N'
     </select>
 
+    <delete id="deleteTrainTemplate" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.deleteTrainTemplate */
+        DELETE
+        FROM train_template
+        WHERE major = #{major}
+    </delete>
+    
+    <insert id="insertTrainTemplate" parameterType="com.mtf.edumarine.dto.TrainTemplateDTO$TrainTemplateInfo">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.insertTrainTemplate */
+        INSERT INTO train_template
+            ( major
+            , middle
+            , small
+            , value
+            , note
+            , init_regi_pic
+            , final_regi_pic
+            )
+        VALUES
+            ( #{major}
+            , #{middle}
+            , #{small}
+            , <![CDATA[#{value}]]>
+            , #{note}
+            , '관리자'
+            , '관리자'
+            )
+    </insert>
+
+    <select id="selectTrainTemplateList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.TrainTemplateDTO$TrainTemplateInfo">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectTrainTemplateList */
+        SELECT major
+             , middle
+             , small
+             , value
+             , note
+        FROM train_template
+        WHERE major = #{major}
+        ORDER BY major, small, middle , note
+    </select>
+    
 </mapper>
 

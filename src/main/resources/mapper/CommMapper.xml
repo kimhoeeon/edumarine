@@ -105,7 +105,11 @@
                                  WHEN boarderCnt = 1 OR frpCnt = 1 THEN '교육생(정규)'
                                  ELSE '관심사용자'
                         END
-                    ELSE '일반회원'
+                    ELSE CASE
+                             WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 THEN '교육생(단기)'
+                             WHEN boarderCnt = 1 OR frpCnt = 1 THEN '교육생(정규)'
+                             ELSE '일반회원'
+                        END
             END) AS afterGrade
         FROM (SELECT m.seq
                    , m.apply_status

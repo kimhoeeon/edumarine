@@ -192,15 +192,19 @@
                                     <thead>
                                         <tr>
                                             <th>구분</th>
-                                            <th>내용</th>
+                                            <th>선외기 자가정비과정</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>과정명</td>
+                                            <td>교육대상</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">선외기 자가정비과정</div>
+                                                    <ul class="list">
+                                                        <c:forEach var="info" items="${o_targetList}" begin="0" end="${o_targetList.size()}" step="1" varStatus="status">
+                                                            <li>${info.value}</li>
+                                                        </c:forEach>
+                                                    </ul>
                                                 </div>
                                             </td>
                                         </tr>
@@ -208,22 +212,20 @@
                                             <td>교육내용</td>
                                             <td>
                                                 <div class="box_number">
-                                                    <div class="number">1) 가솔린엔진 작동원리</div>
-                                                    <div class="number">2) 엔진운전</div>
-                                                    <div class="number">3) 엔진유지보수</div><br>
-                                                    <div class="number">4) 응급조치방법</div>
-                                                    <div class="number">5) 동절기 엔진관리</div>
-                                                    <div class="number">6) 고장진단 및 조치</div>
+                                                    <c:forEach var="info" items="${o_contentsList}" begin="0" end="${o_contentsList.size()}" step="1" varStatus="status">
+                                                        <div class="number">${info.value}</div>
+                                                    </c:forEach>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>교육대상 엔진</td>
+                                            <td>교육기간</td>
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>도하츠 15마력 (2-Stroke Cycle 엔진)</li>
-                                                        <li>혼다 60마력 (4-Stroke Cycle 엔진)</li>
+                                                        <c:forEach var="info" items="${o_periodList}" begin="0" end="${o_periodList.size()}" step="1" varStatus="status">
+                                                            <li>${info.value}</li>
+                                                        </c:forEach>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -232,21 +234,9 @@
                                             <td>교육일수</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">2일 (주말 또는 휴일 위주로 편성 예정)</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>교육일정</td>
-                                            <td>
-                                                <div class="box">
-                                                    <ul class="list">
-                                                        <li>1차 : 2024.03.16(토) ~ 2024.03.17(일)</li>
-                                                        <li>2차 : 2024.04.27(토) ~ 2024.04.28(일)</li>
-                                                        <li>3차 : 2024.08.24(토) ~ 2024.08.25(일)</li>
-                                                        <li>4차 : 2024.09.21(토) ~ 2024.09.22(일)</li>
-                                                        <li>5차 : 2024.10.26(토) ~ 2024.10.27(일)</li>
-                                                    </ul>
+                                                    <div class="text">
+                                                        ${o_days.value}
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -254,7 +244,9 @@
                                             <td>교육시간</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">주 2일, 09:30 ~ 17:30 (점심시간 : 12:30 ~ 13:30)</div>
+                                                    <div class="text">
+                                                        ${o_time.value}
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -262,7 +254,10 @@
                                             <td>교육장소</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">경기 안산시 상록구 해양로 705 사동 P2 212호(경기테크노파크)</div>
+                                                    <div class="text">
+                                                        ${o_place.value}<br>
+                                                        ${o_placeDetail.value}
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -270,7 +265,9 @@
                                             <td>교육인원</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">16명</div>
+                                                    <div class="text">
+                                                        ${o_persons.value}
+                                                    </div>
                                                     <ul class="list small">
                                                         <li>주1) 교육 신청 현황에 따라 조정 가능합니다.</li>
                                                         <li>주2) 교육신청자가 최소 인원에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</li>
@@ -282,7 +279,9 @@
                                             <td>교육비</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">300,000원</div>
+                                                    <div class="text">
+                                                        ${o_pay.value}
+                                                    </div>
                                                     <div class="small">※ 분리교육 진행 시 교육비 별도 공지 예정</div>
                                                 </div>
                                             </td>
@@ -308,20 +307,20 @@
                             <li>
                                 <div class="gubun">신청방법</div>
                                 <div class="naeyong">
-                                    <div class="text">에듀마린 홈페이지(<span class="underline"><a href="https://edumarine.org" target="_blank">www.edumarine.org</a></span>)에서 해당 과정 신청 접수 및 상시 접수</div>
+                                    <div class="text">${o_applyMethod.value} (<span class="underline"><a href="${o_applyMethodUrl.value}" target="_blank">${o_applyMethodUrl.value}</a></span>)</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집방법</div>
                                 <div class="naeyong">
-                                    <div class="text">모집일로부터 신청 선착순으로 마감</div>
+                                    <div class="text">${o_recruitMethod.value}</div>
                                     <div class="small">※ 신청취소 등 교육인원 축소 대비 대기인원 접수</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집마감</div>
                                 <div class="naeyong">
-                                    <div class="text">해당 차수 교육개설 7일전</div>
+                                    <div class="text">${o_recruitPeriod.value}</div>
                                     <div class="small">※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</div>
                                     <div class="small">※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</div>
                                 </div>
