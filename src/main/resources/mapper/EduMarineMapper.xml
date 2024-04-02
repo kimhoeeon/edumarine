@@ -2741,5 +2741,17 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="selectTrainTemplateList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.TrainTemplateDTO$TrainTemplateInfo">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectTrainTemplateList */
+        SELECT major
+             , middle
+             , small
+             , value
+             , note
+        FROM train_template
+        WHERE major = #{major}
+        ORDER BY major, small, middle , note
+    </select>
+
 </mapper>
 

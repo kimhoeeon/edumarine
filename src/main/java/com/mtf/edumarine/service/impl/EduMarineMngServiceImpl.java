@@ -4512,6 +4512,48 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processSaveTrainTemplate(TrainTemplateDTO templateInfo) {
+        System.out.println("EduMarineMngServiceImpl > processSaveTrainTemplate");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            eduMarineMngMapper.deleteTrainTemplate(templateInfo.getGbn());
+
+            for(TrainTemplateDTO.TrainTemplateInfo info : templateInfo.getData()){
+
+                if(info.getValue() != null && !"".equals(info.getValue())){
+
+                    Integer result = eduMarineMngMapper.insertTrainTemplate(info);
+
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                        break;
+                    }
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processSaveTrainTemplate ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major) {
+        System.out.println("EduMarineMngServiceImpl > processSelectTrainTemplateList");
+        return eduMarineMngMapper.selectTrainTemplateList(major);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<AdminDTO> processSelectAdminMngList(SearchDTO searchDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectAdminMngList");
         return eduMarineMngMapper.selectAdminMngList(searchDTO);

@@ -397,4 +397,9 @@ public interface EduMarineMngMapper {
 
     List<RegularDTO.TrainInfo> selectRegularTrainInfoList(RegularDTO info);
 
+    void deleteTrainTemplate(String gbn);
+
+    Integer insertTrainTemplate(TrainTemplateDTO.TrainTemplateInfo info);
+
+    List<TrainTemplateDTO.TrainTemplateInfo> selectTrainTemplateList(String major);
 }

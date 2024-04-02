@@ -187,26 +187,42 @@
                                     <thead>
                                         <tr>
                                             <th>구분</th>
-                                            <th>내용</th>
+                                            <th>위탁교육</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td>교육대상</td>
+                                            <td>
+                                                <div class="box">
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${c_targetList}" begin="0" end="${c_targetList.size()}" step="1" varStatus="status">
+                                                            ${info.value}<br/>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td>교육내용</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="number">1) 중급 이론교육</div>
-                                                    <div class="number">2) 엔진 점검, 진단, 분석 능력</div>
-                                                    <div class="number">3) 엔진 성능시험 등</div>
+                                                    <c:forEach var="info" items="${c_contentsList}" begin="0" end="${c_contentsList.size()}" step="1" varStatus="status">
+                                                        <div class="number">${info.value}</div>
+                                                    </c:forEach>
                                                     <div class="small">※ 기관별 맞춤형 프로그램 구성 가능 (별도 문의)</div>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>교육대상</td>
+                                            <td>교육기간</td>
                                             <td>
                                                 <div class="box">
-                                                    <div class="text">해양레저분야 종사자</div>
+                                                    <div class="text">
+                                                        <c:forEach var="info" items="${c_periodList}" begin="0" end="${c_periodList.size()}" step="1" varStatus="status">
+                                                            ${info.value}<br/>
+                                                        </c:forEach>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -215,17 +231,10 @@
                                             <td>
                                                 <div class="box">
                                                     <ul class="list">
-                                                        <li>선외기 - 아라마리나 선내기 교육장(김포)</li>
-                                                        <li>선내기 - 경기테크노파크 선외기 교육장(안산)</li>
+                                                        <c:forEach var="info" items="${c_placeList}" begin="0" end="${c_placeList.size()}" step="1" varStatus="status">
+                                                            <li>${info.value}</li>
+                                                        </c:forEach>
                                                     </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>교육기간</td>
-                                            <td>
-                                                <div class="box">
-                                                    <div class="text">별도문의 Tel. 1811-7891</div>
                                                 </div>
                                             </td>
                                         </tr>

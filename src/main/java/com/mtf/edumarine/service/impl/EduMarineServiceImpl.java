@@ -974,7 +974,7 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertPayment(PaymentDTO paymentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertPayment");
+        System.out.println("EduMarineServiceImpl > processInsertPayment");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1873,15 +1873,22 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processUpdatePaymentVbankNoti(PaymentDTO paymentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdatePaymentVbankNoti");
+        System.out.println("EduMarineServiceImpl > processUpdatePaymentVbankNoti");
         return eduMarineMapper.updatePaymentVbankNoti(paymentDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PaymentDTO processSelectPaymentVbankInfo(PaymentDTO paymentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPaymentVbankInfo");
+        System.out.println("EduMarineServiceImpl > processSelectPaymentVbankInfo");
         return eduMarineMapper.selectPaymentVbankInfo(paymentDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major) {
+        System.out.println("EduMarineServiceImpl > processSelectTrainTemplateList");
+        return eduMarineMapper.selectTrainTemplateList(major);
     }
 
     /*************************************************
