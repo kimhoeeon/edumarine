@@ -1440,7 +1440,7 @@ if (document.documentElement) {
                     <!--end::sidebar menu-->
                     <!--begin::Footer-->
                     <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-                        <a href="javascript:alert('준비 중입니다.');"
+                        <a href="javascript:f_google_analytics_page();"
                            class="btn btn-flex flex-center btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
                            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
                            title="방문자 데이터 보기"<%-- target="_blank"--%>>

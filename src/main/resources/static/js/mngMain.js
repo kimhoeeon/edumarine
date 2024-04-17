@@ -1077,6 +1077,10 @@ function loadingBarShow_time(time){
     }, time);
 }
 
+function f_google_analytics_page(){
+    window.open("https://analytics.google.com/analytics/web/?authuser=1#/p425242195/reports/reportinghub?params=_u..nav%3Dmaui", "_blank");
+}
+
 /*
 @author https://github.com/macek/jquery-serialize-object
 */

@@ -122,12 +122,12 @@
                                     <div>${info.sex}</div>
                                 </div>
                             </li>
-                            <li>
+                            <%--<li>
                                 <div class="gubun"><p>연령</p></div>
                                 <div class="naeyong">
                                     <div>만 ${info.age} 세</div>
                                 </div>
-                            </li>
+                            </li>--%>
                             <li>
                                 <div class="gubun"><p>상반신 사진</p></div>
                                 <div class="naeyong">
@@ -165,7 +165,7 @@
                                     <div>${info.participationPath}</div>
                                 </div>
                             </li>
-                            <li style="height: 150px;">
+                            <li style="height: 130px;">
                                 <div class="gubun"><p>비고</p></div>
                                 <div class="naeyong">
                                 </div>
@@ -232,12 +232,12 @@
                                     <div>${info.sex}</div>
                                 </div>
                             </li>
-                            <li>
+                            <%--<li>
                                 <div class="gubun"><p>연령</p></div>
                                 <div class="naeyong">
                                     <div>만 ${info.age} 세</div>
                                 </div>
-                            </li>
+                            </li>--%>
                             <li>
                                 <div class="gubun"><p>상반신 사진</p></div>
                                 <div class="naeyong">
@@ -275,7 +275,7 @@
                                     <div>${info.participationPath}</div>
                                 </div>
                             </li>
-                            <li style="height: 150px;">
+                            <li style="height: 130px;">
                                 <div class="gubun"><p>비고</p></div>
                                 <div class="naeyong">
                                 </div>
