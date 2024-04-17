@@ -1596,7 +1596,7 @@ public class EduMarineMngController {
             if(info != null){
                 /* 첨부파일 정보 Set */
                 FileDTO fileDTO = new FileDTO();
-                fileDTO.setUserId(info.getSeq());
+                fileDTO.setUserId(info.getMemberSeq());
                 List<FileDTO> bodyPhotoFile = eduMarineMngService.processSelectFileUserIdList(fileDTO);
                 if(bodyPhotoFile != null  && !bodyPhotoFile.isEmpty()){
                     for (FileDTO fileInfo : bodyPhotoFile) {
@@ -1631,7 +1631,7 @@ public class EduMarineMngController {
                 if(info != null){
                     /* 첨부파일 정보 Set */
                     FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(info.getSeq());
+                    fileDTO.setUserId(info.getMemberSeq());
                     List<FileDTO> bodyPhotoFile = eduMarineMngService.processSelectFileUserIdList(fileDTO);
                     if(bodyPhotoFile != null  && !bodyPhotoFile.isEmpty()){
                         for (FileDTO fileInfo : bodyPhotoFile) {

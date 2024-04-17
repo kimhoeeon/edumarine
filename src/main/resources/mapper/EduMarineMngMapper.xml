@@ -1647,76 +1647,84 @@
 
     <select id="selectResumeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ResumeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectResumeList */
-        SELECT seq
-             , id
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , sex
-             , age
-             , address
-             , address_detail
-             , top_clothes_size
-             , bottom_clothes_size
-             , shoes_size
-             , participation_path
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
-        FROM resume
+        SELECT rst.*
+        FROM ( SELECT r.seq
+             , r.member_seq
+             , r.id
+             , IFNULL(r.name_ko, m.name) as nameKo
+             , IFNULL(r.name_en, m.name_en) as nameEn
+             , IFNULL(r.phone, m.phone) as phone
+             , IFNULL(r.email, m.email) as email
+             , IFNULL(r.birth_year, m.birth_year) as birthYear
+             , IFNULL(r.birth_month, m.birth_month) as birthMonth
+             , IFNULL(r.birth_day, m.birth_day) as birthDay
+             , IFNULL(r.sex, m.sex) as sex
+             , IFNULL(r.address, m.address) as address
+             , IFNULL(r.address_detail, m.address_detail) as addressDetail
+             , r.top_clothes_size
+             , r.bottom_clothes_size
+             , r.shoes_size
+             , r.participation_path
+             , r.del_yn
+             , r.note
+             , r.init_regi_pic
+             , r.init_regi_dttm
+             , r.final_regi_pic
+             , r.final_regi_dttm
+        FROM resume r
+        LEFT JOIN member m
+        ON r.member_seq = m.seq
         WHERE 1=1
-        AND del_yn = 'N'
+          AND r.del_yn = 'N' ) rst
+          WHERE 1=1
         <if test='searchText != null and searchText != ""'>
             <if test='condition eq "NAMEKO"'>
-                AND name_ko LIKE BINARY CONCAT('%',#{searchText},'%')
+                AND rst.nameKo LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "NAMEEN"'>
-                AND name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+                AND rst.nameEn LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "ID"'>
-                AND id LIKE BINARY CONCAT('%',#{searchText},'%')
+                AND rst.id LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
         </if>
         <if test='sex != null and sex != ""'>
-            AND sex = #{sex}
+            AND rst.sex = #{sex}
         </if>
-        ORDER BY init_regi_dttm DESC
+        ORDER BY rst.init_regi_dttm DESC
     </select>
 
     <select id="selectResumeSingle" parameterType="com.mtf.edumarine.dto.ResumeDTO" resultType="com.mtf.edumarine.dto.ResumeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectResumeSingle */
-        SELECT seq
-             , id
-             , name_ko
-             , name_en
-             , phone
-             , email
-             , birth_year
-             , birth_month
-             , birth_day
-             , sex
-             , age
-             , address
-             , address_detail
-             , top_clothes_size
-             , bottom_clothes_size
-             , shoes_size
-             , participation_path
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
-        FROM resume
-        WHERE seq = #{seq}
+        SELECT r.seq
+             , r.member_seq
+             , r.id
+             , IFNULL(r.name_ko, m.name) as nameKo
+             , IFNULL(r.name_en, m.name_en) as nameEn
+             , IFNULL(r.phone, m.phone) as phone
+             , IFNULL(r.email, m.email) as email
+             , IFNULL(r.birth_year, m.birth_year) as birthYear
+             , IFNULL(r.birth_month, m.birth_month) as birthMonth
+             , IFNULL(r.birth_day, m.birth_day) as birthDay
+             , IFNULL(r.sex, m.sex) as sex
+             , IFNULL(r.address, m.address) as address
+             , IFNULL(r.address_detail, m.address_detail) as addressDetail
+             , r.top_clothes_size
+             , r.bottom_clothes_size
+             , r.shoes_size
+             , r.participation_path
+             , r.del_yn
+             , r.note
+             , r.init_regi_pic
+             , r.init_regi_dttm
+             , r.final_regi_pic
+             , r.final_regi_dttm
+        FROM resume r
+        LEFT JOIN member m
+        ON r.member_seq = m.seq
+        WHERE 1=1
+          AND r.del_yn = 'N'
+          AND r.seq = #{seq}
     </select>
 
     <select id="selectRegularList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.RegularDTO">
