@@ -2227,9 +2227,10 @@ public class EduMarineMngController {
     }
 
     @RequestMapping(value = "/mng/education/train.do", method = RequestMethod.GET)
-    public ModelAndView mng_education_train() {
+    public ModelAndView mng_education_train(String nextTime) {
         System.out.println("EduMarineMngController > mng_education_train");
         ModelAndView mv = new ModelAndView();
+        mv.addObject("nextTime", nextTime);
         mv.setViewName("/mng/education/train");
         return mv;
     }
