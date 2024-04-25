@@ -1581,8 +1581,6 @@ if (document.documentElement) {
                                                         data-placeholder="- 차시 -" onchange="f_education_train_search()">
                                                     <option></option>
                                                     <option value="" disabled>- 차시 -</option>
-                                                    <option value="1">1차시</option>
-                                                    <option value="2">2차시</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -1943,6 +1941,40 @@ if (document.documentElement) {
     <script src="<%request.getContextPath();%>/static/js/mng/train.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <script>
+
+        $(document).ready(function() {
+
+            // 차시 검색조건 Set
+            $("#condition_time").children('option:not(:gt(1))').remove();
+
+            let json = {}
+            $.ajax({
+                url: '/train/selectNextTime.do',
+                method: 'post',
+                data: JSON.stringify(json),
+                contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+            })
+                .done(function (data, status) {
+                    let results = data;
+                    if (nvl(results, '') !== '') {
+                        $.each(results, function (i) {
+                            $('#condition_time').append($('<option>', {
+                                value: results[i].nextTime,
+                                text: results[i].nextTime + '차'
+                            }));
+                        })
+
+                        $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
+                    }
+                }).always(function() {
+                let nextTime = '${nextTime}';
+                if(nvl(nextTime,'') !== ''){
+                    $('#condition_time').val(nextTime).trigger('change');
+                }
+            });
+
+        });
+
         document.addEventListener("keyup", function(event) {
             if (event.key === 'Enter') {
                 f_education_train_search();

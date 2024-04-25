@@ -3680,7 +3680,10 @@
         /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectTrainNextTime */
         SELECT next_time
         FROM train
-        WHERE gbn = <![CDATA[#{gbn}]]>
+        WHERE 1=1
+        <if test='gbn != null and gbn != ""'>
+        AND gbn = <![CDATA[#{gbn}]]>
+        </if>
         GROUP BY next_time
         ORDER BY next_time
     </select>
