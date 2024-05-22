@@ -5,6 +5,17 @@ let KTProjectList = function () {
 
     let initChart1 = function () {
 
+        let colors = [
+            '#267ec3',
+            '#26e7a6',
+            '#febc3b',
+            '#ff6178',
+            '#8b75d7',
+            '#46b3a9',
+            '#d830eb',
+            '#de7abd'
+        ];
+
         // init chart
         let element = document.getElementById("kt_project_list_chart1");
 
@@ -21,6 +32,7 @@ let KTProjectList = function () {
             let options = {
                 series: [],/*44, 55, 13, 43, 22*/
                 labels: [],
+                colors: colors,
                 chart: {
                     id: 'pieChart',
                     width: 500,

@@ -584,6 +584,12 @@ function getTargetMenu(tableId){
         case 'mng_customer_sailyacht_table':
             targetMenu = '회원/신청_신청자목록_자가정비(세일요트)';
             break;
+        case 'mng_customer_highhorsepower_table':
+            targetMenu = '회원/신청_신청자목록_고마력선외기정비교육과정';
+            break;
+        case 'mng_customer_sterndrive_table':
+            targetMenu = '회원/신청_신청자목록_Sterndrive정비교육과정';
+            break;
         case 'mng_education_train_table':
             targetMenu = '교육_교육관리_교육현황';
             break;
@@ -649,6 +655,8 @@ function getTargetMenu(tableId){
     //mng_customer_outboarder_table // 회원/신청_신청자목록_자가정비(선외기)
     //mng_customer_inboarder_table // 회원/신청_신청자목록_자가정비(선내기)
     //mng_customer_sailyacht_table // 회원/신청_신청자목록_자가정비(세일요트)
+    //mng_customer_highhorsepower_table // 회원/신청_신청자목록_고마력선외기정비교육과정
+    //mng_customer_sterndrive_table // 회원/신청_신청자목록_Sterndrive정비교육과정
 
     //mng_education_train_table // 교육_교육관리_교육현황
     //mng_education_payment_table 교육_교육관리_결제/환불현황
@@ -1079,6 +1087,32 @@ function loadingBarShow_time(time){
 
 function f_google_analytics_page(){
     window.open("https://analytics.google.com/analytics/web/?authuser=1#/p425242195/reports/reportinghub?params=_u..nav%3Dmaui", "_blank");
+}
+
+function getCurrentDateTime() {
+    let date = new Date(); // Data 객체 생성
+    let year = date.getFullYear().toString(); // 년도 구하기
+
+    let month = date.getMonth() + 1; // 월 구하기
+    month = month < 10 ? '0' + month.toString() : month.toString(); // 10월 미만 0 추가
+
+    let day = date.getDate(); // 날짜 구하기
+    day = day < 10 ? '0' + day.toString() : day.toString(); // 10일 미만 0 추가
+
+    let returnTime = year + '-' + month + '-' + day; //yyyy-mm-dd 형식으로 리턴
+
+    let hour = date.getHours(); // 시간 구하기
+    hour = hour < 10 ? '0' + hour.toString() : hour.toString(); // 10시 미만 0 추가
+
+    let minites = date.getMinutes(); // 분 구하기
+    minites = minites < 10 ? '0' + minites.toString() : minites.toString(); // 10분 미만 0 추가
+
+    let seconds = date.getSeconds(); // 초 구하기
+    seconds = seconds < 10 ? '0' + seconds.toString() : seconds.toString(); // 10초 미만 0 추가
+
+    returnTime += ' ' + hour + ':' + minites + ':' + seconds; // yyyy-mm-dd hh:mm:ss 형식으로 리턴
+
+    return returnTime;
 }
 
 /*

@@ -81,6 +81,14 @@ function f_train_calendar_select(category){
                         className = 'edu05';
                         link = '/apply/eduApply06.do';
                         break;
+                    case '고마력 선외기 정비 중급 테크니션':
+                        className = 'edu06';
+                        link = '/apply/eduApply07.do';
+                        break;
+                    case '스턴드라이브 정비 전문가과정':
+                        className = 'edu07';
+                        link = '/apply/eduApply08.do';
+                        break;
                     default:
                         break;
                 }

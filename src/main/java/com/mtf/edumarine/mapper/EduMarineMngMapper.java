@@ -402,4 +402,70 @@ public interface EduMarineMngMapper {
     Integer insertTrainTemplate(TrainTemplateDTO.TrainTemplateInfo info);
 
     List<TrainTemplateDTO.TrainTemplateInfo> selectTrainTemplateList(String major);
+
+    List<RequestDTO> selectRequestList(SearchDTO searchDTO);
+
+    RequestDTO selectRequestSingle(RequestDTO requestDTO);
+
+    String getRequestSeq();
+
+    Integer insertRequest(RequestDTO requestDTO);
+
+    Integer updateRequest(RequestDTO requestDTO);
+
+    Integer deleteRequest(RequestDTO requestDTO);
+
+    List<RequestReplyDTO> selectReplyList(String requestSeq);
+
+    String getReplySeq();
+
+    Integer insertReply(RequestReplyDTO requestReplyDTO);
+
+    Integer deleteReply(RequestReplyDTO requestReplyDTO);
+
+    Integer updateRequestProgressStep(RequestDTO info);
+
+    Integer updateRequestCompleteExpect(RequestDTO info);
+
+    List<TrainDTO> selectTrainActive(TrainDTO trainDTO);
+
+    Integer updateBoarderTrainSeq(BoarderDTO boarderDTO);
+
+    Integer updateFrpTrainSeq(FrpDTO frpDTO);
+
+    Integer updateOutboarderTrainSeq(OutboarderDTO updDTO);
+
+    Integer updateInboarderTrainSeq(InboarderDTO inboarderDTO);
+
+    Integer updateSailyachtTrainSeq(SailyachtDTO sailyachtDTO);
+
+    Integer updateHighHorsePowerTrainSeq(HighHorsePowerDTO highHorsePowerDTO);
+
+    void updateTrainApplyCntAdd(String newTrainSeq);
+
+    void updatePaymentTrainChange(PaymentDTO updPayDTO);
+
+    TrainUpdateDTO selectAllTrainInfo(String tableSeq);
+
+    List<SmsSendDTO> selectSmsSendHighhorsepowerList();
+
+    List<SmsSendDTO> selectSmsSendSterndriveList();
+
+    Integer updateSterndriveTrainSeq(SterndriveDTO sterndriveDTO);
+
+    List<HighHorsePowerDTO> selectHighhorsepowerList(SearchDTO searchDTO);
+
+    HighHorsePowerDTO selectHighhorsepowerSingle(String seq);
+
+    Integer updateHighhorsepowerApplyStatus(HighHorsePowerDTO info);
+
+    List<HighHorsePowerDTO> selectExcelHighhorsepowerDetailList();
+
+    List<SterndriveDTO> selectSterndriveList(SearchDTO searchDTO);
+
+    SterndriveDTO selectSterndriveSingle(String seq);
+
+    Integer updateSterndriveApplyStatus(SterndriveDTO info);
+
+    List<SterndriveDTO> selectExcelSterndriveDetailList();
 }

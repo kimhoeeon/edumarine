@@ -100,7 +100,8 @@ function searchPosts(pageNum) {
 
             let content = results[i].content;
             let contentToStr = content.toString();
-            let thumbnailImage = contentToStr.substring(contentToStr.indexOf('="')+2,contentToStr.indexOf('">'));
+            let contentToStr1 = contentToStr.substring(contentToStr.indexOf('img src')+9);
+            let thumbnailImage = contentToStr1.substring(0,contentToStr1.indexOf('"'));
 
             str += '<li>';
                 str += '<a href="javascript:void(0);" onclick="location.href=\'/board/news_view.do?seq=' + seq + '\'">';

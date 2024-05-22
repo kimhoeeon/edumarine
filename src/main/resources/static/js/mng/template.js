@@ -154,6 +154,54 @@ $(function () {
         }
     });
 
+    //고마력
+    //교육대상
+    //교육내용
+    //교육기간
+    //교육장비
+    $('#edu_highhorsepower_target,' +
+        '#edu_highhorsepower_contents,' +
+        '#edu_highhorsepower_period,' +
+        '#edu_highhorsepower_stuff').repeater({
+        initEmpty: false,
+        defaultValues: {
+            'text-input': ''
+        },
+        isFirstItemUndeletable: true,
+
+        show: function () {
+            $(this).slideDown();
+        },
+
+        hide: function (deleteElement) {
+            $(this).slideUp(deleteElement);
+        }
+    });
+
+    //Sterndrive
+    //교육대상
+    //교육내용
+    //교육기간
+    //교육장비
+    $('#edu_sterndrive_target,' +
+        '#edu_sterndrive_contents,' +
+        '#edu_sterndrive_period,' +
+        '#edu_sterndrive_stuff').repeater({
+        initEmpty: false,
+        defaultValues: {
+            'text-input': ''
+        },
+        isFirstItemUndeletable: true,
+
+        show: function () {
+            $(this).slideDown();
+        },
+
+        hide: function (deleteElement) {
+            $(this).slideUp(deleteElement);
+        }
+    });
+
 });
 
 function f_train_template_marina_save(){
@@ -1223,6 +1271,432 @@ function f_train_template_sailyacht_save(){
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 f_train_template_init('sailyacht');
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '교육 안내 템플릿 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+        }
+    });
+
+}
+
+function f_train_template_highhorsepower_save(){
+    console.log('f_train_template_highhorsepower_save');
+
+    let main_json_arr = [];
+    // 교육대상
+    let highhorsepower_target_arr = $('#edu_highhorsepower_target').find('input[type=text]');
+    for(let i=0; i<highhorsepower_target_arr.length; i++){
+        let highhorsepower_target = highhorsepower_target_arr.eq(i).val();
+        let highhorsepower_target_json_obj = {
+            major: 'highhorsepower',
+            middle: 'info',
+            small: 'target',
+            value: highhorsepower_target,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highhorsepower_target_json_obj);
+    }
+
+    // 교육내용
+    let highhorsepower_contents_arr = $('#edu_highhorsepower_contents').find('input[type=text]');
+    for(let i=0; i<highhorsepower_contents_arr.length; i++){
+        let highhorsepower_contents = highhorsepower_contents_arr.eq(i).val();
+        let highhorsepower_contents_json_obj = {
+            major: 'highhorsepower',
+            middle: 'info',
+            small: 'contents',
+            value: highhorsepower_contents,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highhorsepower_contents_json_obj);
+    }
+
+    // 교육기간
+    let highhorsepower_period_arr = $('#edu_highhorsepower_period').find('input[type=text]');
+    for(let i=0; i<highhorsepower_period_arr.length; i++){
+        let highhorsepower_period = highhorsepower_period_arr.eq(i).val();
+        let highhorsepower_period_json_obj = {
+            major: 'highhorsepower',
+            middle: 'info',
+            small: 'period',
+            value: highhorsepower_period,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highhorsepower_period_json_obj);
+    }
+
+    // 교육일수
+    let highhorsepower_days = $('#edu_highhorsepower_days').find('input[type=text]').val();
+    let highhorsepower_days_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'days',
+        value: highhorsepower_days
+    };
+    main_json_arr.push(highhorsepower_days_json_obj);
+
+    // 교육시간
+    let highhorsepower_time = $('#edu_highhorsepower_time').find('input[type=text]').val();
+    let highhorsepower_time_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'time',
+        value: highhorsepower_time
+    };
+    main_json_arr.push(highhorsepower_time_json_obj);
+
+    // 교육장소
+    let highhorsepower_place = $('#edu_highhorsepower_place').find('.item').find('input[type=text]').val();
+    let highhorsepower_place_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'place',
+        value: highhorsepower_place
+    };
+    main_json_arr.push(highhorsepower_place_json_obj);
+    let highhorsepower_placeDetail = $('#edu_highhorsepower_place').find('.address').find('input[type=text]').val();
+    let highhorsepower_placeDetail_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'placeDetail',
+        value: highhorsepower_placeDetail
+    };
+    main_json_arr.push(highhorsepower_placeDetail_json_obj);
+
+    // 교육인원
+    let highhorsepower_persons = $('#edu_highhorsepower_persons').find('input[type=text]').val();
+    let highhorsepower_persons_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'persons',
+        value: highhorsepower_persons
+    };
+    main_json_arr.push(highhorsepower_persons_json_obj);
+
+    // 교육비
+    // 선외기 정비사 실무교육
+    let highhorsepower_pay = $('#edu_highhorsepower_pay').find('input[type=text]').val();
+    let highhorsepower_pay_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'pay',
+        value: highhorsepower_pay
+    };
+    main_json_arr.push(highhorsepower_pay_json_obj);
+
+    // 교육장비
+    let highhorsepower_stuff_arr = $('#edu_highhorsepower_stuff').find('input[type=text]');
+    for(let i=0; i<highhorsepower_stuff_arr.length; i++){
+        let highhorsepower_stuff = highhorsepower_stuff_arr.eq(i).val();
+        let highhorsepower_stuff_json_obj = {
+            major: 'highhorsepower',
+            middle: 'info',
+            small: 'stuff',
+            value: highhorsepower_stuff,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highhorsepower_stuff_json_obj);
+    }
+
+    // 신청방법
+    let applyMethod = $('#edu_highhorsepower_apply_method').find('.item').find('textarea').val();
+    let applyMethod_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'applyMethod',
+        value: applyMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(applyMethod_json_obj);
+    let applyMethodUrl = $('#edu_highhorsepower_apply_method').find('.cmnt').find('input[type=text]').val();
+
+    if(nvl(applyMethodUrl, '') !== ''){
+        if(!checkUrl(applyMethodUrl)){
+            showMessage('', 'error', '[템플릿 등록 안내]', '신청방법 항목의 URL 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            return false;
+        }
+    }
+
+    let applyMethodUrl_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'applyMethodUrl',
+        value: applyMethodUrl
+    };
+    main_json_arr.push(applyMethodUrl_json_obj);
+
+    // 모집방법
+    let recruitMethod = $('#edu_highhorsepower_recruit_method').find('.item').find('textarea').val();
+    let recruitMethod_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'recruitMethod',
+        value: recruitMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitMethod_json_obj);
+
+    // 모집기간
+    let recruitPeriod = $('#edu_highhorsepower_recruit_period').find('.item').find('textarea').val();
+    let recruitPeriod_json_obj = {
+        major: 'highhorsepower',
+        middle: 'info',
+        small: 'recruitPeriod',
+        value: recruitPeriod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitPeriod_json_obj);
+
+    let main_json_obj = {
+        gbn: 'highhorsepower',
+        data: main_json_arr
+    }
+
+    Swal.fire({
+        title: '입력된 정보를 저장하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '저장',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/mng/education/template/save.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(main_json_obj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '교육 안내 템플릿 정보 저장',
+                            html: '교육 안내 템플릿 정보가 저장되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                f_train_template_init('highhorsepower');
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '교육 안내 템플릿 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+        }
+    });
+
+}
+
+function f_train_template_sterndrive_save(){
+    console.log('f_train_template_sterndrive_save');
+
+    let main_json_arr = [];
+    // 교육대상
+    let sterndrive_target_arr = $('#edu_sterndrive_target').find('input[type=text]');
+    for(let i=0; i<sterndrive_target_arr.length; i++){
+        let sterndrive_target = sterndrive_target_arr.eq(i).val();
+        let sterndrive_target_json_obj = {
+            major: 'sterndrive',
+            middle: 'info',
+            small: 'target',
+            value: sterndrive_target,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(sterndrive_target_json_obj);
+    }
+
+    // 교육내용
+    let sterndrive_contents_arr = $('#edu_sterndrive_contents').find('input[type=text]');
+    for(let i=0; i<sterndrive_contents_arr.length; i++){
+        let sterndrive_contents = sterndrive_contents_arr.eq(i).val();
+        let sterndrive_contents_json_obj = {
+            major: 'sterndrive',
+            middle: 'info',
+            small: 'contents',
+            value: sterndrive_contents,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(sterndrive_contents_json_obj);
+    }
+
+    // 교육기간
+    let sterndrive_period_arr = $('#edu_sterndrive_period').find('input[type=text]');
+    for(let i=0; i<sterndrive_period_arr.length; i++){
+        let sterndrive_period = sterndrive_period_arr.eq(i).val();
+        let sterndrive_period_json_obj = {
+            major: 'sterndrive',
+            middle: 'info',
+            small: 'period',
+            value: sterndrive_period,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(sterndrive_period_json_obj);
+    }
+
+    // 교육일수
+    let sterndrive_days = $('#edu_sterndrive_days').find('input[type=text]').val();
+    let sterndrive_days_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'days',
+        value: sterndrive_days
+    };
+    main_json_arr.push(sterndrive_days_json_obj);
+
+    // 교육시간
+    let sterndrive_time = $('#edu_sterndrive_time').find('input[type=text]').val();
+    let sterndrive_time_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'time',
+        value: sterndrive_time
+    };
+    main_json_arr.push(sterndrive_time_json_obj);
+
+    // 교육장소
+    let sterndrive_place = $('#edu_sterndrive_place').find('.item').find('input[type=text]').val();
+    let sterndrive_place_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'place',
+        value: sterndrive_place
+    };
+    main_json_arr.push(sterndrive_place_json_obj);
+    let sterndrive_placeDetail = $('#edu_sterndrive_place').find('.address').find('input[type=text]').val();
+    let sterndrive_placeDetail_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'placeDetail',
+        value: sterndrive_placeDetail
+    };
+    main_json_arr.push(sterndrive_placeDetail_json_obj);
+
+    // 교육인원
+    let sterndrive_persons = $('#edu_sterndrive_persons').find('input[type=text]').val();
+    let sterndrive_persons_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'persons',
+        value: sterndrive_persons
+    };
+    main_json_arr.push(sterndrive_persons_json_obj);
+
+    // 교육비
+    // 선외기 정비사 실무교육
+    let sterndrive_pay = $('#edu_sterndrive_pay').find('input[type=text]').val();
+    let sterndrive_pay_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'pay',
+        value: sterndrive_pay
+    };
+    main_json_arr.push(sterndrive_pay_json_obj);
+
+    // 교육장비
+    let sterndrive_stuff_arr = $('#edu_sterndrive_stuff').find('input[type=text]');
+    for(let i=0; i<sterndrive_stuff_arr.length; i++){
+        let sterndrive_stuff = sterndrive_stuff_arr.eq(i).val();
+        let sterndrive_stuff_json_obj = {
+            major: 'sterndrive',
+            middle: 'info',
+            small: 'stuff',
+            value: sterndrive_stuff,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(sterndrive_stuff_json_obj);
+    }
+
+    // 신청방법
+    let applyMethod = $('#edu_sterndrive_apply_method').find('.item').find('textarea').val();
+    let applyMethod_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'applyMethod',
+        value: applyMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(applyMethod_json_obj);
+    let applyMethodUrl = $('#edu_sterndrive_apply_method').find('.cmnt').find('input[type=text]').val();
+
+    if(nvl(applyMethodUrl, '') !== ''){
+        if(!checkUrl(applyMethodUrl)){
+            showMessage('', 'error', '[템플릿 등록 안내]', '신청방법 항목의 URL 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            return false;
+        }
+    }
+
+    let applyMethodUrl_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'applyMethodUrl',
+        value: applyMethodUrl
+    };
+    main_json_arr.push(applyMethodUrl_json_obj);
+
+    // 모집방법
+    let recruitMethod = $('#edu_sterndrive_recruit_method').find('.item').find('textarea').val();
+    let recruitMethod_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'recruitMethod',
+        value: recruitMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitMethod_json_obj);
+
+    // 모집기간
+    let recruitPeriod = $('#edu_sterndrive_recruit_period').find('.item').find('textarea').val();
+    let recruitPeriod_json_obj = {
+        major: 'sterndrive',
+        middle: 'info',
+        small: 'recruitPeriod',
+        value: recruitPeriod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitPeriod_json_obj);
+
+    let main_json_obj = {
+        gbn: 'sterndrive',
+        data: main_json_arr
+    }
+
+    Swal.fire({
+        title: '입력된 정보를 저장하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '저장',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/mng/education/template/save.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(main_json_obj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '교육 안내 템플릿 정보 저장',
+                            html: '교육 안내 템플릿 정보가 저장되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                f_train_template_init('sterndrive');
                             }
                         });
                     } else {

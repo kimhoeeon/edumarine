@@ -2060,6 +2060,14 @@
         AND train_apply_cnt > 0
     </update>
 
+    <update id="updateTrainApplyCntAdd" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrainApplyCntAdd */
+        UPDATE train
+        SET train_apply_cnt = train_apply_cnt + 1
+        WHERE seq = #{seq}
+          AND train_apply_cnt <![CDATA[<]]> train_cnt
+    </update>
+
     <update id="updateBoarderApplyStatus" parameterType="com.mtf.edumarine.dto.BoarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBoarderApplyStatus */
         UPDATE boarder
@@ -2519,6 +2527,196 @@
             , cancel_reason = #{cancelReason}
           </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectHighhorsepowerList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectHighhorsepowerList */
+        SELECT h.seq
+             , h.member_seq
+             , h.train_seq
+             , m.grade
+             , m.id
+             , IFNULL(m.name, h.name_ko) as nameKo
+             , IFNULL(m.name_en, h.name_en) as nameEn
+             , IFNULL(m.phone, h.phone) as phone
+             , IFNULL(m.email, h.email) as email
+             , h.clothes_size
+             , h.participation_path
+             , h.train_understand
+             , h.train_understand_etc
+             , h.apply_status
+             , h.cancel_dttm
+             , h.cancel_reason
+             , h.del_yn
+             , h.note
+             , h.init_regi_pic
+             , h.init_regi_dttm
+             , h.final_regi_pic
+             , h.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = h.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = h.seq) as cancelGbn
+             , t.next_time
+        FROM highhorsepower h
+        LEFT JOIN member m
+        ON h.member_seq = m.seq
+        LEFT JOIN train t
+        ON h.train_seq = t.seq
+        WHERE 1=1
+          AND h.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND h.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, h.name_ko
+    </select>
+
+    <select id="selectHighhorsepowerSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectHighhorsepowerSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , clothes_size
+             , participation_path
+             , train_understand
+             , train_understand_etc
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM highhorsepower
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateHighhorsepowerApplyStatus" parameterType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateHighhorsepowerApplyStatus */
+        UPDATE highhorsepower
+        SET apply_status = #{applyStatus}
+        <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectSterndriveList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSterndriveList */
+        SELECT s.seq
+             , s.member_seq
+             , s.train_seq
+             , m.grade
+             , m.id
+             , IFNULL(m.name, s.name_ko) as nameKo
+             , IFNULL(m.name_en, s.name_en) as nameEn
+             , IFNULL(m.phone, s.phone) as phone
+             , IFNULL(m.email, s.email) as email
+             , s.clothes_size
+             , s.participation_path
+             , s.train_understand
+             , s.train_understand_etc
+             , s.apply_status
+             , s.cancel_dttm
+             , s.cancel_reason
+             , s.del_yn
+             , s.note
+             , s.init_regi_pic
+             , s.init_regi_dttm
+             , s.final_regi_pic
+             , s.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as cancelGbn
+             , t.next_time
+        FROM sterndrive s
+        LEFT JOIN member m
+        ON s.member_seq = m.seq
+        LEFT JOIN train t
+        ON s.train_seq = t.seq
+        WHERE 1=1
+          AND s.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND s.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, s.name_ko
+    </select>
+
+    <select id="selectSterndriveSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSterndriveSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , clothes_size
+             , participation_path
+             , train_understand
+             , train_understand_etc
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM sterndrive
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateSterndriveApplyStatus" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSterndriveApplyStatus */
+        UPDATE sterndrive
+        SET apply_status = #{applyStatus}
+        <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -3007,6 +3205,17 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updatePaymentTrainChange" parameterType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePaymentTrainChange */
+        UPDATE payment
+        SET train_seq = #{trainSeq}
+          , train_name = #{trainName}
+          , good_name = <![CDATA[#{goodName}]]>
+          , goods_name = <![CDATA[#{goodsName}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE table_seq = #{tableSeq}
+    </update>
+
     <update id="updatePaymentCancelResult" parameterType="com.mtf.edumarine.dto.PaymentDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updatePaymentCancelResult */
         UPDATE payment
@@ -3451,6 +3660,48 @@
         ORDER BY r.init_regi_dttm DESC
     </select>
 
+    <select id="selectSmsSendHighhorsepowerList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendHighhorsepowerList */
+        SELECT h.seq AS tableSeq
+             , h.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = h.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , h.apply_status
+        FROM `member` m
+        JOIN highhorsepower h
+        ON m.seq = h.member_seq
+        WHERE h.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY h.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendSterndriveList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendSterndriveList */
+        SELECT t.seq AS tableSeq
+             , t.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = t.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , t.apply_status
+        FROM `member` m
+        JOIN sterndrive t
+        ON m.seq = t.member_seq
+        WHERE t.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY t.init_regi_dttm DESC
+    </select>
+
     <select id="selectDownloadList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.DownloadDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectDownloadList */
         SELECT seq
@@ -3686,6 +3937,37 @@
         </if>
         GROUP BY next_time
         ORDER BY next_time
+    </select>
+
+    <select id="selectTrainActive" parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectTrainActive */
+        SELECT seq
+             , gbn
+             , category
+             , train_start_dttm
+             , train_end_dttm
+             , apply_start_dttm
+             , apply_end_dttm
+             , pay_sum
+             , train_cnt
+             , train_apply_cnt
+             , next_time
+        FROM train
+        WHERE closing_yn = 'N'
+          AND del_yn = 'N'
+          AND gbn = <![CDATA[#{gbn}]]>
+          AND (
+                (
+                    (train_start_dttm <![CDATA[<=]]> DATE_FORMAT(NOW(), '%Y.%m.%d'))
+                        AND (train_end_dttm <![CDATA[>=]]> DATE_FORMAT(NOW(), '%Y.%m.%d'))
+                    )
+                    OR
+                (
+                    (apply_start_dttm <![CDATA[<=]]> DATE_FORMAT(NOW(), '%Y.%m.%d'))
+                        AND (apply_end_dttm <![CDATA[>=]]> DATE_FORMAT(NOW(), '%Y.%m.%d'))
+                    )
+            )
+        ORDER BY apply_start_dttm, apply_end_dttm , train_start_dttm , train_end_dttm
     </select>
 
     <select id="selectExcelMemberDetailList" resultType="com.mtf.edumarine.dto.MemberDTO">
@@ -4026,6 +4308,88 @@
         ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
     </select>
 
+    <select id="selectExcelHighhorsepowerDetailList" resultType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelHighhorsepowerDetailList */
+        SELECT rst.*
+        FROM (SELECT h.seq,
+                     h.member_seq,
+                     h.train_seq,
+                     h.apply_status,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(h.name_ko, m.name)                  AS nameKo,
+                     IFNULL(h.name_en, m.name_en)               AS name_en,
+                     IFNULL(h.phone, m.phone)                   AS phone,
+                     IFNULL(h.email, m.email)                   AS email,
+                     IFNULL(h.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(h.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(h.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(h.address, m.address)               AS address,
+                     IFNULL(h.address_detail, m.address_detail) AS addressDetail,
+                     h.clothes_size,
+                     h.participation_path,
+                     h.train_understand,
+                     h.train_understand_etc,
+                     h.cancel_dttm,
+                     h.cancel_reason,
+                     h.refund_bank_code,
+                     h.refund_bank_name,
+                     h.refund_bank_customer_name,
+                     h.refund_bank_number,
+                     h.del_yn,
+                     h.note,
+                     h.init_regi_pic,
+                     h.init_regi_dttm,
+                     h.final_regi_pic,
+                     h.final_regi_dttm
+              FROM highhorsepower h
+              LEFT JOIN member m
+              ON h.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
+    <select id="selectExcelSterndriveDetailList" resultType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelSterndriveDetailList */
+        SELECT rst.*
+        FROM (SELECT s.seq,
+                     s.member_seq,
+                     s.train_seq,
+                     s.apply_status,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(s.name_ko, m.name)                  AS nameKo,
+                     IFNULL(s.name_en, m.name_en)               AS name_en,
+                     IFNULL(s.phone, m.phone)                   AS phone,
+                     IFNULL(s.email, m.email)                   AS email,
+                     IFNULL(s.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(s.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(s.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(s.address, m.address)               AS address,
+                     IFNULL(s.address_detail, m.address_detail) AS addressDetail,
+                     s.clothes_size,
+                     s.participation_path,
+                     s.train_understand,
+                     s.train_understand_etc,
+                     s.cancel_dttm,
+                     s.cancel_reason,
+                     s.refund_bank_code,
+                     s.refund_bank_name,
+                     s.refund_bank_customer_name,
+                     s.refund_bank_number,
+                     s.del_yn,
+                     s.note,
+                     s.init_regi_pic,
+                     s.init_regi_dttm,
+                     s.final_regi_pic,
+                     s.final_regi_dttm
+              FROM sterndrive s
+              LEFT JOIN member m
+              ON s.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
     <select id="selectMemberCount" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
         /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectMemberCount */
         SELECT COUNT(*) AS inCount
@@ -4107,6 +4471,30 @@
                 </if>
                 AND s.apply_status NOT LIKE '%대기%'
                 AND s.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM highhorsepower h
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND h.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND h.apply_status LIKE '%취소%'
+                </if>
+                AND h.apply_status NOT LIKE '%대기%'
+                AND h.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM sterndrive t
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND t.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND t.apply_status LIKE '%취소%'
+                </if>
+                AND t.apply_status NOT LIKE '%대기%'
+                AND t.del_yn = 'N'
               ) r
     </select>
 
@@ -4178,7 +4566,19 @@
               FROM sailyacht s
               WHERE s.apply_status NOT LIKE '%취소%'
                 and s.apply_status NOT LIKE '%대기%'
-                and s.del_yn = 'N') r
+                and s.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM highhorsepower h
+              WHERE h.apply_status NOT LIKE '%취소%'
+                and h.apply_status NOT LIKE '%대기%'
+                and h.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM sterndrive t
+              WHERE t.apply_status NOT LIKE '%취소%'
+                and t.apply_status NOT LIKE '%대기%'
+                and t.del_yn = 'N') r
     </select>
 
     <select id="selectRegularTrainInfoList" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO$TrainInfo">
@@ -4203,6 +4603,14 @@
               SELECT s.train_seq, s.apply_status, s.init_regi_dttm
               FROM sailyacht s
               WHERE s.member_seq = #{memberSeq}
+              UNION ALL
+              SELECT h.train_seq, h.apply_status, h.init_regi_dttm
+              FROM highhorsepower h
+              WHERE h.member_seq = #{memberSeq}
+              UNION ALL
+              SELECT t1.train_seq, t1.apply_status, t1.init_regi_dttm
+              FROM sterndrive t1
+              WHERE t1.member_seq = #{memberSeq}
               ) r
         JOIN train t
         ON r.train_seq = t.seq
@@ -4247,8 +4655,300 @@
              , note
         FROM train_template
         WHERE major = #{major}
-        ORDER BY major, small, middle , note
+        ORDER BY major, small, middle , CAST(note as signed)
     </select>
     
+    <select id="selectRequestList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.RequestDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRequestList */
+        SELECT r.seq
+             , r.gbn
+             , r.progress_step
+             , r.hope_closing_date
+             , r.complete_expect_date
+             , r.title
+             , (select count(*) from request_reply rp where rp.request_seq = r.seq) as replyCnt
+             , r.writer
+             , r.write_date
+             , r.note
+             , r.init_regi_pic
+             , r.init_regi_dttm
+             , r.final_regi_pic
+             , r.final_regi_dttm
+        FROM request r
+        WHERE 1=1
+         <if test='searchText != null and searchText != ""'>
+             <if test='condition eq "TITLE"'>
+                AND r.title LIKE BINARY CONCAT('%',#{searchText},'%')
+             </if>
+             <if test='condition eq "CONTENT"'>
+                AND r.content LIKE BINARY CONCAT('%',#{searchText},'%')
+             </if>
+         </if>
+         <if test='gbn != null and gbn != ""'>
+            AND r.gbn = #{gbn}
+         </if>
+         <if test='progressStep != null and progressStep != ""'>
+            AND r.progress_step = #{progressStep}
+         </if>
+        ORDER BY r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectRequestSingle" parameterType="com.mtf.edumarine.dto.RequestDTO" resultType="com.mtf.edumarine.dto.RequestDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRequestSingle */
+        SELECT seq
+             , gbn
+             , progress_step
+             , hope_closing_date
+             , complete_expect_date
+             , title
+             , content
+             , writer
+             , write_date
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM request
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="getRequestSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getRequestSeq */
+        SELECT CONCAT('R', LPAD(nextval('request_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertRequest" parameterType="com.mtf.edumarine.dto.RequestDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertRequest */
+        INSERT INTO request
+        ( seq
+        , gbn
+        , progress_step
+        , hope_closing_date
+        , complete_expect_date
+        , title
+        , content
+        , writer
+        , write_date
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{gbn}
+            , #{progressStep}
+            , #{hopeClosingDate}
+            , #{completeExpectDate}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , #{note}
+            , 'REQUEST'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'REQUEST'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updateRequest" parameterType="com.mtf.edumarine.dto.RequestDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateRequest */
+        UPDATE request
+        SET gbn = #{gbn}
+          , progress_step = #{progressStep}
+          , hope_closing_date = #{hopeClosingDate}
+        <if test='completeExpectDate != null and completeExpectDate != ""'>
+          , complete_expect_date = #{completeExpectDate}
+        </if>
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <delete id="deleteRequest" parameterType="com.mtf.edumarine.dto.RequestDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteRequest */
+        DELETE FROM request
+        WHERE seq = #{seq}
+    </delete>
+
+    <select id="selectReplyList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.RequestReplyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectReplyList */
+        SELECT seq
+             , request_seq
+             , depth_reply_no
+             , mo_reply_seq
+             , writer
+             , content
+             , write_date
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM request_reply
+        WHERE request_seq = #{requestSeq}
+    </select>
+
+    <select id="getReplySeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getReplySeq */
+        SELECT CONCAT('RP', LPAD(nextval('reply_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertReply" parameterType="com.mtf.edumarine.dto.RequestReplyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertReply */
+        INSERT INTO request_reply
+        ( seq
+        , request_seq
+        , depth_reply_no
+        , mo_reply_seq
+        , writer
+        , content
+        , write_date
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{requestSeq}
+            , #{depthReplyNo}
+            , #{moReplySeq}
+            , #{writer}
+            , <![CDATA[#{content}]]>
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , #{note}
+            , 'REPLY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'REPLY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <delete id="deleteReply" parameterType="com.mtf.edumarine.dto.RequestReplyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.deleteReply */
+        DELETE FROM request_reply
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateRequestProgressStep" parameterType="com.mtf.edumarine.dto.RequestDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateRequestProgressStep */
+        UPDATE request
+        SET progress_step = #{progressStep}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateRequestCompleteExpect" parameterType="com.mtf.edumarine.dto.RequestDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateRequestCompleteExpect */
+        UPDATE request
+        SET complete_expect_date = #{completeExpectDate}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectAllTrainInfo" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.TrainUpdateDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectAllTrainInfo */
+        SELECT '해상엔진 테크니션 (선내기/선외기)' AS trainName
+             , b.train_seq
+        FROM boarder b
+        WHERE b.seq = #{seq}
+        UNION ALL
+        SELECT 'FRP 레저보트 선체 정비 테크니션' AS trainName
+             , f.train_seq
+        FROM frp f
+        WHERE f.seq = #{seq}
+        UNION ALL
+        SELECT '해상엔진 자가정비 (선내기)' AS trainName
+             , i.train_seq
+        FROM inboarder i
+        WHERE i.seq = #{seq}
+        UNION ALL
+        SELECT '해상엔진 자가정비 (선외기)' AS trainName
+             , o.train_seq
+        FROM outboarder o
+        WHERE o.seq = #{seq}
+        UNION ALL
+        SELECT '해상엔진 자가정비 (세일요트)' AS trainName
+             , s.train_seq
+        FROM sailyacht s
+        WHERE s.seq = #{seq}
+        UNION ALL
+        SELECT '고마력 선외기 정비 중급 테크니션' AS trainName
+             , h.train_seq
+        FROM highhorsepower h
+        WHERE h.seq = #{seq}
+        UNION ALL
+        SELECT '스턴드라이브 정비 전문가과정' AS trainName
+             , t.train_seq
+        FROM sterndrive t
+        WHERE t.seq = #{seq}
+    </select>
+
+    <update id="updateBoarderTrainSeq" parameterType="com.mtf.edumarine.dto.BoarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBoarderTrainSeq */
+        UPDATE boarder
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateFrpTrainSeq" parameterType="com.mtf.edumarine.dto.FrpDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFrpTrainSeq */
+        UPDATE frp
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateOutboarderTrainSeq" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateOutboarderTrainSeq */
+        UPDATE outboarder
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInboarderTrainSeq" parameterType="com.mtf.edumarine.dto.InboarderDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateInboarderTrainSeq */
+        UPDATE inboarder
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSailyachtTrainSeq" parameterType="com.mtf.edumarine.dto.SailyachtDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSailyachtTrainSeq */
+        UPDATE sailyacht
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateHighHorsePowerTrainSeq" parameterType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateHighHorsePowerTrainSeq */
+        UPDATE highhorsepower
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSterndriveTrainSeq" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSterndriveTrainSeq */
+        UPDATE sterndrive
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
 </mapper>
 

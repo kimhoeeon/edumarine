@@ -182,6 +182,14 @@ function searchPosts(pageNum, categoryValue) {
                             thumbnailImage = '/static/img/thumbnail_sale.jpg';
                             applyPath = '/apply/eduApply06.do';
                             break;
+                        case '고마력 선외기 정비 중급 테크니션':
+                            thumbnailImage = '/static/img/thumbnail_highhorsepower.png';
+                            applyPath = '/apply/eduApply07.do';
+                            break;
+                        case '스턴드라이브 정비 전문가과정':
+                            thumbnailImage = '/static/img/thumbnail_sterndrive.png';
+                            applyPath = '/apply/eduApply08.do';
+                            break;
                         case '마리나 선박 선외기 정비사 실무과정':
                             thumbnailImage = '/static/img/thumbnail_marina_out.jpg';
                             applyPath = 'https://yachtmnr.or.kr/common/greeting.do';

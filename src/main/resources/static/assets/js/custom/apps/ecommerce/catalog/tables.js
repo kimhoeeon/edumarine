@@ -708,6 +708,9 @@ let DTCustomerBoarder = function () {
     function renderActionsCell(data, type, row){
         //console.log(row.id);
         let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
@@ -717,6 +720,9 @@ let DTCustomerBoarder = function () {
         renderHTML += '</div>';*/
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_boarder_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_boarder_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_boarder_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
@@ -947,6 +953,9 @@ let DTCustomerFrp = function () {
     function renderActionsCell(data, type, row){
         //console.log(row.id);
         let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
@@ -956,6 +965,9 @@ let DTCustomerFrp = function () {
         renderHTML += '</div>';*/
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_frp_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_frp_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_frp_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
@@ -1185,6 +1197,9 @@ let DTCustomerOutboarder = function () {
     function renderActionsCell(data, type, row){
         //console.log(row.id);
         let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
@@ -1193,10 +1208,13 @@ let DTCustomerOutboarder = function () {
         renderHTML += '<a onclick="f_customer_outboarder_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
         renderHTML += '</div>';*/
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_customer_outboarder_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '<a onclick="f_customer_outboarder_modify_init_set(' + '\'' + seq + '\')" class="menu-link px-3">상세정보</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_customer_outboarder_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '<a onclick="f_customer_outboarder_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_outboarder_remove(' + '\'' + seq + '\')" class="menu-link px-3">삭제</a>';
         renderHTML += '</div>';
         renderHTML += '</div>';
         return renderHTML;
@@ -1423,6 +1441,9 @@ let DTCustomerInboarder = function () {
     function renderActionsCell(data, type, row){
         //console.log(row.id);
         let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
@@ -1432,6 +1453,9 @@ let DTCustomerInboarder = function () {
         renderHTML += '</div>';*/
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_inboarder_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_inboarder_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_inboarder_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
@@ -1661,6 +1685,9 @@ let DTCustomerSailyacht = function () {
     function renderActionsCell(data, type, row){
         //console.log(row.id);
         let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
@@ -1670,6 +1697,9 @@ let DTCustomerSailyacht = function () {
         renderHTML += '</div>';*/
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_sailyacht_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sailyacht_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_customer_sailyacht_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
@@ -1704,6 +1734,494 @@ let DTCustomerSailyacht = function () {
 
             /* 조회 */
             f_customer_sailyacht_search();
+        }
+    };
+}();
+
+let DTCustomerHighhorsepower = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'nextTime'},
+                { data: 'applyStatus'},
+                { data: 'grade'},
+                { data: 'id'},
+                { data: 'name'},
+                { data: 'contact'},
+                { data: 'initRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
+        }
+
+        return renderHTML;
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let payMethod = row.payMethod;
+        let cancelGbn = row.cancelGbn;
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
+        }
+
+        renderHTML += '<div>';
+        if(nvl(payMethod,'') !== ''){
+            payMethod = payMethod.toString().toLowerCase();
+            if(payMethod.includes('card')){
+                renderHTML += '( 카드 )';
+            }else{
+                renderHTML += '( 계좌 )';
+            }
+        }else{
+            renderHTML += '( - )';
+        }
+        if(nvl(cancelGbn,'') !== ''){
+            if(cancelGbn === 'ALL'){
+                renderHTML += '<br>';
+                renderHTML += '( 전액 )';
+            }else{
+                renderHTML += '<br>';
+                renderHTML += '( 부분 )';
+            }
+        }else{
+            renderHTML += '<br>';
+            renderHTML += '( - )';
+        }
+        renderHTML += '</div>';
+
+        return renderHTML;
+    }
+
+    function renderNameCell(data, type, row) {
+        let renderHTML = '';
+        let nameKo = row.nameKo;
+        let nameEn = row.nameEn;
+        if(nvl(nameKo,'') !== ''){
+            renderHTML += nameKo;
+        }else{
+            renderHTML += '-';
+        }
+        if(nvl(nameEn,'') !== ''){
+            renderHTML += '<br>' + nameEn;
+        }else{
+            renderHTML += '<br>-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_highhorsepower_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_highhorsepower_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_highhorsepower_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_highhorsepower_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_customer_highhorsepower_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_customer_highhorsepower_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_customer_highhorsepower_search();
+        }
+    };
+}();
+
+let DTCustomerSterndrive = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'nextTime'},
+                { data: 'applyStatus'},
+                { data: 'grade'},
+                { data: 'id'},
+                { data: 'name'},
+                { data: 'contact'},
+                { data: 'initRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
+        }
+
+        return renderHTML;
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let payMethod = row.payMethod;
+        let cancelGbn = row.cancelGbn;
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
+        }
+
+        renderHTML += '<div>';
+        if(nvl(payMethod,'') !== ''){
+            payMethod = payMethod.toString().toLowerCase();
+            if(payMethod.includes('card')){
+                renderHTML += '( 카드 )';
+            }else{
+                renderHTML += '( 계좌 )';
+            }
+        }else{
+            renderHTML += '( - )';
+        }
+        if(nvl(cancelGbn,'') !== ''){
+            if(cancelGbn === 'ALL'){
+                renderHTML += '<br>';
+                renderHTML += '( 전액 )';
+            }else{
+                renderHTML += '<br>';
+                renderHTML += '( 부분 )';
+            }
+        }else{
+            renderHTML += '<br>';
+            renderHTML += '( - )';
+        }
+        renderHTML += '</div>';
+
+        return renderHTML;
+    }
+
+    function renderNameCell(data, type, row) {
+        let renderHTML = '';
+        let nameKo = row.nameKo;
+        let nameEn = row.nameEn;
+        if(nvl(nameKo,'') !== ''){
+            renderHTML += nameKo;
+        }else{
+            renderHTML += '-';
+        }
+        if(nvl(nameEn,'') !== ''){
+            renderHTML += '<br>' + nameEn;
+        }else{
+            renderHTML += '<br>-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sterndrive_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sterndrive_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sterndrive_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_sterndrive_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_customer_sterndrive_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_customer_sterndrive_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_customer_sterndrive_search();
         }
     };
 }();
@@ -4065,6 +4583,204 @@ let DTAdminMngAdmin = function () {
     };
 }();
 
+let DTRequestList = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : true,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderProgressStepCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderTitleCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderCompleteExpectDateCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderWriterCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'gbn'},
+                { data: 'progressStep'},
+                { data: 'title'},
+                { data: 'hopeClosingDate'},
+                { data: 'completeExpectDate'},
+                { data: 'writer'},
+                { data: 'initRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '-';
+        let title = row.title;
+        if(nvl(title,'') !== ''){
+            renderHTML = '<div class="request_check form-check form-check-sm form-check-custom form-check-solid">' +
+                '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.progressStep + ' / ' + title + '"/>' +
+                '</div>';
+        }
+        return renderHTML;
+    }
+
+    function renderProgressStepCell(data, type, row) {
+        let progressStep = row.progressStep;
+        let renderHTML = '';
+        if(nvl(progressStep,'') === ''){
+            renderHTML = '-';
+        }else{
+            switch (progressStep){
+                case '처리대기':
+                    renderHTML = '<div class="badge badge-light-success fw-bold">';
+                    break;
+                case '진행중':
+                    renderHTML = '<div class="badge badge-light-primary fw-bold">';
+                    break;
+                case '완료':
+                    renderHTML = '<div class="badge badge-light-secondary fw-bold">';
+                    break;
+                case '논의필요':
+                    renderHTML = '<div class="badge badge-light-warning fw-bold">';
+                    break;
+                case '처리불가':
+                    renderHTML = '<div class="badge badge-light-danger fw-bold">';
+                    break;
+                default:
+                    renderHTML = '<div>-';
+                    break;
+            }
+
+            renderHTML += progressStep;
+            renderHTML += '</div>';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCompleteExpectDateCell(data, type, row) {
+        let completeExpectDate = row.completeExpectDate;
+        let renderHTML = '-';
+        if(nvl(completeExpectDate,'') !== ''){
+            renderHTML = completeExpectDate;
+        }
+
+        return renderHTML;
+    }
+
+    function renderTitleCell(data, type, row) {
+        let seq = row.seq;
+        let title = row.title;
+        let replyCnt = row.replyCnt;
+        let renderHTML = '-';
+        if(nvl(title,'') !== ''){
+            renderHTML = '<span class="fw-bold">';
+            renderHTML += '<a href="javascript:void(0);" onclick="f_request_list_detail_set(\'' + seq + '\')">';
+            renderHTML += title;
+            if(nvl(replyCnt,'0') !== '0'){
+                renderHTML += ' ( ' + replyCnt + ' )';
+            }
+            renderHTML += '</a>';
+            renderHTML += '</span>';
+        }
+
+        return renderHTML;
+    }
+
+    function renderWriterCell(data, type, row) {
+        let writer = row.writer;
+        let renderHTML = '-';
+        if(nvl(writer,'') !== ''){
+            if(writer === 'admin' || writer === 'meetingfan1'){
+                renderHTML = '개발사';
+            }else{
+                renderHTML = '관리자';
+            }
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_request_list_detail_set(\'' + seq + '\')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_request_list_remove(\'' + seq + '\')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_request_list_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_request_list_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_request_list_search();
+        }
+    };
+}();
+
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
 
@@ -4087,6 +4803,11 @@ KTUtil.onDOMContentLoaded(function () {
     DTCustomerInboarder.init(); // /mng/customer/inboarder.do
     // 자가정비(세일요트)
     DTCustomerSailyacht.init(); // /mng/customer/sailyacht.do
+    // 고마력 선외기 정비 중급 테크니션
+    DTCustomerHighhorsepower.init(); // /mng/customer/highhorsepower.do
+    // 스턴드라이브 정비 전문가과정
+    DTCustomerSterndrive.init(); // /mng/customer/sterndrive.do
+
 
     // 교육>교육관리
     // 교육현황
@@ -4141,5 +4862,9 @@ KTUtil.onDOMContentLoaded(function () {
 
     // 관리자 관리
     DTAdminMngAdmin.init(); // /mng/adminMng/admin.do
+
+    //개발사>요청사항&문의
+    //요청사항&문의 관리
+    DTRequestList.init(); // /mng/request/list.do
 
 });

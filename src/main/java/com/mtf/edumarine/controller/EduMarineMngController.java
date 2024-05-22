@@ -167,6 +167,8 @@ public class EduMarineMngController {
         series.add(Integer.parseInt(statSplit[3])); //outboarder
         series.add(Integer.parseInt(statSplit[4])); //inboarder
         series.add(Integer.parseInt(statSplit[5])); //sailyacht
+        series.add(Integer.parseInt(statSplit[6])); //highhorsepower
+        series.add(Integer.parseInt(statSplit[7])); //sterndrive
         result.setSeries(series);
 
         List<String> labels = new ArrayList<>();
@@ -176,6 +178,8 @@ public class EduMarineMngController {
         labels.add("해상엔진 자가정비 (선외기)");
         labels.add("해상엔진 자가정비 (선내기)");
         labels.add("해상엔진 자가정비 (세일요트)");
+        labels.add("고마력 선외기 정비 중급 테크니션");
+        labels.add("스턴드라이브 정비 전문가과정");
         result.setLabels(labels);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -2226,6 +2230,144 @@ public class EduMarineMngController {
         return mv;
     }
 
+    @RequestMapping(value = "/mng/customer/highhorsepower.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_highhorsepower(String nextTime) {
+        System.out.println("EduMarineMngController > mng_customer_highhorsepower");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("nextTime", nextTime);
+        mv.setViewName("/mng/customer/highhorsepower");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/highhorsepower/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<HighHorsePowerDTO>> mng_customer_highhorsepower_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_customer_sailyacht_selectList");
+        //System.System.out.println(searchDTO.toString());
+
+        List<HighHorsePowerDTO> responseList = eduMarineMngService.processSelectHighhorsepowerList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/highhorsepower/status/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_highhorsepower_status_update(@RequestBody List<HighHorsePowerDTO> highHorsePowerList) {
+        System.out.println("EduMarineMngController > mng_customer_highhorsepower_status_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateHighhorsepowerApplyStatus(highHorsePowerList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/highhorsepower/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_highhorsepower_status_change_update(@RequestBody List<HighHorsePowerDTO> highHorsePowerList) {
+        System.out.println("EduMarineMngController > mng_customer_highhorsepower_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateHighhorsepowerApplyStatusChange(highHorsePowerList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/highhorsepower/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_highhorsepower_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_highhorsepower_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            HighHorsePowerDTO info = eduMarineMngService.processSelectHighhorsepowerSingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null){
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
+            }
+        }
+
+        mv.setViewName("/mng/customer/highhorsepower/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/sterndrive.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_sterndrive(String nextTime) {
+        System.out.println("EduMarineMngController > mng_customer_sterndrive");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("nextTime", nextTime);
+        mv.setViewName("/mng/customer/sterndrive");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/sterndrive/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<SterndriveDTO>> mng_customer_sterndrive_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_customer_sterndrive_selectList");
+        //System.System.out.println(searchDTO.toString());
+
+        List<SterndriveDTO> responseList = eduMarineMngService.processSelectSterndriveList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/sterndrive/status/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_sterndrive_status_update(@RequestBody List<SterndriveDTO> sterndriveList) {
+        System.out.println("EduMarineMngController > mng_customer_sterndrive_status_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateSterndriveApplyStatus(sterndriveList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/sterndrive/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_sterndrive_status_change_update(@RequestBody List<SterndriveDTO> sterndriveList) {
+        System.out.println("EduMarineMngController > mng_customer_sterndrive_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateSterndriveApplyStatusChange(sterndriveList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/sterndrive/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_sterndrive_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_sterndrive_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            SterndriveDTO info = eduMarineMngService.processSelectSterndriveSingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null){
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
+            }
+        }
+
+        mv.setViewName("/mng/customer/sterndrive/detail");
+        return mv;
+    }
+
     @RequestMapping(value = "/mng/education/train.do", method = RequestMethod.GET)
     public ModelAndView mng_education_train(String nextTime) {
         System.out.println("EduMarineMngController > mng_education_train");
@@ -2539,6 +2681,102 @@ public class EduMarineMngController {
             mv.addObject("s_periodList", periodList);
 
         } //세일요트
+
+        //고마력
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateHighHorsePowerInfoList = eduMarineMngService.processSelectTrainTemplateList("highhorsepower");
+        if(trainTemplateOutboarderInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> stuffList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateHighHorsePowerInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("h_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("h_time", info);
+                }else if(info.getSmall().equals("place")){
+                    mv.addObject("h_place", info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    mv.addObject("h_placeDetail", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("h_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("h_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("h_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("h_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("h_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("h_recruitPeriod", info);
+                }else if(info.getSmall().equals("stuff")){
+                    stuffList.add(info);
+                }
+
+            } //for
+
+            mv.addObject("h_targetList", targetList);
+            mv.addObject("h_contentsList", contentsList);
+            mv.addObject("h_periodList", periodList);
+            mv.addObject("h_stuffList", stuffList);
+
+        } //고마력
+
+        //Sterndrive
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateSterndriveInfoList = eduMarineMngService.processSelectTrainTemplateList("sterndrive");
+        if(trainTemplateSterndriveInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> stuffList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateSterndriveInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("t_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("t_time", info);
+                }else if(info.getSmall().equals("place")){
+                    mv.addObject("t_place", info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    mv.addObject("t_placeDetail", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("t_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("t_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("t_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("t_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("t_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("t_recruitPeriod", info);
+                }else if(info.getSmall().equals("stuff")){
+                    stuffList.add(info);
+                }
+
+            } //for
+
+            mv.addObject("t_targetList", targetList);
+            mv.addObject("t_contentsList", contentsList);
+            mv.addObject("t_periodList", periodList);
+            mv.addObject("t_stuffList", stuffList);
+
+        } //Sterndrive
 
         mv.setViewName("/mng/education/template");
         return mv;
@@ -2919,6 +3157,154 @@ public class EduMarineMngController {
         ResponseDTO responseDTO = eduMarineMngService.processRestoreTrash(trashDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    //***************************************************************************
+    // request Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/request/list.do", method = RequestMethod.GET)
+    public ModelAndView mng_request_list() {
+        System.out.println("EduMarineMngController > mng_request_list");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/request/list");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/request/list/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<RequestDTO>> mng_request_list_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_request_list_selectList");
+        //System.System.out.println(searchDTO.toString());
+
+        List<RequestDTO> responseList = eduMarineMngService.processSelectRequestList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/request/list/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_request_list_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_request_list_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            RequestDTO requestDTO = new RequestDTO();
+            requestDTO.setSeq(seq);
+            RequestDTO info = eduMarineMngService.processSelectRequestSingle(requestDTO);
+            if(info != null){
+                mv.addObject("info", info);
+
+                List<RequestReplyDTO> replyList = eduMarineMngService.processSelectReplyList(seq);
+                mv.addObject("replyList", replyList);
+
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(info.getSeq());
+                List<FileDTO> fileList = commService.processSelectFileUserIdList(fileDTO);
+                mv.addObject("fileList", fileList);
+            }
+        }
+
+        mv.setViewName("/mng/request/list/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/request/list/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_request_list_insert(@RequestBody RequestDTO requestDTO) {
+        System.out.println("EduMarineMngController > mng_request_list_insert");
+        //System.System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertRequest(requestDTO);
+
+        updateFileParentSeq(requestDTO.getSeq(), requestDTO.getFileIdList());
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/request/list/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_request_list_update(@RequestBody RequestDTO requestDTO) {
+        System.out.println("EduMarineMngController > mng_request_list_update");
+        //System.System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateRequest(requestDTO);
+
+        updateFileParentSeq(requestDTO.getSeq(), requestDTO.getFileIdList());
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/request/list/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_request_list_delete(@RequestBody RequestDTO requestDTO) {
+        System.out.println("EduMarineMngController > mng_request_list_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteRequest(requestDTO);
+
+        FileDTO fileDTO = new FileDTO();
+        fileDTO.setUserId(requestDTO.getSeq());
+        commService.processUpdateFileDeleteUseN(fileDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/request/list/reply/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_request_list_reply_insert(@RequestBody RequestReplyDTO requestReplyDTO) {
+        System.out.println("EduMarineMngController > mng_request_list_reply_insert");
+        //System.System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processInsertReply(requestReplyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/request/list/reply/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_request_list_reply_delete(@RequestBody RequestReplyDTO requestReplyDTO) {
+        System.out.println("EduMarineMngController > mng_request_list_reply_delete");
+
+        ResponseDTO responseDTO = eduMarineMngService.processDeleteReply(requestReplyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/request/list/progress/step/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_request_list_progress_step_update(@RequestBody List<RequestDTO> requestList) {
+        System.out.println("EduMarineMngController > mng_request_list_progress_step_update");
+        //System.System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateRequestProgressStep(requestList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/request/list/complete/expect/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_request_list_complete_expect_update(@RequestBody List<RequestDTO> requestList) {
+        System.out.println("EduMarineMngController > mng_request_list_complete_expect_update");
+        //System.System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateRequestCompleteExpect(requestList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    private void updateFileParentSeq(String parentSeq, String fileSeqList){
+
+        if(fileSeqList != null && !"".equals(fileSeqList)){
+            String[] fileSeqSplit = fileSeqList.split(",");
+            for (String fileSeq : fileSeqSplit) {
+                if (!"".equals(fileSeq)) {
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileSeq);
+                    fileDTO.setUserId(parentSeq);
+                    commService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
     }
 
     /*********************** file upload ***********************/
@@ -5748,6 +6134,580 @@ public class EduMarineMngController {
 
     }
 
+    @RequestMapping(value = "/mng/customer/highhorsepower/excel/download.do", method = RequestMethod.GET)
+    public void customer_highhorsepower_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_highhorsepower_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "교육이해",
+                    "교육이해 기타", "등록일", "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
+            CellStyle headerStyle_light_green = workbook.createCellStyle();
+            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_green.setFont(fontHeader);
+            headerStyle_light_green.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
+            CellStyle headerStyle_light_orange = workbook.createCellStyle();
+            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_orange.setFont(fontHeader);
+            headerStyle_light_orange.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("Highhorsepower");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본/신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,11));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("기본정보");
+
+            // 신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,15));
+            SXSSFCell mergeCell2 = row.createCell(12);
+            mergeCell2.setCellStyle(headerStyle_light_green);
+            mergeCell2.setCellValue("신청정보");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,16,17));
+            SXSSFCell mergeCell2_2 = row.createCell(16);
+            mergeCell2_2.setCellStyle(headerStyle);
+            mergeCell2_2.setCellValue("기본정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                if(i<12){
+                    cell.setCellStyle(headerStyle);
+                }else if(i<16){
+                    cell.setCellStyle(headerStyle_light_green);
+                }else{
+                    cell.setCellStyle(headerStyle);
+                }
+
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<HighHorsePowerDTO> detailList = eduMarineMngService.processSelectExcelHighhorsepowerDetailList();
+
+            int cellCnt = 0;
+            int listCount = detailList.size();
+
+            //데이터 부분 생성
+            for(HighHorsePowerDTO info : detailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getNameKo().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMemberStatus());
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameKo());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
+                // 주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddress());
+
+                // 상세주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddressDetail());
+
+                // 작업복사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getClothesSize());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 교육이해
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                String trainUnderstand = "";
+                if(info.getTrainUnderstand() != null && !"".equals(info.getTrainUnderstand())){
+                    switch (info.getTrainUnderstand()){
+                        case "1":
+                            trainUnderstand = "해상엔진테크니션양성과정 및 마리나선박선외기/선내기정비사 실무과정 수료생";
+                            break;
+                        case "2":
+                            trainUnderstand = "선외기 정비 분야에 경력이 있으신 분";
+                            break;
+                        case "3":
+                            trainUnderstand = "경력이 없으나 선외기 정비 기술 습득을 원하시는 분";
+                            break;
+                        case "4":
+                            trainUnderstand = "기타";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                cell.setCellValue(trainUnderstand);
+
+                // 교육이해 기타
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(info.getTrainUnderstandEtc() != null && !"".equals(info.getTrainUnderstandEtc())){
+                    cell.setCellValue(info.getTrainUnderstandEtc());
+                }else{
+                    cell.setCellValue("-");
+                }
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(value = "/mng/customer/sterndrive/excel/download.do", method = RequestMethod.GET)
+    public void customer_sterndrive_detail_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_sterndrive_detail_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // Workbook 생성
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
+
+            /* 엑셀 그리기 */
+            final String[] colNames_ex = {
+                    /* 회원정보 */
+                    "No", "상태", "등급", "아이디", "성명(국문)",
+                    "성명(영문)", "연락처", "이메일", "생년월일", "성별",
+                    "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "교육이해",
+                    "교육이해기타", "등록일", "수정일"
+            };
+
+            // 헤더 사이즈
+            final int[] colWidths_ex = {
+                    3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000
+            };
+
+            workbook.setCompressTempFiles(true);
+
+            // *** Style--------------------------------------------------
+            //Font
+            Font fontHeader = workbook.createFont();
+            fontHeader.setFontName("맑은 고딕");	//글씨체
+            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
+            fontHeader.setBold(true);	//볼드(굵게)
+            Font font9 = workbook.createFont();
+            font9.setFontName("맑은 고딕");	//글씨체
+            font9.setFontHeight((short)(9 * 20));	//사이즈
+
+            // 엑셀 헤더 셋팅 default
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader);
+            headerStyle.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
+            CellStyle headerStyle_light_green = workbook.createCellStyle();
+            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_green.setFont(fontHeader);
+            headerStyle_light_green.setWrapText(true); //개행
+            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
+            CellStyle headerStyle_light_orange = workbook.createCellStyle();
+            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
+            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
+            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle_light_orange.setFont(fontHeader);
+            headerStyle_light_orange.setWrapText(true); //개행
+            // 엑셀 바디 셋팅 default
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN);
+            bodyStyle.setBorderLeft(BorderStyle.THIN);
+            bodyStyle.setBorderTop(BorderStyle.THIN);
+            bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9);
+            bodyStyle.setWrapText(true); //개행
+
+            //rows
+            int rowCnt = 0;
+
+            // *** Sheet-------------------------------------------------
+            // Sheet 생성
+            SXSSFSheet sheet = workbook.createSheet("Sterndrive");
+
+            SXSSFCell cell = null;
+            SXSSFRow row = sheet.createRow(rowCnt++);
+
+            // 헤더 정보 구성
+            // 기본/신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,11));
+            SXSSFCell mergeCell = row.createCell(0);
+            mergeCell.setCellStyle(headerStyle);
+            mergeCell.setCellValue("기본정보");
+
+            // 신청정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,15));
+            SXSSFCell mergeCell2 = row.createCell(12);
+            mergeCell2.setCellStyle(headerStyle_light_green);
+            mergeCell2.setCellValue("신청정보");
+
+            sheet.addMergedRegion(new CellRangeAddress(0,0,16,17));
+            SXSSFCell mergeCell2_2 = row.createCell(16);
+            mergeCell2_2.setCellStyle(headerStyle);
+            mergeCell2_2.setCellValue("기본정보");
+
+            row = sheet.createRow(rowCnt++);
+            for (int i = 0; i < colNames_ex.length; i++) {
+                cell = row.createCell(i);
+                if(i<12){
+                    cell.setCellStyle(headerStyle);
+                }else if(i<16){
+                    cell.setCellStyle(headerStyle_light_green);
+                }else{
+                    cell.setCellStyle(headerStyle);
+                }
+
+                cell.setCellValue(colNames_ex[i]);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+            }
+
+            // 데이터 조회
+            List<SterndriveDTO> detailList = eduMarineMngService.processSelectExcelSterndriveDetailList();
+
+            int cellCnt = 0;
+            int listCount = detailList.size();
+
+            //데이터 부분 생성
+            for(SterndriveDTO info : detailList) {
+                cellCnt = 0;
+                row = sheet.createRow(rowCnt++);
+
+                int nCount = 0;
+                String[] remark = info.getNameKo().split("\\^");
+
+                //줄 높이 계산
+                for (String s : remark) {
+                    if (s.length() > 0) {
+                        nCount++;
+                    }
+                }
+
+                //줄 높이 설정
+                if (nCount > 1){
+                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
+                }
+
+                // 넘버링
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(listCount--);
+
+                // 상태
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getMemberStatus());
+
+                // 등급
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getApplyStatus());
+
+                // 아이디
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getId());
+
+                // 성명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameKo());
+
+                // 성명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNameEn());
+
+                // 연락처
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 생년월일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+
+                // 성별
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getSex());
+
+                // 주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddress());
+
+                // 상세주소
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getAddressDetail());
+
+                // 작업복사이즈
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getClothesSize());
+
+                // 참여경로
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getParticipationPath());
+
+                // 교육이해
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                String trainUnderstand = "";
+                if(info.getTrainUnderstand() != null && !"".equals(info.getTrainUnderstand())){
+                    switch (info.getTrainUnderstand()){
+                        case "1":
+                            trainUnderstand = "해상엔진테크니션양성과정 및 마리나선박선외기/선내기정비사 실무과정 수료생";
+                            break;
+                        case "2":
+                            trainUnderstand = "스턴드라이브 정비 분야에 경력이 있으신 분";
+                            break;
+                        case "3":
+                            trainUnderstand = "경력이 없으나 스턴드라이브 정비 기술 습득을 원하시는 분";
+                            break;
+                        case "4":
+                            trainUnderstand = "기타";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                cell.setCellValue(trainUnderstand);
+
+                // 교육이해 기타
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(info.getTrainUnderstandEtc() != null && !"".equals(info.getTrainUnderstandEtc())){
+                    cell.setCellValue(info.getTrainUnderstandEtc());
+                }else{
+                    cell.setCellValue("-");
+                }
+
+                // 등록일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getInitRegiDttm());
+
+                // 수정일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getFinalRegiDttm());
+
+            }
+
+            //너비를 자동으로 다시 설정
+            for (int i = 0; i < colNames_ex.length; i++) {
+                sheet.trackColumnForAutoSizing(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
+
+            // excel 파일 저장
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 엑셀 파일명 설정
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
     private String convertValue(String[] splitVal, int index){
         int length = splitVal.length;
         String returnVal = "";
@@ -5885,6 +6845,27 @@ public class EduMarineMngController {
         List<TrainDTO> responseList = eduMarineMngService.processSelectTrainNextTime(trainDTO);
 
         return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/train/active.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<TrainDTO>> mng_education_train_active(@RequestBody TrainDTO trainDTO) {
+        System.out.println("EduMarineMngController > mng_education_train_active");
+        //System.System.out.println(searchDTO.toString());
+
+        List<TrainDTO> responseList = eduMarineMngService.processSelectTrainActive(trainDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/train/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_train_change_update(@RequestBody TrainUpdateDTO trainUpdateDTO) {
+        System.out.println("EduMarineMngController > mng_customer_train_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateTrainChange(trainUpdateDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
 }

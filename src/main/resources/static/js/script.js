@@ -161,6 +161,17 @@ $(document).ready(function () {
         }
     });
 
+    $('.checkbox_etc').on('change', function(){
+       let checkYn = $(this).is(':checked');
+       let inputTxtBox = $(this).siblings('input[type=text]');
+       if(checkYn){
+           inputTxtBox.prop('disabled',false);
+       }else{
+           inputTxtBox.prop('disabled',true);
+           inputTxtBox.val('');
+       }
+    });
+
     /*$('.reply_wrap .recommend_btn').on('click', function () {
         $(this).toggleClass('on');
     });*/

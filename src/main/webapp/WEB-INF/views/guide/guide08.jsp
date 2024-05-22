@@ -8,7 +8,8 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-368L9FRD5B"></script>
+    <script async src="https://
+    www.googletagmanager.com/gtag/js?id=G-368L9FRD5B"></script>
     <script>   window.dataLayer = window.dataLayer || [];
 
     function gtag() {
@@ -140,6 +141,8 @@
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li class="on"><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>
+                    <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
+                    <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
             </div>
             <!-- //sidebar -->
