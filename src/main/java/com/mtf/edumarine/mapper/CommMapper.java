@@ -1,9 +1,6 @@
 package com.mtf.edumarine.mapper;
 
-import com.mtf.edumarine.dto.MemberGradeDTO;
-import com.mtf.edumarine.dto.SmsNotificationDTO;
-import com.mtf.edumarine.dto.TemplateDTO;
-import com.mtf.edumarine.dto.TrainDTO;
+import com.mtf.edumarine.dto.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +18,10 @@ public interface CommMapper {
     List<MemberGradeDTO> selectMemberGradeUpdateTarget();
 
     void updateMemberGrade(MemberGradeDTO member);
+
+    Integer updateFileUserId(FileDTO fileDTO);
+
+    void updateFileDeleteUseN(FileDTO fileDTO);
+
+    List<FileDTO> selectFileUserIdList(FileDTO fileDTO);
 }

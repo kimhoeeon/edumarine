@@ -102,12 +102,12 @@
                     WHEN sms_yn = 1 OR regularCnt = 1
                         THEN CASE
                                  WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 THEN '교육생(단기)'
-                                 WHEN boarderCnt = 1 OR frpCnt = 1 THEN '교육생(정규)'
+                                 WHEN boarderCnt = 1 OR frpCnt = 1 OR highhorsepowerCnt = 1 OR sterndriveCnt = 1 THEN '교육생(정규)'
                                  ELSE '관심사용자'
                         END
                     ELSE CASE
                              WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 THEN '교육생(단기)'
-                             WHEN boarderCnt = 1 OR frpCnt = 1 THEN '교육생(정규)'
+                             WHEN boarderCnt = 1 OR frpCnt = 1 OR highhorsepowerCnt = 1 OR sterndriveCnt = 1 THEN '교육생(정규)'
                              ELSE '일반회원'
                         END
             END) AS afterGrade
@@ -134,6 +134,12 @@
                    , (SELECT COUNT(*)
                       FROM sailyacht s
                       WHERE s.member_seq = m.seq AND s.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS sailyachtCnt
+                   , (SELECT COUNT(*)
+                      FROM highhorsepower h
+                      WHERE h.member_seq = m.seq AND h.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS highhorsepowerCnt
+                   , (SELECT COUNT(*)
+                      FROM sterndrive t
+                      WHERE t.member_seq = m.seq AND t.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS sterndriveCnt
               FROM member m
               WHERE m.apply_status != '탈퇴'
                 AND m.del_yn = 'N') rs
@@ -146,6 +152,40 @@
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
+
+    <update id="updateFileUserId" parameterType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.edumarine.mapper.CommMapper.updateFileUserId */
+        UPDATE file
+        SET user_id = #{userId}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateFileDeleteUseN" parameterType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.edumarine.mapper.CommMapper.updateFileDeleteUseN */
+        UPDATE file
+        SET file_yn = 'N'
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE user_id = #{userId}
+    </update>
+
+    <select id="selectFileUserIdList" parameterType="com.mtf.edumarine.dto.FileDTO" resultType="com.mtf.edumarine.dto.FileDTO">
+        /* com.mtf.edumarine.mapper.CommMapper.selectFileUserIdList */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+        FROM file
+        WHERE user_id = #{userId}
+          AND file_yn = 'Y'
+        ORDER BY id
+    </select>
 
 </mapper>
 

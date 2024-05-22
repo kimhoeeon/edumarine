@@ -354,4 +354,48 @@ public interface EduMarineMngService {
     ResponseDTO processSaveTrainTemplate(TrainTemplateDTO templateInfo);
 
     List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major);
+
+    List<RequestDTO> processSelectRequestList(SearchDTO searchDTO);
+
+    RequestDTO processSelectRequestSingle(RequestDTO requestDTO);
+
+    ResponseDTO processInsertRequest(RequestDTO requestDTO);
+
+    ResponseDTO processUpdateRequest(RequestDTO requestDTO);
+
+    ResponseDTO processDeleteRequest(RequestDTO requestDTO);
+
+    List<RequestReplyDTO> processSelectReplyList(String requestSeq);
+
+    ResponseDTO processInsertReply(RequestReplyDTO requestReplyDTO);
+
+    ResponseDTO processDeleteReply(RequestReplyDTO requestReplyDTO);
+
+    ResponseDTO processUpdateRequestProgressStep(List<RequestDTO> requestList);
+
+    ResponseDTO processUpdateRequestCompleteExpect(List<RequestDTO> requestList);
+
+    List<TrainDTO> processSelectTrainActive(TrainDTO trainDTO);
+
+    ResponseDTO processUpdateTrainChange(TrainUpdateDTO trainUpdateDTO);
+
+    List<HighHorsePowerDTO> processSelectHighhorsepowerList(SearchDTO searchDTO);
+
+    HighHorsePowerDTO processSelectHighhorsepowerSingle(String seq);
+
+    ResponseDTO processUpdateHighhorsepowerApplyStatus(List<HighHorsePowerDTO> highHorsePowerList);
+
+    ResponseDTO processUpdateHighhorsepowerApplyStatusChange(List<HighHorsePowerDTO> highHorsePowerList);
+
+    List<HighHorsePowerDTO> processSelectExcelHighhorsepowerDetailList();
+
+    List<SterndriveDTO> processSelectSterndriveList(SearchDTO searchDTO);
+
+    SterndriveDTO processSelectSterndriveSingle(String seq);
+
+    ResponseDTO processUpdateSterndriveApplyStatus(List<SterndriveDTO> sterndriveList);
+
+    ResponseDTO processUpdateSterndriveApplyStatusChange(List<SterndriveDTO> sterndriveList);
+
+    List<SterndriveDTO> processSelectExcelSterndriveDetailList();
 }

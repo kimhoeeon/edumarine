@@ -140,6 +140,8 @@
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li class="on"><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>
+                    <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
+                    <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
             </div>
             <!-- //sidebar -->
@@ -152,7 +154,7 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">해상엔진 자가정비(선내기)</div>
-                            <div class="eng">Self-maintenance of marine engine (inboarder)</div>
+                            <div class="eng">Self-Maintenance Of Marine Engine (Inboarder)</div>
                             <div class="text">
                                 선내기 엔진을 장착한 파워보트 등을 이용한 해양레저활동이 증가하고 있는 상황에서, 해양레저활동 참가자들이<br>
                                 안전하게 해양레저활동을 즐길 수 있도록, 선내기 엔진에 대한 자가정비 및 유지보수, 응급조치요령 등의 교육을 실시하오니<br>

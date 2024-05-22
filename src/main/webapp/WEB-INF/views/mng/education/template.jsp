@@ -324,6 +324,26 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highhorsepower.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">고마력 선외기 정비</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/sterndrive.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">스턴드라이브 정비</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -781,6 +801,72 @@ if (document.documentElement) {
                                     <!--end:Menu sub-->
                                 </div>
                                 <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                <span class="menu-title">개발사</span>
+                                <span class="menu-arrow d-lg-none"></span>
+                            </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0">
+                                        <!--begin:Pages menu-->
+                                        <div class="menu-active-bg px-4 px-lg-0">
+                                            <!--begin:Tabs nav-->
+                                            <div class="d-flex w-100 overflow-auto">
+                                                <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_request">요청사항 & 문의</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                </ul>
+                                            </div>
+                                            <!--end:Tabs nav-->
+                                            <!--begin:Tab content-->
+                                            <div class="tab-content py-4 py-lg-8 px-lg-7">
+                                                <!--begin:Tab pane-->
+                                                <div class="tab-pane active w-lg-175px" id="kt_app_header_menu_pages_request">
+                                                    <!--begin:Row-->
+                                                    <div class="row">
+                                                        <!--begin:Col-->
+                                                        <div class="col-lg-12 mb-6 mb-lg-0">
+                                                            <!--begin:Row-->
+                                                            <div class="row">
+                                                                <!--begin:Col-->
+                                                                <div class="col-lg-12">
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/request/list.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">요청사항 & 문의 관리</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                </div>
+                                                                <!--end:Col-->
+                                                            </div>
+                                                            <!--end:Row-->
+                                                        </div>
+                                                        <!--end:Col-->
+                                                    </div>
+                                                    <!--end:Row-->
+                                                </div>
+                                                <!--end:Tab pane-->
+                                            </div>
+                                            <!--end:Tab content-->
+                                        </div>
+                                        <!--end:Pages menu-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
                             </div>
                             <!--end::Menu-->
                         </div>
@@ -1049,6 +1135,30 @@ if (document.documentElement) {
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">자가정비 (세일요트)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highhorsepower.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                                <span class="menu-title">고마력 선외기 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/sterndrive.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                                <span class="menu-title">스턴드라이브 정비</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1439,7 +1549,50 @@ if (document.documentElement) {
                                     <!--end:Menu sub-->
                                 </div>
                                 <!--end:Menu item-->
-
+                                <!--begin:Menu item-->
+                                <div class="menu-item pt-5">
+                                    <!--begin:Menu content-->
+                                    <div class="menu-content">
+                                        <span class="menu-heading fw-bold text-uppercase fs-7">개발사</span>
+                                    </div>
+                                    <!--end:Menu content-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-notification-on fs-2">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">요청사항 & 문의</span>
+                                <span class="menu-arrow"></span>
+                            </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/request/list.do">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                                <span class="menu-title">요청사항 & 문의 관리</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
                             </div>
                             <!--end::Menu-->
                         </div>
@@ -1561,6 +1714,18 @@ if (document.documentElement) {
                                                         <%--<div class="dropdown-divider"></div>
                                                         <a class="dropdown-item" data-toggle="tab" href="#kt_tab_pane_4_3">Separated link</a>--%>
                                                     </div>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="highhorsepower" data-toggle="tab" href="#kt_tab_pane_4_6">
+                                                        <span class="nav-icon"><i class="flaticon2-drop"></i></span>
+                                                        <span class="nav-text">고마력 선외기 정비</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="sterndrive" data-toggle="tab" href="#kt_tab_pane_4_7">
+                                                        <span class="nav-icon"><i class="flaticon2-drop"></i></span>
+                                                        <span class="nav-text">스턴드라이브 정비</span>
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -2994,6 +3159,581 @@ if (document.documentElement) {
                                                 <!-- //세일요트 자가정비과정 -->
 
                                             </div>
+                                            <div class="tab-pane fade" id="kt_tab_pane_4_6" role="tabpanel" aria-labelledby="kt_tab_pane_4_6">
+
+                                                <!-- 고마력 선외기 정비 중급 테크니션 -->
+                                                <div class="guide_tp_01">
+                                                    <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                                    <div class="table">
+                                                        <table>
+                                                            <thead>
+                                                            <!-- 과정명 -->
+                                                            <tr>
+                                                                <th class="gubun">구분</th>
+                                                                <th>고마력 선외기 정비 중급 테크니션과정</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- 교육대상 -->
+                                                            <tr>
+                                                                <td class="gubun">교육대상</td>
+                                                                <td id="edu_highhorsepower_target">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${h_targetList eq null or empty h_targetList}">
+                                                                                <div class="mb-2 edu_highhorsepower_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${h_targetList}" begin="0" end="${h_targetList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_highhorsepower_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육내용 -->
+                                                            <tr>
+                                                                <td class="gubun">교육내용</td>
+                                                                <td id="edu_highhorsepower_contents">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${h_contentsList eq null or empty h_contentsList}">
+                                                                                <div class="mb-2 edu_highhorsepower_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${h_contentsList}" begin="0" end="${h_contentsList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_highhorsepower_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육기간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육기간</td>
+                                                                <td id="edu_highhorsepower_period">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${h_periodList eq null or empty h_periodList}">
+                                                                                <div class="mb-2 edu_highhorsepower_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${h_periodList}" begin="0" end="${h_periodList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_highhorsepower_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육일수 -->
+                                                            <tr>
+                                                                <td class="gubun">교육일수</td>
+                                                                <td id="edu_highhorsepower_days">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육일수"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육시간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육시간</td>
+                                                                <td id="edu_highhorsepower_time">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육시간"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장소 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장소</td>
+                                                                <td id="edu_highhorsepower_place">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="장소명"/>
+                                                                    </div>
+                                                                    <div class="address">
+                                                                        <input type="text" class="form-control" placeholder="상세주소"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육인원 -->
+                                                            <tr>
+                                                                <td class="gubun">교육인원</td>
+                                                                <td id="edu_highhorsepower_persons">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육인원"/>
+                                                                    </div>
+                                                                    <div class="cmnt">
+                                                                        <p>· 주1) 교육 신청 현황에 따라 조정 가능합니다.</p>
+                                                                        <p>· 주2) 교육신청자가 최소 인원에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육비</td>
+                                                                <td id="edu_highhorsepower_pay">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육비"/>
+                                                                    </div>
+                                                                    <div class="cmnt">
+                                                                        <p>※ 분리교육 진행 시 교육비 별도 공지 예정</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장비</td>
+                                                                <td id="edu_highhorsepower_stuff">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${h_stuffList eq null or empty h_stuffList}">
+                                                                                <div class="mb-2 edu_highhorsepower_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${h_stuffList}" begin="0" end="${h_stuffList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_highhorsepower_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- //고마력 선외기 정비 중급 테크니션 -->
+
+                                                <!-- 고마력 선외기 정비 중급 테크니션 -->
+                                                <div class="guide_tp_02">
+                                                    <ul>
+                                                        <li id="edu_highhorsepower_apply_method">
+                                                            <div class="gubun">신청방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="신청방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <input type="text" class="form-control" placeholder="URL입력"/>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_highhorsepower_recruit_method">
+                                                            <div class="gubun">모집방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 신청취소 등 교육인원 축소 대비 대기인원 접수</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_highhorsepower_recruit_period">
+                                                            <div class="gubun">모집마감</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집기간"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <div></div>
+                                                    <div>
+                                                        <button type="button" onclick="f_train_template_highhorsepower_save();" class="btn font-weight-bold btn-primary mr-2">저장</button>
+                                                        <button type="button" onclick="f_train_template_init('highhorsepower');" class="btn font-weight-bold btn-secondary">취소</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- //고마력 선외기 정비 중급 테크니션 -->
+
+                                            </div>
+                                            <div class="tab-pane fade" id="kt_tab_pane_4_7" role="tabpanel" aria-labelledby="kt_tab_pane_4_7">
+
+                                                <!-- 스턴드라이브 정비 전문가과정 -->
+                                                <div class="guide_tp_01">
+                                                    <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                                    <div class="table">
+                                                        <table>
+                                                            <thead>
+                                                            <!-- 과정명 -->
+                                                            <tr>
+                                                                <th class="gubun">구분</th>
+                                                                <th>스턴드라이브(Sterndrive) 정비 중급 테크니션 과정</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- 교육대상 -->
+                                                            <tr>
+                                                                <td class="gubun">교육대상</td>
+                                                                <td id="edu_sterndrive_target">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${t_targetList eq null or empty t_targetList}">
+                                                                                <div class="mb-2 edu_sterndrive_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${t_targetList}" begin="0" end="${t_targetList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_sterndrive_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육내용 -->
+                                                            <tr>
+                                                                <td class="gubun">교육내용</td>
+                                                                <td id="edu_sterndrive_contents">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${t_contentsList eq null or empty t_contentsList}">
+                                                                                <div class="mb-2 edu_sterndrive_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${t_contentsList}" begin="0" end="${t_contentsList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_sterndrive_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육기간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육기간</td>
+                                                                <td id="edu_sterndrive_period">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${t_periodList eq null or empty t_periodList}">
+                                                                                <div class="mb-2 edu_sterndrive_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${t_periodList}" begin="0" end="${t_periodList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_sterndrive_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육일수 -->
+                                                            <tr>
+                                                                <td class="gubun">교육일수</td>
+                                                                <td id="edu_sterndrive_days">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육일수"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육시간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육시간</td>
+                                                                <td id="edu_sterndrive_time">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육시간"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장소 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장소</td>
+                                                                <td id="edu_sterndrive_place">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="장소명"/>
+                                                                    </div>
+                                                                    <div class="address">
+                                                                        <input type="text" class="form-control" placeholder="상세주소"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육인원 -->
+                                                            <tr>
+                                                                <td class="gubun">교육인원</td>
+                                                                <td id="edu_sterndrive_persons">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육인원"/>
+                                                                    </div>
+                                                                    <div class="cmnt">
+                                                                        <p>· 주1) 교육 신청 현황에 따라 조정 가능합니다.</p>
+                                                                        <p>· 주2) 교육신청자가 최소 인원에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육비</td>
+                                                                <td id="edu_sterndrive_pay">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육비"/>
+                                                                    </div>
+                                                                    <div class="cmnt">
+                                                                        <p>※ 분리교육 진행 시 교육비 별도 공지 예정</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교보재 -->
+                                                            <tr>
+                                                                <td class="gubun">교보재</td>
+                                                                <td id="edu_sterndrive_stuff">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${t_stuffList eq null or empty t_stuffList}">
+                                                                                <div class="mb-2 edu_sterndrive_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교보재"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${t_stuffList}" begin="0" end="${t_stuffList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_sterndrive_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교보재"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- //고마력 선외기 정비 중급 테크니션 -->
+
+                                                <!-- 고마력 선외기 정비 중급 테크니션 -->
+                                                <div class="guide_tp_02">
+                                                    <ul>
+                                                        <li id="edu_sterndrive_apply_method">
+                                                            <div class="gubun">신청방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="신청방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <input type="text" class="form-control" placeholder="URL입력"/>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_sterndrive_recruit_method">
+                                                            <div class="gubun">모집방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 신청취소 등 교육인원 축소 대비 대기인원 접수</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_sterndrive_recruit_period">
+                                                            <div class="gubun">모집마감</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집기간"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <div></div>
+                                                    <div>
+                                                        <button type="button" onclick="f_train_template_sterndrive_save();" class="btn font-weight-bold btn-primary mr-2">저장</button>
+                                                        <button type="button" onclick="f_train_template_init('sterndrive');" class="btn font-weight-bold btn-secondary">취소</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- //스턴드라이브 정비 전문가과정 -->
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -3025,209 +3765,6 @@ if (document.documentElement) {
         <!--end::Page-->
     </div>
     <!--end::App-->
-
-    <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="kt_modal_modify_history" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">교육 상세보기</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <div class="card card-flush py-4">
-
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">교육과정명</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_gbn" placeholder="교육과정명" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">차시</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_next_time" placeholder="차시" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">교육일정 (시작)</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_train_start_dttm" placeholder="교육일정 (시작)" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">교육일정 (종료)</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_train_end_dttm" placeholder="교육일정 (종료)" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">접수일정 (시작)</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_apply_start_dttm" placeholder="접수일정 (시작)" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">접수일정 (종료)</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_apply_end_dttm" placeholder="접수일정 (종료)" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">교육비</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_pay_sum" placeholder="교육비" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">총 교육인원</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_train_cnt" placeholder="총 교육인원" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">교육신청인원</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_train_apply_cnt" placeholder="교육신청인원" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">비고</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <div id="md_train_note" class="form-control form-control-solid-bg resize-none h-150px overflow-y-auto" readonly></div>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">홈페이지 노출여부</label>
-                                <!--end::Label-->
-                                <!--begin::Col-->
-                                <div class="d-flex align-items-center">
-                                    <label class="me-5">
-                                        <input type="radio" name="md_exposure_yn" value="Y" class="form-check-input form-control-solid-bg" disabled> 노출
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="md_exposure_yn" value="N" class="form-check-input form-control-solid-bg" disabled> 미노출
-                                    </label>
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">연간 일정표 등록 여부</label>
-                                <!--end::Label-->
-                                <!--begin::Col-->
-                                <div class="d-flex align-items-center">
-                                    <label class="me-5">
-                                        <input type="radio" name="md_schedule_exposure_yn" value="Y" class="form-check-input form-control-solid-bg" disabled> 등록
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="md_schedule_exposure_yn" value="N" class="form-check-input form-control-solid-bg" disabled> 미등록
-                                    </label>
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div>
-                                <!--begin::Label-->
-                                <label class="form-label">교육 상태</label>
-                                <!--end::Label-->
-                                <!--begin::Col-->
-                                <div class="d-flex align-items-center">
-                                    <label class="me-5">
-                                        <input type="radio" name="md_closing_yn" value="N" class="form-check-input form-control-solid-bg" disabled> 신청오픈
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="md_closing_yn" value="Y" class="form-check-input form-control-solid-bg" disabled> 신청마감
-                                    </label>
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <!--end::Input group-->
-
-                        </div>
-                        <!--end::Card header-->
-                    </div>
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 수정이력-->
 
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
@@ -3476,6 +4013,70 @@ if (document.documentElement) {
             // 모집기간
             let s_recruitPeriod = '${s_recruitPeriod.value}'.replaceAll('<br/>', '\r\n');
             $('#edu_boarder_sailyacht_recruit_period').find('.item').find('textarea').val(s_recruitPeriod);
+
+            /********************
+             * 고마력
+             * ******************/
+            // 교육일수
+            $('#edu_highhorsepower_days').find('input[type=text]').val('${h_days.value}');
+
+            // 교육시간
+            $('#edu_highhorsepower_time').find('input[type=text]').val('${h_time.value}');
+
+            // 교육장소
+            $('#edu_highhorsepower_place').find('.item').find('input[type=text]').val('${h_place.value}');
+            $('#edu_highhorsepower_place').find('.address').find('input[type=text]').val('${h_placeDetail.value}');
+
+            // 교육인원
+            $('#edu_highhorsepower_persons').find('input[type=text]').val('${h_persons.value}');
+
+            // 교육비
+            $('#edu_highhorsepower_pay').find('input[type=text]').val('${h_pay.value}');
+
+            // 신청방법
+            let h_applyMethod = '${h_applyMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_highhorsepower_apply_method').find('.item').find('textarea').val(h_applyMethod);
+            $('#edu_highhorsepower_apply_method').find('.cmnt').find('input[type=text]').val('${h_applyMethodUrl.value}');
+
+            // 모집방법
+            let h_recruitMethod = '${h_recruitMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_highhorsepower_recruit_method').find('.item').find('textarea').val(h_recruitMethod);
+
+            // 모집기간
+            let h_recruitPeriod = '${h_recruitPeriod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_highhorsepower_recruit_period').find('.item').find('textarea').val(h_recruitPeriod);
+
+            /********************
+             * Sterndrive
+             * ******************/
+            // 교육일수
+            $('#edu_sterndrive_days').find('input[type=text]').val('${t_days.value}');
+
+            // 교육시간
+            $('#edu_sterndrive_time').find('input[type=text]').val('${t_time.value}');
+
+            // 교육장소
+            $('#edu_sterndrive_place').find('.item').find('input[type=text]').val('${t_place.value}');
+            $('#edu_sterndrive_place').find('.address').find('input[type=text]').val('${t_placeDetail.value}');
+
+            // 교육인원
+            $('#edu_sterndrive_persons').find('input[type=text]').val('${t_persons.value}');
+
+            // 교육비
+            $('#edu_sterndrive_pay').find('input[type=text]').val('${t_pay.value}');
+
+            // 신청방법
+            let t_applyMethod = '${t_applyMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_sterndrive_apply_method').find('.item').find('textarea').val(t_applyMethod);
+            $('#edu_sterndrive_apply_method').find('.cmnt').find('input[type=text]').val('${t_applyMethodUrl.value}');
+
+            // 모집방법
+            let t_recruitMethod = '${t_recruitMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_sterndrive_recruit_method').find('.item').find('textarea').val(t_recruitMethod);
+
+            // 모집기간
+            let t_recruitPeriod = '${t_recruitPeriod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_sterndrive_recruit_period').find('.item').find('textarea').val(t_recruitPeriod);
 
         })
     </script>

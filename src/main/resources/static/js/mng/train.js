@@ -371,6 +371,10 @@ function f_education_train_form_data_setting() {
             case '해상엔진 자가정비 (세일요트)':
                 category = '단기과정';
                 break;
+            case '고마력 선외기 정비 중급 테크니션':
+            case '스턴드라이브 정비 전문가과정':
+                category = '심화과정';
+                break;
             default:
                 break;
         }
@@ -508,6 +512,12 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             break;
         case '해상엔진 자가정비 (세일요트)':
             link = '/mng/customer/sailyacht.do';
+            break;
+        case '고마력 선외기 정비 중급 테크니션':
+            link = '/mng/customer/highhorsepower.do';
+            break;
+        case '스턴드라이브 정비 전문가과정':
+            link = '/mng/customer/sterndrive.do';
             break;
         default:
             break;

@@ -6,6 +6,7 @@ import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.mapper.CommMapper;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineMngService;
+import com.mtf.edumarine.util.StringUtil;
 import lombok.Setter;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,6 +19,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -606,6 +609,58 @@ public class CommServiceImpl implements CommService {
                 commMapper.updateMemberGrade(member);
             }
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateFileUserId(FileDTO fileDTO) {
+        System.out.println("CommServiceImpl > processUpdateFileUserId");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(fileDTO.getId())){
+
+                result = commMapper.updateFileUserId(fileDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Id : " + fileDTO.getId();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Id Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFileUserId ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public void processUpdateFileDeleteUseN(FileDTO fileDTO) {
+        System.out.println("CommServiceImpl > processUpdateFileDeleteUseN");
+        try {
+            if(!StringUtil.isEmpty(fileDTO.getUserId())){
+                commMapper.updateFileDeleteUseN(fileDTO);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<FileDTO> processSelectFileUserIdList(FileDTO fileDTO) {
+        System.out.println("CommServiceImpl > processSelectFileUserIdList");
+        return commMapper.selectFileUserIdList(fileDTO);
     }
 
     @Override

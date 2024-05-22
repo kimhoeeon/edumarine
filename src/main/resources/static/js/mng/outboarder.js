@@ -147,6 +147,24 @@ $(function(){
         })
     }//myModalEl2
 
+    let myModalEl3 = document.getElementById('kt_modal_apply_edu_change');
+
+    if(myModalEl3){
+
+        let myModal = new bootstrap.Modal('#kt_modal_apply_edu_change', {
+            focus: true
+        });
+
+        myModalEl3.addEventListener('hidden.bs.modal', event => {
+            // input init
+            $('.target_list').empty();
+            $('#md_edu').val('').select2({minimumResultsForSearch: Infinity});
+            $('input[type=hidden][name=checkVal]').remove();
+            $('input[type=hidden][name=checkStatus]').remove();
+        })
+
+    }//myModalEl3
+
 });
 
 function lastDay(val){ //년과 월에 따라 마지막 일 구하기
@@ -645,4 +663,116 @@ function f_customer_outboarder_detail_excel_download(tableId , name){
     }else{
         showMessage('', 'info', '[전체 신청자 정보 상세 다운로드]', '엑셀로 추출할 데이터가 없습니다.', '');
     }
+}
+
+function f_customer_outboarder_train_change_modal_set(seq, name, applyStatus, nextTime){
+
+    if(!applyStatus.includes('취소')){
+        // 교육 Set
+        $("#md_edu").children('option:not(:gt(1))').remove();
+
+        let jsonObj = { gbn : '해상엔진 자가정비 (선외기)' };
+        $.ajax({
+            url: '/train/active.do',
+            method: 'post',
+            data: JSON.stringify(jsonObj),
+            async: false,
+            contentType: 'application/json; charset=utf-8', //server charset 확인 필요
+        })
+        .done(function (data, status) {
+            let results = data;
+            if (nvl(results, '') !== '') {
+                $.each(results, function (i) {
+                    $('#md_edu').append($('<option>', {
+                        value: results[i].seq,
+                        text: results[i].category + ' / ' + results[i].gbn + ' / ' + results[i].nextTime + '차 / ' + results[i].trainStartDttm + ' / ' + results[i].trainEndDttm
+                    }));
+                })
+
+                $('#md_edu').val('').select2({minimumResultsForSearch: Infinity});
+            }
+        });
+
+
+        let input_hidden = document.createElement('input');
+        input_hidden.type = 'hidden';
+        input_hidden.name = 'checkVal'
+        input_hidden.value = seq;
+
+        let input_hidden2 = document.createElement('input');
+        input_hidden2.type = 'hidden';
+        input_hidden2.name = 'checkStatus'
+        input_hidden2.value = applyStatus;
+
+        if(nvl(nextTime, '') === ''){ nextTime = '-'; }
+        let modal_target_list = $('#modal_form3 .target_list');
+        modal_target_list.html(nextTime + '차 / ' + name + ' / ' + applyStatus);
+        modal_target_list.append(input_hidden);
+        modal_target_list.append(input_hidden2);
+
+        $('#kt_modal_apply_edu_change').modal('show');
+    }else{
+        showMessage('', 'error', '[신청 교육 변경]', '교육 변경 불가한 내역입니다. (취소신청/취소완료)', '');
+        return false;
+    }
+
+}
+
+function f_customer_outboarder_train_change_btn(){
+
+    let seq = $('input[type=hidden][name=checkVal]').val();
+    if (nvl(seq,'') !== ''){
+
+        let md_edu_val = $('#md_edu').val();
+        let md_edu_text = $('#md_edu option:selected').text();
+        if(nvl(md_edu_val,'') !== '') {
+            Swal.fire({
+                title: '[ 신청 교육 변경 ]',
+                html: '신청자의 교육을 변경하시겠습니까 ?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: '확인',
+                cancelButtonColor: '#A1A5B7',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    let jsonObj = {
+                        seq: seq,
+                        trainSeq: md_edu_val,
+                        trainName: md_edu_text.split(' / ')[1].trim() // 단기과정 / 해상엔진 자가정비 (선외기) / 3차 / 2024.08.24 / 2024.08.25
+                    }
+
+                    let resData = ajaxConnect('/mng/customer/train/change/update.do', 'post', jsonObj);
+
+                    if (resData.resultCode === "-1") {
+                        showMessage('', 'error', '에러 발생', '신청 교육 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    } else if(resData.resultCode === "-2"){
+                        showMessage('', 'info', '[ 신청 교육 변경 ]', resData.resultMessage, '');
+                    }else {
+                        Swal.fire({
+                            title: '[ 신청 교육 변경 ]',
+                            html: '신청 교육 변경이 정상 완료되었습니다.',
+                            allowOutsideClick: false,
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                $('#kt_modal_apply_edu_change').modal('hide');
+
+                                /* 재조회 */
+                                f_customer_outboarder_search();
+                            }
+                        });
+                    }
+                }
+            });
+
+        }else{
+            showMessage('', 'error', '[ 신청 교육 변경 ]', '변경할 신청 교육을 선택해 주세요.', '');
+        }
+    }
+
 }

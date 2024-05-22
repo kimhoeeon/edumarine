@@ -340,6 +340,26 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highhorsepower.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">고마력 선외기 정비</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/sterndrive.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">스턴드라이브 정비</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -797,6 +817,72 @@ if (document.documentElement) {
                                     <!--end:Menu sub-->
                                 </div>
                                 <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                <span class="menu-title">개발사</span>
+                                <span class="menu-arrow d-lg-none"></span>
+                            </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0">
+                                        <!--begin:Pages menu-->
+                                        <div class="menu-active-bg px-4 px-lg-0">
+                                            <!--begin:Tabs nav-->
+                                            <div class="d-flex w-100 overflow-auto">
+                                                <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_request">요청사항 & 문의</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                </ul>
+                                            </div>
+                                            <!--end:Tabs nav-->
+                                            <!--begin:Tab content-->
+                                            <div class="tab-content py-4 py-lg-8 px-lg-7">
+                                                <!--begin:Tab pane-->
+                                                <div class="tab-pane active w-lg-175px" id="kt_app_header_menu_pages_request">
+                                                    <!--begin:Row-->
+                                                    <div class="row">
+                                                        <!--begin:Col-->
+                                                        <div class="col-lg-12 mb-6 mb-lg-0">
+                                                            <!--begin:Row-->
+                                                            <div class="row">
+                                                                <!--begin:Col-->
+                                                                <div class="col-lg-12">
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/request/list.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">요청사항 & 문의 관리</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                </div>
+                                                                <!--end:Col-->
+                                                            </div>
+                                                            <!--end:Row-->
+                                                        </div>
+                                                        <!--end:Col-->
+                                                    </div>
+                                                    <!--end:Row-->
+                                                </div>
+                                                <!--end:Tab pane-->
+                                            </div>
+                                            <!--end:Tab content-->
+                                        </div>
+                                        <!--end:Pages menu-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
                             </div>
                             <!--end::Menu-->
                         </div>
@@ -1065,6 +1151,30 @@ if (document.documentElement) {
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">자가정비 (세일요트)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highhorsepower.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                                <span class="menu-title">고마력 선외기 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/sterndrive.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                                <span class="menu-title">스턴드라이브 정비</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1455,7 +1565,50 @@ if (document.documentElement) {
                                     <!--end:Menu sub-->
                                 </div>
                                 <!--end:Menu item-->
-
+                                <!--begin:Menu item-->
+                                <div class="menu-item pt-5">
+                                    <!--begin:Menu content-->
+                                    <div class="menu-content">
+                                        <span class="menu-heading fw-bold text-uppercase fs-7">개발사</span>
+                                    </div>
+                                    <!--end:Menu content-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-notification-on fs-2">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">요청사항 & 문의</span>
+                                <span class="menu-arrow"></span>
+                            </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/request/list.do">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                                <span class="menu-title">요청사항 & 문의 관리</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
                             </div>
                             <!--end::Menu-->
                         </div>
@@ -1605,7 +1758,7 @@ if (document.documentElement) {
                                         <!--begin::Card toolbar-->
                                         <div class="card-toolbar flex-row-fluid gap-5">
                                             <%--begin::신청상태--%>
-                                            <div class="w-100 mw-150px">
+                                            <div class="w-100 mw-175px">
                                                 <!--begin::Select2-->
                                                 <select id="condition_time" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2105,6 +2258,108 @@ if (document.documentElement) {
                         <div class="ms-10">
                             <!--begin::File upload-->
                             <a onclick="f_apply_change_btn()" class="btn btn-primary">변경</a>
+                            <!--end::File upload-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
+
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_apply_edu_change" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">신청 교육 변경</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-10 px-lg-10">
+                    <!--begin::Input group-->
+                    <div class="lh-lg">
+                        <c:set var="now" value="<%=new java.util.Date()%>"/>
+                        <fmt:formatDate var="fmNow" value="${now}" pattern="yyyy.MM.dd"/>
+                        * 오늘 날짜 기준 ( ${fmNow} ) 으로 <br/>
+                        1. <strong class="text-danger">접수일정 or 교육일정에 해당되거나 교육 활성화 상태( 마감 X, 삭제 X )인 경우</strong><br/>
+                        2. <strong class="text-danger">동일 교육 내 차시 변경의 경우</strong><br/>
+                        에만 변경 가능합니다.<br/><br/>
+                        * <strong>교육 변경 대상 목록</strong> : <strong>교육생명 / 현재 결제 상태</strong> ( 현재 결제 상태가 <strong class="text-danger">취소신청/취소완료인 경우 교육 변경 불가</strong> )<br/>
+                        * <strong>변경할 교육</strong> : <strong>과정분류 / 교육명 / 차시 / 교육시작일정 / 교육종료일정</strong> 순<br/>
+                    </div>
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::form-->
+                    <form id="modal_form3" method="post" onsubmit="return false;">
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">교육 변경 대상 목록</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-10 d-flex align-items-center">
+                                <span class="target_list"></span>
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">변경할 교육</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-10 d-flex align-items-center">
+                                <!--begin::Select2-->
+                                <select id="md_edu" class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-allow-clear="true"
+                                        data-placeholder="- 교육 -">
+                                    <option></option>
+                                    <option value="" disabled>- 교육 -</option>
+                                </select>
+                                <!--end::Select2-->
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                    </form>
+                    <!--end::form-->
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::Col-->
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <!--begin::Col-->
+                        <div>
+                            <!--begin::Cancel-->
+                            <a class="btn btn-danger" data-bs-dismiss="modal">취소</a>
+                            <!--end::Cancel-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="ms-10">
+                            <!--begin::File upload-->
+                            <a onclick="f_customer_boarder_train_change_btn()" class="btn btn-primary">변경</a>
                             <!--end::File upload-->
                         </div>
                         <!--end::Col-->

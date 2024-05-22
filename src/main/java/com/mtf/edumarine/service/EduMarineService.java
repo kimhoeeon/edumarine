@@ -202,4 +202,24 @@ public interface EduMarineService {
     PaymentDTO processSelectPaymentVbankInfo(PaymentDTO paymentDTO);
 
     List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major);
+
+    Integer processSelectHighHorsePowerPreCheck(HighHorsePowerDTO highHorsePowerDTO);
+
+    ResponseDTO processInsertHighHorsePower(HighHorsePowerDTO highHorsePowerDTO);
+
+    ResponseDTO processUpdateHighHorsePowerPayStatus(HighHorsePowerDTO highHorsePowerDTO);
+
+    Integer processSelectSterndrivePreCheck(SterndriveDTO sterndriveDTO);
+
+    ResponseDTO processInsertSterndrive(SterndriveDTO sterndriveDTO);
+
+    ResponseDTO processUpdateSterndrivePayStatus(SterndriveDTO sterndriveDTO);
+
+    HighHorsePowerDTO processSelectHighHorsePowerSingle(String seq);
+
+    ResponseDTO processUpdateHighhorsepower(HighHorsePowerDTO highHorsePowerDTO);
+
+    SterndriveDTO processSelectSterndriveSingle(String seq);
+
+    ResponseDTO processUpdateSterndrive(SterndriveDTO sterndriveDTO);
 }

@@ -1652,6 +1652,54 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateHighHorsePowerPayStatus" parameterType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateHighHorsePowerPayStatus */
+        UPDATE highhorsepower
+        SET apply_status = #{applyStatus}
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSterndrivePayStatus" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateSterndrivePayStatus */
+        UPDATE sterndrive
+        SET apply_status = #{applyStatus}
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectEduApplyInfoList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EduApplyInfoDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoList */
         SELECT LISTB.*
@@ -1742,6 +1790,30 @@
                      FROM sailyacht s
                      WHERE s.member_seq = #{memberSeq}
                        AND s.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '고마력 선외기 정비 중급 테크니션' AS trainName
+                          , h.train_seq
+                          , h.apply_status AS payStatus
+                          , h.seq
+                          , h.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = h.member_seq and p.table_seq = h.seq and p.train_seq = h.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = h.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = h.train_seq) AS trainEndDttm
+                     FROM highhorsepower h
+                     WHERE h.member_seq = #{memberSeq}
+                       AND h.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '스턴드라이브 정비 전문가과정' AS trainName
+                          , t.train_seq
+                          , t.apply_status AS payStatus
+                          , t.seq
+                          , t.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = t.member_seq and p.table_seq = t.seq and p.train_seq = t.train_seq) as payMethod
+                          , (SELECT t1.train_start_dttm FROM train t1 WHERE t1.seq = t.train_seq) AS trainStartDttm
+                          , (SELECT t2.train_end_dttm FROM train t2 WHERE t2.seq = t.train_seq) AS trainEndDttm
+                     FROM sterndrive t
+                     WHERE t.member_seq = #{memberSeq}
+                       AND t.apply_status NOT LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -1819,6 +1891,28 @@
                      FROM sailyacht s
                      WHERE s.member_seq = #{memberSeq}
                        AND s.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '고마력 선외기 정비 중급 테크니션' AS trainName
+                          , h.train_seq
+                          , h.apply_status AS payStatus
+                          , h.seq
+                          , h.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = h.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = h.train_seq) AS trainEndDttm
+                     FROM highhorsepower h
+                     WHERE h.member_seq = #{memberSeq}
+                       AND h.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '스턴드라이브 정비 전문가과정' AS trainName
+                          , t.train_seq
+                          , t.apply_status AS payStatus
+                          , t.seq
+                          , t.final_regi_dttm
+                          , (SELECT t1.train_start_dttm FROM train t1 WHERE t1.seq = t.train_seq) AS trainStartDttm
+                          , (SELECT t2.train_end_dttm FROM train t2 WHERE t2.seq = t.train_seq) AS trainEndDttm
+                     FROM sterndrive t
+                     WHERE t.member_seq = #{memberSeq}
+                       AND t.apply_status LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -1907,80 +2001,80 @@
 
     <select id="selectBoarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BoarderDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectBoarderSingle */
-        SELECT seq
-             , member_seq
-             , train_seq
-             , id
-             , top_clothes_size
-             , bottom_clothes_size
-             , shoes_size
-             , participation_path
-             , grade_gbn
-             , school_name
-             , major
-             , military_gbn
-             , military_reason
-             , disabled_gbn
-             , job_support_gbn
-             , tech_edu_gbn
-             , tech_edu_name
-             , apply_reason
-             , tech_reason
-             , activity_reason
-             , plan_reason
-             , etc_reason
-             , apply_status
-             , cancel_dttm
-             , cancel_reason
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT b.seq
+             , b.member_seq
+             , b.train_seq
+             , b.id
+             , b.top_clothes_size
+             , b.bottom_clothes_size
+             , b.shoes_size
+             , b.participation_path
+             , b.grade_gbn
+             , b.school_name
+             , b.major
+             , b.military_gbn
+             , b.military_reason
+             , b.disabled_gbn
+             , b.job_support_gbn
+             , b.tech_edu_gbn
+             , b.tech_edu_name
+             , b.apply_reason
+             , b.tech_reason
+             , b.activity_reason
+             , b.plan_reason
+             , b.etc_reason
+             , b.apply_status
+             , b.cancel_dttm
+             , b.cancel_reason
+             , b.del_yn
+             , b.note
+             , b.init_regi_pic
+             , b.init_regi_dttm
+             , b.final_regi_pic
+             , b.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = b.member_seq AND p.table_seq = b.seq AND p.train_seq = b.train_seq) AS payMethod
              , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = b.train_seq) AS changeYn
         FROM boarder b
-        WHERE seq = #{seq}
+        WHERE b.seq = #{seq}
     </select>
 
     <select id="selectFrpSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FrpDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectFrpSingle */
-        SELECT seq
-             , member_seq
-             , train_seq
-             , id
-             , top_clothes_size
-             , bottom_clothes_size
-             , shoes_size
-             , participation_path
-             , grade_gbn
-             , school_name
-             , major
-             , military_gbn
-             , military_reason
-             , disabled_gbn
-             , job_support_gbn
-             , know_path
-             , know_path_reason
-             , apply_reason
-             , tech_reason
-             , activity_reason
-             , plan_reason
-             , etc_reason
-             , apply_status
-             , cancel_dttm
-             , cancel_reason
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT f.seq
+             , f.member_seq
+             , f.train_seq
+             , f.id
+             , f.top_clothes_size
+             , f.bottom_clothes_size
+             , f.shoes_size
+             , f.participation_path
+             , f.grade_gbn
+             , f.school_name
+             , f.major
+             , f.military_gbn
+             , f.military_reason
+             , f.disabled_gbn
+             , f.job_support_gbn
+             , f.know_path
+             , f.know_path_reason
+             , f.apply_reason
+             , f.tech_reason
+             , f.activity_reason
+             , f.plan_reason
+             , f.etc_reason
+             , f.apply_status
+             , f.cancel_dttm
+             , f.cancel_reason
+             , f.del_yn
+             , f.note
+             , f.init_regi_pic
+             , f.init_regi_dttm
+             , f.final_regi_pic
+             , f.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = f.member_seq AND p.table_seq = f.seq AND p.train_seq = f.train_seq) AS payMethod
              , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = f.train_seq) AS changeYn
         FROM frp f
-        WHERE seq = #{seq}
+        WHERE f.seq = #{seq}
     </select>
 
     <select id="selectPaymentList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.PaymentDTO">
@@ -2353,24 +2447,24 @@
 
     <select id="selectInboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.InboarderDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectInboarderSingle */
-        SELECT seq
-             , member_seq
-             , train_seq
-             , clothes_size
-             , participation_path
-             , apply_status
-             , cancel_dttm
-             , cancel_reason
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT i.seq
+             , i.member_seq
+             , i.train_seq
+             , i.clothes_size
+             , i.participation_path
+             , i.apply_status
+             , i.cancel_dttm
+             , i.cancel_reason
+             , i.del_yn
+             , i.note
+             , i.init_regi_pic
+             , i.init_regi_dttm
+             , i.final_regi_pic
+             , i.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = i.member_seq AND p.table_seq = i.seq AND p.train_seq = i.train_seq) AS payMethod
              , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = i.train_seq) AS changeYn
         FROM inboarder i
-        WHERE seq = #{seq}
+        WHERE i.seq = #{seq}
     </select>
 
     <update id="updateInboarder" parameterType="com.mtf.edumarine.dto.InboarderDTO">
@@ -2463,48 +2557,184 @@
             )
     </insert>
 
+    <select id="getHighHorsePowerSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getHighHorsePowerSeq */
+        SELECT CONCAT('HP', LPAD(nextval('highhorsepower_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertHighHorsePower" parameterType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertHighHorsePower */
+        INSERT INTO highhorsepower
+        ( seq
+        , member_seq
+        , train_seq
+        , clothes_size
+        , participation_path
+        , train_understand
+        , train_understand_etc
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{trainUnderstand}
+            , #{trainUnderstandEtc}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'HIGHHORSEPOWER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'HIGHHORSEPOWER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="getSterndriveSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getSterndriveSeq */
+        SELECT CONCAT('SD', LPAD(nextval('sterndrive_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSterndrive" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSterndrive */
+        INSERT INTO sterndrive
+        ( seq
+        , member_seq
+        , train_seq
+        , clothes_size
+        , participation_path
+        , train_understand
+        , train_understand_etc
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{trainUnderstand}
+            , #{trainUnderstandEtc}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'STERNDRIVE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'STERNDRIVE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
     <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectOutboarderSingle */
-        SELECT seq
-             , member_seq
-             , train_seq
-             , clothes_size
-             , participation_path
-             , apply_status
-             , cancel_dttm
-             , cancel_reason
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT o.seq
+             , o.member_seq
+             , o.train_seq
+             , o.clothes_size
+             , o.participation_path
+             , o.apply_status
+             , o.cancel_dttm
+             , o.cancel_reason
+             , o.del_yn
+             , o.note
+             , o.init_regi_pic
+             , o.init_regi_dttm
+             , o.final_regi_pic
+             , o.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = o.member_seq AND p.table_seq = o.seq AND p.train_seq = o.train_seq) AS payMethod
              , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = o.train_seq) AS changeYn
         FROM outboarder o
-        WHERE seq = #{seq}
+        WHERE o.seq = #{seq}
     </select>
 
     <select id="selectSailyachtSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SailyachtDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectSailyachtSingle */
-        SELECT seq
-             , member_seq
-             , train_seq
-             , clothes_size
-             , participation_path
-             , apply_status
-             , cancel_dttm
-             , cancel_reason
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT s.seq
+             , s.member_seq
+             , s.train_seq
+             , s.clothes_size
+             , s.participation_path
+             , s.apply_status
+             , s.cancel_dttm
+             , s.cancel_reason
+             , s.del_yn
+             , s.note
+             , s.init_regi_pic
+             , s.init_regi_dttm
+             , s.final_regi_pic
+             , s.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = s.member_seq AND p.table_seq = s.seq AND p.train_seq = s.train_seq) AS payMethod
              , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = s.train_seq) AS changeYn
         FROM sailyacht s
-        WHERE seq = #{seq}
+        WHERE s.seq = #{seq}
+    </select>
+
+    <select id="selectHighHorsePowerSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectHighHorsePowerSingle */
+        SELECT h.seq
+             , h.member_seq
+             , h.train_seq
+             , h.clothes_size
+             , h.participation_path
+             , h.train_understand
+             , h.train_understand_etc
+             , h.apply_status
+             , h.cancel_dttm
+             , h.cancel_reason
+             , h.del_yn
+             , h.note
+             , h.init_regi_pic
+             , h.init_regi_dttm
+             , h.final_regi_pic
+             , h.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = h.member_seq AND p.table_seq = h.seq AND p.train_seq = h.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = h.train_seq) AS changeYn
+        FROM highhorsepower h
+        WHERE h.seq = #{seq}
+    </select>
+
+    <select id="selectSterndriveSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectSterndriveSingle */
+        SELECT t.seq
+             , t.member_seq
+             , t.train_seq
+             , t.clothes_size
+             , t.participation_path
+             , t.train_understand
+             , t.train_understand_etc
+             , t.apply_status
+             , t.cancel_dttm
+             , t.cancel_reason
+             , t.del_yn
+             , t.note
+             , t.init_regi_pic
+             , t.init_regi_dttm
+             , t.final_regi_pic
+             , t.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = t.member_seq AND p.table_seq = t.seq AND p.train_seq = t.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t1.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t1 WHERE t1.seq = t.train_seq) AS changeYn
+        FROM sterndrive t
+        WHERE t.seq = #{seq}
     </select>
 
     <update id="updateOutboarder" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
@@ -2522,6 +2752,30 @@
         UPDATE sailyacht
         SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateHighhorsepower" parameterType="com.mtf.edumarine.dto.HighHorsePowerDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateHighhorsepower */
+        UPDATE highhorsepower
+        SET clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , train_understand = #{trainUnderstand}
+          , train_understand_etc = #{trainUnderstandEtc}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSterndrive" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateSterndrive */
+        UPDATE sterndrive
+        SET clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , train_understand = #{trainUnderstand}
+          , train_understand_etc = #{trainUnderstandEtc}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -2627,6 +2881,22 @@
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectSailyachtPreCheck */
         SELECT COUNT(1)
         FROM sailyacht
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectHighHorsePowerPreCheck" parameterType="com.mtf.edumarine.dto.HighHorsePowerDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectHighHorsePowerPreCheck */
+        SELECT COUNT(1)
+        FROM highhorsepower
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectSterndrivePreCheck" parameterType="com.mtf.edumarine.dto.SterndriveDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectSterndrivePreCheck */
+        SELECT COUNT(1)
+        FROM sterndrive
         WHERE member_seq = #{memberSeq}
           AND apply_status NOT LIKE '%취소%'
     </select>
@@ -2750,7 +3020,7 @@
              , note
         FROM train_template
         WHERE major = #{major}
-        ORDER BY major, small, middle , note
+        ORDER BY major, small, middle , CAST(note as signed)
     </select>
 
 </mapper>

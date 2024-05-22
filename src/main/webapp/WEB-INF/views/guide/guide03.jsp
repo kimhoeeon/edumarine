@@ -140,6 +140,8 @@
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>
+                    <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
+                    <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
             </div>
             <!-- //sidebar -->
@@ -204,7 +206,7 @@
                         <!-- guide_tit_box -->
                         <div class="guide_tit_box">
                             <div class="num">01</div>
-                            <div class="name">과정안내</div>
+                            <div class="name">2024년도 교육과정 안내</div>
                         </div>
                         <!-- //guide_tit_box -->
                         <!-- guide_table -->

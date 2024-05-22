@@ -253,4 +253,28 @@ public interface EduMarineMapper {
     void updatePayment(PaymentDTO paymentDTO);
 
     List<TrainTemplateDTO.TrainTemplateInfo> selectTrainTemplateList(String major);
+
+    Integer selectHighHorsePowerPreCheck(HighHorsePowerDTO highHorsePowerDTO);
+
+    String getHighHorsePowerSeq();
+
+    Integer insertHighHorsePower(HighHorsePowerDTO highHorsePowerDTO);
+
+    Integer updateHighHorsePowerPayStatus(HighHorsePowerDTO highHorsePowerDTO);
+
+    Integer selectSterndrivePreCheck(SterndriveDTO sterndriveDTO);
+
+    String getSterndriveSeq();
+
+    Integer insertSterndrive(SterndriveDTO sterndriveDTO);
+
+    Integer updateSterndrivePayStatus(SterndriveDTO sterndriveDTO);
+
+    HighHorsePowerDTO selectHighHorsePowerSingle(String seq);
+
+    Integer updateHighhorsepower(HighHorsePowerDTO highHorsePowerDTO);
+
+    SterndriveDTO selectSterndriveSingle(String seq);
+
+    Integer updateSterndrive(SterndriveDTO sterndriveDTO);
 }

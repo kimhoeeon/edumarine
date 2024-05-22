@@ -149,6 +149,9 @@
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU06')">#선외기</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU08')">#세일요트</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU04')">#FRP</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU10')">#고마력</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU11')">#스턴드라이브</a>
+
                     </div>
                 </div>
                 <!-- //main_search_wrap -->
@@ -239,6 +242,8 @@
                     <li data-tab="tab-3">선외기 자가정비과정</li>
                     <li data-tab="tab-4">선내기 자가정비과정</li>
                     <li data-tab="tab-5">세일요트 자가정비과정</li>
+                    <li data-tab="tab-7">고마력 선외기 정비 중급 테크니션</li>
+                    <li data-tab="tab-8">스턴드라이브 정비 전문가과정</li>
                 </ul>
                 <!-- tab_menu -->
                 <!-- list -->
@@ -434,6 +439,74 @@
                         </ul>
                     </c:if>
                     <c:if test="${empty marinaList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
+                </div>
+                <!-- //list -->
+                <!-- list -->
+                <div class="main_edu_list tab_content" id="tab-7">
+                    <c:if test="${not empty highHorsePowerList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainHighHorsePower" items="${highHorsePowerList}" begin="0" end="${highHorsePowerList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="/apply/schedule.do">${mainHighHorsePower.gbn}</a></div>
+                                    <div class="chasi">${mainHighHorsePower.nextTime}</div>
+                                    <div class="peopleRecruit">${mainHighHorsePower.trainCnt}</div>
+                                    <div class="peopleApp">${mainHighHorsePower.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainHighHorsePower.applyStartDttm,2, mainHighHorsePower.applyStartDttm.length())} ~ ${fn:substring(mainHighHorsePower.applyEndDttm,2, mainHighHorsePower.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainHighHorsePower.trainStartDttm,2, mainHighHorsePower.trainStartDttm.length())} ~ ${fn:substring(mainHighHorsePower.trainEndDttm,2, mainHighHorsePower.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty highHorsePowerList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
+                </div>
+                <!-- //list -->
+                <!-- list -->
+                <div class="main_edu_list tab_content" id="tab-8">
+                    <c:if test="${not empty sterndriveList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainSterndrive" items="${sterndriveList}" begin="0" end="${sterndriveList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="/apply/schedule.do">${mainSterndrive.gbn}</a></div>
+                                    <div class="chasi">${mainSterndrive.nextTime}</div>
+                                    <div class="peopleRecruit">${mainSterndrive.trainCnt}</div>
+                                    <div class="peopleApp">${mainSterndrive.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainSterndrive.applyStartDttm,2, mainSterndrive.applyStartDttm.length())} ~ ${fn:substring(mainSterndrive.applyEndDttm,2, mainSterndrive.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainSterndrive.trainStartDttm,2, mainSterndrive.trainStartDttm.length())} ~ ${fn:substring(mainSterndrive.trainEndDttm,2, mainSterndrive.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty sterndriveList}">
                         <div class="edu_none">
                             <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
