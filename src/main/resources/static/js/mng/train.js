@@ -21,6 +21,7 @@ $(function () {
     if (trainStartDttmPicker) {
         trainStartDttmPicker.flatpickr({
             enableTime: false,
+            locale: "ko",
             dateFormat: "Y.m.d"
         });
     }
@@ -30,6 +31,7 @@ $(function () {
     if (trainEndDttmPicker) {
         trainEndDttmPicker.flatpickr({
             enableTime: false,
+            locale: "ko",
             dateFormat: "Y.m.d"
         });
     }
@@ -39,6 +41,7 @@ $(function () {
     if (applyStartDttmPicker) {
         applyStartDttmPicker.flatpickr({
             enableTime: false,
+            locale: "ko",
             dateFormat: "Y.m.d"
         });
     }
@@ -48,6 +51,7 @@ $(function () {
     if (applyEndDttmPicker) {
         applyEndDttmPicker.flatpickr({
             enableTime: false,
+            locale: "ko",
             dateFormat: "Y.m.d"
         });
     }
@@ -307,6 +311,14 @@ function f_education_train_save(seq) {
                                         case '마리나 선박 선내기 정비사 실무과정':
                                             keyword = '마리나선박';
                                             break;
+                                        case '고마력 선외기 정비 중급 테크니션':
+                                        case '자가정비 심화과정 (고마력 선외기)':
+                                        case '고마력 선외기 정비 중급 테크니션 (특별반)':
+                                            keyword = '고마력';
+                                            break;
+                                        case '스턴드라이브 정비 전문가과정':
+                                            keyword = '스턴드라이브';
+                                            break;
                                         default:
                                             break;
                                     }
@@ -369,9 +381,11 @@ function f_education_train_form_data_setting() {
             case '해상엔진 자가정비 (선외기)':
             case '해상엔진 자가정비 (선내기)':
             case '해상엔진 자가정비 (세일요트)':
+            case '자가정비 심화과정 (고마력 선외기)':
                 category = '단기과정';
                 break;
             case '고마력 선외기 정비 중급 테크니션':
+            case '고마력 선외기 정비 중급 테크니션 (특별반)':
             case '스턴드라이브 정비 전문가과정':
                 category = '심화과정';
                 break;
@@ -515,6 +529,12 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             break;
         case '고마력 선외기 정비 중급 테크니션':
             link = '/mng/customer/highhorsepower.do';
+            break;
+        case '자가정비 심화과정 (고마력 선외기)':
+            link = '/mng/customer/highself.do';
+            break;
+        case '고마력 선외기 정비 중급 테크니션 (특별반)':
+            link = '/mng/customer/highspecial.do';
             break;
         case '스턴드라이브 정비 전문가과정':
             link = '/mng/customer/sterndrive.do';

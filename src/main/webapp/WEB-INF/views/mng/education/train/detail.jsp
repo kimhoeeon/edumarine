@@ -329,6 +329,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highself.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/sterndrive.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">스턴드라이브 정비</span>
@@ -1146,6 +1166,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highself.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highspecial.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -1707,6 +1751,8 @@ if (document.documentElement) {
                                                             <option value="마리나 선박 선외기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선외기 정비사 실무과정'}">selected</c:if> >마리나 선박 선외기 정비사 실무과정</option>
                                                             <option value="마리나 선박 선내기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선내기 정비사 실무과정'}">selected</c:if> >마리나 선박 선내기 정비사 실무과정</option>
                                                             <option value="고마력 선외기 정비 중급 테크니션" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션'}">selected</c:if> >고마력 선외기 정비 중급 테크니션</option>
+                                                            <option value="자가정비 심화과정 (고마력 선외기)" <c:if test="${info.gbn eq '자가정비 심화과정 (고마력 선외기)'}">selected</c:if> >자가정비 심화과정 (고마력 선외기)</option>
+                                                            <option value="고마력 선외기 정비 중급 테크니션 (특별반)" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션 (특별반)'}">selected</c:if> >고마력 선외기 정비 중급 테크니션 (특별반)</option>
                                                             <option value="스턴드라이브 정비 전문가과정" <c:if test="${info.gbn eq '스턴드라이브 정비 전문가과정'}">selected</c:if> >스턴드라이브 정비 전문가과정</option>
                                                         </select>
                                                     </div>
@@ -1871,7 +1917,7 @@ if (document.documentElement) {
                                                     <input type="hidden" id="preClosingYn" value="${info.closingYn}">
                                                     <label class="me-5">
                                                         <input type="radio" name="closingYn" value="N" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.closingYn eq 'N'}">checked</c:if>/> 추가모집
+                                                               <c:if test="${info.closingYn eq 'N'}">checked</c:if>/> 신청오픈
                                                     </label>
                                                     <label>
                                                         <input type="radio" name="closingYn" value="Y" class="form-check-input form-control-solid-bg"
@@ -1962,6 +2008,7 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/l10n/ko.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/train.js?ver=<%=System.currentTimeMillis()%>"></script>

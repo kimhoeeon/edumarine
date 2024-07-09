@@ -405,7 +405,7 @@ function f_smsMng_sms_send(gbn){
                     let sendResult = '성공';
                     let resData = ajaxConnect('/sms/send.do', 'post', jsonObj);
                     if (resData.result_code !== 1) {
-                        sendResult = '실패';
+                        sendResult = '실패' + ' [' + resData.message +']';
                     }
 
                     let jsonObj2 = {

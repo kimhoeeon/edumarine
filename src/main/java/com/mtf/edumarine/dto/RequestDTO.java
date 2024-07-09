@@ -10,6 +10,7 @@ import lombok.ToString;
 public class RequestDTO {
     Integer rownum; //연번
     String seq; //seq
+    String emergencyYn; //긴급여부
     String gbn; //구분
     String progressStep; //진행단계
     String hopeClosingDate; //희망마감일시

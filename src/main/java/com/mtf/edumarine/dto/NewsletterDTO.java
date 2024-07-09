@@ -15,7 +15,9 @@ public class NewsletterDTO extends AbstractPagingRequestVo {
     String lang; //언어
     String noticeGbn; //구분
     String title; //제목
+    String contentGbn; //컨텐츠구분
     String content; //내용
+    String contentTa; //내용2
     String writer; //작성자
     String writeDate; //작성일
     Integer viewCnt; //조회수

@@ -98,7 +98,13 @@ function searchPosts(pageNum) {
             let writeDate = results[i].writeDate;
             writeDate = writeDate.split(' ')[0].replaceAll('-','.');
 
-            let content = results[i].content;
+            let contentGbn = results[i].contentGbn;
+            let content = '';
+            if(contentGbn === '1'){
+                content = results[i].content;
+            }else{
+                content = results[i].contentTa;
+            }
             let contentToStr = content.toString();
             let contentToStr1 = contentToStr.substring(contentToStr.indexOf('img src')+9);
             let thumbnailImage = contentToStr1.substring(0,contentToStr1.indexOf('"'));

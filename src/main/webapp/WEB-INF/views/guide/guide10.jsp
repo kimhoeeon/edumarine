@@ -140,6 +140,7 @@
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>
+                    <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li class="on"><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
@@ -196,7 +197,7 @@
                                     <thead>
                                     <tr>
                                         <th>구분</th>
-                                        <th>스턴드라이브(Sterndrive) 정비 중급 테크니션 과정</th>
+                                        <th>스턴드라이브(Sterndrive) 정비 전문가과정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -293,7 +294,6 @@
                                                 <div class="text">
                                                     ${t_pay.value}
                                                 </div>
-                                                <div class="small">※ 분리교육 진행 시 교육비 별도 공지 예정</div>
                                             </div>
                                         </td>
                                     </tr>

@@ -170,7 +170,14 @@
                             </div>
                         </div>
                         <div class="cont_box">
-                            ${newsInfo.content}
+                            <c:choose>
+                                <c:when test="${newsInfo.contentGbn eq '1'}">
+                                    ${newsInfo.content}
+                                </c:when>
+                                <c:otherwise>
+                                    ${newsInfo.contentTa}
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="file_box">
                             <c:if test="${not empty fileList}">

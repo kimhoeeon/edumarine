@@ -126,6 +126,7 @@ $(function(){
     if(writeDatePicker) {
         writeDatePicker.flatpickr({
             enableTime: true,
+            locale: "ko",
             dateFormat: "Y-m-d H:i:S"
         });
     }
@@ -586,6 +587,12 @@ function getTargetMenu(tableId){
             break;
         case 'mng_customer_highhorsepower_table':
             targetMenu = '회원/신청_신청자목록_고마력선외기정비교육과정';
+            break;
+        case 'mng_customer_highself_table':
+            targetMenu = '회원/신청_신청자목록_고마력선외기자가정비심화과정';
+            break;
+        case 'mng_customer_highspecial_table':
+            targetMenu = '회원/신청_신청자목록_고마력선외기특별반';
             break;
         case 'mng_customer_sterndrive_table':
             targetMenu = '회원/신청_신청자목록_Sterndrive정비교육과정';

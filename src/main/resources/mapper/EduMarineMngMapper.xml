@@ -640,7 +640,9 @@
         SELECT seq
              , notice_gbn
              , title
+             , content_gbn
              , content
+             , content_ta
              , writer
              , write_date
              , view_cnt
@@ -665,7 +667,9 @@
         UPDATE newsletter
         SET notice_gbn = #{noticeGbn}
           , title = <![CDATA[#{title}]]>
+          , content_gbn = #{contentGbn}
           , content = <![CDATA[#{content}]]>
+          , content_ta = <![CDATA[#{contentTa}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
         <if test='fileIdList != null and fileIdList != ""'>
@@ -687,7 +691,9 @@
         ( seq
         , notice_gbn
         , title
+        , content_gbn
         , content
+        , content_ta
         , writer
         , write_date
         , file_id_list
@@ -702,7 +708,9 @@
             ( #{seq}
             , #{noticeGbn}
             , <![CDATA[#{title}]]>
+            , #{contentGbn}
             , <![CDATA[#{content}]]>
+            , <![CDATA[#{contentTa}]]>
             , #{writer}
             , #{writeDate}
             , <![CDATA[#{fileIdList}]]>
@@ -1278,6 +1286,7 @@
              , published_date
              , expiration_date
              , width_px
+             , height_px
              , left_px
              , top_px
              , align
@@ -1307,6 +1316,7 @@
           , published_date = #{publishedDate}
           , expiration_date = #{expirationDate}
           , width_px = #{widthPx}
+          , height_px = #{heightPx}
           , left_px = #{leftPx}
           , top_px = #{topPx}
           , align = #{align}
@@ -2625,6 +2635,188 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="selectHighSelfList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectHighSelfList */
+        SELECT e.seq
+             , e.member_seq
+             , e.train_seq
+             , m.grade
+             , m.id
+             , IFNULL(m.name, e.name_ko) as nameKo
+             , IFNULL(m.name_en, e.name_en) as nameEn
+             , IFNULL(m.phone, e.phone) as phone
+             , IFNULL(m.email, e.email) as email
+             , e.clothes_size
+             , e.participation_path
+             , e.train_understand
+             , e.train_understand_etc
+             , e.apply_status
+             , e.cancel_dttm
+             , e.cancel_reason
+             , e.del_yn
+             , e.note
+             , e.init_regi_pic
+             , e.init_regi_dttm
+             , e.final_regi_pic
+             , e.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as cancelGbn
+             , t.next_time
+        FROM highself e
+        LEFT JOIN member m
+        ON e.member_seq = m.seq
+        LEFT JOIN train t
+        ON e.train_seq = t.seq
+        WHERE 1=1
+          AND e.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND e.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, e.name_ko
+    </select>
+
+    <select id="selectHighSelfSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectHighSelfSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , clothes_size
+             , participation_path
+             , train_understand
+             , train_understand_etc
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM highself
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateHighSelfApplyStatus" parameterType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateHighSelfApplyStatus */
+        UPDATE highself
+        SET apply_status = #{applyStatus}
+        <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectHighSpecialList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectHighSpecialList */
+        SELECT c.seq
+        , c.member_seq
+        , c.train_seq
+        , m.grade
+        , m.id
+        , IFNULL(m.name, c.name_ko) as nameKo
+        , IFNULL(m.name_en, c.name_en) as nameEn
+        , IFNULL(m.phone, c.phone) as phone
+        , IFNULL(m.email, c.email) as email
+        , c.apply_status
+        , c.cancel_dttm
+        , c.cancel_reason
+        , c.del_yn
+        , c.note
+        , c.init_regi_pic
+        , c.init_regi_dttm
+        , c.final_regi_pic
+        , c.final_regi_dttm
+        , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = c.seq) as payMethod
+        , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = c.seq) as cancelGbn
+        , t.next_time
+        FROM highspecial c
+        LEFT JOIN member m
+        ON c.member_seq = m.seq
+        LEFT JOIN train t
+        ON c.train_seq = t.seq
+        WHERE 1=1
+        AND c.del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "NAMEKO"'>
+                AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "NAMEEN"'>
+                AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "ID"'>
+                AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND c.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, c.name_ko
+    </select>
+
+    <select id="selectHighSpecialSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectHighSpecialSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM highspecial
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateHighSpecialApplyStatus" parameterType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateHighSpecialApplyStatus */
+        UPDATE highspecial
+        SET apply_status = #{applyStatus}
+        <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectSterndriveList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SterndriveDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSterndriveList */
         SELECT s.seq
@@ -2890,6 +3082,10 @@
              , r.pay_sum
              , r.pay_method
              , r.pay_status
+             , r.cancel_date
+             , r.cancel_time
+             , r.prtc_date
+             , r.prtc_time
              , r.del_yn
              , r.note
              , r.init_regi_pic
@@ -2914,6 +3110,10 @@
                     , p.pay_sum
                     , p.pay_method
                     , p.pay_status
+                    , p.cancel_date
+                    , p.cancel_time
+                    , p.prtc_date
+                    , p.prtc_time
                     , p.del_yn
                     , p.note
                     , p.init_regi_pic
@@ -3681,6 +3881,48 @@
         ORDER BY h.init_regi_dttm DESC
     </select>
 
+    <select id="selectSmsSendHighSelfList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendHighSelfList */
+        SELECT e.seq AS tableSeq
+             , e.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = e.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , e.apply_status
+        FROM `member` m
+        JOIN highself e
+        ON m.seq = e.member_seq
+        WHERE e.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY e.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendHighSpecialList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendHighSpecialList */
+        SELECT c.seq AS tableSeq
+             , c.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = c.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , c.apply_status
+        FROM `member` m
+        JOIN highspecial c
+        ON m.seq = c.member_seq
+        WHERE c.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY c.init_regi_dttm DESC
+    </select>
+
     <select id="selectSmsSendSterndriveList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendSterndriveList */
         SELECT t.seq AS tableSeq
@@ -4349,6 +4591,82 @@
         ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
     </select>
 
+    <select id="selectExcelHighSelfDetailList" resultType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelHighSelfDetailList */
+        SELECT rst.*
+        FROM (SELECT e.seq,
+                     e.member_seq,
+                     e.train_seq,
+                     e.apply_status,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(e.name_ko, m.name)                  AS nameKo,
+                     IFNULL(e.name_en, m.name_en)               AS name_en,
+                     IFNULL(e.phone, m.phone)                   AS phone,
+                     IFNULL(e.email, m.email)                   AS email,
+                     IFNULL(e.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(e.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(e.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(e.address, m.address)               AS address,
+                     IFNULL(e.address_detail, m.address_detail) AS addressDetail,
+                     e.clothes_size,
+                     e.participation_path,
+                     e.train_understand,
+                     e.train_understand_etc,
+                     e.cancel_dttm,
+                     e.cancel_reason,
+                     e.refund_bank_code,
+                     e.refund_bank_name,
+                     e.refund_bank_customer_name,
+                     e.refund_bank_number,
+                     e.del_yn,
+                     e.note,
+                     e.init_regi_pic,
+                     e.init_regi_dttm,
+                     e.final_regi_pic,
+                     e.final_regi_dttm
+              FROM highself e
+              LEFT JOIN member m
+              ON e.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
+    <select id="selectExcelHighSpecialDetailList" resultType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelHighSpecialDetailList */
+        SELECT rst.*
+        FROM (SELECT c.seq,
+                     c.member_seq,
+                     c.train_seq,
+                     c.apply_status,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(c.name_ko, m.name)                  AS nameKo,
+                     IFNULL(c.name_en, m.name_en)               AS name_en,
+                     IFNULL(c.phone, m.phone)                   AS phone,
+                     IFNULL(c.email, m.email)                   AS email,
+                     IFNULL(c.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(c.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(c.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     c.cancel_dttm,
+                     c.cancel_reason,
+                     c.refund_bank_code,
+                     c.refund_bank_name,
+                     c.refund_bank_customer_name,
+                     c.refund_bank_number,
+                     c.del_yn,
+                     c.note,
+                     c.init_regi_pic,
+                     c.init_regi_dttm,
+                     c.final_regi_pic,
+                     c.final_regi_dttm
+              FROM highspecial c
+              LEFT JOIN member m
+              ON c.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
     <select id="selectExcelSterndriveDetailList" resultType="com.mtf.edumarine.dto.SterndriveDTO">
         /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelSterndriveDetailList */
         SELECT rst.*
@@ -4485,6 +4803,30 @@
                 AND h.del_yn = 'N'
               UNION ALL
               SELECT COUNT(*) AS cnt
+              FROM highself e
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND e.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND e.apply_status LIKE '%취소%'
+                </if>
+                AND e.apply_status NOT LIKE '%대기%'
+                AND e.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM highspecial c
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND c.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND c.apply_status LIKE '%취소%'
+                </if>
+                AND c.apply_status NOT LIKE '%대기%'
+                AND c.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
               FROM sterndrive t
               WHERE 1=1
                 <if test='gbn eq "ALL"'>
@@ -4575,6 +4917,18 @@
                 and h.del_yn = 'N'
               UNION ALL
               SELECT COUNT(*) AS cnt
+              FROM highself e
+              WHERE e.apply_status NOT LIKE '%취소%'
+                and e.apply_status NOT LIKE '%대기%'
+                and e.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM highspecial p
+              WHERE p.apply_status NOT LIKE '%취소%'
+                and p.apply_status NOT LIKE '%대기%'
+                and p.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
               FROM sterndrive t
               WHERE t.apply_status NOT LIKE '%취소%'
                 and t.apply_status NOT LIKE '%대기%'
@@ -4661,9 +5015,9 @@
     <select id="selectRequestList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.RequestDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRequestList */
         SELECT r.seq
+             , r.emergency_yn
              , r.gbn
              , r.progress_step
-             , r.hope_closing_date
              , r.complete_expect_date
              , r.title
              , (select count(*) from request_reply rp where rp.request_seq = r.seq) as replyCnt
@@ -4690,15 +5044,18 @@
          <if test='progressStep != null and progressStep != ""'>
             AND r.progress_step = #{progressStep}
          </if>
+         <if test='emergencyYn != null and emergencyYn != "" and emergencyYn != "N"'>
+            AND r.emergency_yn = 'Y'
+        </if>
         ORDER BY r.init_regi_dttm DESC
     </select>
 
     <select id="selectRequestSingle" parameterType="com.mtf.edumarine.dto.RequestDTO" resultType="com.mtf.edumarine.dto.RequestDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectRequestSingle */
         SELECT seq
+             , emergency_yn
              , gbn
              , progress_step
-             , hope_closing_date
              , complete_expect_date
              , title
              , content
@@ -4723,9 +5080,9 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertRequest */
         INSERT INTO request
         ( seq
+        , emergency_yn
         , gbn
         , progress_step
-        , hope_closing_date
         , complete_expect_date
         , title
         , content
@@ -4739,9 +5096,9 @@
         )
         VALUES
             ( #{seq}
+            , #{emergencyYn}
             , #{gbn}
             , #{progressStep}
-            , #{hopeClosingDate}
             , #{completeExpectDate}
             , <![CDATA[#{title}]]>
             , <![CDATA[#{content}]]>
@@ -4758,9 +5115,9 @@
     <update id="updateRequest" parameterType="com.mtf.edumarine.dto.RequestDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateRequest */
         UPDATE request
-        SET gbn = #{gbn}
+        SET emergency_yn = #{emergencyYn}
+          , gbn = #{gbn}
           , progress_step = #{progressStep}
-          , hope_closing_date = #{hopeClosingDate}
         <if test='completeExpectDate != null and completeExpectDate != ""'>
           , complete_expect_date = #{completeExpectDate}
         </if>
@@ -4888,6 +5245,16 @@
         FROM highhorsepower h
         WHERE h.seq = #{seq}
         UNION ALL
+        SELECT '자가정비 심화과정 (고마력 선외기)' AS trainName
+             , e.train_seq
+        FROM highself e
+        WHERE e.seq = #{seq}
+        UNION ALL
+        SELECT '고마력 선외기 정비 중급 테크니션 (특별반)' AS trainName
+             , c.train_seq
+        FROM highspecial c
+        WHERE c.seq = #{seq}
+        UNION ALL
         SELECT '스턴드라이브 정비 전문가과정' AS trainName
              , t.train_seq
         FROM sterndrive t
@@ -4942,6 +5309,22 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateHighSelfTrainSeq" parameterType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateHighSelfTrainSeq */
+        UPDATE highself
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateHighSpecialTrainSeq" parameterType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateHighSpecialTrainSeq */
+        UPDATE highspecial
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <update id="updateSterndriveTrainSeq" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSterndriveTrainSeq */
         UPDATE sterndrive
@@ -4951,4 +5334,3 @@
     </update>
 
 </mapper>
-

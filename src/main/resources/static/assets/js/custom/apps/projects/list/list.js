@@ -13,7 +13,9 @@ let KTProjectList = function () {
             '#8b75d7',
             '#46b3a9',
             '#d830eb',
-            '#de7abd'
+            '#a10000',
+            '#138ccb',
+            '#de7abd',
         ];
 
         // init chart
@@ -190,4 +192,3 @@ let KTProjectList = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTProjectList.init();
 });
-

@@ -96,7 +96,13 @@ function f_board_newsletter_detail_modal_set(seq){
         document.querySelector('#md_notice_gbn').checked = false;
     }
 
-    document.querySelector('#md_content').innerHTML = resData.content;
+    let contentGbn = resData.contentGbn;
+    if(contentGbn === '1'){
+        document.querySelector('#md_content').innerHTML = resData.content;
+    }else{
+        document.querySelector('#md_content').innerHTML = resData.contentTa;
+    }
+
     document.querySelector('#md_view_cnt').value = resData.viewCnt;
 
     /* TM 및 잠재DB 목록 상세 조회 */
@@ -290,19 +296,38 @@ function f_board_newsletter_form_data_setting(){
 
     form.uploadFile = '';
 
+    let contentGbn = form.contentGbn;
+    if(contentGbn === '1'){
+        form.contentTa = null;
+    }else{
+        form.content = null;
+    }
+
     return JSON.stringify(form);
 }
 
 function f_board_newsletter_valid(){
     let title = document.querySelector('#title').value;
-    let writer = document.querySelector('#writer').value;
-    let writeDate = document.querySelector('#writeDate').value;
-    let content = document.querySelector('#quill_content').value;
-
     if(nvl(title,"") === ""){ showMessage('#title', 'error', '[글 등록 정보]', '제목을 입력해 주세요.', ''); return false; }
+
+    let writer = document.querySelector('#writer').value;
     if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[글 등록 정보]', '작성자를 입력해 주세요.', ''); return false; }
+
+    let writeDate = document.querySelector('#writeDate').value;
     if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '작성일을 입력해 주세요.', ''); return false; }
-    if(nvl(content,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '내용을 입력해 주세요.', ''); return false; }
+
+    let contentGbn = document.querySelector('#contentGbn').value;
+    if(contentGbn === '1'){
+        let content = document.querySelector('#quill_content').value;
+        if(nvl(content,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '내용을 입력해 주세요.', ''); return false; }
+    }else{
+        let contentTa = document.querySelector('#contentTa').value;
+        if(nvl(contentTa,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '내용을 입력해 주세요.', ''); return false; }
+    }
 
     return true;
+}
+
+function f_board_newsletter_editor_pick(contentGbn){
+    $('#contentGbn').val(contentGbn);
 }

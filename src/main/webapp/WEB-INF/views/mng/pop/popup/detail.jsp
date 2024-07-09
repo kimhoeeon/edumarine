@@ -329,6 +329,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highself.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/sterndrive.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">스턴드라이브 정비</span>
@@ -1146,6 +1166,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highself.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highspecial.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -1735,7 +1779,7 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">너비</label>
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">가로 Pixel</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
                                             <div class="col-lg-8">
@@ -1743,12 +1787,37 @@ if (document.documentElement) {
                                                 <div class="row">
                                                     <!--begin::Col-->
                                                     <div class="col-lg-6">
-                                                        <input type="number" id="widthPx" value="${info.widthPx}" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="너비"/>
+                                                        <input type="number" id="widthPx" value="${info.widthPx}" min="0" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="가로 Pixel"/>
                                                     </div>
                                                     <!--end::Col-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-6 d-flex align-items-center">
                                                         <span>pixel (기본값 : 500px)</span>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Row-->
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!--begin::Input group-->
+                                        <div class="row mb-6">
+                                            <!--begin::Label-->
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">세로 Pixel</label>
+                                            <!--end::Label-->
+                                            <!--begin::Col-->
+                                            <div class="col-lg-8">
+                                                <!--begin::Row-->
+                                                <div class="row">
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-6">
+                                                        <input type="number" id="heightPx" value="${info.heightPx}" min="0" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="세로 Pixel"/>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-6 d-flex align-items-center">
+                                                        <span>pixel (기본값 : 0 , 0 일 경우 이미지 높이로 자동 설정)</span>
                                                     </div>
                                                     <!--end::Col-->
                                                 </div>

@@ -115,16 +115,7 @@ $(function(){
     if(writeDatePicker) {
         writeDatePicker.flatpickr({
             enableTime: true,
-            dateFormat: "Y-m-d H:i:S",
-            minDate: "today"
-        });
-    }
-
-    //희망처리일시
-    let hopeClosingDatePicker = $('#hopeClosingDate');
-    if(hopeClosingDatePicker) {
-        hopeClosingDatePicker.flatpickr({
-            enableTime: true,
+            locale: "ko",
             dateFormat: "Y-m-d H:i:S",
             minDate: "today"
         });
@@ -137,6 +128,7 @@ $(function(){
         datePickr = completeExpectDatePicker.flatpickr({
             enableTime: true,
             dateFormat: "Y-m-d H:i:S",
+            locale: "ko",
             minDate: "today",
             clickOpens: false
         });
@@ -162,17 +154,24 @@ function f_request_list_search(){
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
 
+    let emergencyYnVal = $('#condition_emergency_yn').is(':checked');
+    let emergencyYn = 'N';
+    if(emergencyYnVal === true){
+        emergencyYn = 'Y';
+    }
     let gbn = $('#condition_gbn option:selected').val();
     let progressStep = $('#condition_progress_step option:selected').val();
 
     let jsonObj;
     if(nvl(searchText,'') === ''){
         jsonObj = {
+            emergencyYn: emergencyYn,
             gbn: gbn,
             progressStep: progressStep
         };
     }else{
         jsonObj = {
+            emergencyYn: emergencyYn,
             gbn: gbn,
             progressStep: progressStep,
             condition: condition,
@@ -212,6 +211,7 @@ function f_request_list_detail_set(seq){
 function f_request_list_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_emergency_yn').prop('checked', false);
     $('#condition_gbn').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_progress_step').val('').select2({minimumResultsForSearch: Infinity});
 
@@ -370,7 +370,7 @@ function f_request_list_save(seq){
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '요청',
+            confirmButtonText: '문의',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then(async (result) => {
@@ -439,11 +439,11 @@ function f_request_list_save(seq){
                                         body += '<p><br/></p>';
                                         body += '<p><br/></p>';
                                         body += '<p>';
-                                            body += '요청구분 : ' + form.gbn;
+                                            body += '긴급여부 : ' + form.emergencyYn;
                                         body += '</p>';
                                         body += '<p><br/></p>';
                                         body += '<p>';
-                                            body += '희망처리일시 : ' + form.hopeClosingDate;
+                                            body += '요청구분 : ' + form.gbn;
                                         body += '</p>';
                                         body += '<p><br/></p>';
                                         body += '<p>';
@@ -543,6 +543,8 @@ function f_request_list_form_data_setting(processGbn){
 
     form.uploadFile = '';
 
+    form.emergencyYn = nvl(form.emergencyYn,'N');
+
     if(processGbn === 'I') {
         form.progressStep = '처리대기';
     }
@@ -552,22 +554,9 @@ function f_request_list_form_data_setting(processGbn){
 
 function f_request_list_valid(){
 
-    let currentDateTime = getCurrentDateTime();
-
     let gbn = $('#gbn').val();
     let title = $('#title').val();
-    let hopeClosingDate = $('#hopeClosingDate').val();
     let content = document.querySelector('#quill_content').value;
-
-    if (nvl(hopeClosingDate, '') === '') {
-        showMessage('', 'error', '[ 입력 정보 ]', '희망처리일시 항목을 선택해 주세요.', '');
-        return false;
-    }else{
-        if(currentDateTime > hopeClosingDate){
-            showMessage('', 'error', '[ 입력 정보 ]', '희망처리일시 항목을 현재 일시 이후 값으로 선택해 주세요.', '');
-            return false;
-        }
-    }
 
     if(nvl(gbn,'') === ''){ showMessage('', 'error', '[ 입력 정보 ]', '요청구분 항목을 선택해 주세요.', ''); return false; }
     if(nvl(title,'') === ''){ showMessage('', 'error', '[ 입력 정보 ]', '제목 항목을 입력해 주세요.', ''); return false; }
@@ -656,7 +645,7 @@ function f_request_list_reply_remove(seq){
 
                 if (resData.resultCode === "0") {
                     showMessage('', 'info', '[ 댓글 ]', '댓글이 삭제되었습니다.', '');
-                    f_request_list_search(); // 재조회
+                    window.location.reload();
                 } else {
                     showMessage('', 'error', '에러 발생', '댓글 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }

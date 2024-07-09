@@ -247,6 +247,9 @@ function f_center_popup_form_data_setting(seq){
     // 너비
     let widthPx = $('#widthPx').val();
 
+    // 높이
+    let heightPx = $('#heightPx').val();
+
     // 탑
     let topPx = $('#topPx').val();
 
@@ -270,6 +273,7 @@ function f_center_popup_form_data_setting(seq){
         publishedDate: publishedDate,
         expirationDate: expirationDate,
         widthPx: widthPx,
+        heightPx: heightPx,
         topPx: topPx,
         leftPx: leftPx,
         align: align,

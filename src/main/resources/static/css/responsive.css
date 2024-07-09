@@ -368,6 +368,9 @@
     .form_wrap .form_notice_box .text_box .box .cont .text1 {font-size: 1.4rem;}
     .form_wrap .form_notice_box .text_box .box .cont .text2 {font-size: 1.3rem;}
 
+    .form_guide .list li > div {font-size: 1.3rem;}
+    .form_guide .list .gubun {width: 110px;}
+
 
 
     .completed_wrap {padding: 80px 0 40px;}
@@ -621,6 +624,10 @@
     .form_wrap .form_box .form_privacy_inner .box .tit {font-size: 1.4rem;}
     .form_wrap .form_box .form_privacy_inner .box .table th,
     .form_wrap .form_box .form_privacy_inner .box .table td {word-break: break-all;}
+
+    .form_guide .list li {flex-direction: column;}
+    .form_guide .list li > div {padding: 15px 10px;}
+    .form_guide .list .gubun {width: 100%;}
 
     #popupCalendar .popup_box {padding: 30px 0 ;}
     .calBox .calRadio {text-align: center;}
