@@ -398,4 +398,24 @@ public interface EduMarineMngService {
     ResponseDTO processUpdateSterndriveApplyStatusChange(List<SterndriveDTO> sterndriveList);
 
     List<SterndriveDTO> processSelectExcelSterndriveDetailList();
+
+    List<HighSelfDTO> processSelectHighSelfList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateHighSelfApplyStatus(List<HighSelfDTO> highSelfList);
+
+    ResponseDTO processUpdateHighSelfApplyStatusChange(List<HighSelfDTO> highSelfList);
+
+    HighSelfDTO processSelectHighSelfSingle(String seq);
+
+    List<HighSelfDTO> processSelectExcelHighSelfDetailList();
+
+    List<HighSpecialDTO> processSelectHighSpecialList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateHighSpecialApplyStatus(List<HighSpecialDTO> highSpecialList);
+
+    ResponseDTO processUpdateHighSpecialApplyStatusChange(List<HighSpecialDTO> highSpecialList);
+
+    HighSpecialDTO processSelectHighSpecialSingle(String seq);
+
+    List<HighSpecialDTO> processSelectExcelHighSpecialDetailList();
 }

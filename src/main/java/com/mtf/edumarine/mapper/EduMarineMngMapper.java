@@ -468,4 +468,28 @@ public interface EduMarineMngMapper {
     Integer updateSterndriveApplyStatus(SterndriveDTO info);
 
     List<SterndriveDTO> selectExcelSterndriveDetailList();
+
+    List<SmsSendDTO> selectSmsSendHighSelfList();
+
+    List<SmsSendDTO> selectSmsSendHighSpecialList();
+
+    Integer updateHighSelfTrainSeq(HighSelfDTO highSelfDTO);
+
+    Integer updateHighSpecialTrainSeq(HighSpecialDTO highSpecialDTO);
+
+    List<HighSelfDTO> selectHighSelfList(SearchDTO searchDTO);
+
+    HighSelfDTO selectHighSelfSingle(String seq);
+
+    Integer updateHighSelfApplyStatus(HighSelfDTO info);
+
+    List<HighSelfDTO> selectExcelHighSelfDetailList();
+
+    List<HighSpecialDTO> selectHighSpecialList(SearchDTO searchDTO);
+
+    HighSpecialDTO selectHighSpecialSingle(String seq);
+
+    Integer updateHighSpecialApplyStatus(HighSpecialDTO info);
+
+    List<HighSpecialDTO> selectExcelHighSpecialDetailList();
 }

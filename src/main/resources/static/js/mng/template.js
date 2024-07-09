@@ -178,6 +178,30 @@ $(function () {
         }
     });
 
+    //고마력 자가정비
+    //교육대상
+    //교육내용
+    //교육기간
+    //교육장비
+    $('#edu_highself_target,' +
+        '#edu_highself_contents,' +
+        '#edu_highself_period,' +
+        '#edu_highself_stuff').repeater({
+        initEmpty: false,
+        defaultValues: {
+            'text-input': ''
+        },
+        isFirstItemUndeletable: true,
+
+        show: function () {
+            $(this).slideDown();
+        },
+
+        hide: function (deleteElement) {
+            $(this).slideUp(deleteElement);
+        }
+    });
+
     //Sterndrive
     //교육대상
     //교육내용
@@ -1484,6 +1508,219 @@ function f_train_template_highhorsepower_save(){
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 f_train_template_init('highhorsepower');
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '교육 안내 템플릿 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+        }
+    });
+
+}
+
+function f_train_template_highself_save(){
+    console.log('f_train_template_highself_save');
+
+    let main_json_arr = [];
+    // 교육대상
+    let highself_target_arr = $('#edu_highself_target').find('input[type=text]');
+    for(let i=0; i<highself_target_arr.length; i++){
+        let highself_target = highself_target_arr.eq(i).val();
+        let highself_target_json_obj = {
+            major: 'highself',
+            middle: 'info',
+            small: 'target',
+            value: highself_target,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highself_target_json_obj);
+    }
+
+    // 교육내용
+    let highself_contents_arr = $('#edu_highself_contents').find('input[type=text]');
+    for(let i=0; i<highself_contents_arr.length; i++){
+        let highself_contents = highself_contents_arr.eq(i).val();
+        let highself_contents_json_obj = {
+            major: 'highself',
+            middle: 'info',
+            small: 'contents',
+            value: highself_contents,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highself_contents_json_obj);
+    }
+
+    // 교육기간
+    let highself_period_arr = $('#edu_highself_period').find('input[type=text]');
+    for(let i=0; i<highself_period_arr.length; i++){
+        let highself_period = highself_period_arr.eq(i).val();
+        let highself_period_json_obj = {
+            major: 'highself',
+            middle: 'info',
+            small: 'period',
+            value: highself_period,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highself_period_json_obj);
+    }
+
+    // 교육일수
+    let highself_days = $('#edu_highself_days').find('input[type=text]').val();
+    let highself_days_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'days',
+        value: highself_days
+    };
+    main_json_arr.push(highself_days_json_obj);
+
+    // 교육시간
+    let highself_time = $('#edu_highself_time').find('input[type=text]').val();
+    let highself_time_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'time',
+        value: highself_time
+    };
+    main_json_arr.push(highself_time_json_obj);
+
+    // 교육장소
+    let highself_place = $('#edu_highself_place').find('.item').find('input[type=text]').val();
+    let highself_place_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'place',
+        value: highself_place
+    };
+    main_json_arr.push(highself_place_json_obj);
+    let highself_placeDetail = $('#edu_highself_place').find('.address').find('input[type=text]').val();
+    let highself_placeDetail_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'placeDetail',
+        value: highself_placeDetail
+    };
+    main_json_arr.push(highself_placeDetail_json_obj);
+
+    // 교육인원
+    let highself_persons = $('#edu_highself_persons').find('input[type=text]').val();
+    let highself_persons_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'persons',
+        value: highself_persons
+    };
+    main_json_arr.push(highself_persons_json_obj);
+
+    // 교육비
+    // 선외기 정비사 실무교육
+    let highself_pay = $('#edu_highself_pay').find('input[type=text]').val();
+    let highself_pay_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'pay',
+        value: highself_pay
+    };
+    main_json_arr.push(highself_pay_json_obj);
+
+    // 교육장비
+    let highself_stuff_arr = $('#edu_highself_stuff').find('input[type=text]');
+    for(let i=0; i<highself_stuff_arr.length; i++){
+        let highself_stuff = highself_stuff_arr.eq(i).val();
+        let highself_stuff_json_obj = {
+            major: 'highself',
+            middle: 'info',
+            small: 'stuff',
+            value: highself_stuff,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(highself_stuff_json_obj);
+    }
+
+    // 신청방법
+    let applyMethod = $('#edu_highself_apply_method').find('.item').find('textarea').val();
+    let applyMethod_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'applyMethod',
+        value: applyMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(applyMethod_json_obj);
+    let applyMethodUrl = $('#edu_highself_apply_method').find('.cmnt').find('input[type=text]').val();
+
+    if(nvl(applyMethodUrl, '') !== ''){
+        if(!checkUrl(applyMethodUrl)){
+            showMessage('', 'error', '[템플릿 등록 안내]', '신청방법 항목의 URL 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            return false;
+        }
+    }
+
+    let applyMethodUrl_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'applyMethodUrl',
+        value: applyMethodUrl
+    };
+    main_json_arr.push(applyMethodUrl_json_obj);
+
+    // 모집방법
+    let recruitMethod = $('#edu_highself_recruit_method').find('.item').find('textarea').val();
+    let recruitMethod_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'recruitMethod',
+        value: recruitMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitMethod_json_obj);
+
+    // 모집기간
+    let recruitPeriod = $('#edu_highself_recruit_period').find('.item').find('textarea').val();
+    let recruitPeriod_json_obj = {
+        major: 'highself',
+        middle: 'info',
+        small: 'recruitPeriod',
+        value: recruitPeriod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitPeriod_json_obj);
+
+    let main_json_obj = {
+        gbn: 'highself',
+        data: main_json_arr
+    }
+
+    Swal.fire({
+        title: '입력된 정보를 저장하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '저장',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/mng/education/template/save.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(main_json_obj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '교육 안내 템플릿 정보 저장',
+                            html: '교육 안내 템플릿 정보가 저장되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                f_train_template_init('highself');
                             }
                         });
                     } else {

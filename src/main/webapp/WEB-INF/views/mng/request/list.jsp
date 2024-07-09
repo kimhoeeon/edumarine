@@ -338,6 +338,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highself.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/sterndrive.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">스턴드라이브 정비</span>
@@ -1155,6 +1175,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highself.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highspecial.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -1764,6 +1808,12 @@ if (document.documentElement) {
                                                 <!--end::Select2-->
                                             </div>
                                             <%--end::condition--%>
+                                            <%--begin::condition--%>
+                                            <div class="w-100 mw-150px d-flex align-items-center">
+                                                <input type="checkbox" class="form-check-input me-3" id="condition_emergency_yn" onchange="f_request_list_search()"/>
+                                                <label class="form-check-label" for="condition_emergency_yn">긴급 요청만 보기</label>
+                                            </div>
+                                            <%--end::condition--%>
 
                                             <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
 
@@ -1814,10 +1864,10 @@ if (document.documentElement) {
                                                     </th>
                                                     <th class="text-center w-75px">번호</th>
                                                     <th>seq</th>
+                                                    <th class="text-center min-w-75px">일반/긴급</th>
                                                     <th class="text-center min-w-75px">구분</th>
                                                     <th class="text-center min-w-100px">진행단계</th>
                                                     <th class="text-center min-w-150px">글제목 (댓글)</th>
-                                                    <th class="text-center min-w-150px w-175px">희망처리일시</th>
                                                     <th class="text-center min-w-150px w-175px">처리예정일시</th>
                                                     <th class="text-center min-w-100px">작성자</th>
                                                     <th class="text-center min-w-150px w-175px">등록일시</th>
@@ -2078,6 +2128,7 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/l10n/ko.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/list.js?ver=<%=System.currentTimeMillis()%>"></script>

@@ -329,6 +329,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highself.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/sterndrive.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">스턴드라이브 정비</span>
@@ -1146,6 +1166,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highself.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highspecial.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -1685,6 +1729,19 @@ if (document.documentElement) {
                                             <!--end::Card title-->
                                         </div>
                                         <!--end::Card header-->
+
+                                        <!--begin::Card body-->
+                                        <div class="card-body border-top p-9">
+                                            <h3 class="card-title align-items-start flex-column">
+                                                <span class="card-label fw-semibold fs-3 mb-1">유지보수 작업일 안내</span>
+                                                <span class="text-muted fw-semibold fs-7">Information</span>
+                                            </h3>
+                                            <div class="mt-5 mb-2">▷ 금요일 ~ 화요일 요청 : <span class="text-primary fw-bold">수요일</span></div>
+                                            <div class="mb-2">▷ 수요일 ~ 목요일 요청 : <span class="text-primary fw-bold">금요일</span></div>
+                                            <div>※ 에러발생 및 긴급처리가 필요하신 경우, 아래 <span class="text-primary fw-bold">긴급여부 항목에 체크하여 등록</span>해 주세요.</div>
+                                        </div>
+                                        <!--end::Card body-->
+
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
 
@@ -1718,11 +1775,11 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">희망처리일시</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">처리예정일시</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <input class="form-control form-control-solid" id="hopeClosingDate" name="hopeClosingDate" placeholder="희망처리일시" value="${info.hopeClosingDate}"/>
+                                                    <input class="form-control form-control-solid" id="completeExpectDate" name="completeExpectDate" placeholder="처리예정일시" value="${info.completeExpectDate eq null ? '-':info.completeExpectDate}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -1730,11 +1787,12 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">처리예정일시</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">긴급여부</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <input class="form-control form-control-solid" id="completeExpectDate" name="completeExpectDate" placeholder="처리예정일시" value="${info.completeExpectDate eq null ? '-':info.completeExpectDate}" readonly/>
+                                                <div class="col-lg-10 d-flex flex-wrap align-items-center">
+                                                    <input type="checkbox" id="emergencyYn" name="emergencyYn" class="form-check-input form-control-solid-bg" value="Y" <c:if test="${info.emergencyYn eq 'Y'}">checked</c:if> />
+                                                    <label class="form-check-label opacity-100 text-black ms-4" for="emergencyYn">긴급 요청일 경우 체크</label>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2183,6 +2241,7 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/l10n/ko.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/list.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->

@@ -81,6 +81,7 @@
              , published_date
              , expiration_date
              , width_px
+             , height_px
              , left_px
              , top_px
              , align
@@ -830,7 +831,9 @@
         SELECT seq
              , title
              , write_date
+             , content_gbn
              , content
+             , content_ta
         , ( SELECT COUNT(*)
                  FROM newsletter
                  WHERE del_yn = 'N'
@@ -858,7 +861,9 @@
         SELECT seq
              , notice_gbn
              , title
+             , content_gbn
              , content
+             , content_ta
              , writer
              , write_date
              , view_cnt
@@ -1676,6 +1681,54 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateHighSelfPayStatus" parameterType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateHighSelfPayStatus */
+        UPDATE highself
+        SET apply_status = #{applyStatus}
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateHighSpecialPayStatus" parameterType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateHighSpecialPayStatus */
+        UPDATE highspecial
+        SET apply_status = #{applyStatus}
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <update id="updateSterndrivePayStatus" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateSterndrivePayStatus */
         UPDATE sterndrive
@@ -1803,6 +1856,30 @@
                      WHERE h.member_seq = #{memberSeq}
                        AND h.apply_status NOT LIKE CONCAT('%','취소','%')
                      UNION ALL
+                     SELECT '자가정비 심화과정 (고마력 선외기)' AS trainName
+                          , e.train_seq
+                          , e.apply_status AS payStatus
+                          , e.seq
+                          , e.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = e.member_seq and p.table_seq = e.seq and p.train_seq = e.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = e.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = e.train_seq) AS trainEndDttm
+                     FROM highself e
+                     WHERE e.member_seq = #{memberSeq}
+                       AND e.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '고마력 선외기 정비 중급 테크니션 (특별반)' AS trainName
+                          , c.train_seq
+                          , c.apply_status AS payStatus
+                          , c.seq
+                          , c.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = c.member_seq and p.table_seq = c.seq and p.train_seq = c.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = c.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = c.train_seq) AS trainEndDttm
+                     FROM highspecial c
+                     WHERE c.member_seq = #{memberSeq}
+                       AND c.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
                      SELECT '스턴드라이브 정비 전문가과정' AS trainName
                           , t.train_seq
                           , t.apply_status AS payStatus
@@ -1902,6 +1979,28 @@
                      FROM highhorsepower h
                      WHERE h.member_seq = #{memberSeq}
                        AND h.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '자가정비 심화과정 (고마력 선외기)' AS trainName
+                          , e.train_seq
+                          , e.apply_status AS payStatus
+                          , e.seq
+                          , e.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = e.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = e.train_seq) AS trainEndDttm
+                     FROM highself e
+                     WHERE e.member_seq = #{memberSeq}
+                       AND e.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '고마력 선외기 정비 중급 테크니션 (특별반)' AS trainName
+                          , c.train_seq
+                          , c.apply_status AS payStatus
+                          , c.seq
+                          , c.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = c.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = c.train_seq) AS trainEndDttm
+                     FROM highspecial c
+                     WHERE c.member_seq = #{memberSeq}
+                       AND c.apply_status LIKE CONCAT('%','취소','%')
                      UNION ALL
                      SELECT '스턴드라이브 정비 전문가과정' AS trainName
                           , t.train_seq
@@ -2601,6 +2700,86 @@
             )
     </insert>
 
+    <select id="getHighSelfSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getHighSelfSeq */
+        SELECT CONCAT('HF', LPAD(nextval('highself_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertHighSelf" parameterType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertHighSelf */
+        INSERT INTO highself
+        ( seq
+        , member_seq
+        , train_seq
+        , clothes_size
+        , participation_path
+        , train_understand
+        , train_understand_etc
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{trainUnderstand}
+            , #{trainUnderstandEtc}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'HIGHSELF'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'HIGHSELF'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="getHighSpecialSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getHighSpecialSeq */
+        SELECT CONCAT('HC', LPAD(nextval('highspecial_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertHighSpecial" parameterType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertHighSpecial */
+        INSERT INTO highspecial
+        ( seq
+        , member_seq
+        , train_seq
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'HIGHSPECIAL'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'HIGHSPECIAL'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
     <select id="getSterndriveSeq" resultType="java.lang.String">
         /* com.mtf.edumarine.mapper.EdumarineMapper.getSterndriveSeq */
         SELECT CONCAT('SD', LPAD(nextval('sterndrive_seq'), '7', '0'))
@@ -2713,6 +2892,50 @@
         WHERE h.seq = #{seq}
     </select>
 
+    <select id="selectHighSelfSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectHighSelfSingle */
+        SELECT hs.seq
+             , hs.member_seq
+             , hs.train_seq
+             , hs.clothes_size
+             , hs.participation_path
+             , hs.train_understand
+             , hs.train_understand_etc
+             , hs.apply_status
+             , hs.cancel_dttm
+             , hs.cancel_reason
+             , hs.del_yn
+             , hs.note
+             , hs.init_regi_pic
+             , hs.init_regi_dttm
+             , hs.final_regi_pic
+             , hs.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = hs.member_seq AND p.table_seq = hs.seq AND p.train_seq = hs.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = hs.train_seq) AS changeYn
+        FROM highself hs
+        WHERE hs.seq = #{seq}
+    </select>
+
+    <select id="selectHighSpecialSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectHighSpecialSingle */
+        SELECT c.seq
+             , c.member_seq
+             , c.train_seq
+             , c.apply_status
+             , c.cancel_dttm
+             , c.cancel_reason
+             , c.del_yn
+             , c.note
+             , c.init_regi_pic
+             , c.init_regi_dttm
+             , c.final_regi_pic
+             , c.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = c.member_seq AND p.table_seq = c.seq AND p.train_seq = c.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = c.train_seq) AS changeYn
+        FROM highspecial c
+        WHERE c.seq = #{seq}
+    </select>
+
     <select id="selectSterndriveSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SterndriveDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectSterndriveSingle */
         SELECT t.seq
@@ -2765,6 +2988,26 @@
           , train_understand = #{trainUnderstand}
           , train_understand_etc = #{trainUnderstandEtc}
           , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateHighSelf" parameterType="com.mtf.edumarine.dto.HighSelfDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateHighSelf */
+        UPDATE highself
+        SET clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , train_understand = #{trainUnderstand}
+          , train_understand_etc = #{trainUnderstandEtc}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateHighSpecial" parameterType="com.mtf.edumarine.dto.HighSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateHighSpecial */
+        UPDATE highspecial
+        SET note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -2889,6 +3132,22 @@
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectHighHorsePowerPreCheck */
         SELECT COUNT(1)
         FROM highhorsepower
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectHighSelfPreCheck" parameterType="com.mtf.edumarine.dto.HighSelfDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectHighSelfPreCheck */
+        SELECT COUNT(1)
+        FROM highself
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectHighSpecialPreCheck" parameterType="com.mtf.edumarine.dto.HighSpecialDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectHighSpecialPreCheck */
+        SELECT COUNT(1)
+        FROM highspecial
         WHERE member_seq = #{memberSeq}
           AND apply_status NOT LIKE '%취소%'
     </select>
@@ -3024,4 +3283,3 @@
     </select>
 
 </mapper>
-

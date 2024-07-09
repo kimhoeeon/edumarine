@@ -85,6 +85,10 @@ function f_train_calendar_select(category){
                         className = 'edu06';
                         link = '/apply/eduApply07.do';
                         break;
+                    case '자가정비 심화과정 (고마력 선외기)':
+                        className = 'edu08';
+                        link = '/apply/eduApply09.do';
+                        break;
                     case '스턴드라이브 정비 전문가과정':
                         className = 'edu07';
                         link = '/apply/eduApply08.do';
@@ -259,4 +263,3 @@ function nextCalendar() {
     nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
     buildCalendar(events);    // 달력 다시 생성
 }
-

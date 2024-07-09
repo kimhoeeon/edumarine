@@ -277,4 +277,28 @@ public interface EduMarineMapper {
     SterndriveDTO selectSterndriveSingle(String seq);
 
     Integer updateSterndrive(SterndriveDTO sterndriveDTO);
+
+    Integer selectHighSelfPreCheck(HighSelfDTO highSelfDTO);
+
+    String getHighSelfSeq();
+
+    Integer insertHighSelf(HighSelfDTO highselfDTO);
+
+    HighSelfDTO selectHighSelfSingle(String seq);
+
+    Integer updateHighSelf(HighSelfDTO highselfDTO);
+
+    Integer selectHighSpecialPreCheck(HighSpecialDTO highSpecialDTO);
+
+    String getHighSpecialSeq();
+
+    Integer insertHighSpecial(HighSpecialDTO highSpecialDTO);
+
+    HighSpecialDTO selectHighSpecialSingle(String seq);
+
+    Integer updateHighSpecial(HighSpecialDTO highSpecialDTO);
+
+    Integer updateHighSelfPayStatus(HighSelfDTO highSelfDTO);
+
+    Integer updateHighSpecialPayStatus(HighSpecialDTO highSpecialDTO);
 }

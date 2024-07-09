@@ -149,9 +149,19 @@ public class EduMarineController {
         mv.addObject("marinaList", marinaInList);
 
         TrainDTO highHorsePowerDTO = new TrainDTO();
-        highHorsePowerDTO.setGbn("고마력");
+        highHorsePowerDTO.setGbn("고마력 선외기 정비 중급 테크니션");
         List<TrainDTO> highHorsePowerList = eduMarineService.processSelectTrainList(highHorsePowerDTO);
         mv.addObject("highHorsePowerList", highHorsePowerList);
+
+        TrainDTO highSelfDTO = new TrainDTO();
+        highSelfDTO.setGbn("자가정비 심화과정 (고마력 선외기)");
+        List<TrainDTO> highSelfList = eduMarineService.processSelectTrainList(highSelfDTO);
+        mv.addObject("highSelfList", highSelfList);
+
+        TrainDTO highSpecialDTO = new TrainDTO();
+        highSpecialDTO.setGbn("고마력 선외기 정비 중급 테크니션 (특별반)");
+        List<TrainDTO> highSpecialList = eduMarineService.processSelectTrainList(highSpecialDTO);
+        mv.addObject("highSpecialList", highSpecialList);
 
         TrainDTO sterndriveDTO = new TrainDTO();
         sterndriveDTO.setGbn("스턴드라이브");
@@ -315,7 +325,13 @@ public class EduMarineController {
                     trainName = "마리나 선박";
                     break;
                 case "EDU10":
-                    trainName = "고마력";
+                    trainName = "고마력 선외기 정비 중급 테크니션";
+                    break;
+                case "EDU12":
+                    trainName = "자가정비 심화과정 (고마력 선외기)";
+                    break;
+                case "EDU13":
+                    trainName = "고마력 선외기 정비 중급 테크니션 (특별반)";
                     break;
                 case "EDU11":
                     trainName = "스턴드라이브";
@@ -529,6 +545,28 @@ public class EduMarineController {
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply09/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply09_update_status(@RequestBody HighSelfDTO highSelfDTO) {
+        System.out.println("EduMarineController > apply_eduApply09_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply10/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply10_update_status(@RequestBody HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineController > apply_eduApply10_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -900,6 +938,154 @@ public class EduMarineController {
         //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSterndrive(sterndriveDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply09.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply09(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply09");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply09");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply09/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply09_preCheck(@RequestBody HighSelfDTO highselfDTO) {
+        System.out.println("EduMarineController > apply_eduApply09_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectHighSelfPreCheck(highselfDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply09/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply09_insert(@RequestBody HighSelfDTO highselfDTO) {
+        System.out.println("EduMarineController > apply_eduApply09_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertHighSelf(highselfDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply09_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply09_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply09_modify");
+        ModelAndView mv = new ModelAndView();
+
+        HighSelfDTO info = eduMarineService.processSelectHighSelfSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply09_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply09/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply09_update(@RequestBody HighSelfDTO highselfDTO) {
+        System.out.println("EduMarineController > mypage_eduApply09_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateHighSelf(highselfDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply10.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply10(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply10");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply10");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply10/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply10_preCheck(@RequestBody HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineController > apply_eduApply10_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectHighSpecialPreCheck(highSpecialDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply10/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply10_insert(@RequestBody HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineController > apply_eduApply10_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertHighSpecial(highSpecialDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply10_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply10_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply10_modify");
+        ModelAndView mv = new ModelAndView();
+
+        HighSpecialDTO info = eduMarineService.processSelectHighSpecialSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply10_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply10/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply10_update(@RequestBody HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineController > mypage_eduApply10_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateHighSpecial(highSpecialDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1387,7 +1573,6 @@ public class EduMarineController {
         String mo_resultCode = request.getParameter("P_STATUS");
 
         System.out.println("PC : " + pc_resultCode + " / MOBILE : " + mo_resultCode);
-        System.out.println(request.getParameter("P_RMESG1"));
 
         if(pc_resultCode != null && !"null".equals(pc_resultCode)){
             System.out.println("이니시스 결제 Response pc_resultCode : " + pc_resultCode);
@@ -2245,6 +2430,63 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/guide/guide11.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide11() {
+        System.out.println("EduMarineController > guide_guide11");
+        ModelAndView mv = new ModelAndView();
+
+        //고마력 선외기 자가정비
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateHighselfInfoList = eduMarineService.processSelectTrainTemplateList("highself");
+        if(trainTemplateHighselfInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> stuffList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateHighselfInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("e_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("e_time", info);
+                }else if(info.getSmall().equals("place")){
+                    mv.addObject("e_place", info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    mv.addObject("e_placeDetail", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("e_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("e_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("e_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("e_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("e_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("e_recruitPeriod", info);
+                }else if(info.getSmall().equals("stuff")){
+                    stuffList.add(info);
+                }
+
+            } //for
+
+            mv.addObject("e_targetList", targetList);
+            mv.addObject("e_contentsList", contentsList);
+            mv.addObject("e_periodList", periodList);
+            mv.addObject("e_stuffList", stuffList);
+
+        } //고마력
+
+        mv.setViewName("/guide/guide11");
+        return mv;
+    }
+
     //***************************************************************************
     // Common
     //***************************************************************************
@@ -2562,13 +2804,41 @@ public class EduMarineController {
                                 }
                             }
 
-                        } else if (paymentDTO.getTrainName().contains("고마력")) {
+                        } else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션")) {
 
                             // highhorsepower table
                             HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
                             highHorsePowerDTO.setSeq(paymentDTO.getTableSeq());
                             highHorsePowerDTO.setApplyStatus(paymentDTO.getPayStatus());
                             ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("자가정비 심화과정 (고마력 선외기)")) {
+
+                            // highself table
+                            HighSelfDTO highSelfDTO = new HighSelfDTO();
+                            highSelfDTO.setSeq(paymentDTO.getTableSeq());
+                            highSelfDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션 (특별반)")) {
+
+                            // highspecial table
+                            HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
+                            highSpecialDTO.setSeq(paymentDTO.getTableSeq());
+                            highSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -2852,13 +3122,41 @@ public class EduMarineController {
                                 }
                             }
 
-                        } else if (paymentDTO.getTrainName().contains("고마력")) {
+                        } else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션")) {
 
                             // highhorsepower table
                             HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
                             highHorsePowerDTO.setSeq(paymentDTO.getTableSeq());
                             highHorsePowerDTO.setApplyStatus(paymentDTO.getPayStatus());
                             ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        }else if (paymentDTO.getTrainName().contains("자가정비 심화과정 (고마력 선외기)")) {
+
+                            // highself table
+                            HighSelfDTO highSelfDTO = new HighSelfDTO();
+                            highSelfDTO.setSeq(paymentDTO.getTableSeq());
+                            highSelfDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        }else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션 (특별반)")) {
+
+                            // highspecial table
+                            HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
+                            highSpecialDTO.setSeq(paymentDTO.getTableSeq());
+                            highSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -3230,13 +3528,41 @@ public class EduMarineController {
                                 successFlag = false;
                             }
 
-                        } else if (trainName.contains("고마력")) {
+                        } else if (trainName.contains("고마력 선외기 정비 중급 테크니션")) {
 
                             // highhorsepower table
                             HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
                             highHorsePowerDTO.setSeq(tableSeq);
                             highHorsePowerDTO.setApplyStatus(applyStatus);
                             ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        }else if (trainName.contains("자가정비 심화과정 (고마력 선외기)")) {
+
+                            // highself table
+                            HighSelfDTO highSelfDTO = new HighSelfDTO();
+                            highSelfDTO.setSeq(tableSeq);
+                            highSelfDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                            }else{
+                                successFlag = false;
+                            }
+
+                        }else if (trainName.contains("고마력 선외기 정비 중급 테크니션 (특별반)")) {
+
+                            // highspecial table
+                            HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
+                            highSpecialDTO.setSeq(tableSeq);
+                            highSpecialDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);

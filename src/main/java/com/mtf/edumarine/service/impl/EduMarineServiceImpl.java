@@ -675,6 +675,20 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public Integer processSelectHighSelfPreCheck(HighSelfDTO highSelfDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectHighSelfPreCheck");
+        return eduMarineMapper.selectHighSelfPreCheck(highSelfDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public Integer processSelectHighSpecialPreCheck(HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectHighSpecialPreCheck");
+        return eduMarineMapper.selectHighSpecialPreCheck(highSpecialDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public Integer processSelectSterndrivePreCheck(SterndriveDTO sterndriveDTO) {
         System.out.println("EduMarineServiceImpl > processSelectSterndrivePreCheck");
         return eduMarineMapper.selectSterndrivePreCheck(sterndriveDTO);
@@ -1055,7 +1069,13 @@ public class EduMarineServiceImpl implements EduMarineService {
             }else if(trainName.contains("(세일요트)")){
                 originalTrainName = "해상엔진 자가정비 (세일요트)";
             }else if(trainName.contains("고마력")){
-                originalTrainName = "고마력 선외기 정비 중급 테크니션";
+                if(trainName.contains("테크니션")){
+                    originalTrainName = "고마력 선외기 정비 중급 테크니션";
+                }else if(trainName.contains("심화과정")){
+                    originalTrainName = "자가정비 심화과정 (고마력 선외기)";
+                }else if(trainName.contains("특별반")){
+                    originalTrainName = "고마력 선외기 정비 중급 테크니션 (특별반)";
+                }
             }else if(trainName.contains("Sterndrive")){
                 originalTrainName = "스턴드라이브 정비 전문가과정";
             }
@@ -1281,6 +1301,72 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateHighHorsePowerPayStatus : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSelfPayStatus(HighSelfDTO highSelfDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateHighSelfPayStatus : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateHighSelfPayStatus(highSelfDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail] Seq : " + highSelfDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(highSelfDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(highSelfDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateHighSelfPayStatus : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSpecialPayStatus(HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateHighSpecialPayStatus : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateHighSpecialPayStatus(highSpecialDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail] Seq : " + highSpecialDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(highSpecialDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(highSpecialDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateHighSpecialPayStatus : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
         }
 
@@ -1965,6 +2051,66 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public HighSelfDTO processSelectHighSelfSingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectHighSelfSingle");
+        return eduMarineMapper.selectHighSelfSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSelf(HighSelfDTO highselfDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateHighSelf : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateHighSelf(highselfDTO);
+
+            responseDTO.setCustomValue(highselfDTO.getSeq());
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateHighSelf : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public HighSpecialDTO processSelectHighSpecialSingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectHighSpecialSingle");
+        return eduMarineMapper.selectHighSpecialSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSpecial(HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateHighSelf : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateHighSpecial(highSpecialDTO);
+
+            responseDTO.setCustomValue(highSpecialDTO.getSeq());
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateHighSpecial : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public SterndriveDTO processSelectSterndriveSingle(String seq) {
         System.out.println("EduMarineServiceImpl > processSelectSterndriveSingle");
         return eduMarineMapper.selectSterndriveSingle(seq);
@@ -2073,6 +2219,98 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertHighHorsePower ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertHighSelf(HighSelfDTO highselfDTO) {
+        System.out.println("EduMarineServiceImpl > processInsertHighSelf");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(highselfDTO.getId() != null){
+
+                TrainDTO trainDTO = eduMarineMapper.selectTrainSingle(highselfDTO.getTrainSeq());
+
+                if(Objects.equals(trainDTO.getTrainCnt(), trainDTO.getTrainApplyCnt())){
+                    resultCode = "99";
+                    resultMessage = "수강 정원이 초과하여 신청이 불가합니다.";
+                }else{
+                    String getSeq = eduMarineMapper.getHighSelfSeq();
+                    highselfDTO.setSeq(getSeq);
+
+                    result = eduMarineMapper.insertHighSelf(highselfDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertHighSelf ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertHighSpecial(HighSpecialDTO highSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processInsertHighSpecial");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(highSpecialDTO.getId() != null){
+
+                TrainDTO trainDTO = eduMarineMapper.selectTrainSingle(highSpecialDTO.getTrainSeq());
+
+                if(Objects.equals(trainDTO.getTrainCnt(), trainDTO.getTrainApplyCnt())){
+                    resultCode = "99";
+                    resultMessage = "수강 정원이 초과하여 신청이 불가합니다.";
+                }else{
+                    String getSeq = eduMarineMapper.getHighSpecialSeq();
+                    highSpecialDTO.setSeq(getSeq);
+
+                    result = eduMarineMapper.insertHighSpecial(highSpecialDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertHighSpecial ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 

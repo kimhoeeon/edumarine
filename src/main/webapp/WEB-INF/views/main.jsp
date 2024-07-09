@@ -108,13 +108,13 @@
 
     <style>
         .mainLayerPopup { display:none; position:fixed; width:auto; min-height:100px; top:74px; left:0px; padding:0px;  border:3px solid #242527; background:#fff; overflow:hidden; z-index:9999; }
-        .mainLayerPopup .popupBox { text-align: center; padding:35px 0 0; min-height:150px; height:100%}
+        .mainLayerPopup .popupBox { text-align: center; padding:35px 0 0; min-height:150px; height:100%; }
         .mainLayerPopup .popupBox img { display: block; margin: 0 0;}
-        .mainLayerPopup .popupClose {text-align:right; background:#111; padding:10px;}
+        .mainLayerPopup .popupClose { display: flex; justify-content: flex-end; align-items: center; background:#111; padding: 5px; }
         .mainLayerPopup .popupClose input {vertical-align:middle;}
-        .mainLayerPopup .popupClose label {color:#fff; font-size:14px; vertical-align:middle;  margin-left:3px;}
-        .mainLayerPopup .popupClose a{color:#fff; width:15px; display:inline-block; vertical-align:middle; margin-left:10px; }
-        .mainLayerPopup .popupClose input[type="checkbox"] {border:1px solid #ccc; background:#fff; width: 20px; height: 20px; margin-right:5px; margin-bottom:5px; vertical-align: middle; border-radius: 0;}
+        .mainLayerPopup .popupClose label {color:#fff; font-size:14px; margin-left:3px; height: 15px;}
+        .mainLayerPopup .popupClose a{color:#fff; width:15px; height: 15px; margin-left:10px; }
+        .mainLayerPopup .popupClose input[type="checkbox"] {border:1px solid #ccc; background:#fff; width: 15px; height: 15px; border-radius: 0;}
     </style>
 </head>
 
@@ -150,6 +150,8 @@
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU08')">#세일요트</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU04')">#FRP</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU10')">#고마력</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU12')">#고마력 심화과정</a>
+                        <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU13')">#고마력 특별반</a>
                         <a href="javascript:void(0);" onclick="f_main_schedule_search('H', 'EDU11')">#스턴드라이브</a>
 
                     </div>
@@ -243,6 +245,8 @@
                     <li data-tab="tab-4">선내기 자가정비과정</li>
                     <li data-tab="tab-5">세일요트 자가정비과정</li>
                     <li data-tab="tab-7">고마력 선외기 정비 중급 테크니션</li>
+                    <li data-tab="tab-9">자가정비 심화과정 (고마력 선외기)</li>
+                    <li data-tab="tab-10">고마력 선외기 정비 중급 테크니션 (특별반)</li>
                     <li data-tab="tab-8">스턴드라이브 정비 전문가과정</li>
                 </ul>
                 <!-- tab_menu -->
@@ -481,6 +485,74 @@
                 </div>
                 <!-- //list -->
                 <!-- list -->
+                <div class="main_edu_list tab_content" id="tab-9">
+                    <c:if test="${not empty highSelfList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainHighSelf" items="${highSelfList}" begin="0" end="${highSelfList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="/apply/schedule.do">${mainHighSelf.gbn}</a></div>
+                                    <div class="chasi">${mainHighSelf.nextTime}</div>
+                                    <div class="peopleRecruit">${mainHighSelf.trainCnt}</div>
+                                    <div class="peopleApp">${mainHighSelf.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainHighSelf.applyStartDttm,2, mainHighSelf.applyStartDttm.length())} ~ ${fn:substring(mainHighSelf.applyEndDttm,2, mainHighSelf.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainHighSelf.trainStartDttm,2, mainHighSelf.trainStartDttm.length())} ~ ${fn:substring(mainHighSelf.trainEndDttm,2, mainHighSelf.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty highSelfList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
+                </div>
+                <!-- //list -->
+                <!-- list -->
+                <div class="main_edu_list tab_content" id="tab-10">
+                    <c:if test="${not empty highSpecialList}">
+                        <ul class="list_head">
+                            <li>
+                                <div class="name">과정명</div>
+                                <div class="chasi">차시</div>
+                                <div class="peopleRecruit">인원</div>
+                                <div class="peopleApp">신청인원</div>
+                                <div class="periodApp">신청기간</div>
+                                <div class="periodTng">교육기간</div>
+                            </li>
+                        </ul>
+                        <ul class="list_body">
+                            <c:forEach var="mainhighSpecial" items="${highSpecialList}" begin="0" end="${highSpecialList.size()}" step="1" varStatus="status">
+                                <li>
+                                    <div class="name"><a href="/apply/schedule.do">${mainhighSpecial.gbn}</a></div>
+                                    <div class="chasi">${mainhighSpecial.nextTime}</div>
+                                    <div class="peopleRecruit">${mainhighSpecial.trainCnt}</div>
+                                    <div class="peopleApp">${mainhighSpecial.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainhighSpecial.applyStartDttm,2, mainhighSpecial.applyStartDttm.length())} ~ ${fn:substring(mainhighSpecial.applyEndDttm,2, mainhighSpecial.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainhighSpecial.trainStartDttm,2, mainhighSpecial.trainStartDttm.length())} ~ ${fn:substring(mainhighSpecial.trainEndDttm,2, mainhighSpecial.trainEndDttm.length())}</div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${empty highSpecialList}">
+                        <div class="edu_none">
+                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
+                        </div>
+                    </c:if>
+                </div>
+                <!-- //list -->
+                <!-- list -->
                 <div class="main_edu_list tab_content" id="tab-8">
                     <c:if test="${not empty sterndriveList}">
                         <ul class="list_head">
@@ -611,12 +683,21 @@
         </c:if>
         <div class="mainLayerPopup" id="id_popup_${popup.seq}"
              style="position:fixed; top:${popup.topPx}px; left:${imgLeftPosition}px; width:${popup.widthPx}px; display: none;">
-            <div class="popupBox" style="padding:0;">
+            <div class="popupBox" style="padding:0; <c:if test="${popup.heightPx ne '0'}">height:${popup.heightPx}px;</c:if>">
+                <script>
+                    $(function(){
+                        let popup_height_px = '${popup.heightPx}';
+                        if(nvl(popup_height_px,'0') !== '0'){
+                            $('#id_popup_' + '${popup.seq}' + ' p').css('height', '100%');
+                            $('#id_popup_' + '${popup.seq}' + ' p img').css('width', '100%').css('height', '100%').css('object-fit', 'fill');
+                        }
+                    })
+                </script>
                 <c:if test="${popup.linkUrl eq null or popup.linkUrl eq ''}">
                     ${fn:replace(fn:replace(popup.content,'&lt;','<'),'&gt;','>')}
                 </c:if>
                 <c:if test="${popup.linkUrl ne null and popup.linkUrl ne ''}">
-                    <a href="${popup.linkUrl}" target="_blank">
+                    <a href="${popup.linkUrl}">
                         ${fn:replace(fn:replace(popup.content,'&lt;','<'),'&gt;','>')}
                     </a>
                 </c:if>
@@ -624,7 +705,7 @@
             <div class="popupClose">
                 <input type="checkbox" id="id_today_${popup.seq}" onclick="CloseMainPopup('${popup.seq}')">
                 <label for="id_today_${popup.seq}"> 오늘 하루 그만보기 </label>
-                <a href="javascript:CloseMainPopup('${popup.seq}');" style="margin-left:20px">
+                <a href="javascript:CloseMainPopup('${popup.seq}');">
                     <img src="<%request.getContextPath();%>/static/img/close_w.png">
                 </a>
             </div>
@@ -646,19 +727,30 @@
             let popupSize = popupEl.css('width').replace('px','');
             let popupLeft = parseInt('${imgLeftPosition}');
 
+            let popupBox = $('#'+id_popup_name + ' .popupBox');
+            let popupBoxHeightSize = popupEl.css('height').replace('px','');
+
             let windowWidth = window.innerWidth;
             if(windowWidth >= 900 && windowWidth <= 1024){
                 popupEl.css('width', (popupSize * 0.9) + 'px');
                 popupEl.css('left', (popupLeft * 0.9) + 'px');
+
+                popupBox.css('height', (popupBoxHeightSize * 0.9) + 'px');
             }else if(windowWidth >= 769 && windowWidth <= 899) {
                 popupEl.css('width', (popupSize * 0.7) + 'px');
                 popupEl.css('left', (popupLeft * 0.7) + 'px');
+
+                popupBox.css('height', (popupBoxHeightSize * 0.7) + 'px');
             }else if(windowWidth >= 481 && windowWidth <= 768) {
                 popupEl.css('width', (popupSize * 0.6) + 'px');
                 popupEl.css('left', (popupLeft * 0.1) + 'px');
+
+                popupBox.css('height', (popupBoxHeightSize * 0.6) + 'px');
             }else if(windowWidth <= 480){
                 popupEl.css('width', (popupSize * 0.5) + 'px');
                 popupEl.css('left', '10px');
+
+                popupBox.css('height', (popupBoxHeightSize * 0.5) + 'px');
             }
 
             popupEl.show();

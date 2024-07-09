@@ -17,6 +17,7 @@ public class PopupDTO extends AbstractPagingRequestVo {
     String expirationDate; //만료일시
     String today;
     String widthPx; //이미지너비
+    String heightPx; //이미지높이
     String leftPx; //가로여백
     String topPx; //세로여백
     String align; //정렬

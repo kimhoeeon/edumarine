@@ -222,4 +222,24 @@ public interface EduMarineService {
     SterndriveDTO processSelectSterndriveSingle(String seq);
 
     ResponseDTO processUpdateSterndrive(SterndriveDTO sterndriveDTO);
+
+    Integer processSelectHighSelfPreCheck(HighSelfDTO highselfDTO);
+
+    ResponseDTO processInsertHighSelf(HighSelfDTO highselfDTO);
+
+    HighSelfDTO processSelectHighSelfSingle(String seq);
+
+    ResponseDTO processUpdateHighSelf(HighSelfDTO highselfDTO);
+
+    Integer processSelectHighSpecialPreCheck(HighSpecialDTO highSpecialDTO);
+
+    ResponseDTO processInsertHighSpecial(HighSpecialDTO highSpecialDTO);
+
+    HighSpecialDTO processSelectHighSpecialSingle(String seq);
+
+    ResponseDTO processUpdateHighSpecial(HighSpecialDTO highSpecialDTO);
+
+    ResponseDTO processUpdateHighSelfPayStatus(HighSelfDTO highSelfDTO);
+
+    ResponseDTO processUpdateHighSpecialPayStatus(HighSpecialDTO highSpecialDTO);
 }

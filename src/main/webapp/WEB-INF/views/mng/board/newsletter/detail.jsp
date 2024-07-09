@@ -329,6 +329,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highself.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/highspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/sterndrive.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">스턴드라이브 정비</span>
@@ -1146,6 +1166,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highself.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">자가정비 심화과정 (고마력)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/highspecial.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">고마력 선외기 정비 (특별반)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -1715,10 +1759,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">제목</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제목</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목" value="${info.title}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1727,10 +1771,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성자</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성자</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="writer" name="writer" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자" value="${info.writer eq null ? '관리자' : info.writer}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1739,10 +1783,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1751,10 +1795,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">중요 공지사항 설정</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">중요 공지사항 설정</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex flex-wrap">
+                                                <div class="col-lg-10 d-flex flex-wrap">
                                                     <div class="form-check form-check-custom form-check-lg mb-3 mr15">
                                                         <input class="form-check-input form-control-solid-bg"
                                                                type="checkbox" id="noticeGbn" name="noticeGbn"
@@ -1768,26 +1812,70 @@ if (document.documentElement) {
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+
                                             <!--begin::Input group-->
-                                            <div class="row mb-6 h-375px">
+                                            <div class="row mb-6">
+                                                <input type="hidden" id="contentGbn" name="contentGbn" value="1">
+                                                <!--begin::Col-->
+                                                <div class="col-lg-2">
+                                                    <ul id="editorTab" class="nav nav-tabs nav-pills flex-row border-0 flex-md-column me-5 mb-3 mb-md-0 fs-6 min-w-lg-200px" role="tablist">
+                                                        <li class="nav-item w-100 me-0 mb-md-2" role="presentation" onclick="f_board_newsletter_editor_pick('1');">
+                                                            <a class="w-100 btn btn-active-light-primary active" data-bs-toggle="tab" href="#content_tab_1" aria-selected="true" role="tab">
+                                                                <span class="d-flex flex-column align-items-start">
+                                                                    <span class="fw-semibold fs-6">기본 에디터</span>
+                                                                    <span class="fs-7">텍스트, 이미지, 링크 등</span>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item w-100" role="presentation" onclick="f_board_newsletter_editor_pick('2');">
+                                                            <a class="w-100 btn btn-active-light-primary" data-bs-toggle="tab" href="#content_tab_2" aria-selected="false" tabindex="-1" role="tab">
+                                                                <span class="d-flex flex-column align-items-start">
+                                                                    <span class="fw-semibold fs-6">HTML 에디터</span>
+                                                                    <span class="fs-7">텍스트, HTML 코드</span>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!--end::Col-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <div class="tab-content" id="myTabContent">
+                                                        <div class="tab-pane fade active show" id="content_tab_1" role="tabpanel">
+                                                            <div id="quill_editor_content" class="h-325px">${info.content}</div>
+                                                            <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}"/>">
+                                                        </div>
+
+                                                        <div class="tab-pane fade" id="content_tab_2" role="tabpanel">
+                                                            <textarea class="form-control h-325px w-100" id="contentTa" name="contentTa" placeholder="HTML 코드 입력" data-kt-autosize="true">${info.contentTa}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+
+                                            <!--begin::Input group-->
+                                            <%--<div class="row mb-6 h-375px">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
                                                     <div id="quill_editor_content" class="h-325px">${info.content}</div>
-                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true"/>">
+                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}"/>">
                                                 </div>
                                                 <!--end::Col-->
-                                            </div>
+                                            </div>--%>
                                             <!--end::Input group-->
+
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">첨부파일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <!--begin::Excel import-->
                                                     <a href="" class="btn btn-primary btn-active-light-primary ms-auto" data-bs-toggle="modal" data-bs-target="#kt_modal_file_upload">
                                                         <i class="ki-duotone ki-exit-up fs-2">
@@ -1802,10 +1890,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일 목록</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">첨부파일 목록</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <ul id="uploadFileList">
                                                         <c:forEach var="file" items="${fileList}">
                                                             <li class="mb-4">
@@ -1989,11 +2077,22 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/l10n/ko.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="<%request.getContextPath();%>/static/js/mng/newsletter.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
+    <script>
+        $(function(){
+            let contentGbn = '${info.contentGbn}';
+            if(nvl(contentGbn,'') !== ''){
+                let tabEl = $('#editorTab li').eq(Number.parseInt(contentGbn) - 1).find('a');
+                let tab = new bootstrap.Tab(tabEl);
+                tab.show();
+            }
+        })
+    </script>
 
     <!--end::login check-->
 </c:if>

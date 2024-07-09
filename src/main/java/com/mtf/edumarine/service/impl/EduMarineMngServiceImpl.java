@@ -712,8 +712,19 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                     newsletterDTO.setNoticeGbn("1");
                 }
 
-                String content = newsletterDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
-                newsletterDTO.setContent(content);
+                String contentGbn = newsletterDTO.getContentGbn();
+                if("1".equals(contentGbn)){
+                    String content = newsletterDTO.getContent();
+                    if(content != null){
+                        newsletterDTO.setContent(content.replaceAll("&lt;","<").replaceAll("&gt;",">").trim());
+                    }
+                }else{
+                    String contentTa = newsletterDTO.getContentTa();
+                    if(contentTa != null){
+                        newsletterDTO.setContentTa(contentTa.replaceAll("&lt;","<").replaceAll("&gt;",">").trim());
+                    }
+                }
+
                 result = eduMarineMngMapper.updateNewsletter(newsletterDTO);
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -754,8 +765,19 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             String getSeq = eduMarineMngMapper.getNewsletterSeq();
             newsletterDTO.setSeq(getSeq);
 
-            String content = newsletterDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
-            newsletterDTO.setContent(content);
+            String contentGbn = newsletterDTO.getContentGbn();
+            if("1".equals(contentGbn)){
+                String content = newsletterDTO.getContent();
+                if(content != null){
+                    newsletterDTO.setContent(content.replaceAll("&lt;","<").replaceAll("&gt;",">").trim());
+                }
+            }else{
+                String contentTa = newsletterDTO.getContentTa();
+                if(contentTa != null){
+                    newsletterDTO.setContentTa(contentTa.replaceAll("&lt;","<").replaceAll("&gt;",">").trim());
+                }
+            }
+
             result = eduMarineMngMapper.insertNewsletter(newsletterDTO);
 
             responseDTO.setCustomValue(getSeq);
@@ -4032,6 +4054,672 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<HighSelfDTO> processSelectHighSelfList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectHighSelfList");
+        return eduMarineMngMapper.selectHighSelfList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public HighSelfDTO processSelectHighSelfSingle(String seq) {
+        System.out.println("EduMarineMngServiceImpl > processSelectHighSelfSingle");
+        return eduMarineMngMapper.selectHighSelfSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSelfApplyStatus(List<HighSelfDTO> highSelfList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateHighSelfApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(HighSelfDTO info : highSelfList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    HighSelfDTO highSelfInfo = eduMarineMngMapper.selectHighSelfSingle(info.getSeq());
+                    if(highSelfInfo != null){
+
+                        boolean cancelApiCallYn = false;
+                        if( "결제완료".equals(highSelfInfo.getApplyStatus()) || "취소신청".equals(highSelfInfo.getApplyStatus()) ){
+                            cancelApiCallYn = true;
+                        }
+
+                        if(cancelApiCallYn){
+
+                            // 결제 내역이 있는 신청건인지 payment table 조회
+                            // where table_seq = boarder table seq
+                            PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(info.getSeq());
+                            if(paymentDTO != null){
+
+                                // 교육 정보 조회
+                                TrainDTO trainReqDTO = new TrainDTO();
+                                trainReqDTO.setSeq(paymentDTO.getTrainSeq());
+                                TrainDTO trainDTO = eduMarineMngMapper.selectTrainSingle(trainReqDTO);
+
+                                if(trainDTO != null){
+
+                                    if("Card".equalsIgnoreCase(paymentDTO.getPayMethod()) || "VCard".equalsIgnoreCase(paymentDTO.getPayMethod())){
+                                        if("ALL".equals(info.getCancelGbn())){ // 전체환불
+                                            InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                            inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                            inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                            inistdpayCancelRequestDTO.setMsg("전액 환불");
+                                            // 환불 API CALL
+                                            InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentCancelApi(inistdpayCancelRequestDTO);
+                                            if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                            }else{
+                                                PaymentDTO updCancelPayment = new PaymentDTO();
+                                                updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                updCancelPayment.setCancelGbn("ALL");
+                                                updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                            }
+
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
+                                            //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                                            String cancelDttm = highSelfInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
+                                            String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
+
+                                            DateTimeFormatter formatter_beforeCancelDttm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                            DateTimeFormatter formatter_afterTrainStartDttm = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+                                            LocalDate beforeCancelDttm = LocalDate.parse(cancelDttm, formatter_beforeCancelDttm);
+                                            LocalDate afterTrainStartDttm = LocalDate.parse(trainStartDttm, formatter_afterTrainStartDttm);
+
+                                            long diff = beforeCancelDttm.until(afterTrainStartDttm, ChronoUnit.DAYS);
+                                            boolean apiFlag = true;
+                                            String msg = "교육비 환불 규정에 따른 환불 : ";
+                                            Integer price = paymentDTO.getPaySum();
+                                            Integer confirmPrice = paymentDTO.getPaySum();
+                                            if(diff > 10){
+                                                msg = msg + "결제금액의 100% 환불 처리";
+                                            }else if(5 <= diff){ // 교육 개설 5일 ~ 10일 50프로 금액 환불
+                                                price = (int) (price * 0.5);
+                                                confirmPrice = confirmPrice - price;
+                                                msg = msg + "결제금액의 50% 환불 처리";
+                                            }else {
+                                                apiFlag = false;
+                                            }
+
+                                            if(apiFlag){
+
+                                                InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                                inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                                inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                                inistdpayCancelRequestDTO.setMsg(msg);
+                                                inistdpayCancelRequestDTO.setPrice(String.valueOf(price));
+                                                inistdpayCancelRequestDTO.setConfirmPrice(String.valueOf(confirmPrice));
+                                                // 환불 API CALL
+                                                InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentCancelApi(inistdpayCancelRequestDTO);
+                                                if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                    resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [CODE] MSG : [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                                }else{
+                                                    PaymentDTO updCancelPayment = new PaymentDTO();
+                                                    updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                    updCancelPayment.setCancelGbn("PART");
+                                                    updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                    updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                    updCancelPayment.setPrtcDate(inistdpayCancelResponseDTO.getPrtcDate());
+                                                    updCancelPayment.setPrtcTime(inistdpayCancelResponseDTO.getPrtcTime());
+                                                    updCancelPayment.setCancelTid(inistdpayCancelResponseDTO.getTid());
+                                                    updCancelPayment.setPrtcPrice(inistdpayCancelResponseDTO.getPrtcPrice());
+                                                    updCancelPayment.setPrtcRemains(inistdpayCancelResponseDTO.getPrtcRemains());
+                                                    eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                                }
+                                            }
+                                        }
+                                    }else if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())){
+                                        if("ALL".equals(info.getCancelGbn())){ //전체환불
+                                            InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                            inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                            inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                            inistdpayCancelRequestDTO.setMsg("전액 환불");
+                                            inistdpayCancelRequestDTO.setRefundAcctNum(highSelfInfo.getRefundBankNumber());
+                                            inistdpayCancelRequestDTO.setRefundBankCode(highSelfInfo.getRefundBankCode());
+                                            inistdpayCancelRequestDTO.setRefundAcctName(highSelfInfo.getRefundBankCustomerName());
+                                            // 환불 API CALL
+                                            InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentVbankCancelApi(inistdpayCancelRequestDTO);
+                                            if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                            }else{
+                                                PaymentDTO updCancelPayment = new PaymentDTO();
+                                                updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                updCancelPayment.setCancelGbn("ALL");
+                                                updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                            }
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
+                                            //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                                            String cancelDttm = highSelfInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
+                                            String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
+
+                                            DateTimeFormatter formatter_beforeCancelDttm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                            DateTimeFormatter formatter_afterTrainStartDttm = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+                                            LocalDate beforeCancelDttm = LocalDate.parse(cancelDttm, formatter_beforeCancelDttm);
+                                            LocalDate afterTrainStartDttm = LocalDate.parse(trainStartDttm, formatter_afterTrainStartDttm);
+
+                                            long diff = beforeCancelDttm.until(afterTrainStartDttm, ChronoUnit.DAYS);
+                                            boolean apiFlag = true;
+                                            String msg = "교육비 환불 규정에 따른 환불 : ";
+                                            Integer price = paymentDTO.getPaySum();
+                                            Integer confirmPrice = paymentDTO.getPaySum();
+                                            if(diff > 10){
+                                                msg = msg + "결제금액의 100% 환불 처리";
+                                            }else if(5 <= diff){ // 교육 개설 5일 ~ 10일 50프로 금액 환불
+                                                price = (int) (price * 0.5);
+                                                confirmPrice = confirmPrice - price;
+                                                msg = msg + "결제금액의 50% 환불 처리";
+                                            }else {
+                                                apiFlag = false;
+                                            }
+
+                                            if(apiFlag){
+
+                                                InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                                inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                                inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                                inistdpayCancelRequestDTO.setMsg(msg);
+                                                inistdpayCancelRequestDTO.setPrice(String.valueOf(price));
+                                                inistdpayCancelRequestDTO.setConfirmPrice(String.valueOf(confirmPrice));
+                                                inistdpayCancelRequestDTO.setRefundAcctNum(highSelfInfo.getRefundBankNumber());
+                                                inistdpayCancelRequestDTO.setRefundBankCode(highSelfInfo.getRefundBankCode());
+                                                inistdpayCancelRequestDTO.setRefundAcctName(highSelfInfo.getRefundBankCustomerName());
+                                                // 환불 API CALL
+                                                InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentVbankCancelApi(inistdpayCancelRequestDTO);
+                                                if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                    resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [CODE] MSG : [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                                }else{
+                                                    PaymentDTO updCancelPayment = new PaymentDTO();
+                                                    updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                    updCancelPayment.setCancelGbn("PART");
+                                                    updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                    updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                    updCancelPayment.setPrtcDate(inistdpayCancelResponseDTO.getPrtcDate());
+                                                    updCancelPayment.setPrtcTime(inistdpayCancelResponseDTO.getPrtcTime());
+                                                    updCancelPayment.setCancelTid(inistdpayCancelResponseDTO.getTid());
+                                                    updCancelPayment.setPrtcPrice(inistdpayCancelResponseDTO.getPrtcPrice());
+                                                    updCancelPayment.setPrtcRemains(inistdpayCancelResponseDTO.getPrtcRemains());
+                                                    eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+                                    if(CommConstants.RESULT_CODE_SUCCESS.equals(resultCode)){
+
+                                        System.out.println("이전 신청상태 : " + info.getPreApplyStatus());
+                                        Integer result = eduMarineMngMapper.updateHighSelfApplyStatus(info);
+
+                                        if(result == 0){
+                                            resultCode = CommConstants.RESULT_CODE_FAIL;
+                                            resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                            break;
+                                        }else{
+                                            // payment table
+                                            // set pay_status = '취소완료'
+                                            PaymentDTO updPayment = new PaymentDTO();
+                                            updPayment.setSeq(paymentDTO.getSeq());
+                                            updPayment.setPayStatus("취소완료");
+                                            updPayment.setRefundReason(highSelfInfo.getCancelReason());
+                                            eduMarineMngMapper.updatePayment(updPayment);
+
+                                            // 교육 신청인원 빼기
+                                            eduMarineMngMapper.updateTrainApplyCnt(trainDTO.getSeq());
+                                        }
+                                    }else{
+                                        break;
+                                    }
+
+                                }else{
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
+                                }
+
+                            }
+                        }else{
+
+                            // 미결제취소 건 취소승인처리
+                            /*if( "미결제취소".equals(sailyachtInfo.getApplyStatus()) ) {
+                                info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
+                            }*/
+
+                            // 결제대기 , 취소완료 건 취소승인처리
+                            Integer result = eduMarineMngMapper.updateHighSelfApplyStatus(info);
+                            if(result == 0){
+                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(highSelfInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
+                            }
+                        }
+
+                    }//sailyachtInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateHighSelfApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSelfApplyStatusChange(List<HighSelfDTO> highSelfList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateHighSelfApplyStatusChange");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(HighSelfDTO info : highSelfList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    HighSelfDTO highSelfInfo = eduMarineMngMapper.selectHighSelfSingle(info.getSeq());
+                    if(highSelfInfo != null){
+
+                        boolean cancelApiCallYn = ("수강확정".equals(info.getApplyStatus()) && "결제완료".equals(highSelfInfo.getApplyStatus()))
+                                || ("수강완료".equals(info.getApplyStatus()) && "수강확정".equals(highSelfInfo.getApplyStatus()))
+                                || ("환급대기".equals(info.getApplyStatus()) && "수강완료".equals(highSelfInfo.getApplyStatus()))
+                                || ("환급완료".equals(info.getApplyStatus()) && "환급대기".equals(highSelfInfo.getApplyStatus()))
+                                || ("결제완료".equals(info.getApplyStatus()) && "입금대기".equals(highSelfInfo.getApplyStatus()))
+                                ;
+
+                        if(cancelApiCallYn){
+
+                            Integer result = eduMarineMngMapper.updateHighSelfApplyStatus(info);
+
+                            if(result == 0){
+                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(highSelfInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
+                            }
+
+                        }
+
+                    }//regularInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateHighSelfApplyStatusChange ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<HighSpecialDTO> processSelectHighSpecialList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectHighSpecialList");
+        return eduMarineMngMapper.selectHighSpecialList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public HighSpecialDTO processSelectHighSpecialSingle(String seq) {
+        System.out.println("EduMarineMngServiceImpl > processSelectHighSpecialSingle");
+        return eduMarineMngMapper.selectHighSpecialSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSpecialApplyStatus(List<HighSpecialDTO> highSpecialList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateHighSpecialApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(HighSpecialDTO info : highSpecialList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    HighSpecialDTO highSpecialInfo = eduMarineMngMapper.selectHighSpecialSingle(info.getSeq());
+                    if(highSpecialInfo != null){
+
+                        boolean cancelApiCallYn = false;
+                        if( "결제완료".equals(highSpecialInfo.getApplyStatus()) || "취소신청".equals(highSpecialInfo.getApplyStatus()) ){
+                            cancelApiCallYn = true;
+                        }
+
+                        if(cancelApiCallYn){
+
+                            // 결제 내역이 있는 신청건인지 payment table 조회
+                            // where table_seq = boarder table seq
+                            PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(info.getSeq());
+                            if(paymentDTO != null){
+
+                                // 교육 정보 조회
+                                TrainDTO trainReqDTO = new TrainDTO();
+                                trainReqDTO.setSeq(paymentDTO.getTrainSeq());
+                                TrainDTO trainDTO = eduMarineMngMapper.selectTrainSingle(trainReqDTO);
+
+                                if(trainDTO != null){
+
+                                    if("Card".equalsIgnoreCase(paymentDTO.getPayMethod()) || "VCard".equalsIgnoreCase(paymentDTO.getPayMethod())){
+                                        if("ALL".equals(info.getCancelGbn())){ // 전체환불
+                                            InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                            inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                            inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                            inistdpayCancelRequestDTO.setMsg("전액 환불");
+                                            // 환불 API CALL
+                                            InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentCancelApi(inistdpayCancelRequestDTO);
+                                            if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                            }else{
+                                                PaymentDTO updCancelPayment = new PaymentDTO();
+                                                updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                updCancelPayment.setCancelGbn("ALL");
+                                                updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                            }
+
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
+                                            //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                                            String cancelDttm = highSpecialInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
+                                            String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
+
+                                            DateTimeFormatter formatter_beforeCancelDttm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                            DateTimeFormatter formatter_afterTrainStartDttm = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+                                            LocalDate beforeCancelDttm = LocalDate.parse(cancelDttm, formatter_beforeCancelDttm);
+                                            LocalDate afterTrainStartDttm = LocalDate.parse(trainStartDttm, formatter_afterTrainStartDttm);
+
+                                            long diff = beforeCancelDttm.until(afterTrainStartDttm, ChronoUnit.DAYS);
+                                            boolean apiFlag = true;
+                                            String msg = "교육비 환불 규정에 따른 환불 : ";
+                                            Integer price = paymentDTO.getPaySum();
+                                            Integer confirmPrice = paymentDTO.getPaySum();
+                                            if(diff > 10){
+                                                msg = msg + "결제금액의 100% 환불 처리";
+                                            }else if(5 <= diff){ // 교육 개설 5일 ~ 10일 50프로 금액 환불
+                                                price = (int) (price * 0.5);
+                                                confirmPrice = confirmPrice - price;
+                                                msg = msg + "결제금액의 50% 환불 처리";
+                                            }else {
+                                                apiFlag = false;
+                                            }
+
+                                            if(apiFlag){
+
+                                                InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                                inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                                inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                                inistdpayCancelRequestDTO.setMsg(msg);
+                                                inistdpayCancelRequestDTO.setPrice(String.valueOf(price));
+                                                inistdpayCancelRequestDTO.setConfirmPrice(String.valueOf(confirmPrice));
+                                                // 환불 API CALL
+                                                InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentCancelApi(inistdpayCancelRequestDTO);
+                                                if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                    resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [CODE] MSG : [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                                }else{
+                                                    PaymentDTO updCancelPayment = new PaymentDTO();
+                                                    updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                    updCancelPayment.setCancelGbn("PART");
+                                                    updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                    updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                    updCancelPayment.setPrtcDate(inistdpayCancelResponseDTO.getPrtcDate());
+                                                    updCancelPayment.setPrtcTime(inistdpayCancelResponseDTO.getPrtcTime());
+                                                    updCancelPayment.setCancelTid(inistdpayCancelResponseDTO.getTid());
+                                                    updCancelPayment.setPrtcPrice(inistdpayCancelResponseDTO.getPrtcPrice());
+                                                    updCancelPayment.setPrtcRemains(inistdpayCancelResponseDTO.getPrtcRemains());
+                                                    eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                                }
+                                            }
+                                        }
+                                    }else if ("vbank".equalsIgnoreCase(paymentDTO.getPayMethod())){
+                                        if("ALL".equals(info.getCancelGbn())){ //전체환불
+                                            InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                            inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                            inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                            inistdpayCancelRequestDTO.setMsg("전액 환불");
+                                            inistdpayCancelRequestDTO.setRefundAcctNum(highSpecialInfo.getRefundBankNumber());
+                                            inistdpayCancelRequestDTO.setRefundBankCode(highSpecialInfo.getRefundBankCode());
+                                            inistdpayCancelRequestDTO.setRefundAcctName(highSpecialInfo.getRefundBankCustomerName());
+                                            // 환불 API CALL
+                                            InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentVbankCancelApi(inistdpayCancelRequestDTO);
+                                            if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                            }else{
+                                                PaymentDTO updCancelPayment = new PaymentDTO();
+                                                updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                updCancelPayment.setCancelGbn("ALL");
+                                                updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                            }
+                                        }else if("PART".equals(info.getCancelGbn())){ // 부분환불
+                                            //String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                                            String cancelDttm = highSpecialInfo.getCancelDttm(); // 취소신청일자 yyyy-mm-dd hh24:mi:ss
+                                            String trainStartDttm = trainDTO.getTrainStartDttm(); // 교육시작일자 yyyy.MM.dd
+
+                                            DateTimeFormatter formatter_beforeCancelDttm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                            DateTimeFormatter formatter_afterTrainStartDttm = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+                                            LocalDate beforeCancelDttm = LocalDate.parse(cancelDttm, formatter_beforeCancelDttm);
+                                            LocalDate afterTrainStartDttm = LocalDate.parse(trainStartDttm, formatter_afterTrainStartDttm);
+
+                                            long diff = beforeCancelDttm.until(afterTrainStartDttm, ChronoUnit.DAYS);
+                                            boolean apiFlag = true;
+                                            String msg = "교육비 환불 규정에 따른 환불 : ";
+                                            Integer price = paymentDTO.getPaySum();
+                                            Integer confirmPrice = paymentDTO.getPaySum();
+                                            if(diff > 10){
+                                                msg = msg + "결제금액의 100% 환불 처리";
+                                            }else if(5 <= diff){ // 교육 개설 5일 ~ 10일 50프로 금액 환불
+                                                price = (int) (price * 0.5);
+                                                confirmPrice = confirmPrice - price;
+                                                msg = msg + "결제금액의 50% 환불 처리";
+                                            }else {
+                                                apiFlag = false;
+                                            }
+
+                                            if(apiFlag){
+
+                                                InistdpayCancelRequestDTO inistdpayCancelRequestDTO = new InistdpayCancelRequestDTO();
+                                                inistdpayCancelRequestDTO.setCancelGbn(info.getCancelGbn());
+                                                inistdpayCancelRequestDTO.setTid(paymentDTO.getTid());
+                                                inistdpayCancelRequestDTO.setMsg(msg);
+                                                inistdpayCancelRequestDTO.setPrice(String.valueOf(price));
+                                                inistdpayCancelRequestDTO.setConfirmPrice(String.valueOf(confirmPrice));
+                                                inistdpayCancelRequestDTO.setRefundAcctNum(highSpecialInfo.getRefundBankNumber());
+                                                inistdpayCancelRequestDTO.setRefundBankCode(highSpecialInfo.getRefundBankCode());
+                                                inistdpayCancelRequestDTO.setRefundAcctName(highSpecialInfo.getRefundBankCustomerName());
+                                                // 환불 API CALL
+                                                InistdpayCancelResponseDTO inistdpayCancelResponseDTO = processApplyPaymentVbankCancelApi(inistdpayCancelRequestDTO);
+                                                if(!"00".equals(inistdpayCancelResponseDTO.getResultCode())){
+                                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                                    resultMessage = "[INICIS ALL CANCEL FAIL] SEQ : " + info.getSeq() + " / [CODE] MSG : [" + inistdpayCancelResponseDTO.getResultCode() + "] " + inistdpayCancelResponseDTO.getResultMsg();
+                                                }else{
+                                                    PaymentDTO updCancelPayment = new PaymentDTO();
+                                                    updCancelPayment.setSeq(paymentDTO.getSeq());
+                                                    updCancelPayment.setCancelGbn("PART");
+                                                    updCancelPayment.setCancelTime(inistdpayCancelResponseDTO.getCancelTime());
+                                                    updCancelPayment.setCancelDate(inistdpayCancelResponseDTO.getCancelDate());
+                                                    updCancelPayment.setPrtcDate(inistdpayCancelResponseDTO.getPrtcDate());
+                                                    updCancelPayment.setPrtcTime(inistdpayCancelResponseDTO.getPrtcTime());
+                                                    updCancelPayment.setCancelTid(inistdpayCancelResponseDTO.getTid());
+                                                    updCancelPayment.setPrtcPrice(inistdpayCancelResponseDTO.getPrtcPrice());
+                                                    updCancelPayment.setPrtcRemains(inistdpayCancelResponseDTO.getPrtcRemains());
+                                                    eduMarineMngMapper.updatePaymentCancelResult(updCancelPayment);
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+                                    if(CommConstants.RESULT_CODE_SUCCESS.equals(resultCode)){
+
+                                        System.out.println("이전 신청상태 : " + info.getPreApplyStatus());
+                                        Integer result = eduMarineMngMapper.updateHighSpecialApplyStatus(info);
+
+                                        if(result == 0){
+                                            resultCode = CommConstants.RESULT_CODE_FAIL;
+                                            resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                            break;
+                                        }else{
+                                            // payment table
+                                            // set pay_status = '취소완료'
+                                            PaymentDTO updPayment = new PaymentDTO();
+                                            updPayment.setSeq(paymentDTO.getSeq());
+                                            updPayment.setPayStatus("취소완료");
+                                            updPayment.setRefundReason(highSpecialInfo.getCancelReason());
+                                            eduMarineMngMapper.updatePayment(updPayment);
+
+                                            // 교육 신청인원 빼기
+                                            eduMarineMngMapper.updateTrainApplyCnt(trainDTO.getSeq());
+                                        }
+                                    }else{
+                                        break;
+                                    }
+
+                                }else{
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
+                                }
+
+                            }
+                        }else{
+
+                            // 미결제취소 건 취소승인처리
+                            /*if( "미결제취소".equals(sailyachtInfo.getApplyStatus()) ) {
+                                info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
+                            }*/
+
+                            // 결제대기 , 취소완료 건 취소승인처리
+                            Integer result = eduMarineMngMapper.updateHighSpecialApplyStatus(info);
+                            if(result == 0){
+                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(highSpecialInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
+                            }
+                        }
+
+                    }//sailyachtInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateHighSelfApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateHighSpecialApplyStatusChange(List<HighSpecialDTO> highSpecialList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateHighSpecialApplyStatusChange");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(HighSpecialDTO info : highSpecialList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    HighSpecialDTO highSpecialInfo = eduMarineMngMapper.selectHighSpecialSingle(info.getSeq());
+                    if(highSpecialInfo != null){
+
+                        boolean cancelApiCallYn = ("수강확정".equals(info.getApplyStatus()) && "결제완료".equals(highSpecialInfo.getApplyStatus()))
+                                || ("수강완료".equals(info.getApplyStatus()) && "수강확정".equals(highSpecialInfo.getApplyStatus()))
+                                || ("환급대기".equals(info.getApplyStatus()) && "수강완료".equals(highSpecialInfo.getApplyStatus()))
+                                || ("환급완료".equals(info.getApplyStatus()) && "환급대기".equals(highSpecialInfo.getApplyStatus()))
+                                || ("결제완료".equals(info.getApplyStatus()) && "입금대기".equals(highSpecialInfo.getApplyStatus()))
+                                ;
+
+                        if(cancelApiCallYn){
+
+                            Integer result = eduMarineMngMapper.updateHighSpecialApplyStatus(info);
+
+                            if(result == 0){
+                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                break;
+                            }else{
+                                PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(highSpecialInfo.getSeq());
+                                if(paymentDTO != null){
+                                    paymentDTO.setPayStatus(info.getApplyStatus());
+                                    eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
+                            }
+
+                        }
+
+                    }//regularInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateHighSpecialApplyStatusChange ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<SterndriveDTO> processSelectSterndriveList(SearchDTO searchDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectSterndriveList");
         return eduMarineMngMapper.selectSterndriveList(searchDTO);
@@ -4999,6 +5687,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             case "고마력 선외기 정비 중급 테크니션":
                 responseList = eduMarineMngMapper.selectSmsSendHighhorsepowerList();
                 break;
+            case "자가정비 심화과정 (고마력 선외기)":
+                responseList = eduMarineMngMapper.selectSmsSendHighSelfList();
+                break;
+            case "고마력 선외기 정비 중급 테크니션 (특별반)":
+                responseList = eduMarineMngMapper.selectSmsSendHighSpecialList();
+                break;
             case "스턴드라이브 정비 전문가과정":
                 responseList = eduMarineMngMapper.selectSmsSendSterndriveList();
                 break;
@@ -5636,6 +6330,20 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<HighSelfDTO> processSelectExcelHighSelfDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelHighSelfDetailList");
+        return eduMarineMngMapper.selectExcelHighSelfDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<HighSpecialDTO> processSelectExcelHighSpecialDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelHighSpecialDetailList");
+        return eduMarineMngMapper.selectExcelHighSpecialDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<SterndriveDTO> processSelectExcelSterndriveDetailList() {
         System.out.println("EduMarineMngServiceImpl > processSelectExcelHighhorsepowerDetailList");
         return eduMarineMngMapper.selectExcelSterndriveDetailList();
@@ -5969,6 +6677,18 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 highHorsePowerDTO.setSeq(tableSeq);
                                 highHorsePowerDTO.setTrainSeq(newTrainSeq);
                                 updTableResult = eduMarineMngMapper.updateHighHorsePowerTrainSeq(highHorsePowerDTO);
+                                break;
+                            case "자가정비 심화과정 (고마력 선외기)":
+                                HighSelfDTO highSelfDTO = new HighSelfDTO();
+                                highSelfDTO.setSeq(tableSeq);
+                                highSelfDTO.setTrainSeq(newTrainSeq);
+                                updTableResult = eduMarineMngMapper.updateHighSelfTrainSeq(highSelfDTO);
+                                break;
+                            case "고마력 선외기 정비 중급 테크니션 (특별반)":
+                                HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
+                                highSpecialDTO.setSeq(tableSeq);
+                                highSpecialDTO.setTrainSeq(newTrainSeq);
+                                updTableResult = eduMarineMngMapper.updateHighSpecialTrainSeq(highSpecialDTO);
                                 break;
                             case "스턴드라이브 정비 전문가과정":
                                 SterndriveDTO sterndriveDTO = new SterndriveDTO();
