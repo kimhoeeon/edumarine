@@ -147,7 +147,7 @@
 
                     <!-- board_top -->
                     <div class="board_top">
-                        <div class="post_number">총 <span class="number"></span>개의 FAQ가 있습니다.</div>
+                        <div class="post_number">총 <span class="number"></span>개의 게시글이 있습니다.</div>
                         <div class="board_search">
                             <select id="search_box">
                                 <option value="title" selected>제목</option>

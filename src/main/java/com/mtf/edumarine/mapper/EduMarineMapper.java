@@ -301,4 +301,16 @@ public interface EduMarineMapper {
     Integer updateHighSelfPayStatus(HighSelfDTO highSelfDTO);
 
     Integer updateHighSpecialPayStatus(HighSpecialDTO highSpecialDTO);
+
+    Integer selectSternSpecialPreCheck(SternSpecialDTO sternSpecialDTO);
+
+    String getSternSpecialSeq();
+
+    Integer insertSternSpecial(SternSpecialDTO sternSpecialDTO);
+
+    SternSpecialDTO selectSternSpecialSingle(String seq);
+
+    Integer updateSternSpecial(SternSpecialDTO sternSpecialDTO);
+
+    Integer updateSternSpecialPayStatus(SternSpecialDTO sternSpecialDTO);
 }

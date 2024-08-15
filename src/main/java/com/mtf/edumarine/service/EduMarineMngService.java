@@ -418,4 +418,14 @@ public interface EduMarineMngService {
     HighSpecialDTO processSelectHighSpecialSingle(String seq);
 
     List<HighSpecialDTO> processSelectExcelHighSpecialDetailList();
+
+    List<SternSpecialDTO> processSelectSternSpecialList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateSternSpecialApplyStatus(List<SternSpecialDTO> sternspecialList);
+
+    ResponseDTO processUpdateSternSpecialApplyStatusChange(List<SternSpecialDTO> sternspecialList);
+
+    SternSpecialDTO processSelectSternSpecialSingle(String seq);
+
+    List<SternSpecialDTO> processSelectExcelSternSpecialDetailList();
 }

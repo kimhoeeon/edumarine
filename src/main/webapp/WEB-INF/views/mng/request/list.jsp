@@ -365,6 +365,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/sternspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">스턴드라이브 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -1164,9 +1174,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highhorsepower.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">고마력 선외기 정비</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1176,8 +1186,8 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highself.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">자가정비 심화과정 (고마력)</span>
                                             </a>
@@ -1188,8 +1198,8 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highspecial.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">고마력 선외기 정비 (특별반)</span>
                                             </a>
@@ -1200,10 +1210,22 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">스턴드라이브 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/sternspecial.do">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                                <span class="menu-title">스턴드라이브 정비 (특별반)</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1817,7 +1839,7 @@ if (document.documentElement) {
 
                                             <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
 
-                                                <c:if test="${sessionScope.id eq 'admin' or sessionScope.id eq 'meetingfan1'}">
+                                                <c:if test="${sessionScope.note eq '개발사'}">
                                                     <!--begin::버튼-->
                                                     <button type="button" id="complete_expect_btn" class="btn btn-info" data-bs-target="#modal_complete_expect_status">
                                                         <i class="ki-duotone ki-calendar-tick fs-3">

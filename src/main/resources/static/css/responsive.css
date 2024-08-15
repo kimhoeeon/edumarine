@@ -109,6 +109,8 @@
     .guide_all_inquiry {flex-direction: column; gap: 20px;}
     .guide_all_inquiry .tit_box {flex-basis: auto;}
 
+    .guide_plan .name {width: 250px;}
+
     .guide_sub_tit {font-size: 1.6rem;}
     .guide_top_tit .big {font-size: 2.8rem;}
     .guide_top_tit .eng {font-size: 1.4rem;}
@@ -457,6 +459,9 @@
     .guide_all .table_wrap .first {width: 80px;}
     .guide_all .table_wrap .item {font-size: 1.2rem;}
 
+    .guide_plan .table_tit .big {font-size: 1.6rem;}
+    .guide_plan th, .guide_plan td {font-size: 1.4rem;}
+
 
 
     .guide_top_tit .big {font-size: 2.4rem;}
@@ -566,6 +571,10 @@
     .guide_all .table_tit .mobile_cmnt {display: block;}
     .guide_all .table_wrap .table {overflow-x: scroll;}
     .guide_all .table_wrap table {min-width: 600px;}
+    
+    .guide_plan .table_tit .mobile_cmnt {display: block;}
+    .guide_plan .table_wrap .table {overflow-x: scroll;}
+    .guide_plan .table_wrap table {min-width: 600px;}
 
     .guide_tp_01 .mobile_cmnt {display: block;}
     .guide_tp_01 .table {overflow-x: scroll;}
@@ -635,6 +644,8 @@
     .guide_all .table_wrap th,
     .guide_all .table_wrap td {padding: 2px;}
     .guide_all .table_tit {font-size: 1.6rem;}
+
+    .guide_plan .table_tit {font-size: 1.6rem;}
 
     .guide_tit_box > div {font-size: 2rem;}
     .guide_tit_box .num {margin-right: 5px;}

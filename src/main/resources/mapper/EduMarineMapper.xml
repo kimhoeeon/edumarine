@@ -1753,6 +1753,30 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateSternSpecialPayStatus" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateSternSpecialPayStatus */
+        UPDATE sternspecial
+        SET apply_status = #{applyStatus}
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectEduApplyInfoList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EduApplyInfoDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoList */
         SELECT LISTB.*
@@ -1891,6 +1915,18 @@
                      FROM sterndrive t
                      WHERE t.member_seq = #{memberSeq}
                        AND t.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '스턴드라이브 정비 전문가과정 (특별반)' AS trainName
+                          , ss.train_seq
+                          , ss.apply_status AS payStatus
+                          , ss.seq
+                          , ss.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = ss.member_seq and p.table_seq = ss.seq and p.train_seq = ss.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainEndDttm
+                     FROM sternspecial ss
+                     WHERE ss.member_seq = #{memberSeq}
+                       AND ss.apply_status NOT LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2012,6 +2048,17 @@
                      FROM sterndrive t
                      WHERE t.member_seq = #{memberSeq}
                        AND t.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '스턴드라이브 정비 전문가과정 (특별반)' AS trainName
+                          , ss.train_seq
+                          , ss.apply_status AS payStatus
+                          , ss.seq
+                          , ss.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainEndDttm
+                     FROM sternspecial ss
+                     WHERE ss.member_seq = #{memberSeq}
+                       AND ss.apply_status LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2190,7 +2237,7 @@
                           , tot_price
                           , appl_date
                           , pay_method
-                          , card_purchase_name
+                          , p_fn_nm
                           , card_num
                           , vact_date
                           , vact_name
@@ -2824,6 +2871,42 @@
             )
     </insert>
 
+    <select id="getSternSpecialSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getSternSpecialSeq */
+        SELECT CONCAT('SS', LPAD(nextval('sternspecial_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSternSpecial" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertSternSpecial */
+        INSERT INTO sternspecial
+        ( seq
+        , member_seq
+        , train_seq
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'STERNSPECIAL'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'STERNSPECIAL'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
     <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectOutboarderSingle */
         SELECT o.seq
@@ -2960,6 +3043,26 @@
         WHERE t.seq = #{seq}
     </select>
 
+    <select id="selectSternSpecialSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectSternSpecialSingle */
+        SELECT ss.seq
+             , ss.member_seq
+             , ss.train_seq
+             , ss.apply_status
+             , ss.cancel_dttm
+             , ss.cancel_reason
+             , ss.del_yn
+             , ss.note
+             , ss.init_regi_pic
+             , ss.init_regi_dttm
+             , ss.final_regi_pic
+             , ss.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = ss.member_seq AND p.table_seq = ss.seq AND p.train_seq = ss.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = ss.train_seq) AS changeYn
+        FROM sternspecial ss
+        WHERE ss.seq = #{seq}
+    </select>
+
     <update id="updateOutboarder" parameterType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateOutboarder */
         UPDATE outboarder
@@ -3020,6 +3123,14 @@
           , train_understand = #{trainUnderstand}
           , train_understand_etc = #{trainUnderstandEtc}
           , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSternSpecial" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateSternSpecial */
+        UPDATE sternspecial
+        SET note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -3156,6 +3267,14 @@
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectSterndrivePreCheck */
         SELECT COUNT(1)
         FROM sterndrive
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectSternSpecialPreCheck" parameterType="com.mtf.edumarine.dto.SternSpecialDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectSternSpecialPreCheck */
+        SELECT COUNT(1)
+        FROM sternspecial
         WHERE member_seq = #{memberSeq}
           AND apply_status NOT LIKE '%취소%'
     </select>

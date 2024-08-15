@@ -595,7 +595,10 @@ function getTargetMenu(tableId){
             targetMenu = '회원/신청_신청자목록_고마력선외기특별반';
             break;
         case 'mng_customer_sterndrive_table':
-            targetMenu = '회원/신청_신청자목록_Sterndrive정비교육과정';
+            targetMenu = '회원/신청_신청자목록_스턴드라이브정비전문가과정';
+            break;
+        case 'mng_customer_sternspecial_table':
+            targetMenu = '회원/신청_신청자목록_스턴드라이브정비전문가과정특별반';
             break;
         case 'mng_education_train_table':
             targetMenu = '교육_교육관리_교육현황';

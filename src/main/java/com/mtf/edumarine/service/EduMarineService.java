@@ -242,4 +242,14 @@ public interface EduMarineService {
     ResponseDTO processUpdateHighSelfPayStatus(HighSelfDTO highSelfDTO);
 
     ResponseDTO processUpdateHighSpecialPayStatus(HighSpecialDTO highSpecialDTO);
+
+    Integer processSelectSternSpecialPreCheck(SternSpecialDTO sternSpecialDTO);
+
+    ResponseDTO processInsertSternSpecial(SternSpecialDTO sternSpecialDTO);
+
+    SternSpecialDTO processSelectSternSpecialSingle(String seq);
+
+    ResponseDTO processUpdateSternSpecial(SternSpecialDTO sternSpecialDTO);
+
+    ResponseDTO processUpdateSternSpecialPayStatus(SternSpecialDTO sternSpecialDTO);
 }

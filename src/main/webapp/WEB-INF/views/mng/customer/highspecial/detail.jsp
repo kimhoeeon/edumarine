@@ -330,7 +330,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/highself.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">자가정비 심화과정 (고마력)</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -340,7 +340,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/highspecial.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">고마력 선외기 정비 (특별반)</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -352,6 +352,16 @@ if (document.documentElement) {
                                                                         <a href="/mng/customer/sterndrive.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">스턴드라이브 정비</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/sternspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">스턴드라이브 정비 (특별반)</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1155,9 +1165,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highhorsepower.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">고마력 선외기 정비</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1166,9 +1176,9 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/customer/highself.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                            <a class="menu-link" href="/mng/customer/highself.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">자가정비 심화과정 (고마력)</span>
                                             </a>
@@ -1178,9 +1188,9 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/customer/highspecial.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                            <a class="menu-link active" href="/mng/customer/highspecial.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">고마력 선외기 정비 (특별반)</span>
                                             </a>
@@ -1191,10 +1201,22 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">스턴드라이브 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/sternspecial.do">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                                <span class="menu-title">스턴드라이브 정비 (특별반)</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1659,7 +1681,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        자가정비 심화과정 (고마력 선외기)</h1>
+                                        고마력 선외기 정비 (특별반)</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1690,7 +1712,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">자가정비 심화과정 (고마력 선외기)</li>
+                                        <li class="breadcrumb-item text-muted">고마력 선외기 정비 (특별반)</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->

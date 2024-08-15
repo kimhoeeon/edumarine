@@ -696,6 +696,13 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public Integer processSelectSternSpecialPreCheck(SternSpecialDTO sternSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectSternSpecialPreCheck");
+        return eduMarineMapper.selectSternSpecialPreCheck(sternSpecialDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ResponseDTO processInsertRegular(RegularDTO regularDTO) {
         System.out.println("EduMarineServiceImpl > processInsertRegular");
         ResponseDTO responseDTO = new ResponseDTO();
@@ -1023,7 +1030,7 @@ public class EduMarineServiceImpl implements EduMarineService {
                 if(trainSeq != null && !"".equals(trainSeq)){
                     paymentDTO.setTrainSeq(trainSeq);
 
-                    paymentDTO.setTrainName(getOriginalTrainName(paymentDTO.getTrainName()));
+                    paymentDTO.setTrainName(getOriginalTrainName(trainSeq));
 
                     result = eduMarineMapper.insertPayment(paymentDTO);
 
@@ -1053,32 +1060,12 @@ public class EduMarineServiceImpl implements EduMarineService {
         return responseDTO;
     }
 
-    public String getOriginalTrainName(String trainName){
-        String originalTrainName = "";
-        if(trainName != null && !"".equals(trainName)){
-            if(trainName.contains("상시")){
-                originalTrainName = "상시신청";
-            }else if(trainName.contains("(선내기/")){
-                originalTrainName = "해상엔진 테크니션 (선내기/선외기)";
-            }else if(trainName.contains("FRP")){
-                originalTrainName = "FRP 레저보트 선체 정비 테크니션";
-            }else if(trainName.contains("(선내기)")){
-                originalTrainName = "해상엔진 자가정비 (선내기)";
-            }else if(trainName.contains("(선외기)")){
-                originalTrainName = "해상엔진 자가정비 (선외기)";
-            }else if(trainName.contains("(세일요트)")){
-                originalTrainName = "해상엔진 자가정비 (세일요트)";
-            }else if(trainName.contains("고마력")){
-                if(trainName.contains("테크니션")){
-                    originalTrainName = "고마력 선외기 정비 중급 테크니션";
-                }else if(trainName.contains("심화과정")){
-                    originalTrainName = "자가정비 심화과정 (고마력 선외기)";
-                }else if(trainName.contains("특별반")){
-                    originalTrainName = "고마력 선외기 정비 중급 테크니션 (특별반)";
-                }
-            }else if(trainName.contains("Sterndrive")){
-                originalTrainName = "스턴드라이브 정비 전문가과정";
-            }
+    public String getOriginalTrainName(String trainSeq){
+
+        TrainDTO trainInfo = eduMarineMapper.selectTrainSingle(trainSeq);
+        String originalTrainName = "-";
+        if(trainInfo != null){
+            originalTrainName = trainInfo.getGbn();
         }
 
         return originalTrainName;
@@ -1400,6 +1387,39 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateSterndrivePayStatus : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateSternSpecialPayStatus(SternSpecialDTO sternSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateSternSpecialPayStatus : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateSternSpecialPayStatus(sternSpecialDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail] Seq : " + sternSpecialDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(sternSpecialDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(sternSpecialDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateSternSpecialPayStatus : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
         }
 
@@ -2141,6 +2161,36 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public SternSpecialDTO processSelectSternSpecialSingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectSternSpecialSingle");
+        return eduMarineMapper.selectSternSpecialSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateSternSpecial(SternSpecialDTO sternSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateSternSpecial : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateSternSpecial(sternSpecialDTO);
+
+            responseDTO.setCustomValue(sternSpecialDTO.getSeq());
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateSternSpecial : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public Integer processUpdateTrainApplyCnt(String trainSeq) {
         System.out.println("EduMarineServiceImpl > processUpdateTrainApplyCnt : ======");
         return eduMarineMapper.updateTrainApplyCnt(trainSeq);
@@ -2357,6 +2407,52 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertSterndrive ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertSternSpecial(SternSpecialDTO sternSpecialDTO) {
+        System.out.println("EduMarineServiceImpl > processInsertSternSpecial");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(sternSpecialDTO.getId() != null){
+
+                TrainDTO trainDTO = eduMarineMapper.selectTrainSingle(sternSpecialDTO.getTrainSeq());
+
+                if(Objects.equals(trainDTO.getTrainCnt(), trainDTO.getTrainApplyCnt())){
+                    resultCode = "99";
+                    resultMessage = "수강 정원이 초과하여 신청이 불가합니다.";
+                }else{
+                    String getSeq = eduMarineMapper.getSternSpecialSeq();
+                    sternSpecialDTO.setSeq(getSeq);
+
+                    result = eduMarineMapper.insertSternSpecial(sternSpecialDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertSternSpecial ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 

@@ -160,7 +160,7 @@
                                 <div class="naeyong">
                                     고마력 선외기 관련 이론교육과 250마력 엔진 분해 및 조립을 통한 시스템 분석 및 이해에 중점을 둔 교육
                                     <p>이론교육 1일</p>
-                                    <p>분해 및 시스템분석, 조립, 시운전  5일</p>
+                                    <p>분해 및 시스템분석, 조립, 시운전 5일</p>
                                 </div>
                             </li>
                             <li>
@@ -177,7 +177,7 @@
                             </li>
                             <li>
                                 <div class="gubun">교육비</div>
-                                <div class="naeyong">금액미정</div>
+                                <div class="naeyong">330,000</div>
                             </li>
                         </ul>
                     </div>

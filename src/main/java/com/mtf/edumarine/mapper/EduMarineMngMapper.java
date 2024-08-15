@@ -492,4 +492,16 @@ public interface EduMarineMngMapper {
     Integer updateHighSpecialApplyStatus(HighSpecialDTO info);
 
     List<HighSpecialDTO> selectExcelHighSpecialDetailList();
+
+    List<SternSpecialDTO> selectSternSpecialList(SearchDTO searchDTO);
+
+    SternSpecialDTO selectSternSpecialSingle(String seq);
+
+    Integer updateSternSpecialApplyStatus(SternSpecialDTO info);
+
+    List<SternSpecialDTO> selectExcelSternSpecialDetailList();
+
+    List<SmsSendDTO> selectSmsSendSternSpecialList();
+
+    Integer updateSternSpecialTrainSeq(SternSpecialDTO sternSpecialDTO);
 }
