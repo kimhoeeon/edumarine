@@ -426,6 +426,16 @@ if (document.documentElement) {
                                                                     <!--end:Menu link-->
                                                                 </div>
                                                                 <!--end:Menu item-->
+                                                                <!--begin:Menu item-->
+                                                                <div class="menu-item p-0 m-0">
+                                                                    <!--begin:Menu link-->
+                                                                    <a href="/mng/customer/sternspecial.do"
+                                                                       class="menu-link">
+                                                                        <span class="menu-title">스턴드라이브 정비 (특별반)</span>
+                                                                    </a>
+                                                                    <!--end:Menu link-->
+                                                                </div>
+                                                                <!--end:Menu item-->
                                                             </div>
                                                             <!--end:Col-->
                                                         </div>
@@ -1320,6 +1330,18 @@ if (document.documentElement) {
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
                                             <span class="menu-title">스턴드라이브 정비</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="/mng/customer/sternspecial.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">스턴드라이브 정비 (특별반)</span>
                                         </a>
                                         <!--end:Menu link-->
                                     </div>

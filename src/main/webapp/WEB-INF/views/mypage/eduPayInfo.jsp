@@ -192,13 +192,13 @@
                                             </div>
                                             <div class="method" style="flex-basis: 280px;">
                                                 <c:if test="${fn:contains(fn:toLowerCase(info.payMethod), 'card')}">
-                                                    ${info.cardPurchaseName}<br>
-                                                    (${info.cardNum})
+                                                    ${info.PFnNm}<br>
+                                                    ( ${info.cardNum} )
                                                 </c:if>
                                                 <c:if test="${fn:contains(fn:toLowerCase(info.payMethod), 'vbank')}">
                                                     <fmt:parseDate var="dateString1" value="${info.vactDate}" pattern="yyyyMMdd" />
                                                     가상계좌<br>
-                                                    (${info.vactBankName} / ${info.vactNum})<br>
+                                                    ( ${info.vactBankName} / ${info.vactNum} )<br>
                                                     입금기한 : <fmt:formatDate value="${dateString1}" pattern="yyyy.MM.dd" />
                                                 </c:if>
                                             </div>

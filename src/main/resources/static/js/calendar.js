@@ -85,6 +85,10 @@ function f_train_calendar_select(category){
                         className = 'edu06';
                         link = '/apply/eduApply07.do';
                         break;
+                    case '고마력 선외기 정비 중급 테크니션 (특별반)':
+                        className = 'edu09';
+                        link = '/apply/eduApply10.do';
+                        break;
                     case '자가정비 심화과정 (고마력 선외기)':
                         className = 'edu08';
                         link = '/apply/eduApply09.do';
@@ -92,6 +96,10 @@ function f_train_calendar_select(category){
                     case '스턴드라이브 정비 전문가과정':
                         className = 'edu07';
                         link = '/apply/eduApply08.do';
+                        break;
+                    case '스턴드라이브 정비 전문가과정 (특별반)':
+                        className = 'edu10';
+                        link = '/apply/eduApply11.do';
                         break;
                     default:
                         break;

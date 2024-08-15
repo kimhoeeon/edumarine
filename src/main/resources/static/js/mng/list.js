@@ -25,15 +25,18 @@ $(function(){
             let checkbox_len = checkbox_el.length;
             let checkbox_data_val = '';
             let checkbox_val = '';
+            let checkbox_title_val = '';
             if(checkbox_len !== 0){
                 let i = 0;
                 $(checkbox_el).each(function() {
                     checkbox_data_val += (i+1) + '. ';
+                    checkbox_title_val += $(this).data('value').toString().substring($(this).data('value').indexOf('/')+2);
                     checkbox_data_val += $(this).data('value');
                     checkbox_val += $(this).val();
                     if((i+1) !== checkbox_len){
                         checkbox_data_val += '<br>';
                         checkbox_val += ',';
+                        checkbox_title_val += '^';
                     }
                     i++;
                 });
@@ -44,8 +47,14 @@ $(function(){
                     input_hidden.name = 'checkVal'
                     input_hidden.value = checkbox_val;
 
+                    let input_hidden2 = document.createElement('input');
+                    input_hidden2.type = 'hidden';
+                    input_hidden2.name = 'checkTitleVal'
+                    input_hidden2.value = checkbox_title_val;
+
                     $('#progressStepModalForm .target_list').html(checkbox_data_val);
                     $('#progressStepModalForm .target_list').append(input_hidden);
+                    $('#progressStepModalForm .target_list').append(input_hidden2);
 
                     myModal.show();
                 }
@@ -236,8 +245,20 @@ function f_request_list_remove(seq){
                 let resData = ajaxConnect('/mng/request/list/delete.do', 'post', { seq: seq });
 
                 if (resData.resultCode === "0") {
-                    showMessage('', 'info', '[ 요청사항 & 문의 ]', '요청사항 & 문의가 삭제되었습니다.', '');
-                    f_request_list_search(); // 재조회
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: '[ 요청사항 & 문의 ]',
+                        html: '<span style="font-size: 1.1em;">요청사항 & 문의가 삭제되었습니다.</span>',
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#00a8ff',
+                        confirmButtonText: '확인'
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            f_request_list_search(); // 재조회
+                        }
+                    })
+
                 } else {
                     showMessage('', 'error', '에러 발생', '요청사항 & 문의 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }
@@ -285,12 +306,79 @@ function f_progress_step_change_modal_btn(){
                         showMessage('', 'error', '에러 발생', '진행 단계 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                         return false;
                     }else{
-                        showMessage('', 'info', '[ 진행 단계 변경 ]', '진행 단계 변경이 정상 완료되었습니다.', '');
 
-                        $('#modal_progress_step_status').modal('hide');
+                        if(md_progress_step_val === '완료'){
 
-                        /* 재조회 */
-                        f_request_list_search();
+                            let titleArr = $('input[type=hidden][name=checkTitleVal]').val();
+                            if (nvl(titleArr,'') !== ''){
+
+                                let titleList = titleArr.split('^');
+                                for(let i=0; i<titleList.length; i++){
+                                    let title = titleList[i];
+                                    let subject = '[ 경기해양레저 인력양성센터 ] - 요청사항 & 문의 ( ' + title + ' ) 요청이 처리 완료되었습니다.';
+                                    let body = '';
+                                    body += '<p><br/></p>';
+                                    body += '<p>';
+                                        body += '--------------------------------------------------------------------------------------';
+                                    body += '</p>';
+                                    body += '<p><br/></p>';
+                                    body += '<p>';
+                                        body += '제목 : ' + title;
+                                    body += '</p>';
+                                    body += '<p><br/></p>';
+                                    body += '<p>';
+                                        body += '--------------------------------------------------------------------------------------';
+                                    body += '</p>';
+                                    body += '<p><br/></p>';
+                                    body += '<p>';
+                                        body += '요청하신 요청사항 & 문의 게시물의 처리 내용 확인 부탁드립니다.';
+                                    body += '</p>';
+                                    body += '<p>';
+                                        body += '이후 추가 문의나 요청사항이 있으시면 해당 게시판 요청 신규 등록 및 댓글을 이용하여 주시기 바랍니다.';
+                                    body += '</p>';
+                                    body += '<p>';
+                                        body += '감사합니다.';
+                                    body += '</p>';
+                                    body += '</p>';
+                                    body += '<p><br/></p>';
+                                    body += '<p>';
+                                        body += '<a href="https://edumarine.org/mng/index.do" target="_blank">';
+                                            body += '관리자 페이지 바로가기';
+                                        body += '</a>';
+                                    body += '</p>';
+
+                                    body = body.replaceAll('"','\\"');
+
+                                    // 담당자 메일 send
+                                    let mailJson = {
+                                        subject: subject,
+                                        body: body,
+                                        note: '개발사'
+                                    };
+                                    let resData1 = ajaxConnect('/mail/send.do', 'post', requestMakeMailFormat(mailJson));
+                                    if (resData1.resultCode !== "0") {
+                                        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + resData1.resultMessage, '');
+                                    }
+                                }
+                            }
+                        }
+
+                        Swal.fire({
+                            icon: 'info',
+                            title: '[ 진행 단계 변경 ]',
+                            html: '<span style="font-size: 1.1em;">진행 단계 변경이 정상 완료되었습니다.</span>',
+                            allowOutsideClick: false,
+                            confirmButtonColor: '#00a8ff',
+                            confirmButtonText: '확인'
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                $('#modal_progress_step_status').modal('hide');
+
+                                /* 재조회 */
+                                f_request_list_search();
+                            }
+                        })
+
                     }
                 }
             });
@@ -340,12 +428,23 @@ function f_complete_expect_change_modal_btn(){
                         showMessage('', 'error', '에러 발생', '처리 예정 일시 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                         return false;
                     }else{
-                        showMessage('', 'info', '[ 처리 예정 일시 변경 ]', '처리 예정 일시 변경이 정상 완료되었습니다.', '');
 
-                        $('#modal_complete_expect_status').modal('hide');
+                        Swal.fire({
+                            icon: 'info',
+                            title: '[ 처리 예정 일시 변경 ]',
+                            html: '<span style="font-size: 1.1em;">처리 예정 일시 변경이 정상 완료되었습니다.</span>',
+                            allowOutsideClick: false,
+                            confirmButtonColor: '#00a8ff',
+                            confirmButtonText: '확인'
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                $('#modal_complete_expect_status').modal('hide');
 
-                        /* 재조회 */
-                        f_request_list_search();
+                                /* 재조회 */
+                                f_request_list_search();
+                            }
+                        })
+
                     }
                 }
             });
@@ -430,13 +529,18 @@ function f_request_list_save(seq){
                                     if(processGbn === 'U'){
                                         f_request_list_detail_set(seq); // 재조회
                                     }else{
-                                        // [경기해양레저 인력양성센터] - (오류) 요청사항 문의드립니다.
-                                        let subject = '[경기해양레저 인력양성센터] - 요청사항 & 문의 (' + form.gbn + ') 관련 새 글이 등록되었습니다.';
+
+                                        // [ 경기해양레저 인력양성센터 ] - (오류) 요청사항 문의드립니다.
+                                        let subject = '[ 경기해양레저 인력양성센터 ] - 요청사항 & 문의 (' + form.gbn + ') 관련 새 글이 등록되었습니다.';
                                         let body = '';
                                         body += '<p>';
                                             body += '경기해양레저 인력양성센터 관리자 페이지에 요청사항 & 문의가 등록되었습니다.';
                                         body += '</p>';
                                         body += '<p><br/></p>';
+                                        body += '<p><br/></p>';
+                                        body += '<p>';
+                                            body += '--------------------------------------------------------------------------------------';
+                                        body += '</p>';
                                         body += '<p><br/></p>';
                                         body += '<p>';
                                             body += '긴급여부 : ' + form.emergencyYn;
@@ -462,17 +566,31 @@ function f_request_list_save(seq){
                                             body += '없음';
                                         }
                                         body += '</p>';
+                                        body += '</p>';
+                                        body += '<p><br/></p>';
+                                        body += '<p>';
+                                            body += '--------------------------------------------------------------------------------------';
+                                        body += '</p>';
+                                        body += '<p><br/></p>';
+                                        body += '<p>';
+                                            body += '<a href="https://edumarine.org/mng/index.do" target="_blank">';
+                                                body += '관리자 페이지 바로가기';
+                                            body += '</a>';
+                                        body += '</p>';
+
+                                        body = body.replaceAll('"','\\"');
 
                                         // 담당자 메일 send
                                         let mailJson = {
                                             subject: subject,
-                                            body: body
+                                            body: body,
+                                            note: ''
                                         };
                                         let resData1 = ajaxConnect('/mail/send.do', 'post', requestMakeMailFormat(mailJson));
                                         if (resData1.resultCode === "0") {
                                             window.location.href = '/mng/request/list.do';
                                         }else{
-                                            showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                            showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + resData1.resultMessage, '');
                                         }
                                     }
                                 }
@@ -497,29 +615,34 @@ function requestMakeMailFormat(data){
     let returnJsonObj;
     let receiverArr = [];
 
-    let subject = data.subject;
-    let gbn = subject.substring(subject.indexOf('(')+1, subject.indexOf(')'));
+    let note = data.note;
 
-    // kyj@meetingfan.com
-    // khe@meetingfan.com
-    // cmn@meetingfan.com
     let cpEmail;
-    switch (gbn){
-        case '유지보수':
-        case '단순 문의':
-        case '기타':
-            cpEmail = 'cmn@meetingfan.com';
-            break;
-        case '기능 추가 문의':
-        case '뉴스레터':
-            cpEmail = 'kyj@meetingfan.com';
-            break;
-        case '오류':
-            cpEmail = 'khe@meetingfan.com';
-            break;
-        default:
-            cpEmail = 'kyj@meetingfan.com';
-            break;
+    if(nvl(note,'') === '개발사') {
+        cpEmail = 'leebk@kwateromc.co.kr';
+    }else{
+        // kyj@meetingfan.com
+        // khe@meetingfan.com
+        // cmn@meetingfan.com
+        let subject = data.subject;
+        let gbn = subject.substring(subject.indexOf('(')+1, subject.indexOf(')'));
+        switch (gbn) {
+            case '유지보수':
+            case '단순 문의':
+            case '기타':
+                cpEmail = 'cmn@meetingfan.com';
+                break;
+            case '기능 추가 문의':
+            case '뉴스레터':
+                cpEmail = 'kyj@meetingfan.com';
+                break;
+            case '오류':
+                cpEmail = 'khe@meetingfan.com';
+                break;
+            default:
+                cpEmail = 'kyj@meetingfan.com';
+                break;
+        }
     }
 
     let receiverObj = {
@@ -607,7 +730,11 @@ function f_request_list_reply_save(requestSeq){
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
                             if (data.resultCode === "0") {
+
+                                f_request_list_reply_sms_send(form);
+
                                 f_request_list_detail_set(requestSeq); // 재조회
+
                             } else {
                                 showMessage('', 'error', '에러 발생', '댓글 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                             }
@@ -627,7 +754,60 @@ function f_request_list_reply_save(requestSeq){
 
 }
 
-function f_request_list_reply_remove(seq){
+function f_request_list_reply_sms_send(form){
+    let gbn = $('#gbn').val();
+    let title = $('#title').val();
+    let content = $('#replyContent').val();
+    let note = form.note;
+
+    // [ 경기해양레저 인력양성센터 ] - (오류) 요청사항 문의드립니다.
+    let subject = '[ 경기해양레저 인력양성센터 ] - 요청사항 & 문의 (' + gbn + ') ' + title +  ' 에 새 댓글이 등록되었습니다.';
+    let body = '';
+    body += '<p>';
+        body += '요청사항 & 문의 게시물에 대한 새 댓글 등록 알림 메일입니다.';
+    body += '</p>';
+    body += '<p><br/></p>';
+    body += '<p>';
+        body += '--------------------------------------------------------------------------------------';
+    body += '</p>';
+    body += '<p><br/></p>';
+    body += '<p>';
+        body += '* 요청구분 : ' + gbn;
+    body += '</p>';
+    body += '<p><br/></p>';
+    body += '<p>';
+        body += '* 제목 : ' + title;
+    body += '</p>';
+    body += '<p><br/></p>';
+    body += '<p>';
+        body += '* 내용 : ' + content;
+    body += '</p>';
+    body += '<p><br/></p>';
+    body += '<p>';
+        body += '--------------------------------------------------------------------------------------';
+    body += '</p>';
+    body += '<p><br/></p>';
+    body += '<p>';
+        body += '<a href="https://edumarine.org/mng/index.do" target="_blank">';
+            body += '관리자 페이지 바로가기';
+        body += '</a>';
+    body += '</p>';
+
+    body = body.replaceAll('"','\\"');
+
+    // 담당자 메일 send
+    let mailJson = {
+        subject: subject,
+        body: body,
+        note: note
+    };
+    let resData1 = ajaxConnect('/mail/send.do', 'post', requestMakeMailFormat(mailJson));
+    if (resData1.resultCode !== "0") {
+        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + resData1.resultMessage, '');
+    }
+}
+
+function f_request_list_reply_remove(seq, requestSeq){
     if(nvl(seq,'') !== ''){
         Swal.fire({
             title: '[ 댓글 ]',
@@ -644,8 +824,20 @@ function f_request_list_reply_remove(seq){
                 let resData = ajaxConnect('/mng/request/list/reply/delete.do', 'post', { seq: seq });
 
                 if (resData.resultCode === "0") {
-                    showMessage('', 'info', '[ 댓글 ]', '댓글이 삭제되었습니다.', '');
-                    window.location.reload();
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: '[ 댓글 ]',
+                        html: '댓글이 삭제되었습니다.',
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#00a8ff',
+                        confirmButtonText: '확인'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            f_request_list_detail_set(requestSeq);
+                        }
+                    });
+
                 } else {
                     showMessage('', 'error', '에러 발생', '댓글 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }

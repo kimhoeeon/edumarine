@@ -140,7 +140,7 @@ $(document).ready(function () {
     });
 
      // 팝업 - 스케줄표
-    $('.sked_wrap .sked_btn').on('click', function () {
+    $('.sked_wrap .sked_btn a').on('click', function () {
         $('#popupCalendar').addClass('on');
         $('body').addClass('lock_scroll');
     });
@@ -177,5 +177,3 @@ $(document).ready(function () {
     });*/
 
 });
-
-

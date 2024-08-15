@@ -131,14 +131,14 @@
             <div id="content" class="sub_login">
                 <div class="login_wrap">
                     <div class="login_top_txt">
-                        아이디를 입력해주세요.<br>
+                        아이디를 입력해 주세요.<br>
                         가입 시 입력했던 E-mail 주소로<br>
                         비밀번호 초기화 정보를 보내드립니다.
                     </div>
                     <div class="login_form">
                         <div class="login_info">
-                            <p>이메일</p>
-                            <input type="text" id="init_id" placeholder="이메일을 입력해주세요.">
+                            <p>아이디</p>
+                            <input type="text" id="init_id" placeholder="아이디를 입력해 주세요.">
                         </div>
                         <div class="btn_login">
                             <a href="javascript:void(0);" onclick="f_pw_init();" class="btnSt01">초기화 요청하기</a>

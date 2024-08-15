@@ -14,6 +14,7 @@
              , ip_address
              , cp_name
              , cp_phone
+             , note
         FROM admin
         WHERE id = #{id}
           AND del_yn = 'N'
@@ -2067,7 +2068,7 @@
         UPDATE train
         SET train_apply_cnt = train_apply_cnt - 1
         WHERE seq = #{seq}
-        AND train_apply_cnt > 0
+        AND train_apply_cnt <![CDATA[>]]> 0
     </update>
 
     <update id="updateTrainApplyCntAdd" parameterType="java.lang.String">
@@ -2901,6 +2902,93 @@
     <update id="updateSterndriveApplyStatus" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSterndriveApplyStatus */
         UPDATE sterndrive
+        SET apply_status = #{applyStatus}
+        <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectSternSpecialList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSternSpecialList */
+        SELECT ss.seq
+             , ss.member_seq
+             , ss.train_seq
+             , m.grade
+             , m.id
+             , IFNULL(m.name, ss.name_ko) as nameKo
+             , IFNULL(m.name_en, ss.name_en) as nameEn
+             , IFNULL(m.phone, ss.phone) as phone
+             , IFNULL(m.email, ss.email) as email
+             , ss.apply_status
+             , ss.cancel_dttm
+             , ss.cancel_reason
+             , ss.del_yn
+             , ss.note
+             , ss.init_regi_pic
+             , ss.init_regi_dttm
+             , ss.final_regi_pic
+             , ss.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = ss.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = ss.seq) as cancelGbn
+             , t.next_time
+        FROM sternspecial ss
+        LEFT JOIN member m
+        ON ss.member_seq = m.seq
+        LEFT JOIN train t
+        ON ss.train_seq = t.seq
+        WHERE 1=1
+        AND ss.del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "NAMEKO"'>
+                AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "NAMEEN"'>
+                AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "ID"'>
+                AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND ss.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        ORDER BY m.grade IS NULL, ss.name_ko
+    </select>
+
+    <select id="selectSternSpecialSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSternSpecialSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM sternspecial
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateSternSpecialApplyStatus" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSternSpecialApplyStatus */
+        UPDATE sternspecial
         SET apply_status = #{applyStatus}
         <if test='applyStatus eq "취소신청"'>
             , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -3944,6 +4032,27 @@
         ORDER BY t.init_regi_dttm DESC
     </select>
 
+    <select id="selectSmsSendSternSpecialList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendSternSpecialList */
+        SELECT ss.seq AS tableSeq
+             , ss.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = ss.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , ss.apply_status
+        FROM `member` m
+        JOIN sternspecial ss
+        ON m.seq = ss.member_seq
+        WHERE ss.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY ss.init_regi_dttm DESC
+    </select>
+
     <select id="selectDownloadList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.DownloadDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectDownloadList */
         SELECT seq
@@ -4708,6 +4817,41 @@
         ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
     </select>
 
+    <select id="selectExcelSternSpecialDetailList" resultType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelSternSpecialDetailList */
+        SELECT rst.*
+        FROM (SELECT ss.seq,
+                     ss.member_seq,
+                     ss.train_seq,
+                     ss.apply_status,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(ss.name_ko, m.name)                  AS nameKo,
+                     IFNULL(ss.name_en, m.name_en)               AS name_en,
+                     IFNULL(ss.phone, m.phone)                   AS phone,
+                     IFNULL(ss.email, m.email)                   AS email,
+                     IFNULL(ss.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(ss.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(ss.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     ss.cancel_dttm,
+                     ss.cancel_reason,
+                     ss.refund_bank_code,
+                     ss.refund_bank_name,
+                     ss.refund_bank_customer_name,
+                     ss.refund_bank_number,
+                     ss.del_yn,
+                     ss.note,
+                     ss.init_regi_pic,
+                     ss.init_regi_dttm,
+                     ss.final_regi_pic,
+                     ss.final_regi_dttm
+              FROM sternspecial ss
+              LEFT JOIN member m
+              ON ss.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
     <select id="selectMemberCount" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
         /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectMemberCount */
         SELECT COUNT(*) AS inCount
@@ -4932,7 +5076,13 @@
               FROM sterndrive t
               WHERE t.apply_status NOT LIKE '%취소%'
                 and t.apply_status NOT LIKE '%대기%'
-                and t.del_yn = 'N') r
+                and t.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM sternspecial ss
+              WHERE ss.apply_status NOT LIKE '%취소%'
+                and ss.apply_status NOT LIKE '%대기%'
+                and ss.del_yn = 'N') r
     </select>
 
     <select id="selectRegularTrainInfoList" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO$TrainInfo">
@@ -5259,6 +5409,11 @@
              , t.train_seq
         FROM sterndrive t
         WHERE t.seq = #{seq}
+        UNION ALL
+        SELECT '스턴드라이브 정비 전문가과정 (특별반)' AS trainName
+             , ss.train_seq
+        FROM sternspecial ss
+        WHERE ss.seq = #{seq}
     </select>
 
     <update id="updateBoarderTrainSeq" parameterType="com.mtf.edumarine.dto.BoarderDTO">
@@ -5328,6 +5483,14 @@
     <update id="updateSterndriveTrainSeq" parameterType="com.mtf.edumarine.dto.SterndriveDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSterndriveTrainSeq */
         UPDATE sterndrive
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSternSpecialTrainSeq" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSternSpecialTrainSeq */
+        UPDATE sternspecial
         SET train_seq = #{trainSeq}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}

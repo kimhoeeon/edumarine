@@ -356,6 +356,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/sternspecial.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">스턴드라이브 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -1155,9 +1165,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highhorsepower.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">고마력 선외기 정비</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1167,8 +1177,8 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highself.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">자가정비 심화과정 (고마력)</span>
                                             </a>
@@ -1179,8 +1189,8 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highspecial.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">고마력 선외기 정비 (특별반)</span>
                                             </a>
@@ -1191,10 +1201,22 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sterndrive.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">스턴드라이브 정비</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/sternspecial.do">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                                <span class="menu-title">스턴드라이브 정비 (특별반)</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1952,40 +1974,39 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-2"
                                                     <c:choose>
-                                                        <c:when test="${reply.writer eq 'admin' or reply.writer eq 'meetingfan1'}">
-                                                            style="background-color: #e8f7ee; padding: 15px;"
+                                                        <c:when test="${reply.note eq '개발사'}">
+                                                            style="background-color: aliceblue; padding: 15px;"
                                                         </c:when>
                                                         <c:otherwise>
-                                                            style="background-color: aliceblue; padding: 15px;"
+                                                            style="background-color: #e8f7ee; padding: 15px;"
                                                         </c:otherwise>
                                                     </c:choose>
                                                  >
                                                 <input type="hidden" name="replySeq" value="${reply.seq}">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6"
+                                                <label class="col-lg-2"
                                                         <c:choose>
-                                                            <c:when test="${reply.writer eq 'admin' or reply.writer eq 'meetingfan1'}">
-                                                                style="border-right: 1px solid #e8f7ee;"
+                                                            <c:when test="${reply.note eq '개발사'}">
+                                                                style="border-right: 1px solid aliceblue;"
                                                             </c:when>
                                                             <c:otherwise>
-                                                                style="border-right: 1px solid aliceblue;"
+                                                                style="border-right: 1px solid #e8f7ee;"
                                                             </c:otherwise>
                                                         </c:choose>
                                                 >
-                                                <c:choose>
-                                                    <c:when test="${reply.writer eq 'admin' or reply.writer eq 'meetingfan1'}">
-                                                        <div class="badge badge-primary fw-bold me-2">
-                                                            개발사
-                                                        </div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <div class="badge badge-success fw-bold me-2">
-                                                            관리자
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                    ${reply.writer}<br/>
-                                                    <span class="mt-1 text-gray-600 fs-8">${reply.initRegiDttm}</span>
+                                                    <c:choose>
+                                                        <c:when test="${reply.note eq '개발사'}">
+                                                            <div class="badge badge-primary fw-bold d-flex align-items-center justify-content-center flex-wrap fs-4 h-35px mb-1" style="line-height: inherit;">
+                                                                개발사
+                                                            </div>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div class="badge badge-success fw-bold d-flex align-items-center justify-content-center flex-wrap fs-4 h-35px mb-1" style="line-height: inherit;">
+                                                                관리자
+                                                            </div>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <span class="mt-2 text-gray-600 fs-8">${reply.initRegiDttm}</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
@@ -1997,7 +2018,7 @@ if (document.documentElement) {
                                                             ${fn:replace(fn:replace(fn:escapeXml(reply.content), CRLF, '<br/>'), LF, '<br/>')}
                                                         </div>
                                                         <div class="col-lg-2 text-end">
-                                                            <a href="javascript:void(0);" onclick="f_request_list_reply_remove('${reply.seq}')">
+                                                            <a href="javascript:void(0);" onclick="f_request_list_reply_remove('${reply.seq}', '${reply.requestSeq}')">
                                                                 <i class="ki-duotone ki-trash fs-2">
                                                                     <span class="path1"></span>
                                                                     <span class="path2"></span>
@@ -2022,31 +2043,31 @@ if (document.documentElement) {
                                         <%-- hidden SEQ --%>
                                         <input type="hidden" name="requestSeq" value="${info.seq}">
                                         <input type="hidden" name="writer" value="${sessionScope.id}">
+                                        <input type="hidden" name="note" value="${sessionScope.note}">
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
 
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">
+                                                <label class="col-lg-2">
                                                     <c:choose>
-                                                        <c:when test="${sessionScope.id eq 'admin' or sessionScope.id eq 'meetingfan1'}">
-                                                            <div class="badge badge-primary fw-bold me-2">
+                                                        <c:when test="${sessionScope.note eq '개발사'}">
+                                                            <div class="badge badge-primary fw-bold d-flex align-items-center justify-content-center flex-wrap fs-4 h-35px mb-1" style="line-height: inherit;">
                                                                 개발사
                                                             </div>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <div class="badge badge-success fw-bold me-2">
+                                                            <div class="badge badge-success fw-bold d-flex align-items-center justify-content-center flex-wrap fs-4 h-35px mb-1" style="line-height: inherit;">
                                                                 관리자
                                                             </div>
                                                         </c:otherwise>
                                                     </c:choose>
-                                                    ${sessionScope.id}
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <textarea name="content" class="form-control form-control-solid-bg resize-none h-100px" placeholder="댓글 내용 작성"></textarea>
+                                                    <textarea id="replyContent" name="content" class="form-control form-control-solid-bg resize-none h-100px" placeholder="댓글 내용 작성"></textarea>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>

@@ -188,16 +188,20 @@ function searchPosts(pageNum, categoryValue) {
                             applyPath = '/apply/eduApply07.do';
                             break;
                         case '자가정비 심화과정 (고마력 선외기)':
-                            thumbnailImage = '/static/img/thumbnail_highhorsepower_re.jpg';
+                            thumbnailImage = '/static/img/thumbnail_highself_re.jpg';
                             applyPath = '/apply/eduApply09.do';
                             break;
                         case '고마력 선외기 정비 중급 테크니션 (특별반)':
-                            thumbnailImage = '/static/img/thumbnail_highhorsepower_re.jpg';
+                            thumbnailImage = '/static/img/thumbnail_highspecial_re.jpg';
                             applyPath = '/apply/eduApply10.do';
                             break;
                         case '스턴드라이브 정비 전문가과정':
                             thumbnailImage = '/static/img/thumbnail_sterndrive_re.jpg';
                             applyPath = '/apply/eduApply08.do';
+                            break;
+                        case '스턴드라이브 정비 전문가과정 (특별반)':
+                            thumbnailImage = '/static/img/thumbnail_sternspecial.png';
+                            applyPath = '/apply/eduApply11.do';
                             break;
                         case '마리나 선박 선외기 정비사 실무과정':
                             thumbnailImage = '/static/img/thumbnail_marina_out.jpg';

@@ -152,6 +152,150 @@
                 <div class="guide_wrap">
 
                     <!-- guide_all -->
+                    <div class="guide_plan">
+                        <div class="box">
+                            <div class="guide_tit_box">
+                                <div class="name">전체 교육일정</div>
+                            </div>
+
+                            <div class="cont_list">
+                                <!-- 정규과정 -->
+                                <div class="table_wrap">
+                                    <div class="table_tit">
+                                        <div class="big">[ 정규과정 ]</div>
+                                        <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                    </div>
+                                    <div class="table">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>과정명</th>
+                                                <th>일정</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="bg name">마리나 선박 선외기 정비사<br>실무과정 (4회)</td>
+                                                <td>
+                                                    <p>1기 : 1.8(월) - 2.2(금)</p>
+                                                    <p>2기 : 4.2(화) - 4.30(화)</p>
+                                                    <p>3기 : 7.1(월) - 7.26(금)</p>
+                                                    <p>4기 : 9.23(월) - 10.22(화)</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">마리나 선박 선내기 정비사<br>실무과정 (4회)</td>
+                                                <td>
+                                                    <p>1기 : 2.20(화) - 3.19(화)</p>
+                                                    <p>2기 : 5.16(목) - 6.13(목)</p>
+                                                    <p>3기 : 8.5(월) - 9.3(화)</p>
+                                                    <p>4기 : 11.11(월) - 12.6(금)</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">마리나 선박 FRP선체 정비사<br>실무과정 (2회)</td>
+                                                <td>
+                                                    <p>1기 : 7.15(월) - 7.26(금)</p>
+                                                    <p>2기 : 8.5(월) - 8.16(금)</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">고마력 선외기(OE)<br>정비 중급 테크니션 (2회)</td>
+                                                <td>
+                                                    <p>1기 : 7.15(월) - 8.2(금)</p>
+                                                    <p>2기 : 10.14(월) - 11.1(금)</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">스턴드라이브 정비<br>전문가과정</td>
+                                                <td>
+                                                    <p>1기 : 7.6(토) - 7.28(일)</p>
+                                                    <p>2기 : 9.28(토) - 10.20(일)</p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- //정규과정 -->
+                                <!-- 단기과정 -->
+                                <div class="table_wrap">
+                                    <div class="table_tit">
+                                        <div class="big">[ 단기과정 ]</div>
+                                        <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                    </div>
+                                    <div class="table">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th colspan="2">과정명</th>
+                                                <th>일정</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="bg gubun" rowspan="3">상반기<br>(3월~6월)</td>
+                                                <td class="bg name">선외기 자가정비반<br>(일반인 과정)</td>
+                                                <td>
+                                                    <p>3.16(토) - 17(일)</p>
+                                                    <p>4.27(토) - 28(일)</p>
+                                                    <p class="small">(주말반) 총 2회</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">선내기 자가정비반<br>(일반인 과정)</td>
+                                                <td>
+                                                    <p>3.26(토) - 24(일)</p>
+                                                    <p class="small">(주말반) 총 1회</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">세일요트 엔진 자가정비반<br>(일반인 과정)</td>
+                                                <td>
+                                                    <p>3.30(토) - 31(일)</p>
+                                                    <p class="small">(주말반) 총 1회</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg gubun" rowspan="3">하반기<br>(8월~11월)</td>
+                                                <td class="bg name">해상엔진 응급조치교육</td>
+                                                <td>
+                                                    <p>8월 - 11월</p>
+                                                    <p class="small">(주말반) 총 7회</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">해상엔진 기초정비교육</td>
+                                                <td>
+                                                    <p>8월 - 11월</p>
+                                                    <p class="small">(주말반) 총 7회</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">선외기 자가정비 심화과정</td>
+                                                <td>
+                                                    <p>8.3(토) - 4(일)</p>
+                                                    <p class="small">(주말반) 총 1회</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg gubun">상하반기</td>
+                                                <td class="bg name">선외기/선내기<br>직무역량 강화과정<br>(위탁교육)</td>
+                                                <td>
+                                                    <p>3월 - 12월</p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- //단기과정 -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //guide_all -->
+
+                    <!-- guide_all -->
                     <div class="guide_all">
                         <!-- 정규과정 -->
                         <div class="box">

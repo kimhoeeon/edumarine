@@ -317,6 +317,7 @@ function f_education_train_save(seq) {
                                             keyword = '고마력';
                                             break;
                                         case '스턴드라이브 정비 전문가과정':
+                                        case '스턴드라이브 정비 전문가과정 (특별반)':
                                             keyword = '스턴드라이브';
                                             break;
                                         default:
@@ -366,7 +367,7 @@ function f_education_train_form_data_setting() {
     form.gbn = $('#gbn').val();
 
     // 차시
-    form.nextTime = $('#nextTime').val();
+    form.nextTime = nvl($('#nextTime').val(),'0');
 
     // 카테고리
     let category = '전체';
@@ -387,6 +388,7 @@ function f_education_train_form_data_setting() {
             case '고마력 선외기 정비 중급 테크니션':
             case '고마력 선외기 정비 중급 테크니션 (특별반)':
             case '스턴드라이브 정비 전문가과정':
+            case '스턴드라이브 정비 전문가과정 (특별반)':
                 category = '심화과정';
                 break;
             default:
@@ -538,6 +540,9 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             break;
         case '스턴드라이브 정비 전문가과정':
             link = '/mng/customer/sterndrive.do';
+            break;
+        case '스턴드라이브 정비 전문가과정 (특별반)':
+            link = '/mng/customer/sternspecial.do';
             break;
         default:
             break;
