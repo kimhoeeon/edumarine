@@ -4,6 +4,7 @@
  * */
 
 $(function () {
+
     // 교육과정명
     $('#gbn_select').on('change', function () {
         let selectedOption = $(this).val();
@@ -13,6 +14,29 @@ $(function () {
             gbn.prop('disabled', true).val(selectedOption);
         } else {
             gbn.prop('disabled', true).val('');
+        }
+
+        let gbnDepth = $('#gbnDepth');
+        if(gbn.val() === '기초정비교육' || gbn.val() === '응급조치교육'){
+            //show
+            gbnDepth.parent().parent().parent().removeClass('d-none');
+            $('#gbnDepth').prop('disabled', true);
+        }else{
+            gbnDepth.parent().parent().parent().addClass('d-none');
+            $('#gbnDepth').val('');
+            $('#gbn_depth_select').val('');
+        }
+    });
+
+    // 세부교육명
+    $('#gbn_depth_select').on('change', function () {
+        let selectedOption = $(this).val();
+        let gbnDepth = $('#gbnDepth');
+
+        if (nvl(selectedOption,'') !== '') {
+            gbnDepth.prop('disabled', true).val(selectedOption);
+        } else {
+            gbnDepth.prop('disabled', true).val('');
         }
     });
 
@@ -55,9 +79,21 @@ $(function () {
             dateFormat: "Y.m.d"
         });
     }
+
 });
 
 function f_education_train_search() {
+
+    let gbn = $('#condition_gbn option:selected').val();
+
+    if(gbn === '기초정비교육' || gbn === '응급조치교육'){
+        //show
+        $('#condition_gbn_depth').parent().removeClass('d-none');
+    }else{
+        //hide
+        $('#condition_gbn_depth').parent().addClass('d-none');
+        $('#condition_gbn_depth').val('').select2({minimumResultsForSearch: Infinity});
+    }
 
     /* 로딩페이지 */
     loadingBarShow();
@@ -74,18 +110,20 @@ function f_education_train_search() {
 
     let time = $('#condition_time option:selected').val();
     let category = $('#condition_category option:selected').val();
-    let gbn = $('#condition_gbn option:selected').val();
+    let gbnDepth = $('#condition_gbn_depth option:selected').val();
     if (nullToEmpty(searchText) === '') {
         jsonObj = {
             time: time,
             category: category,
             gbn: gbn,
+            gbnDepth: gbnDepth
         };
     } else {
         jsonObj = {
             time: time,
             category: category,
             gbn: gbn,
+            gbnDepth: gbnDepth,
             condition: condition,
             searchText: searchText
         }
@@ -122,6 +160,7 @@ function f_education_train_search_condition_init() {
     $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_category').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_gbn').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_gbn_depth').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_education_train_search();
@@ -139,6 +178,7 @@ function f_education_train_detail_modal_set(seq) {
     //console.log(resData);
 
     document.querySelector('#md_gbn').value = resData.gbn;
+    document.querySelector('#md_gbn_depth').value = nvl(resData.gbnDepth,'-');
     document.querySelector('#md_next_time').value = resData.nextTime;
     document.querySelector('#md_train_start_dttm').value = resData.trainStartDttm;
     document.querySelector('#md_train_end_dttm').value = resData.trainEndDttm;
@@ -299,6 +339,7 @@ function f_education_train_save(seq) {
                                 if (data.resultCode === "0") {
 
                                     let gbn = $('#gbn').val();
+                                    let gbnDepth = $('#gbnDepth').val();
                                     let keyword = '';
                                     switch (gbn){
                                         case '해상엔진 자가정비 (선외기)':
@@ -319,6 +360,20 @@ function f_education_train_save(seq) {
                                         case '스턴드라이브 정비 전문가과정':
                                         case '스턴드라이브 정비 전문가과정 (특별반)':
                                             keyword = '스턴드라이브';
+                                            break;
+                                        case '기초정비교육':
+                                            if(gbnDepth === '선외기'){
+                                                keyword = '선외기';
+                                            }else if(gbnDepth === '선내기'){
+                                                keyword = '선내기';
+                                            }
+                                            break;
+                                        case '응급조치교육':
+                                            if(gbnDepth === '선외기'){
+                                                keyword = '선외기';
+                                            }else if(gbnDepth === '선내기'){
+                                                keyword = '선내기';
+                                            }
                                             break;
                                         default:
                                             break;
@@ -366,6 +421,9 @@ function f_education_train_form_data_setting() {
     // 교육과정명
     form.gbn = $('#gbn').val();
 
+    // 세부교육과정명
+    form.gbnDepth = $('#gbnDepth').val();
+
     // 차시
     form.nextTime = nvl($('#nextTime').val(),'0');
 
@@ -383,6 +441,8 @@ function f_education_train_form_data_setting() {
             case '해상엔진 자가정비 (선내기)':
             case '해상엔진 자가정비 (세일요트)':
             case '자가정비 심화과정 (고마력 선외기)':
+            case '기초정비교육':
+            case '응급조치교육':
                 category = '단기과정';
                 break;
             case '고마력 선외기 정비 중급 테크니션':
@@ -411,41 +471,49 @@ function f_education_train_valid() {
     let trainCnt = document.querySelector('#trainCnt').value;
 
     if (nvl(gbn, '- 교육과정명 선택 -') === '- 교육과정명 선택 -') {
-        showMessage('', 'error', '[등록 정보]', '교육과정명을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 등록 정보 ]', '교육과정명을 선택해 주세요.', '');
         return false;
+    }else{
+        if(gbn === '기초정비교육' || gbn === '응급조치교육'){
+            let gbnDepth = document.querySelector('#gbnDepth').value;
+            if (nvl(gbnDepth, '- 세부교육명 선택 -') === '- 세부교육명 선택 -') {
+                showMessage('', 'error', '[ 등록 정보 ]', '세부교육명을 선택해 주세요.', '');
+                return false;
+            }
+        }
     }
     if (nvl(trainStartDttm, '') === '') {
-        showMessage('', 'error', '[등록 정보]', '교육일정 (시작)일을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 등록 정보 ]', '교육일정 (시작)일을 선택해 주세요.', '');
         return false;
     }
     if (nvl(trainEndDttm, '') === '') {
-        showMessage('', 'error', '[등록 정보]', '교육일정 (종료)일을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 등록 정보 ]', '교육일정 (종료)일을 선택해 주세요.', '');
         return false;
     }
     if (trainStartDttm > trainEndDttm) {
-        showMessage('', 'error', '[등록 정보]', '교육일정 종료일을 시작일보다 뒤로 선택해 주세요.', '');
+        showMessage('', 'error', '[ 등록 정보 ]', '교육일정 종료일을 시작일보다 뒤로 선택해 주세요.', '');
         return false;
     }
     if (nvl(applyStartDttm, '') === '') {
-        showMessage('', 'error', '[등록 정보]', '접수기간 (시작)일을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 등록 정보 ]', '접수기간 (시작)일을 선택해 주세요.', '');
         return false;
     }
     if (nvl(applyEndDttm, '') === '') {
-        showMessage('', 'error', '[등록 정보]', '접수기간 (종료)일을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 등록 정보 ]', '접수기간 (종료)일을 선택해 주세요.', '');
         return false;
     }
     if (applyStartDttm > applyEndDttm) {
-        showMessage('', 'error', '[등록 정보]', '접수기간 종료일을 시작일보다 뒤로 선택해 주세요.', '');
+        showMessage('', 'error', '[ 등록 정보 ]', '접수기간 종료일을 시작일보다 뒤로 선택해 주세요.', '');
         return false;
     }
 
     if(!gbn.toString().includes('마리나')){
         if (nvl(paySum, '') === '') {
-            showMessage('', 'error', '[등록 정보]', '교육비를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 등록 정보 ]', '교육비를 입력해 주세요.', '');
             return false;
         }
         if (nvl(trainCnt, '') === '') {
-            showMessage('', 'error', '[등록 정보]', '총 교육인원을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 등록 정보 ]', '총 교육인원을 입력해 주세요.', '');
             return false;
         }
     }
@@ -543,6 +611,12 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             break;
         case '스턴드라이브 정비 전문가과정 (특별반)':
             link = '/mng/customer/sternspecial.do';
+            break;
+        case '기초정비교육':
+            link = '/mng/customer/basic.do';
+            break;
+        case '응급조치교육':
+            link = '/mng/customer/emergency.do';
             break;
         default:
             break;

@@ -120,20 +120,15 @@ public class EduMarineController {
         List<TrainDTO> frpList = eduMarineService.processSelectTrainList(frpDTO);
         mv.addObject("frpList", frpList);
 
-        TrainDTO outBoarderDTO = new TrainDTO();
-        outBoarderDTO.setGbn("(선외기)");
-        List<TrainDTO> outBoarderList = eduMarineService.processSelectTrainList(outBoarderDTO);
-        mv.addObject("outBoarderList", outBoarderList);
+        TrainDTO basicDTO = new TrainDTO();
+        basicDTO.setGbn("기초정비교육");
+        List<TrainDTO> basicList = eduMarineService.processSelectTrainList(basicDTO);
+        mv.addObject("basicList", basicList);
 
-        TrainDTO inBoarderDTO = new TrainDTO();
-        inBoarderDTO.setGbn("(선내기)");
-        List<TrainDTO> inBoarderList = eduMarineService.processSelectTrainList(inBoarderDTO);
-        mv.addObject("inBoarderList", inBoarderList);
-
-        TrainDTO saleDTO = new TrainDTO();
-        saleDTO.setGbn("(세일요트)");
-        List<TrainDTO> saleList = eduMarineService.processSelectTrainList(saleDTO);
-        mv.addObject("saleList", saleList);
+        TrainDTO emergencyDTO = new TrainDTO();
+        emergencyDTO.setGbn("응급조치교육");
+        List<TrainDTO> emergencyList = eduMarineService.processSelectTrainList(emergencyDTO);
+        mv.addObject("emergencyList", emergencyList);
 
         TrainDTO marinaInDTO = new TrainDTO();
         marinaInDTO.setGbn("마리나 선박 선내기");
@@ -312,13 +307,13 @@ public class EduMarineController {
                     trainName = "FRP 레저보트 선체 정비 테크니션";
                     break;
                 case "EDU06":
-                    trainName = "해상엔진 자가정비 (선외기)";
+                    trainName = "선외기";
                     break;
                 case "EDU07":
-                    trainName = "해상엔진 자가정비 (선내기)";
+                    trainName = "선내기";
                     break;
                 case "EDU08":
-                    trainName = "해상엔진 자가정비 (세일요트)";
+                    trainName = "세일요트";
                     break;
                 case "EDU09":
                     trainName = "마리나 선박";
@@ -334,6 +329,12 @@ public class EduMarineController {
                     break;
                 case "EDU11":
                     trainName = "스턴드라이브";
+                    break;
+                case "EDU14":
+                    trainName = "기초정비교육";
+                    break;
+                case "EDU15":
+                    trainName = "응급조치교육";
                     break;
                 default:
                     trainName = searchText;
@@ -577,6 +578,72 @@ public class EduMarineController {
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply12/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply12_update_status(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply12_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply13/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply13_update_status(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply13_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply14/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply14_update_status(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply14_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply15/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply15_update_status(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply15_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply16/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply16_update_status(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply16_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply17/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply17_update_status(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply17_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1174,6 +1241,450 @@ public class EduMarineController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/apply/eduApply12.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply12(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply12");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply12");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply12/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply12_preCheck(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply12_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectBasicPreCheck(basicDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply12/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply12_insert(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply12_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertBasic(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply12_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply12_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply12_modify");
+        ModelAndView mv = new ModelAndView();
+
+        BasicDTO info = eduMarineService.processSelectBasicSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply12_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply12/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply12_update(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > mypage_eduApply12_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateBasic(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply13.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply13(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply13");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply13");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply13/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply13_preCheck(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply13_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectBasicPreCheck(basicDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply13/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply13_insert(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply13_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertBasic(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply13_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply13_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply13_modify");
+        ModelAndView mv = new ModelAndView();
+
+        BasicDTO info = eduMarineService.processSelectBasicSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply13_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply13/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply13_update(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > mypage_eduApply13_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateBasic(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply14.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply14(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply14");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply14");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply14/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply14_preCheck(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply14_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectBasicPreCheck(basicDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply14/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply14_insert(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > apply_eduApply14_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertBasic(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply14_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply14_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply14_modify");
+        ModelAndView mv = new ModelAndView();
+
+        BasicDTO info = eduMarineService.processSelectBasicSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply14_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply14/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply14_update(@RequestBody BasicDTO basicDTO) {
+        System.out.println("EduMarineController > mypage_eduApply14_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateBasic(basicDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply15.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply15(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply15");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply15");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply15/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply15_preCheck(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply15_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectEmergencyPreCheck(emergencyDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply15/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply15_insert(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply15_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertEmergency(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply15_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply15_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply15_modify");
+        ModelAndView mv = new ModelAndView();
+
+        EmergencyDTO info = eduMarineService.processSelectEmergencySingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply15_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply15/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply15_update(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > mypage_eduApply15_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateEmergency(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply16.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply16(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply16");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply16");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply16/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply16_preCheck(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply16_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectEmergencyPreCheck(emergencyDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply16/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply16_insert(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply16_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertEmergency(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply16_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply16_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply16_modify");
+        ModelAndView mv = new ModelAndView();
+
+        EmergencyDTO info = eduMarineService.processSelectEmergencySingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply16_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply16/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply16_update(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > mypage_eduApply16_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateEmergency(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply17.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply17(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply17");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply17");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply17/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply17_preCheck(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply17_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectEmergencyPreCheck(emergencyDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply17/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply17_insert(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply17_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertEmergency(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply17_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply17_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply17_modify");
+        ModelAndView mv = new ModelAndView();
+
+        EmergencyDTO info = eduMarineService.processSelectEmergencySingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply17_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply17/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply17_update(@RequestBody EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineController > mypage_eduApply17_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateEmergency(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+    
     @RequestMapping(value = "/apply/faq.do", method = RequestMethod.GET)
     public ModelAndView apply_faq() {
         System.out.println("EduMarineController > apply_faq");
@@ -2571,6 +3082,22 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/guide/guide12.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide12() {
+        System.out.println("EduMarineController > guide_guide12");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide12");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/guide13.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide13() {
+        System.out.println("EduMarineController > guide_guide13");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide13");
+        return mv;
+    }
+
     //***************************************************************************
     // Common
     //***************************************************************************
@@ -2804,6 +3331,9 @@ public class EduMarineController {
                         // 해상엔진 자가정비 (세일요트)
                         // 고마력 선외기 정비 중급 테크니션
                         // 스턴드라이브 정비 전문가과정
+                        // 선외기 기초정비교육
+                        // 선내기 기초정비교육
+                        // 세일요트 기초정비교육
                         if (paymentDTO.getTrainName().contains("상시")) {
 
                             // regular table
@@ -2963,6 +3493,34 @@ public class EduMarineController {
                                     }
                                 }
 
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("기초정비교육")) {
+
+                            // Basic table
+                            BasicDTO basicDTO = new BasicDTO();
+                            basicDTO.setSeq(paymentDTO.getTableSeq());
+                            basicDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("응급조치교육")) {
+
+                            // Basic table
+                            EmergencyDTO emergencyDTO = new EmergencyDTO();
+                            emergencyDTO.setSeq(paymentDTO.getTableSeq());
+                            emergencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
 
                         }
@@ -3305,6 +3863,34 @@ public class EduMarineController {
 
                             }
 
+                        } else if (paymentDTO.getTrainName().contains("기초정비교육")) {
+
+                            // Basic table
+                            BasicDTO basicDTO = new BasicDTO();
+                            basicDTO.setSeq(paymentDTO.getTableSeq());
+                            basicDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("응급조치교육")) {
+
+                            // Basic table
+                            EmergencyDTO emergencyDTO = new EmergencyDTO();
+                            emergencyDTO.setSeq(paymentDTO.getTableSeq());
+                            emergencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
                         }
                     }
                 }
@@ -3356,6 +3942,11 @@ public class EduMarineController {
         /* 운영 */
         String siteDomain = "https://edumarine.org";
 
+        String gbn = trainDTO.getGbn();
+        if(trainDTO.getGbnDepth() != null && !"".equals(trainDTO.getGbnDepth())){
+            gbn = trainDTO.getGbnDepth() + " " + gbn;
+        }
+
         inistdpayRequestDTO.setMid(mid);
         inistdpayRequestDTO.setOid(orderNumber);
         inistdpayRequestDTO.setPrice(String.valueOf(trainDTO.getPaySum()));
@@ -3364,7 +3955,7 @@ public class EduMarineController {
         inistdpayRequestDTO.setSignature(signature);
         inistdpayRequestDTO.setVerification(verification);
         inistdpayRequestDTO.setMkey(mKey);
-        inistdpayRequestDTO.setGoodname(trainDTO.getGbn());
+        inistdpayRequestDTO.setGoodname(gbn);
         inistdpayRequestDTO.setSiteDomain(siteDomain);
         mv.addObject("payInfo", inistdpayRequestDTO);
 
@@ -3414,6 +4005,11 @@ public class EduMarineController {
         /* 운영 */
         String siteDomain = "https://edumarine.org";
 
+        String gbn = trainDTO.getGbn();
+        if(trainDTO.getGbnDepth() != null && !"".equals(trainDTO.getGbnDepth())){
+            gbn = trainDTO.getGbnDepth() + " " + gbn;
+        }
+
         inistdpayRequestDTO.setMid(mid);
         inistdpayRequestDTO.setOid(orderNumber);
         inistdpayRequestDTO.setPrice(String.valueOf(trainDTO.getPaySum()));
@@ -3422,7 +4018,7 @@ public class EduMarineController {
         inistdpayRequestDTO.setSignature(signature);
         inistdpayRequestDTO.setVerification(verification);
         inistdpayRequestDTO.setMkey(mKey);
-        inistdpayRequestDTO.setGoodname(trainDTO.getGbn());
+        inistdpayRequestDTO.setGoodname(gbn);
         inistdpayRequestDTO.setSiteDomain(siteDomain);
         mv.addObject("payInfo", inistdpayRequestDTO);
 

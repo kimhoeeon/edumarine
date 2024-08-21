@@ -576,6 +576,12 @@ function getTargetMenu(tableId){
         case 'mng_customer_frp_table':
             targetMenu = '회원/신청_신청자목록_FRP정비테크니션';
             break;
+        case 'mng_customer_basic_table':
+            targetMenu = '회원/신청_신청자목록_기초정비교육';
+            break;
+        case 'mng_customer_emergency_table':
+            targetMenu = '회원/신청_신청자목록_응급조치교육';
+            break;
         case 'mng_customer_outboarder_table':
             targetMenu = '회원/신청_신청자목록_자가정비(선외기)';
             break;
@@ -662,6 +668,8 @@ function getTargetMenu(tableId){
     //mng_customer_regular_table // 회원/신청_신청자목록_상시사전신청
     //mng_customer_boarder_table // 회원/신청_신청자목록_해상엔진테크니션
     //mng_customer_frp_table // 회원/신청_신청자목록_FRP정비테크니션
+    //mng_customer_basic_table // 회원/신청_신청자목록_기초정비교육
+    //mng_customer_emergency_table // 회원/신청_신청자목록_응급조치교육
     //mng_customer_outboarder_table // 회원/신청_신청자목록_자가정비(선외기)
     //mng_customer_inboarder_table // 회원/신청_신청자목록_자가정비(선내기)
     //mng_customer_sailyacht_table // 회원/신청_신청자목록_자가정비(세일요트)
@@ -694,10 +702,6 @@ function getTargetMenu(tableId){
     return targetMenu;
 }
 
-function f_mng_temporary_trash_save(){
-
-}
-
 function f_mng_uploadFile(formId, path) {
     /* 파일 업로드 */
     let fileForm = document.getElementById(formId);
@@ -713,7 +717,7 @@ function f_mng_uploadFile(formId, path) {
             })
             .then(res => {
                 if( typeof res.uploadPath !== undefined){
-                    resolve(res.uploadPath + '\\' + res.uuid + '_' + res.fileName);
+                    resolve(res.uploadPath + '\\' + res.fileName);
                 }
             })
 
@@ -822,11 +826,11 @@ async function f_attach_file_upload(userId, formId, path) {
                     let fullFileName = pureFileNameSplit[pureFileNameSplit.length - 1];
                     // b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
 
-                    let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
+                    /*let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
                     // b3eb661d-34de-4fd0-bc74-17db9fffc1bd
 
                     let fileName = fullFileName.substring(fullFileName.indexOf('_')+1);
-                    // KIBS_TV_목록_excel_20230817151752.xlsx
+                    // KIBS_TV_목록_excel_20230817151752.xlsx*/
 
                     let folderPath = pureFileNameSplit[pureFileNameSplit.length - 2];
                     // notice
@@ -837,8 +841,8 @@ async function f_attach_file_upload(userId, formId, path) {
                         fullPath: fullPath,
                         folderPath: folderPath,
                         fullFileName: fullFileName,
-                        uuid: uuid,
-                        fileName: fileName,
+                        /*uuid: uuid,*/
+                        fileName: fullFileName,
                         fileYn: 'Y'
                     };
 
@@ -848,18 +852,23 @@ async function f_attach_file_upload(userId, formId, path) {
                         let li_el = document.createElement('li');
                         let a_el = document.createElement('a');
 
-                        if(folderPath === 'gallery' || folderPath === 'banner'){
-                            let img_el = document.createElement('img');
-                            img_el.src = fullFilePath.replace('/usr/local/tomcat/webapps', '/../../../..');
-                            img_el.classList.add('w-350px','mr10');
-                            img_el.style.border = '1px solid #009ef7';
-                            li_el.append(img_el);
-                        }
-
-                        /*a_el.href = 'javascript:f_file_download(' + '\'' + pureFileName + '\'' + ',' + '\'' + pureFilePath + '\'' +')';*/
                         a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;
-                        a_el.text = fileName;
+                        a_el.text = fullFileName;
+
                         li_el.append(a_el);
+
+                        if(folderPath === 'gallery' || folderPath === 'banner'){
+                            if(fullFileName.toLowerCase().includes('.jpg')
+                                || fullFileName.toLowerCase().includes('.jpeg')
+                                || fullFileName.toLowerCase().includes('.png')) {
+                                let img_el = document.createElement('img');
+                                img_el.src = fullFilePath.replace('/usr/local/tomcat/webapps', '/../../../..');
+                                img_el.classList.add('w-350px', 'mr10');
+                                img_el.style.border = '1px solid #009ef7';
+
+                                li_el.append(img_el);
+                            }
+                        }
 
                         let hidden_el = document.createElement('input');
                         hidden_el.type = 'hidden';

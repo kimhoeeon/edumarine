@@ -51,12 +51,17 @@ function f_train_calendar_select(category){
             $.each(results , function(i){
                 let seq = results[i].seq;
                 let gbn = results[i].gbn;
+                let gbnDepth = results[i].gbnDepth;
                 let category = results[i].category;
                 category = category.toString().replaceAll('과정','');
                 let trainStartDttm = results[i].trainStartDttm;
                 trainStartDttm = trainStartDttm.toString().replaceAll('.','-');
                 let trainEndDttm = results[i].trainEndDttm;
                 trainEndDttm = trainEndDttm.toString().replaceAll('.','-');
+
+                if(nvl(gbnDepth,'') !== ''){
+                    gbn = gbnDepth + ' ' + gbn;
+                }
 
                 let className = '';
                 let link = '';
@@ -100,6 +105,30 @@ function f_train_calendar_select(category){
                     case '스턴드라이브 정비 전문가과정 (특별반)':
                         className = 'edu10';
                         link = '/apply/eduApply11.do';
+                        break;
+                    case '선외기 기초정비교육':
+                        className = 'edu12';
+                        link = '/apply/eduApply12.do';
+                        break;
+                    case '선내기 기초정비교육':
+                        className = 'edu13';
+                        link = '/apply/eduApply13.do';
+                        break;
+                    case '세일요트 기초정비교육':
+                        className = 'edu14';
+                        link = '/apply/eduApply14.do';
+                        break;
+                    case '선외기 응급조치교육':
+                        className = 'edu15';
+                        link = '/apply/eduApply15.do';
+                        break;
+                    case '선내기 응급조치교육':
+                        className = 'edu16';
+                        link = '/apply/eduApply16.do';
+                        break;
+                    case '세일요트 응급조치교육':
+                        className = 'edu17';
+                        link = '/apply/eduApply17.do';
                         break;
                     default:
                         break;

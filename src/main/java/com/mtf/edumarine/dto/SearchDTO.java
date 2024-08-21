@@ -29,4 +29,6 @@ public class SearchDTO extends AbstractPagingRequestVo {
     String jobSupportYn;
     String progressStep;
     String emergencyYn;
+    String boarderGbn;
+    String gbnDepth;
 }

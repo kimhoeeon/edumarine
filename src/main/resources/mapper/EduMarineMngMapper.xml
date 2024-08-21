@@ -2220,6 +2220,200 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="selectBasicList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectBasicList */
+        SELECT b.seq
+             , b.member_seq
+             , b.train_seq
+             , m.grade
+             , m.id
+             , b.boarder_gbn
+             , IFNULL(m.name, b.name_ko) as nameKo
+             , IFNULL(m.name_en, b.name_en) as nameEn
+             , IFNULL(m.phone, b.phone) as phone
+             , IFNULL(m.email, b.email) as email
+             , b.clothes_size
+             , b.participation_path
+             , b.apply_status
+             , b.cancel_dttm
+             , b.cancel_reason
+             , b.del_yn
+             , b.note
+             , b.init_regi_pic
+             , b.init_regi_dttm
+             , b.final_regi_pic
+             , b.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as cancelGbn
+             , t.next_time
+        FROM basic b
+        LEFT JOIN member m
+        ON b.member_seq = m.seq
+        LEFT JOIN train t
+        ON b.train_seq = t.seq
+        WHERE 1=1
+          AND b.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND b.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        <if test='boarderGbn != null and boarderGbn != ""'>
+            AND b.boarder_gbn = #{boarderGbn}
+        </if>
+        ORDER BY m.grade IS NULL, b.name_ko
+    </select>
+
+    <select id="selectBasicSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectBasicSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , boarder_gbn
+             , clothes_size
+             , participation_path
+             , recommend_person
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM basic
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateBasicApplyStatus" parameterType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBasicApplyStatus */
+        UPDATE basic
+        SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectEmergencyList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectEmergencyList */
+        SELECT e.seq
+             , e.member_seq
+             , e.train_seq
+             , m.grade
+             , m.id
+             , e.boarder_gbn
+             , IFNULL(m.name, e.name_ko) as nameKo
+             , IFNULL(m.name_en, e.name_en) as nameEn
+             , IFNULL(m.phone, e.phone) as phone
+             , IFNULL(m.email, e.email) as email
+             , e.clothes_size
+             , e.participation_path
+             , e.apply_status
+             , e.cancel_dttm
+             , e.cancel_reason
+             , e.del_yn
+             , e.note
+             , e.init_regi_pic
+             , e.init_regi_dttm
+             , e.final_regi_pic
+             , e.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as cancelGbn
+             , t.next_time
+        FROM emergency e
+        LEFT JOIN member m
+        ON e.member_seq = m.seq
+        LEFT JOIN train t
+        ON e.train_seq = t.seq
+        WHERE 1=1
+          AND e.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND e.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null and time != ""'>
+            AND t.next_time = #{time}
+        </if>
+        <if test='boarderGbn != null and boarderGbn != ""'>
+            AND e.boarder_gbn = #{boarderGbn}
+        </if>
+        ORDER BY m.grade IS NULL, e.name_ko
+    </select>
+
+    <select id="selectEmergencySingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectEmergencySingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , boarder_gbn
+             , clothes_size
+             , participation_path
+             , recommend_person
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM emergency
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateEmergencyApplyStatus" parameterType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBasicApplyStatus */
+        UPDATE emergency
+        SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectOutboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectOutboarderList */
         SELECT o.seq
@@ -3004,6 +3198,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainList */
         SELECT seq
              , gbn
+             , gbn_depth
              , category
              , train_start_dttm
              , train_end_dttm
@@ -3040,6 +3235,9 @@
         <if test='gbn != null and gbn != ""'>
             AND gbn = #{gbn}
         </if>
+        <if test='gbnDepth != null and gbnDepth != ""'>
+            AND gbn_depth = #{gbnDepth}
+        </if>
         ORDER BY train_start_dttm desc, init_regi_dttm DESC
     </select>
 
@@ -3047,6 +3245,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainSingle */
         SELECT seq
              , gbn
+             , gbn_depth
              , category
              , train_start_dttm
              , train_end_dttm
@@ -3113,6 +3312,7 @@
         INSERT INTO train
         ( seq
         , gbn
+        , gbn_depth
         , category
         , train_start_dttm
         , train_end_dttm
@@ -3136,6 +3336,7 @@
         VALUES
             ( #{seq}
             , #{gbn}
+            , #{gbnDepth}
             , #{category}
             , <![CDATA[#{trainStartDttm}]]>
             , <![CDATA[#{trainEndDttm}]]>
@@ -3883,6 +4084,50 @@
           AND m.del_yn = 'N'
           AND m.sms_yn = '1'
         ORDER BY r.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendBasicList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendBasicList */
+        SELECT b.seq AS tableSeq
+             , b.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = b.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , b.apply_status
+        FROM `member` m
+        JOIN basic b
+        ON m.seq = b.member_seq
+        WHERE b.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+          AND b.boarder_gbn = #{boarderGbn}
+        ORDER BY b.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendEmergencyList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendEmergencyList */
+        SELECT e.seq AS tableSeq
+             , e.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = e.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , e.apply_status
+        FROM `member` m
+        JOIN emergency e
+        ON m.seq = e.member_seq
+        WHERE e.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+          AND e.boarder_gbn = #{boarderGbn}
+        ORDER BY e.init_regi_dttm DESC
     </select>
 
     <select id="selectSmsSendOutboarderList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
@@ -4852,6 +5097,88 @@
         ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
     </select>
 
+    <select id="selectExcelBasicDetailList" resultType="com.mtf.edumarine.dto.BasicDetailDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelBasicDetailList */
+        SELECT rst.*
+        FROM (SELECT b.seq,
+                     b.member_seq,
+                     b.train_seq,
+                     b.apply_status,
+                     b.boarder_gbn,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(b.name_ko, m.name)                  AS nameKo,
+                     IFNULL(b.name_en, m.name_en)               AS name_en,
+                     IFNULL(b.phone, m.phone)                   AS phone,
+                     IFNULL(b.email, m.email)                   AS email,
+                     IFNULL(b.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(b.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(b.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(b.address, m.address)               AS address,
+                     IFNULL(b.address_detail, m.address_detail) AS addressDetail,
+                     b.clothes_size,
+                     b.participation_path,
+                     b.recommend_person,
+                     b.cancel_dttm,
+                     b.cancel_reason,
+                     b.refund_bank_code,
+                     b.refund_bank_name,
+                     b.refund_bank_customer_name,
+                     b.refund_bank_number,
+                     b.del_yn,
+                     b.note,
+                     b.init_regi_pic,
+                     b.init_regi_dttm,
+                     b.final_regi_pic,
+                     b.final_regi_dttm
+              FROM basic b
+              LEFT JOIN member m
+              ON b.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
+    <select id="selectExcelEmergencyDetailList" resultType="com.mtf.edumarine.dto.EmergencyDetailDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelEmergencyDetailList */
+        SELECT rst.*
+        FROM (SELECT e.seq,
+                     e.member_seq,
+                     e.train_seq,
+                     e.apply_status,
+                     e.boarder_gbn,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(e.name_ko, m.name)                  AS nameKo,
+                     IFNULL(e.name_en, m.name_en)               AS name_en,
+                     IFNULL(e.phone, m.phone)                   AS phone,
+                     IFNULL(e.email, m.email)                   AS email,
+                     IFNULL(e.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(e.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(e.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(e.address, m.address)               AS address,
+                     IFNULL(e.address_detail, m.address_detail) AS addressDetail,
+                     e.clothes_size,
+                     e.participation_path,
+                     e.recommend_person,
+                     e.cancel_dttm,
+                     e.cancel_reason,
+                     e.refund_bank_code,
+                     e.refund_bank_name,
+                     e.refund_bank_customer_name,
+                     e.refund_bank_number,
+                     e.del_yn,
+                     e.note,
+                     e.init_regi_pic,
+                     e.init_regi_dttm,
+                     e.final_regi_pic,
+                     e.final_regi_dttm
+              FROM emergency e
+              LEFT JOIN member m
+              ON e.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
     <select id="selectMemberCount" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
         /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectMemberCount */
         SELECT COUNT(*) AS inCount
@@ -4981,6 +5308,42 @@
                 </if>
                 AND t.apply_status NOT LIKE '%대기%'
                 AND t.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM sternspecial sp
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND sp.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND sp.apply_status LIKE '%취소%'
+                </if>
+                AND sp.apply_status NOT LIKE '%대기%'
+                AND sp.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM basic bs
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND bs.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND bs.apply_status LIKE '%취소%'
+                </if>
+                AND bs.apply_status NOT LIKE '%대기%'
+                AND bs.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM emergency em
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND em.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND em.apply_status LIKE '%취소%'
+                </if>
+                AND em.apply_status NOT LIKE '%대기%'
+                AND em.del_yn = 'N'
               ) r
     </select>
 
@@ -5082,7 +5445,19 @@
               FROM sternspecial ss
               WHERE ss.apply_status NOT LIKE '%취소%'
                 and ss.apply_status NOT LIKE '%대기%'
-                and ss.del_yn = 'N') r
+                and ss.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM basic bs
+              WHERE bs.apply_status NOT LIKE '%취소%'
+                and bs.apply_status NOT LIKE '%대기%'
+                and bs.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM emergency em
+              WHERE em.apply_status NOT LIKE '%취소%'
+                and em.apply_status NOT LIKE '%대기%'
+                and em.del_yn = 'N') r
     </select>
 
     <select id="selectRegularTrainInfoList" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO$TrainInfo">
@@ -5491,6 +5866,22 @@
     <update id="updateSternSpecialTrainSeq" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateSternSpecialTrainSeq */
         UPDATE sternspecial
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateBasicTrainSeq" parameterType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateBasicTrainSeq */
+        UPDATE basic
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateEmergencyTrainSeq" parameterType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateEmergencyTrainSeq */
+        UPDATE emergency
         SET train_seq = #{trainSeq}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}

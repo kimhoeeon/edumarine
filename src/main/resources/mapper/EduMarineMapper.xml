@@ -125,6 +125,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainList */
         SELECT seq
              , gbn
+             , gbn_depth
              , train_start_dttm
              , train_end_dttm
              , apply_start_dttm
@@ -157,6 +158,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainSingle */
         SELECT seq
              , gbn
+             , gbn_depth
              , category
              , train_start_dttm
              , train_end_dttm
@@ -191,6 +193,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainScheduleList */
         SELECT seq
              , gbn
+             , gbn_depth
              , category
              , train_start_dttm
              , train_end_dttm
@@ -212,7 +215,7 @@
                     AND category = #{category}
                  </if>
                  <if test='searchText != null and searchText != ""'>
-                    AND gbn LIKE CONCAT('%',#{searchText},'%')
+                    AND ( gbn LIKE CONCAT('%',#{searchText},'%') or gbn_depth LIKE CONCAT('%',#{searchText},'%') )
                  </if>
                  <if test='year != null and year != ""'>
                     AND (train_start_dttm LIKE CONCAT('%',#{year},'%') OR train_end_dttm LIKE CONCAT('%',#{year},'%'))
@@ -225,7 +228,7 @@
             AND category = #{category}
         </if>
         <if test='searchText != null and searchText != ""'>
-            AND gbn LIKE CONCAT('%',#{searchText},'%')
+            AND ( gbn LIKE CONCAT('%',#{searchText},'%') or gbn_depth LIKE CONCAT('%',#{searchText},'%') )
         </if>
         <if test='year != null and year != ""'>
             AND (train_start_dttm LIKE CONCAT('%',#{year},'%') OR train_end_dttm LIKE CONCAT('%',#{year},'%'))
@@ -240,6 +243,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectTrainScheduleCalendarList */
         SELECT seq
              , gbn
+             , gbn_depth
              , category
              , train_start_dttm
              , train_end_dttm
@@ -1777,6 +1781,54 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateBasicPayStatus" parameterType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateBasicPayStatus */
+        UPDATE basic
+        SET apply_status = #{applyStatus}
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateEmergencyPayStatus" parameterType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateEmergencyPayStatus */
+        UPDATE emergency
+        SET apply_status = #{applyStatus}
+        <if test='refundBankCode != null and refundBankCode != ""'>
+            , refund_bank_code = #{refundBankCode}
+        </if>
+        <if test='refundBankName != null and refundBankName != ""'>
+            , refund_bank_name = #{refundBankName}
+        </if>
+        <if test='refundBankCustomerName != null and refundBankCustomerName != ""'>
+            , refund_bank_customer_name = #{refundBankCustomerName}
+        </if>
+        <if test='refundBankNumber != null and refundBankNumber != ""'>
+            , refund_bank_number = #{refundBankNumber}
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectEduApplyInfoList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EduApplyInfoDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoList */
         SELECT LISTB.*
@@ -1927,6 +1979,30 @@
                      FROM sternspecial ss
                      WHERE ss.member_seq = #{memberSeq}
                        AND ss.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT concat(ba.boarder_gbn, ' 기초정비교육') AS trainName
+                          , ba.train_seq
+                          , ba.apply_status AS payStatus
+                          , ba.seq
+                          , ba.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = ba.member_seq and p.table_seq = ba.seq and p.train_seq = ba.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainEndDttm
+                     FROM basic ba
+                     WHERE ba.member_seq = #{memberSeq}
+                       AND ba.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT concat(em.boarder_gbn, ' 응급조치교육') AS trainName
+                          , em.train_seq
+                          , em.apply_status AS payStatus
+                          , em.seq
+                          , em.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = em.member_seq and p.table_seq = em.seq and p.train_seq = em.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = em.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = em.train_seq) AS trainEndDttm
+                     FROM emergency em
+                     WHERE em.member_seq = #{memberSeq}
+                       AND em.apply_status NOT LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2059,6 +2135,28 @@
                      FROM sternspecial ss
                      WHERE ss.member_seq = #{memberSeq}
                        AND ss.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT concat(ba.boarder_gbn, ' 기초정비교육') AS trainName
+                          , ba.train_seq
+                          , ba.apply_status AS payStatus
+                          , ba.seq
+                          , ba.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainEndDttm
+                     FROM basic ba
+                     WHERE ba.member_seq = #{memberSeq}
+                       AND ba.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT concat(em.boarder_gbn, ' 응급조치교육') AS trainName
+                          , em.train_seq
+                          , em.apply_status AS payStatus
+                          , em.seq
+                          , em.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = em.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = em.train_seq) AS trainEndDttm
+                     FROM emergency em
+                     WHERE em.member_seq = #{memberSeq}
+                       AND em.apply_status LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2907,6 +3005,164 @@
             )
     </insert>
 
+    <select id="getBasicSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getBasicSeq */
+        SELECT CONCAT('BA', LPAD(nextval('basic_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertBasic" parameterType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertBasic */
+        INSERT INTO basic
+        ( seq
+        , member_seq
+        , train_seq
+        , boarder_gbn
+        , clothes_size
+        , participation_path
+        , recommend_person
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{boarderGbn}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{recommendPerson}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'BASIC'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BASIC'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectBasicSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectBasicSingle */
+        SELECT b.seq
+             , b.member_seq
+             , b.train_seq
+             , b.boarder_gbn
+             , b.clothes_size
+             , b.participation_path
+             , b.recommend_person
+             , b.apply_status
+             , b.cancel_dttm
+             , b.cancel_reason
+             , b.del_yn
+             , b.note
+             , b.init_regi_pic
+             , b.init_regi_dttm
+             , b.final_regi_pic
+             , b.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = b.member_seq AND p.table_seq = b.seq AND p.train_seq = b.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = b.train_seq) AS changeYn
+        FROM basic b
+        WHERE b.seq = #{seq}
+    </select>
+
+    <update id="updateBasic" parameterType="com.mtf.edumarine.dto.BasicDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateBasic */
+        UPDATE basic
+        SET clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , recommend_person = #{recommendPerson}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getEmergencySeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getEmergencySeq */
+        SELECT CONCAT('EM', LPAD(nextval('emergency_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertEmergency" parameterType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertEmergency */
+        INSERT INTO emergency
+        ( seq
+        , member_seq
+        , train_seq
+        , boarder_gbn
+        , clothes_size
+        , participation_path
+        , recommend_person
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , #{boarderGbn}
+            , #{clothesSize}
+            , #{participationPath}
+            , #{recommendPerson}
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'EMERGENCY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'EMERGENCY'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectEmergencySingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectEmergencySingle */
+        SELECT em.seq
+             , em.member_seq
+             , em.train_seq
+             , em.boarder_gbn
+             , em.clothes_size
+             , em.participation_path
+             , em.recommend_person
+             , em.apply_status
+             , em.cancel_dttm
+             , em.cancel_reason
+             , em.del_yn
+             , em.note
+             , em.init_regi_pic
+             , em.init_regi_dttm
+             , em.final_regi_pic
+             , em.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = em.member_seq AND p.table_seq = em.seq AND p.train_seq = em.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = em.train_seq) AS changeYn
+        FROM emergency em
+        WHERE em.seq = #{seq}
+    </select>
+
+    <update id="updateEmergency" parameterType="com.mtf.edumarine.dto.EmergencyDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateEmergency */
+        UPDATE emergency
+        SET clothes_size = #{clothesSize}
+          , participation_path = #{participationPath}
+          , recommend_person = #{recommendPerson}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectOutboarderSingle */
         SELECT o.seq
@@ -3212,6 +3468,24 @@
         SELECT COUNT(1)
         FROM frp
         WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectBasicPreCheck" parameterType="com.mtf.edumarine.dto.BasicDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectBasicPreCheck */
+        SELECT COUNT(1)
+        FROM basic
+        WHERE member_seq = #{memberSeq}
+          AND boarder_gbn = #{boarderGbn}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectEmergencyPreCheck" parameterType="com.mtf.edumarine.dto.EmergencyDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectEmergencyPreCheck */
+        SELECT COUNT(1)
+        FROM emergency
+        WHERE member_seq = #{memberSeq}
+          AND boarder_gbn = #{boarderGbn}
           AND apply_status NOT LIKE '%취소%'
     </select>
 

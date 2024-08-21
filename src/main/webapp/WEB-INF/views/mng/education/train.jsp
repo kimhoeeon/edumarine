@@ -297,6 +297,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/basic.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">기초정비교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/emergency.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">응급조치교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/outboarder.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (선외기)</span>
@@ -1136,6 +1156,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/basic.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">기초정비교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/emergency.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">응급조치교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/outboarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
@@ -1839,6 +1883,23 @@ if (document.documentElement) {
                                                     <option value="고마력 선외기 정비 중급 테크니션 (특별반)">고마력 선외기 정비 중급 테크니션 (특별반)</option>
                                                     <option value="스턴드라이브 정비 전문가과정">스턴드라이브 정비 전문가과정</option>
                                                     <option value="스턴드라이브 정비 전문가과정 (특별반)">스턴드라이브 정비 전문가과정 (특별반)</option>
+                                                    <option value="기초정비교육">기초정비교육</option>
+                                                    <option value="응급조치교육">응급조치교육</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::신청상태--%>
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-175px d-none">
+                                                <!--begin::Select2-->
+                                                <select id="condition_gbn_depth" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 세부교육명 -" onchange="f_education_train_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 세부교육명 -</option>
+                                                    <option value="선외기">선외기</option>
+                                                    <option value="선내기">선내기</option>
+                                                    <option value="세일요트">세일요트</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -1865,15 +1926,15 @@ if (document.documentElement) {
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
-                                                    <th class="text-center min-w-50px">분류</th>
-                                                    <th class="text-center min-w-50px">차시</th>
+                                                    <th class="text-center min-w-50px w-75px">분류</th>
+                                                    <th class="text-center min-w-40px w-50px">차시</th>
                                                     <th class="text-center min-w-200px">교육과정명</th>
                                                     <th class="text-center min-w-150px">교육일정</th>
                                                     <th class="text-center min-w-150px">접수일정</th>
                                                     <th class="text-center min-w-75px">교육비</th>
                                                     <th class="text-center min-w-75px">교육인원(현 인원)</th>
                                                     <th class="text-center min-w-75px">상태</th>
-                                                    <th class="text-center min-w-150px">등록일시</th>
+                                                    <th class="text-center min-w-150px w-175px">등록일시</th>
                                                     <th class="text-center min-w-100px">기능</th>
                                                 </tr>
                                             </thead>
@@ -1962,6 +2023,17 @@ if (document.documentElement) {
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_gbn" placeholder="교육과정명" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">세부교육명</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_gbn_depth" placeholder="세부교육명" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->

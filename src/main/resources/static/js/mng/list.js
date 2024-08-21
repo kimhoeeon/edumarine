@@ -347,7 +347,7 @@ function f_progress_step_change_modal_btn(){
                                         body += '</a>';
                                     body += '</p>';
 
-                                    body = body.replaceAll('"','\\"');
+                                    body = body.replaceAll('"','\\\\"');
 
                                     // 담당자 메일 send
                                     let mailJson = {
@@ -578,7 +578,7 @@ function f_request_list_save(seq){
                                             body += '</a>';
                                         body += '</p>';
 
-                                        body = body.replaceAll('"','\\"');
+                                        body = body.replaceAll('"','\\\\"');
 
                                         // 담당자 메일 send
                                         let mailJson = {
@@ -793,7 +793,7 @@ function f_request_list_reply_sms_send(form){
         body += '</a>';
     body += '</p>';
 
-    body = body.replaceAll('"','\\"');
+    body = body.replaceAll('"','\\\\"');
 
     // 담당자 메일 send
     let mailJson = {

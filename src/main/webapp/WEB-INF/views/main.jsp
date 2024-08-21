@@ -241,9 +241,8 @@
                     <%--<li data-tab="tab-1">해상엔진 테크니션</li>--%>
                     <li class="on" data-tab="tab-6">마리나 선박 정비사 실무과정</li>
                     <li data-tab="tab-2">FRP 정비 테크니션</li>
-                    <li data-tab="tab-3">선외기 자가정비과정</li>
-                    <li data-tab="tab-4">선내기 자가정비과정</li>
-                    <li data-tab="tab-5">세일요트 자가정비과정</li>
+                    <li data-tab="tab-3">기초정비교육</li>
+                    <li data-tab="tab-4">응급조치교육</li>
                     <li data-tab="tab-7">고마력 선외기 정비 중급 테크니션</li>
                     <li data-tab="tab-9">자가정비 심화과정 (고마력 선외기)</li>
                     <li data-tab="tab-10">고마력 선외기 정비 중급 테크니션 (특별반)</li>
@@ -320,7 +319,7 @@
                 <!-- //list -->
                 <!-- list -->
                 <div class="main_edu_list tab_content" id="tab-3">
-                    <c:if test="${not empty outBoarderList}">
+                    <c:if test="${not empty basicList}">
                         <ul class="list_head">
                             <li>
                                 <div class="name">과정명</div>
@@ -332,19 +331,19 @@
                             </li>
                         </ul>
                         <ul class="list_body">
-                            <c:forEach var="mainOutBoarder" items="${outBoarderList}" begin="0" end="${outBoarderList.size()}" step="1" varStatus="status">
+                            <c:forEach var="mainBasic" items="${basicList}" begin="0" end="${basicList.size()}" step="1" varStatus="status">
                                 <li>
-                                    <div class="name"><a href="/apply/schedule.do">${mainOutBoarder.gbn}</a></div>
-                                    <div class="chasi">${mainOutBoarder.nextTime}</div>
-                                    <div class="peopleRecruit">${mainOutBoarder.trainCnt}</div>
-                                    <div class="peopleApp">${mainOutBoarder.trainApplyCnt}</div>
-                                    <div class="periodApp">${fn:substring(mainOutBoarder.applyStartDttm,2, mainOutBoarder.applyStartDttm.length())} ~ ${fn:substring(mainOutBoarder.applyEndDttm,2, mainOutBoarder.applyEndDttm.length())}</div>
-                                    <div class="periodTng">${fn:substring(mainOutBoarder.trainStartDttm,2, mainOutBoarder.trainStartDttm.length())} ~ ${fn:substring(mainOutBoarder.trainEndDttm,2, mainOutBoarder.trainEndDttm.length())}</div>
+                                    <div class="name"><a href="/apply/schedule.do">${mainBasic.gbn}</a></div>
+                                    <div class="chasi">${mainBasic.nextTime}</div>
+                                    <div class="peopleRecruit">${mainBasic.trainCnt}</div>
+                                    <div class="peopleApp">${mainBasic.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainBasic.applyStartDttm,2, mainBasic.applyStartDttm.length())} ~ ${fn:substring(mainBasic.applyEndDttm,2, mainBasic.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainBasic.trainStartDttm,2, mainBasic.trainStartDttm.length())} ~ ${fn:substring(mainBasic.trainEndDttm,2, mainBasic.trainEndDttm.length())}</div>
                                 </li>
                             </c:forEach>
                         </ul>
                     </c:if>
-                    <c:if test="${empty outBoarderList}">
+                    <c:if test="${empty basicList}">
                         <div class="edu_none">
                             <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
@@ -354,7 +353,7 @@
                 <!-- //list -->
                 <!-- list -->
                 <div class="main_edu_list tab_content" id="tab-4">
-                    <c:if test="${not empty inBoarderList}">
+                    <c:if test="${not empty emergencyList}">
                         <ul class="list_head">
                             <li>
                                 <div class="name">과정명</div>
@@ -366,53 +365,19 @@
                             </li>
                         </ul>
                         <ul class="list_body">
-                            <c:forEach var="mainInBoarder" items="${inBoarderList}" begin="0" end="${inBoarderList.size()}" step="1" varStatus="status">
+                            <c:forEach var="mainEmergency" items="${emergencyList}" begin="0" end="${emergencyList.size()}" step="1" varStatus="status">
                                 <li>
-                                    <div class="name"><a href="/apply/schedule.do">${mainInBoarder.gbn}</a></div>
-                                    <div class="chasi">${mainInBoarder.nextTime}</div>
-                                    <div class="peopleRecruit">${mainInBoarder.trainCnt}</div>
-                                    <div class="peopleApp">${mainInBoarder.trainApplyCnt}</div>
-                                    <div class="periodApp">${fn:substring(mainInBoarder.applyStartDttm,2, mainInBoarder.applyStartDttm.length())} ~ ${fn:substring(mainInBoarder.applyEndDttm,2, mainInBoarder.applyEndDttm.length())}</div>
-                                    <div class="periodTng">${fn:substring(mainInBoarder.trainStartDttm,2, mainInBoarder.trainStartDttm.length())} ~ ${fn:substring(mainInBoarder.trainEndDttm,2, mainInBoarder.trainEndDttm.length())}</div>
+                                    <div class="name"><a href="/apply/schedule.do">${mainEmergency.gbn}</a></div>
+                                    <div class="chasi">${mainEmergency.nextTime}</div>
+                                    <div class="peopleRecruit">${mainEmergency.trainCnt}</div>
+                                    <div class="peopleApp">${mainEmergency.trainApplyCnt}</div>
+                                    <div class="periodApp">${fn:substring(mainEmergency.applyStartDttm,2, mainEmergency.applyStartDttm.length())} ~ ${fn:substring(mainEmergency.applyEndDttm,2, mainEmergency.applyEndDttm.length())}</div>
+                                    <div class="periodTng">${fn:substring(mainEmergency.trainStartDttm,2, mainEmergency.trainStartDttm.length())} ~ ${fn:substring(mainEmergency.trainEndDttm,2, mainEmergency.trainEndDttm.length())}</div>
                                 </li>
                             </c:forEach>
                         </ul>
                     </c:if>
-                    <c:if test="${empty inBoarderList}">
-                        <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
-                            <div class="text">해당 교육 과정은 개설 예정입니다</div>
-                        </div>
-                    </c:if>
-                </div>
-                <!-- //list -->
-                <!-- list -->
-                <div class="main_edu_list tab_content" id="tab-5">
-                    <c:if test="${not empty saleList}">
-                        <ul class="list_head">
-                            <li>
-                                <div class="name">과정명</div>
-                                <div class="chasi">차시</div>
-                                <div class="peopleRecruit">인원</div>
-                                <div class="peopleApp">신청인원</div>
-                                <div class="periodApp">신청기간</div>
-                                <div class="periodTng">교육기간</div>
-                            </li>
-                        </ul>
-                        <ul class="list_body">
-                            <c:forEach var="mainSale" items="${saleList}" begin="0" end="${saleList.size()}" step="1" varStatus="status">
-                                <li>
-                                    <div class="name"><a href="/apply/schedule.do">${mainSale.gbn}</a></div>
-                                    <div class="chasi">${mainSale.nextTime}</div>
-                                    <div class="peopleRecruit">${mainSale.trainCnt}</div>
-                                    <div class="peopleApp">${mainSale.trainApplyCnt}</div>
-                                    <div class="periodApp">${fn:substring(mainSale.applyStartDttm,2, mainSale.applyStartDttm.length())} ~ ${fn:substring(mainSale.applyEndDttm,2, mainSale.applyEndDttm.length())}</div>
-                                    <div class="periodTng">${fn:substring(mainSale.trainStartDttm,2, mainSale.trainStartDttm.length())} ~ ${fn:substring(mainSale.trainEndDttm,2, mainSale.trainEndDttm.length())}</div>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </c:if>
-                    <c:if test="${empty saleList}">
+                    <c:if test="${empty emergencyList}">
                         <div class="edu_none">
                             <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>

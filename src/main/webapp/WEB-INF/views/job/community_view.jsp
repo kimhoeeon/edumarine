@@ -175,7 +175,16 @@
                         <div class="file_box">
                             <c:if test="${not empty fileList}">
                                 <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
-                                    <a href="/file/download.do?path=board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}" class="file">${fileInfo.fileName}</a>
+                                    <a href="/file/download.do?path=board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}" class="file">
+                                        <c:choose>
+                                            <c:when test="${fileInfo.uuid ne null and fileInfo.uuid ne ''}">
+                                                ${fileInfo.fileName}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${fileInfo.fullFileName}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </a>
                                 </c:forEach>
                             </c:if>
                             <c:if test="${empty fileList}">

@@ -297,6 +297,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/basic.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">기초정비교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/emergency.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">응급조치교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/outboarder.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (선외기)</span>
@@ -1136,6 +1156,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/basic.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">기초정비교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/emergency.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">응급조치교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/outboarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
@@ -1809,6 +1853,12 @@ if (document.documentElement) {
                                                         <option value="고마력 선외기 정비 중급 테크니션 (특별반)">고마력 선외기 정비 중급 테크니션 (특별반)</option>
                                                         <option value="스턴드라이브 정비 전문가과정">스턴드라이브 정비 전문가과정</option>
                                                         <option value="스턴드라이브 정비 전문가과정 (특별반)">스턴드라이브 정비 전문가과정 (특별반)</option>
+                                                        <option value="기초정비교육 (선외기)">기초정비교육 (선외기)</option>
+                                                        <option value="기초정비교육 (선내기)">기초정비교육 (선내기)</option>
+                                                        <option value="기초정비교육 (세일요트)">기초정비교육 (세일요트)</option>
+                                                        <option value="응급조치교육 (선외기)">응급조치교육 (선외기)</option>
+                                                        <option value="응급조치교육 (선내기)">응급조치교육 (선내기)</option>
+                                                        <option value="응급조치교육 (세일요트)">응급조치교육 (세일요트)</option>
                                                     </select>
                                                 </div>
                                                 <!--end::Col-->
