@@ -289,6 +289,26 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/basic.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">기초정비교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/emergency.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">응급조치교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/customer/outboarder.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자가정비 (선외기)</span>
@@ -1128,6 +1148,30 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/basic.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">기초정비교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/emergency.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">응급조치교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/outboarder.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
@@ -1846,7 +1890,16 @@ if (document.documentElement) {
                                                                 <c:if test="${not fn:contains(fileSrc, '.ai') and not fn:contains(fileSrc, '.pdf')}">
                                                                     <img src="${fileSrc}" class="w-350px mr10" style="border: 1px solid #009ef7"/>
                                                                 </c:if>
-                                                                <a href="/file/download.do?path=board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
+                                                                <a href="/file/download.do?path=board/${file.folderPath}&fileName=${file.fullFileName}">
+                                                                <c:choose>
+                                                                    <c:when test="${file.uuid ne null and file.uuid ne ''}">
+                                                                        ${file.fileName}
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        ${file.fullFileName}
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                                </a>
                                                                 <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
                                                                 <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
                                                                     <i class="ki-duotone ki-abstract-11">

@@ -110,6 +110,10 @@ function searchPosts(pageNum, categoryValue) {
         $.each(results , function(i){
             let seq = results[i].seq;
             let gbn = results[i].gbn;
+            let gbnDepth = results[i].gbnDepth;
+            if(nvl(gbnDepth,'') !== ''){
+                gbn = gbnDepth + ' ' + gbn;
+            }
             let nextTime = results[i].nextTime;
 
             let trainStartDttm = results[i].trainStartDttm;
@@ -210,6 +214,30 @@ function searchPosts(pageNum, categoryValue) {
                         case '마리나 선박 선내기 정비사 실무과정':
                             thumbnailImage = '/static/img/thumbnail_marina_in.jpg';
                             applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                            break;
+                        case '선외기 기초정비교육':
+                            thumbnailImage = '/static/img/thumbnail_outboarder_basic.png';
+                            applyPath = '/apply/eduApply12.do';
+                            break;
+                        case '선내기 기초정비교육':
+                            thumbnailImage = '/static/img/thumbnail_inboarder_basic.png';
+                            applyPath = '/apply/eduApply13.do';
+                            break;
+                        case '세일요트 기초정비교육':
+                            thumbnailImage = '/static/img/thumbnail_sailyacht_basic.png';
+                            applyPath = '/apply/eduApply14.do';
+                            break;
+                        case '선외기 응급조치교육':
+                            thumbnailImage = '/static/img/thumbnail_outboarder_emergency.png';
+                            applyPath = '/apply/eduApply15.do';
+                            break;
+                        case '선내기 응급조치교육':
+                            thumbnailImage = '/static/img/thumbnail_inboarder_emergency.png';
+                            applyPath = '/apply/eduApply16.do';
+                            break;
+                        case '세일요트 응급조치교육':
+                            thumbnailImage = '/static/img/thumbnail_sailyacht_emergency.png';
+                            applyPath = '/apply/eduApply17.do';
                             break;
                         default:
                             break;

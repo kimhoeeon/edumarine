@@ -4645,6 +4645,1392 @@ function f_main_apply_eduApply11_modify_submit(el, boarderSeq){
     });
 }
 
+function f_main_apply_eduApply12_submit(trainSeq){
+
+    console.log(trainSeq);
+
+    /*let nameEn = $('#nameEn').val();
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+    let address = $('#address').val();
+    let addressDetail = $('#addressDetail').val();*/
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육SEQ
+    form.trainSeq = trainSeq;
+
+    //교육구분
+    form.boarderGbn = '선외기';
+
+    //신청현황
+    form.applyStatus = '결제대기';
+
+    Swal.fire({
+        title: '[신청 정보]',
+        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '신청하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            let resultCnt = ajaxConnect('/apply/eduApply12/preCheck.do', 'post', { memberSeq: form.memberSeq, boarderGbn: form.boarderGbn });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[신청 정보]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+            }else{
+
+                $.ajax({
+                    url: '/apply/eduApply12/insert.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(form),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
+                            let device = deviceGbn();
+
+                            if(device === 'PC'){
+
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
+
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
+
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
+
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
+
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
+
+                        }else if(data.resultCode === "99"){
+                            Swal.fire({
+                                title: '[신청 정보]',
+                                html: data.resultMessage,
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/apply/schedule.do'; // 목록으로 이동
+                                }
+                            });
+                        }else {
+                            showMessage('', 'error', '에러 발생', '신청 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    }
+                })//ajax
+            }
+
+        }
+    });
+
+}
+
+function f_main_apply_eduApply12_modify_submit(el, boarderSeq){
+
+    let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
+    if(changeYn === 'N'){
+        Swal.fire({
+            title: '[교육 신청 정보]',
+            html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인'
+        });
+        return;
+    }
+
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    Swal.fire({
+        title: '[신청 정보 수정]',
+        html: '입력된 정보로 수정하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '수정하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '/mypage/eduApply12/update.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(form),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[신청 정보 수정]',
+                            html: '신청 정보가 수정되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mypage/eduApply12_modify.do?seq=' + data.customValue;
+                            }
+                        });
+                    }else {
+                        showMessage('', 'error', '에러 발생', '신청 정보 수정을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+
+        }
+    });
+}
+
+function f_main_apply_eduApply13_submit(trainSeq){
+
+    console.log(trainSeq);
+
+    /*let nameEn = $('#nameEn').val();
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+    let address = $('#address').val();
+    let addressDetail = $('#addressDetail').val();*/
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육SEQ
+    form.trainSeq = trainSeq;
+
+    //교육구분
+    form.boarderGbn = '선내기';
+
+    //신청현황
+    form.applyStatus = '결제대기';
+
+    Swal.fire({
+        title: '[신청 정보]',
+        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '신청하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            let resultCnt = ajaxConnect('/apply/eduApply13/preCheck.do', 'post', { memberSeq: form.memberSeq, boarderGbn: form.boarderGbn });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[신청 정보]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+            }else{
+
+                $.ajax({
+                    url: '/apply/eduApply13/insert.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(form),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
+                            let device = deviceGbn();
+
+                            if(device === 'PC'){
+
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
+
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
+
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
+
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
+
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
+
+                        }else if(data.resultCode === "99"){
+                            Swal.fire({
+                                title: '[신청 정보]',
+                                html: data.resultMessage,
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/apply/schedule.do'; // 목록으로 이동
+                                }
+                            });
+                        }else {
+                            showMessage('', 'error', '에러 발생', '신청 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    }
+                })//ajax
+            }
+
+        }
+    });
+
+}
+
+function f_main_apply_eduApply13_modify_submit(el, boarderSeq){
+
+    let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
+    if(changeYn === 'N'){
+        Swal.fire({
+            title: '[교육 신청 정보]',
+            html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인'
+        });
+        return;
+    }
+
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    Swal.fire({
+        title: '[신청 정보 수정]',
+        html: '입력된 정보로 수정하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '수정하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '/mypage/eduApply13/update.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(form),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[신청 정보 수정]',
+                            html: '신청 정보가 수정되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mypage/eduApply13_modify.do?seq=' + data.customValue;
+                            }
+                        });
+                    }else {
+                        showMessage('', 'error', '에러 발생', '신청 정보 수정을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+
+        }
+    });
+}
+
+function f_main_apply_eduApply14_submit(trainSeq){
+
+    console.log(trainSeq);
+
+    /*let nameEn = $('#nameEn').val();
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+    let address = $('#address').val();
+    let addressDetail = $('#addressDetail').val();*/
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육SEQ
+    form.trainSeq = trainSeq;
+
+    //교육구분
+    form.boarderGbn = '세일요트';
+
+    //신청현황
+    form.applyStatus = '결제대기';
+
+    Swal.fire({
+        title: '[신청 정보]',
+        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '신청하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            let resultCnt = ajaxConnect('/apply/eduApply14/preCheck.do', 'post', { memberSeq: form.memberSeq, boarderGbn: form.boarderGbn });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[신청 정보]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+            }else{
+
+                $.ajax({
+                    url: '/apply/eduApply14/insert.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(form),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
+                            let device = deviceGbn();
+
+                            if(device === 'PC'){
+
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
+
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
+
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
+
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
+
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
+
+                        }else if(data.resultCode === "99"){
+                            Swal.fire({
+                                title: '[신청 정보]',
+                                html: data.resultMessage,
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/apply/schedule.do'; // 목록으로 이동
+                                }
+                            });
+                        }else {
+                            showMessage('', 'error', '에러 발생', '신청 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    }
+                })//ajax
+            }
+
+        }
+    });
+
+}
+
+function f_main_apply_eduApply14_modify_submit(el, boarderSeq){
+
+    let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
+    if(changeYn === 'N'){
+        Swal.fire({
+            title: '[교육 신청 정보]',
+            html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인'
+        });
+        return;
+    }
+
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    Swal.fire({
+        title: '[신청 정보 수정]',
+        html: '입력된 정보로 수정하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '수정하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '/mypage/eduApply14/update.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(form),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[신청 정보 수정]',
+                            html: '신청 정보가 수정되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mypage/eduApply14_modify.do?seq=' + data.customValue;
+                            }
+                        });
+                    }else {
+                        showMessage('', 'error', '에러 발생', '신청 정보 수정을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+
+        }
+    });
+}
+
+function f_main_apply_eduApply15_submit(trainSeq){
+
+    console.log(trainSeq);
+
+    /*let nameEn = $('#nameEn').val();
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+    let address = $('#address').val();
+    let addressDetail = $('#addressDetail').val();*/
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육SEQ
+    form.trainSeq = trainSeq;
+
+    //교육구분
+    form.boarderGbn = '선외기';
+
+    //신청현황
+    form.applyStatus = '결제대기';
+
+    Swal.fire({
+        title: '[신청 정보]',
+        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '신청하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            let resultCnt = ajaxConnect('/apply/eduApply15/preCheck.do', 'post', { memberSeq: form.memberSeq, boarderGbn: form.boarderGbn });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[신청 정보]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+            }else{
+
+                $.ajax({
+                    url: '/apply/eduApply15/insert.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(form),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
+                            let device = deviceGbn();
+
+                            if(device === 'PC'){
+
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
+
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
+
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
+
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
+
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
+
+                        }else if(data.resultCode === "99"){
+                            Swal.fire({
+                                title: '[신청 정보]',
+                                html: data.resultMessage,
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/apply/schedule.do'; // 목록으로 이동
+                                }
+                            });
+                        }else {
+                            showMessage('', 'error', '에러 발생', '신청 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    }
+                })//ajax
+            }
+
+        }
+    });
+
+}
+
+function f_main_apply_eduApply15_modify_submit(el, boarderSeq){
+
+    let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
+    if(changeYn === 'N'){
+        Swal.fire({
+            title: '[교육 신청 정보]',
+            html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인'
+        });
+        return;
+    }
+
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    Swal.fire({
+        title: '[신청 정보 수정]',
+        html: '입력된 정보로 수정하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '수정하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '/mypage/eduApply15/update.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(form),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[신청 정보 수정]',
+                            html: '신청 정보가 수정되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mypage/eduApply15_modify.do?seq=' + data.customValue;
+                            }
+                        });
+                    }else {
+                        showMessage('', 'error', '에러 발생', '신청 정보 수정을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+
+        }
+    });
+}
+
+function f_main_apply_eduApply16_submit(trainSeq){
+
+    console.log(trainSeq);
+
+    /*let nameEn = $('#nameEn').val();
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+    let address = $('#address').val();
+    let addressDetail = $('#addressDetail').val();*/
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육SEQ
+    form.trainSeq = trainSeq;
+
+    //교육구분
+    form.boarderGbn = '선내기';
+
+    //신청현황
+    form.applyStatus = '결제대기';
+
+    Swal.fire({
+        title: '[신청 정보]',
+        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '신청하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            let resultCnt = ajaxConnect('/apply/eduApply16/preCheck.do', 'post', { memberSeq: form.memberSeq, boarderGbn: form.boarderGbn });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[신청 정보]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+            }else{
+
+                $.ajax({
+                    url: '/apply/eduApply16/insert.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(form),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
+                            let device = deviceGbn();
+
+                            if(device === 'PC'){
+
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
+
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
+
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
+
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
+
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
+
+                        }else if(data.resultCode === "99"){
+                            Swal.fire({
+                                title: '[신청 정보]',
+                                html: data.resultMessage,
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/apply/schedule.do'; // 목록으로 이동
+                                }
+                            });
+                        }else {
+                            showMessage('', 'error', '에러 발생', '신청 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    }
+                })//ajax
+            }
+
+        }
+    });
+
+}
+
+function f_main_apply_eduApply16_modify_submit(el, boarderSeq){
+
+    let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
+    if(changeYn === 'N'){
+        Swal.fire({
+            title: '[교육 신청 정보]',
+            html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인'
+        });
+        return;
+    }
+
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    Swal.fire({
+        title: '[신청 정보 수정]',
+        html: '입력된 정보로 수정하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '수정하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '/mypage/eduApply16/update.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(form),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[신청 정보 수정]',
+                            html: '신청 정보가 수정되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mypage/eduApply16_modify.do?seq=' + data.customValue;
+                            }
+                        });
+                    }else {
+                        showMessage('', 'error', '에러 발생', '신청 정보 수정을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+
+        }
+    });
+}
+
+function f_main_apply_eduApply17_submit(trainSeq){
+
+    console.log(trainSeq);
+
+    /*let nameEn = $('#nameEn').val();
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+    let address = $('#address').val();
+    let addressDetail = $('#addressDetail').val();*/
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육SEQ
+    form.trainSeq = trainSeq;
+
+    //교육구분
+    form.boarderGbn = '세일요트';
+
+    //신청현황
+    form.applyStatus = '결제대기';
+
+    Swal.fire({
+        title: '[신청 정보]',
+        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '신청하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            let resultCnt = ajaxConnect('/apply/eduApply17/preCheck.do', 'post', { memberSeq: form.memberSeq, boarderGbn: form.boarderGbn });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[신청 정보]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+            }else{
+
+                $.ajax({
+                    url: '/apply/eduApply17/insert.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(form),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
+                            let device = deviceGbn();
+
+                            if(device === 'PC'){
+
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
+
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
+
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
+
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
+
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
+
+                        }else if(data.resultCode === "99"){
+                            Swal.fire({
+                                title: '[신청 정보]',
+                                html: data.resultMessage,
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/apply/schedule.do'; // 목록으로 이동
+                                }
+                            });
+                        }else {
+                            showMessage('', 'error', '에러 발생', '신청 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    }
+                })//ajax
+            }
+
+        }
+    });
+
+}
+
+function f_main_apply_eduApply17_modify_submit(el, boarderSeq){
+
+    let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
+    if(changeYn === 'N'){
+        Swal.fire({
+            title: '[교육 신청 정보]',
+            html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인'
+        });
+        return;
+    }
+
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    Swal.fire({
+        title: '[신청 정보 수정]',
+        html: '입력된 정보로 수정하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '수정하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '/mypage/eduApply17/update.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(form),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[신청 정보 수정]',
+                            html: '신청 정보가 수정되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mypage/eduApply17_modify.do?seq=' + data.customValue;
+                            }
+                        });
+                    }else {
+                        showMessage('', 'error', '에러 발생', '신청 정보 수정을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+
+        }
+    });
+}
+
 function f_main_schedule_search(searchGbn, searchText){
     if(searchGbn === 'H'){
         window.location.href = '/apply/schedule.do?searchText=' + searchText;
@@ -4704,7 +6090,8 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
         //고마력 선외기 정비 중급 테크니션 (특별반)
         //스턴드라이브 정비 전문가과정
         //스턴드라이브 정비 전문가과정 (특별반)
-
+        //선외기 기초정비교육
+        
         let cancelUrl = '';
         switch (trainName){
             case '상시신청':
@@ -4739,6 +6126,24 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
                 break;
             case '스턴드라이브 정비 전문가과정 (특별반)':
                 cancelUrl = '/apply/eduApply11/update/status.do';
+                break;
+            case '선외기 기초정비교육':
+                cancelUrl = '/apply/eduApply12/update/status.do';
+                break;
+            case '선내기 기초정비교육':
+                cancelUrl = '/apply/eduApply13/update/status.do';
+                break;
+            case '세일요트 기초정비교육':
+                cancelUrl = '/apply/eduApply14/update/status.do';
+                break;
+            case '선외기 응급조치교육':
+                cancelUrl = '/apply/eduApply15/update/status.do';
+                break;
+            case '선내기 응급조치교육':
+                cancelUrl = '/apply/eduApply16/update/status.do';
+                break;
+            case '세일요트 응급조치교육':
+                cancelUrl = '/apply/eduApply17/update/status.do';
                 break;
             default:
                 break;
@@ -4840,6 +6245,24 @@ function f_edu_apply_modify_btn(trainStartDttm, trainName, seq){
                 break;
             case '스턴드라이브 정비 전문가과정 (특별반)':
                 location = '/mypage/eduApply11_modify.do';
+                break;
+            case '선외기 기초정비교육':
+                location = '/mypage/eduApply12_modify.do';
+                break;
+            case '선내기 기초정비교육':
+                location = '/mypage/eduApply13_modify.do';
+                break;
+            case '세일요트 기초정비교육':
+                location = '/mypage/eduApply14_modify.do';
+                break;
+            case '선외기 응급조치교육':
+                location = '/mypage/eduApply15_modify.do';
+                break;
+            case '선내기 응급조치교육':
+                location = '/mypage/eduApply16_modify.do';
+                break;
+            case '세일요트 응급조치교육':
+                location = '/mypage/eduApply17_modify.do';
                 break;
             default:
                 break;
@@ -5121,11 +6544,11 @@ async function f_main_file_upload(userId, elementId, path) {
         let fullFileName = pureFileNameSplit[pureFileNameSplit.length - 1];
         // b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
 
-        let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
+        /*let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
         // b3eb661d-34de-4fd0-bc74-17db9fffc1bd
 
         let fileName = fullFileName.substring(fullFileName.indexOf('_') + 1);
-        // KIBS_TV_목록_excel_20230817151752.xlsx
+        // KIBS_TV_목록_excel_20230817151752.xlsx*/
 
         let folderPath = pureFileNameSplit[pureFileNameSplit.length - 2];
         // notice
@@ -5134,12 +6557,12 @@ async function f_main_file_upload(userId, elementId, path) {
 
         let jsonObj = {
             userId: userId,
-            fullFilePath: fullFilePath.replaceAll(' ','').replaceAll('%20',''),
-            fullPath: fullPath.replaceAll(' ','').replaceAll('%20',''),
-            folderPath: folderPath.replaceAll(' ','').replaceAll('%20',''),
-            fullFileName: fullFileName.replaceAll(' ','').replaceAll('%20',''),
-            uuid: uuid,
-            fileName: fileName.replaceAll(' ','').replaceAll('%20',''),
+            fullFilePath: fullFilePath,
+            fullPath: fullPath,
+            folderPath: folderPath,
+            fullFileName: fullFileName,
+            /*uuid: uuid,*/
+            fileName: fullFileName,
             fileYn: 'Y',
             note: note
         };
@@ -5173,7 +6596,7 @@ function f_main_server_upload(elementId, path) {
             })
             .then(res => {
                 if( typeof res.uploadPath !== undefined){
-                    resolve(res.uploadPath + '\\' + res.uuid + '_' + res.fileName);
+                    resolve(res.uploadPath + '\\' + res.fileName);
                 }
             })
 

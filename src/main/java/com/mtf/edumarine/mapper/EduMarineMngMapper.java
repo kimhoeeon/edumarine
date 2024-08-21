@@ -504,4 +504,30 @@ public interface EduMarineMngMapper {
     List<SmsSendDTO> selectSmsSendSternSpecialList();
 
     Integer updateSternSpecialTrainSeq(SternSpecialDTO sternSpecialDTO);
+
+    List<BasicDTO> selectBasicList(SearchDTO searchDTO);
+
+    BasicDTO selectBasicSingle(String seq);
+
+    Integer updateBasicApplyStatus(BasicDTO info);
+
+    List<BasicDetailDTO> selectExcelBasicDetailList();
+
+    List<SmsSendDTO> selectSmsSendSternSpecialList(String gbnDepth);
+
+    List<SmsSendDTO> selectSmsSendBasicList(String boarderGbn);
+
+    Integer updateBasicTrainSeq(BasicDTO basicDTO);
+
+    List<EmergencyDTO> selectEmergencyList(SearchDTO searchDTO);
+
+    EmergencyDTO selectEmergencySingle(String seq);
+
+    Integer updateEmergencyApplyStatus(EmergencyDTO info);
+
+    List<EmergencyDetailDTO> selectExcelEmergencyDetailList();
+
+    List<SmsSendDTO> selectSmsSendEmergencyList(String boarderGbn);
+
+    Integer updateEmergencyTrainSeq(EmergencyDTO emergencyDTO);
 }

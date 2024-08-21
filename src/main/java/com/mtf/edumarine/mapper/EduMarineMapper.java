@@ -313,4 +313,28 @@ public interface EduMarineMapper {
     Integer updateSternSpecial(SternSpecialDTO sternSpecialDTO);
 
     Integer updateSternSpecialPayStatus(SternSpecialDTO sternSpecialDTO);
+
+    Integer selectBasicPreCheck(BasicDTO basicDTO);
+
+    String getBasicSeq();
+
+    Integer insertBasic(BasicDTO basicDTO);
+
+    BasicDTO selectBasicSingle(String seq);
+
+    Integer updateBasic(BasicDTO basicDTO);
+
+    Integer updateBasicPayStatus(BasicDTO basicDTO);
+
+    Integer updateEmergencyPayStatus(EmergencyDTO emergencyDTO);
+
+    Integer selectEmergencyPreCheck(EmergencyDTO emergencyDTO);
+
+    String getEmergencySeq();
+
+    Integer insertEmergency(EmergencyDTO emergencyDTO);
+
+    EmergencyDTO selectEmergencySingle(String seq);
+
+    Integer updateEmergency(EmergencyDTO emergencyDTO);
 }

@@ -269,7 +269,16 @@
                                             <li class="bodyPhotoFile_li" style="display: flex; align-items: center;">
                                                 <c:set var="bodyPhotoFileSrc" value="${fn:replace(bodyPhotoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                 <img src="${bodyPhotoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                <a href="/file/download.do?path=member/resume/${bodyPhotoFile.folderPath}&fileName=${bodyPhotoFile.fullFileName}">${bodyPhotoFile.fileName}</a>
+                                                <a href="/file/download.do?path=member/resume/${bodyPhotoFile.folderPath}&fileName=${bodyPhotoFile.fullFileName}">
+                                                    <c:choose>
+                                                        <c:when test="${bodyPhotoFile.uuid ne null and bodyPhotoFile.uuid ne ''}">
+                                                            ${bodyPhotoFile.fileName}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${bodyPhotoFile.fullFileName}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </a>
                                                 <input type="hidden" name="bodyPhotoUploadFile" id="${bodyPhotoFile.id}" value="${bodyPhotoFile.fullFilePath}">
                                                 <button type="button" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${bodyPhotoFile.id}')">X</button>
                                             </li>

@@ -289,7 +289,16 @@
                                                 <li class="bodyPhotoFile_li" style="display: flex; align-items: center;">
                                                     <c:set var="bodyPhotoFileSrc" value="${fn:replace(bodyPhotoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                     <img src="${bodyPhotoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                    <a href="/file/download.do?path=member/boarder/${bodyPhotoFile.folderPath}&fileName=${bodyPhotoFile.fullFileName}">${bodyPhotoFile.fileName}</a>
+                                                    <a href="/file/download.do?path=member/boarder/${bodyPhotoFile.folderPath}&fileName=${bodyPhotoFile.fullFileName}">
+                                                        <c:choose>
+                                                            <c:when test="${bodyPhotoFile.uuid ne null and bodyPhotoFile.uuid ne ''}">
+                                                                ${bodyPhotoFile.fileName}
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                ${bodyPhotoFile.fullFileName}
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </a>
                                                     <input type="hidden" name="bodyPhotoUploadFile" id="${bodyPhotoFile.id}" value="${bodyPhotoFile.fullFilePath}">
                                                     <button type="button" class="file_remove_btn" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${bodyPhotoFile.id}')">X</button>
                                                 </li>
@@ -425,7 +434,16 @@
                                                 <li class="gradeLicenseFile_li" style="display: flex; align-items: center;">
                                                     <c:set var="gradeLicenseFileSrc" value="${fn:replace(gradeLicenseFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                     <img src="${gradeLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                    <a href="/file/download.do?path=member/boarder/${gradeLicenseFile.folderPath}&fileName=${gradeLicenseFile.fullFileName}">${gradeLicenseFile.fileName}</a>
+                                                    <a href="/file/download.do?path=member/boarder/${gradeLicenseFile.folderPath}&fileName=${gradeLicenseFile.fullFileName}">
+                                                        <c:choose>
+                                                            <c:when test="${gradeLicenseFile.uuid ne null and gradeLicenseFile.uuid ne ''}">
+                                                                ${gradeLicenseFile.fileName}
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                ${gradeLicenseFile.fullFileName}
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </a>
                                                     <input type="hidden" name="gradeLicenseUploadFile" id="${gradeLicenseFile.id}" value="${gradeLicenseFile.fullFilePath}">
                                                     <button type="button" class="file_remove_btn" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${gradeLicenseFile.id}')">X</button>
                                                 </li>
@@ -597,7 +615,16 @@
                                                                 <li class="careerLicenseFile_li" style="display: flex; align-items: center;">
                                                                     <c:set var="careerLicenseFileSrc" value="${fn:replace(careerLicenseFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                     <img src="${careerLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                    <a href="/file/download.do?path=member/boarder/${careerLicenseFile.folderPath}&fileName=${careerLicenseFile.fullFileName}">${careerLicenseFile.fileName}</a>
+                                                                    <a href="/file/download.do?path=member/boarder/${careerLicenseFile.folderPath}&fileName=${careerLicenseFile.fullFileName}">
+                                                                        <c:choose>
+                                                                            <c:when test="${careerLicenseFile.uuid ne null and careerLicenseFile.uuid ne ''}">
+                                                                                ${careerLicenseFile.fileName}
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                ${careerLicenseFile.fullFileName}
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </a>
                                                                     <input type="hidden" name="careerLicenseUploadFile" id="${careerLicenseFile.id}" value="${careerLicenseFile.fullFilePath}">
                                                                     <button type="button" class="file_remove_btn" style="margin-left: 10px; width: 30px; height: 30px; line-height: 30px; padding: 0px;" onclick="f_file_remove(this,'${careerLicenseFile.id}')">X</button>
                                                                 </li>

@@ -13,6 +13,7 @@ public class TrainDTO extends AbstractPagingRequestVo {
     Integer rownum; //연번
     String seq; //순번
     String gbn; //구분
+    String gbnDepth;
     String category; //카테고리(과정)
     String trainStartDttm; //교육시작일시
     String trainEndDttm; //교육종료일시

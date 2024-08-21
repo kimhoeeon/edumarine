@@ -647,6 +647,20 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public Integer processSelectBasicPreCheck(BasicDTO basicDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectBasicPreCheck");
+        return eduMarineMapper.selectBasicPreCheck(basicDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public Integer processSelectEmergencyPreCheck(EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectEmergencyPreCheck");
+        return eduMarineMapper.selectEmergencyPreCheck(emergencyDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public Integer processSelectInboarderPreCheck(InboarderDTO inboarderDTO) {
         System.out.println("EduMarineServiceImpl > processSelectInboarderPreCheck");
         return eduMarineMapper.selectInboarderPreCheck(inboarderDTO);
@@ -1065,7 +1079,12 @@ public class EduMarineServiceImpl implements EduMarineService {
         TrainDTO trainInfo = eduMarineMapper.selectTrainSingle(trainSeq);
         String originalTrainName = "-";
         if(trainInfo != null){
-            originalTrainName = trainInfo.getGbn();
+            if(trainInfo.getGbnDepth() != null && !"".equals(trainInfo.getGbnDepth())){
+                originalTrainName = trainInfo.getGbnDepth() + " " + trainInfo.getGbn();
+            }else{
+                originalTrainName = trainInfo.getGbn();
+            }
+
         }
 
         return originalTrainName;
@@ -1420,6 +1439,72 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateSternSpecialPayStatus : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateBasicPayStatus(BasicDTO basicDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateBasicPayStatus : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateBasicPayStatus(basicDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail] Seq : " + basicDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(basicDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(basicDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateBasicPayStatus : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateEmergencyPayStatus(EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateEmergencyPayStatus : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateEmergencyPayStatus(emergencyDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail] Seq : " + emergencyDTO.getSeq();
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(emergencyDTO.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(emergencyDTO.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateEmergencyPayStatus : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
         }
 
@@ -1879,6 +1964,158 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateInboarder : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertBasic(BasicDTO basicDTO) {
+        System.out.println("EduMarineServiceImpl > processInsertBasic");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(basicDTO.getId() != null){
+
+                TrainDTO trainDTO = eduMarineMapper.selectTrainSingle(basicDTO.getTrainSeq());
+
+                if(Objects.equals(trainDTO.getTrainCnt(), trainDTO.getTrainApplyCnt())){
+                    resultCode = "99";
+                    resultMessage = "수강 정원이 초과하여 신청이 불가합니다.";
+                }else{
+                    String getSeq = eduMarineMapper.getBasicSeq();
+                    basicDTO.setSeq(getSeq);
+
+                    result = eduMarineMapper.insertBasic(basicDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertBasic ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public BasicDTO processSelectBasicSingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectBasicSingle");
+        return eduMarineMapper.selectBasicSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateBasic(BasicDTO basicDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateBasic : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateBasic(basicDTO);
+
+            responseDTO.setCustomValue(basicDTO.getSeq());
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateBasic : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertEmergency(EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineServiceImpl > processInsertEmergency");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(emergencyDTO.getId() != null){
+
+                TrainDTO trainDTO = eduMarineMapper.selectTrainSingle(emergencyDTO.getTrainSeq());
+
+                if(Objects.equals(trainDTO.getTrainCnt(), trainDTO.getTrainApplyCnt())){
+                    resultCode = "99";
+                    resultMessage = "수강 정원이 초과하여 신청이 불가합니다.";
+                }else{
+                    String getSeq = eduMarineMapper.getEmergencySeq();
+                    emergencyDTO.setSeq(getSeq);
+
+                    result = eduMarineMapper.insertEmergency(emergencyDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertEmergency ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public EmergencyDTO processSelectEmergencySingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectEmergencySingle");
+        return eduMarineMapper.selectEmergencySingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateEmergency(EmergencyDTO emergencyDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateEmergency : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateEmergency(emergencyDTO);
+
+            responseDTO.setCustomValue(emergencyDTO.getSeq());
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateEmergency : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
         }
 
