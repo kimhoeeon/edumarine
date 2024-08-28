@@ -89,7 +89,7 @@ var KTQuillEditor = function () {
                     // uploadPath에 역슬래시(\) 때문에 경로가 제대로 인식되지 않는 것을 슬래시(/)로 변환
                     res.uploadPath = res.uploadPath.replace(/\\/g, '/');
 
-                    quill.insertEmbed(range.index, 'image', "/board/uploadFileGet?fileName=" + res.uploadPath +"/"+ res.uuid +"_"+ res.fileName);
+                    quill.insertEmbed(range.index, 'image', "/board/uploadFileGet?fileName=" + res.uploadPath + "/" + res.fileName);
                 });
 
         });

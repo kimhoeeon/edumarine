@@ -344,18 +344,30 @@ function f_customer_regular_detail_modal_set(seq){
                     status_input_el.placeholder = '상태';
                     status_input_el.setAttribute('readonly','readonly');
 
-                    let wrap_div_el = document.createElement('div');
-                    wrap_div_el.classList.add('mb-6');
-                    wrap_div_el.append(init_label_el);
-                    wrap_div_el.append(init_input_el);
-                    wrap_div_el.append(gbn_label_el);
-                    wrap_div_el.append(gbn_input_el);
-                    wrap_div_el.append(time_label_el);
-                    wrap_div_el.append(time_input_el);
-                    wrap_div_el.append(status_label_el);
-                    wrap_div_el.append(status_input_el);
+                    let wrap_div_el_1 = document.createElement('div');
+                    wrap_div_el_1.classList.add('mb-6');
+                    wrap_div_el_1.append(init_label_el);
+                    wrap_div_el_1.append(init_input_el);
 
-                    $('.train_info_list').append(wrap_div_el);
+                    let wrap_div_el_2 = document.createElement('div');
+                    wrap_div_el_2.classList.add('mb-6');
+                    wrap_div_el_2.append(gbn_label_el);
+                    wrap_div_el_2.append(gbn_input_el);
+
+                    let wrap_div_el_3 = document.createElement('div');
+                    wrap_div_el_3.classList.add('mb-6');
+                    wrap_div_el_3.append(time_label_el);
+                    wrap_div_el_3.append(time_input_el);
+
+                    let wrap_div_el_4 = document.createElement('div');
+                    wrap_div_el_4.classList.add('mb-6');
+                    wrap_div_el_4.append(status_label_el);
+                    wrap_div_el_4.append(status_input_el);
+
+                    $('.train_info_list').append(wrap_div_el_1);
+                    $('.train_info_list').append(wrap_div_el_2);
+                    $('.train_info_list').append(wrap_div_el_3);
+                    $('.train_info_list').append(wrap_div_el_4);
                 }
 
             }else{

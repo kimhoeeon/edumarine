@@ -29,6 +29,7 @@ public class HighHorsePowerDTO {
     String participationPath; //참여경로
     String trainUnderstand; //교육이해
     String trainUnderstandEtc; //교육이해기타
+    String recommendPerson; //추천인
     String payYn; //결제여부
     Integer paySum; //결제금액
     String applyStatus;
