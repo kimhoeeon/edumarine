@@ -4213,12 +4213,14 @@ public class EduMarineMngController {
                     "No", "회원상태", "등급", "아이디", "성명(국문)",
                     "성명(영문)", "연락처", "이메일", "생년월일", "거주지역",
                     "참여경로", "1순위 신청분야", "2순위 신청분야", "3순위 신청분야", "희망교육시기",
-                    "전공", "경험유무", "결제상태", "등록일", "수정일"
+                    "전공", "경험유무", "추천인", "결제상태", "등록일",
+                    "수정일", "교육신청일시", "교육명", "차시", "상태"
             };
 
             // 헤더 사이즈
             final int[] colWidths_ex = {
                     3000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000
@@ -4271,7 +4273,7 @@ public class EduMarineMngController {
 
             // 헤더 정보 구성
             // 기본
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,19));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,24));
             SXSSFCell mergeCell = row.createCell(0);
             mergeCell.setCellStyle(headerStyle);
             mergeCell.setCellValue("상시신청 신청자정보");
@@ -4290,30 +4292,8 @@ public class EduMarineMngController {
             for(int i=0; i<regularDetailList.size(); i++) {
                 RegularDTO info = regularDetailList.get(i);
                 if (info.getMemberSeq() != null) {
-                    Integer col_length = colNames_ex.length;
                     List<RegularDTO.TrainInfo> trainInfoList = eduMarineMngService.processSelectRegularTrainInfoList(info);
-                    if (trainInfoList != null) {
-
-                        /* 엑셀 그리기 */
-                        String[] add_colNames_ex = {
-                                "교육신청일시", "교육명", "차시", "상태"
-                        };
-
-                        // 헤더 사이즈
-                        int[] add_colWidths_ex = {
-                                5000, 5000, 5000, 5000
-                        };
-
-                        // 엑셀 헤더 추가 세팅
-                        for(int j=0; j< trainInfoList.size(); j++){
-                            for(int z=0; z<4; z++){
-                                cell = row.createCell(z);
-                                cell.setCellStyle(headerStyle);
-                                cell.setCellValue(add_colNames_ex[z]);
-                                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(add_colWidths_ex[i]) + 1024));	//column width 지정
-                            }
-                        }
-
+                    if (!trainInfoList.isEmpty()) {
                         info.setTrainInfoList(trainInfoList);
                     }
                     regularDetailList.set(i, info);
@@ -4453,6 +4433,11 @@ public class EduMarineMngController {
                 }
                 cell.setCellValue(experienceYn);
 
+                // 추천인
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getRecommendPerson());
+
                 // 결제상태
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -4468,14 +4453,14 @@ public class EduMarineMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getFinalRegiDttm());
 
-                if(info.getTrainInfoList() != null){
+                if(info.getTrainInfoList() != null && !info.getTrainInfoList().isEmpty()){
                     for(int i=0; i<info.getTrainInfoList().size(); i++){
                         RegularDTO.TrainInfo trainInfo = info.getTrainInfoList().get(i);
                         for(int j=0; j<4; j++){
                             cell = row.createCell(cellCnt++);
                             cell.setCellStyle(bodyStyle);
                             if(j == 0){
-                                cell.setCellValue(trainInfo.getInitRegidttm());
+                                cell.setCellValue(trainInfo.getInitRegiDttm());
                             }else if(j == 1){
                                 cell.setCellValue(trainInfo.getGbn());
                             }else if(j == 2){
@@ -4484,6 +4469,13 @@ public class EduMarineMngController {
                                 cell.setCellValue(trainInfo.getApplyStatus());
                             }
                         }
+                    }
+                }else{
+                    // 교육데이터 없는 애들은 공백 4칸 만들기
+                    for(int i=0; i<4; i++){
+                        cell = row.createCell(cellCnt++);
+                        cell.setCellStyle(bodyStyle);
+                        cell.setCellValue("");
                     }
                 }
 
@@ -7138,7 +7130,7 @@ public class EduMarineMngController {
                     "No", "상태", "결제상태", "아이디", "성명(국문)",
                     "성명(영문)", "연락처", "이메일", "생년월일", "성별",
                     "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "교육이해",
-                    "교육이해 기타", "등록일", "수정일"
+                    "교육이해 기타", "추천인", "등록일", "수정일"
             };
 
             // 헤더 사이즈
@@ -7146,7 +7138,7 @@ public class EduMarineMngController {
                     3000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000
+                    5000, 5000, 5000, 5000
             };
 
             workbook.setCompressTempFiles(true);
@@ -7226,13 +7218,13 @@ public class EduMarineMngController {
             mergeCell.setCellValue("기본정보");
 
             // 신청정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,12,15));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,16));
             SXSSFCell mergeCell2 = row.createCell(12);
             mergeCell2.setCellStyle(headerStyle_light_green);
             mergeCell2.setCellValue("신청정보");
 
-            sheet.addMergedRegion(new CellRangeAddress(0,0,16,17));
-            SXSSFCell mergeCell2_2 = row.createCell(16);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,17,18));
+            SXSSFCell mergeCell2_2 = row.createCell(17);
             mergeCell2_2.setCellStyle(headerStyle);
             mergeCell2_2.setCellValue("기본정보");
 
@@ -7241,7 +7233,7 @@ public class EduMarineMngController {
                 cell = row.createCell(i);
                 if(i<12){
                     cell.setCellStyle(headerStyle);
-                }else if(i<16){
+                }else if(i<17){
                     cell.setCellStyle(headerStyle_light_green);
                 }else{
                     cell.setCellStyle(headerStyle);
@@ -7380,6 +7372,11 @@ public class EduMarineMngController {
                     cell.setCellValue("-");
                 }
 
+                // 추천인
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getRecommendPerson());
+
                 // 등록일
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -7425,7 +7422,7 @@ public class EduMarineMngController {
                     "No", "상태", "결제상태", "아이디", "성명(국문)",
                     "성명(영문)", "연락처", "이메일", "생년월일", "성별",
                     "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "교육이해",
-                    "교육이해 기타", "등록일", "수정일"
+                    "교육이해 기타", "추천인", "등록일", "수정일"
             };
 
             // 헤더 사이즈
@@ -7433,7 +7430,7 @@ public class EduMarineMngController {
                     3000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000
+                    5000, 5000, 5000, 5000
             };
 
             workbook.setCompressTempFiles(true);
@@ -7513,13 +7510,13 @@ public class EduMarineMngController {
             mergeCell.setCellValue("기본정보");
 
             // 신청정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,12,15));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,16));
             SXSSFCell mergeCell2 = row.createCell(12);
             mergeCell2.setCellStyle(headerStyle_light_green);
             mergeCell2.setCellValue("신청정보");
 
-            sheet.addMergedRegion(new CellRangeAddress(0,0,16,17));
-            SXSSFCell mergeCell2_2 = row.createCell(16);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,17,18));
+            SXSSFCell mergeCell2_2 = row.createCell(17);
             mergeCell2_2.setCellStyle(headerStyle);
             mergeCell2_2.setCellValue("기본정보");
 
@@ -7528,7 +7525,7 @@ public class EduMarineMngController {
                 cell = row.createCell(i);
                 if(i<12){
                     cell.setCellStyle(headerStyle);
-                }else if(i<16){
+                }else if(i<17){
                     cell.setCellStyle(headerStyle_light_green);
                 }else{
                     cell.setCellStyle(headerStyle);
@@ -7666,6 +7663,11 @@ public class EduMarineMngController {
                 }else{
                     cell.setCellValue("-");
                 }
+
+                // 추천인
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getRecommendPerson());
 
                 // 등록일
                 cell = row.createCell(cellCnt++);
@@ -7926,7 +7928,7 @@ public class EduMarineMngController {
                     "No", "상태", "결제상태", "아이디", "성명(국문)",
                     "성명(영문)", "연락처", "이메일", "생년월일", "성별",
                     "주소", "상세주소", "작업복사이즈(남여공용)", "참여경로", "교육이해",
-                    "교육이해기타", "등록일", "수정일"
+                    "교육이해기타", "추천인", "등록일", "수정일"
             };
 
             // 헤더 사이즈
@@ -7934,7 +7936,7 @@ public class EduMarineMngController {
                     3000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000
+                    5000, 5000, 5000, 5000
             };
 
             workbook.setCompressTempFiles(true);
@@ -8014,13 +8016,13 @@ public class EduMarineMngController {
             mergeCell.setCellValue("기본정보");
 
             // 신청정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,12,15));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,12,16));
             SXSSFCell mergeCell2 = row.createCell(12);
             mergeCell2.setCellStyle(headerStyle_light_green);
             mergeCell2.setCellValue("신청정보");
 
-            sheet.addMergedRegion(new CellRangeAddress(0,0,16,17));
-            SXSSFCell mergeCell2_2 = row.createCell(16);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,17,18));
+            SXSSFCell mergeCell2_2 = row.createCell(17);
             mergeCell2_2.setCellStyle(headerStyle);
             mergeCell2_2.setCellValue("기본정보");
 
@@ -8029,7 +8031,7 @@ public class EduMarineMngController {
                 cell = row.createCell(i);
                 if(i<12){
                     cell.setCellStyle(headerStyle);
-                }else if(i<16){
+                }else if(i<17){
                     cell.setCellStyle(headerStyle_light_green);
                 }else{
                     cell.setCellStyle(headerStyle);
@@ -8167,6 +8169,11 @@ public class EduMarineMngController {
                 }else{
                     cell.setCellValue("-");
                 }
+
+                // 추천인
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getRecommendPerson());
 
                 // 등록일
                 cell = row.createCell(cellCnt++);

@@ -295,6 +295,16 @@
                                         </div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="gubun">
+                                        <p>추천인</p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="recommendPerson" name="recommendPerson" placeholder="추천인" class="w50">
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <!-- //form box -->

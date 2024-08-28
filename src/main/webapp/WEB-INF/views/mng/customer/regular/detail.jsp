@@ -2042,6 +2042,18 @@ if (document.documentElement) {
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">추천인</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" id="recommendPerson" name="recommendPerson" class="form-control form-control-lg form-control-solid-bg" placeholder="추천인" value="${info.recommendPerson}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
                                         </div>
                                         <!--end::Card body-->
                                     </form>

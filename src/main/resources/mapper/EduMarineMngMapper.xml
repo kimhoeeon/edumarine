@@ -1757,6 +1757,7 @@
              , r.desired_education_time
              , r.major
              , r.experience_yn
+             , r.recommend_person
              , r.apply_status
              , r.cancel_dttm
              , r.cancel_reason
@@ -1810,6 +1811,7 @@
              , r.desired_education_time
              , r.major
              , r.experience_yn
+             , r.recommend_person
              , r.apply_status
              , r.cancel_dttm
              , r.cancel_reason
@@ -1842,6 +1844,7 @@
           , desired_education_time = #{desiredEducationTime}
           , major = #{major}
           , experience_yn = #{experienceYn}
+          , recommend_person = #{recommendPerson}
           , apply_status = #{applyStatus}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -1868,6 +1871,7 @@
         , desired_education_time
         , major
         , experience_yn
+        , recommend_person
         , apply_status
         , del_yn
         , note
@@ -1888,6 +1892,7 @@
             , #{desiredEducationTime}
             , #{major}
             , #{experienceYn}
+            , #{recommendPerson}
             , #{applyStatus}
             , 'N'
             , #{note}
@@ -2750,6 +2755,7 @@
              , h.participation_path
              , h.train_understand
              , h.train_understand_etc
+             , h.recommend_person
              , h.apply_status
              , h.cancel_dttm
              , h.cancel_reason
@@ -2798,6 +2804,7 @@
              , participation_path
              , train_understand
              , train_understand_etc
+             , recommend_person
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -2845,6 +2852,7 @@
              , e.participation_path
              , e.train_understand
              , e.train_understand_etc
+             , e.recommend_person
              , e.apply_status
              , e.cancel_dttm
              , e.cancel_reason
@@ -2893,6 +2901,7 @@
              , participation_path
              , train_understand
              , train_understand_etc
+             , recommend_person
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -3027,6 +3036,7 @@
              , s.participation_path
              , s.train_understand
              , s.train_understand_etc
+             , s.recommend_person
              , s.apply_status
              , s.cancel_dttm
              , s.cancel_reason
@@ -3075,6 +3085,7 @@
              , participation_path
              , train_understand
              , train_understand_etc
+             , recommend_person
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -4612,6 +4623,7 @@
                      r.desired_education_time,
                      r.major,
                      r.experience_yn,
+                     r.recommend_person,
                      r.apply_status,
                      r.cancel_dttm,
                      r.cancel_reason,
@@ -4927,6 +4939,7 @@
                      h.participation_path,
                      h.train_understand,
                      h.train_understand_etc,
+                     h.recommend_person,
                      h.cancel_dttm,
                      h.cancel_reason,
                      h.refund_bank_code,
@@ -4968,6 +4981,7 @@
                      e.participation_path,
                      e.train_understand,
                      e.train_understand_etc,
+                     e.recommend_person,
                      e.cancel_dttm,
                      e.cancel_reason,
                      e.refund_bank_code,
@@ -5044,6 +5058,7 @@
                      s.participation_path,
                      s.train_understand,
                      s.train_understand_etc,
+                     s.recommend_person,
                      s.cancel_dttm,
                      s.cancel_reason,
                      s.refund_bank_code,

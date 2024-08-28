@@ -32,6 +32,7 @@ public class RegularDTO {
     String desiredEducationTime; //희망교육시기
     String major; //전공
     String experienceYn; //경험유무
+    String recommendPerson; //추천인
     String applyStatus; //신청상태
     String cancelDttm; //취소신청일시
     String cancelReason; //취소사유
@@ -54,7 +55,7 @@ public class RegularDTO {
     @Setter
     @ToString
     public static class TrainInfo {
-        private String initRegidttm;
+        private String initRegiDttm;
         private String gbn;
         private String nextTime;
         private String applyStatus;

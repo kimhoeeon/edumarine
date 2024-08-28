@@ -937,6 +937,7 @@
         , desired_education_time
         , major
         , experience_yn
+        , recommend_person
         , apply_status
         , del_yn
         , note
@@ -957,6 +958,7 @@
             , #{desiredEducationTime}
             , #{major}
             , #{experienceYn}
+            , #{recommendPerson}
             , #{applyStatus}
             , 'N'
             , #{note}
@@ -997,6 +999,7 @@
              , desired_education_time
              , major
              , experience_yn
+             , recommend_person
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -2176,6 +2179,7 @@
              , desired_education_time
              , major
              , experience_yn
+             , recommend_person
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -2200,6 +2204,7 @@
           , desired_education_time = #{desiredEducationTime}
           , major = #{major}
           , experience_yn = #{experienceYn}
+          , recommend_person = #{recommendPerson}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -2817,6 +2822,7 @@
         , participation_path
         , train_understand
         , train_understand_etc
+        , recommend_person
         , apply_status
         , cancel_reason
         , del_yn
@@ -2834,6 +2840,7 @@
             , #{participationPath}
             , #{trainUnderstand}
             , #{trainUnderstandEtc}
+            , #{recommendPerson}
             , #{applyStatus}
             , #{cancelReason}
             , 'N'
@@ -2861,6 +2868,7 @@
         , participation_path
         , train_understand
         , train_understand_etc
+        , recommend_person
         , apply_status
         , cancel_reason
         , del_yn
@@ -2878,6 +2886,7 @@
             , #{participationPath}
             , #{trainUnderstand}
             , #{trainUnderstandEtc}
+            , #{recommendPerson}
             , #{applyStatus}
             , #{cancelReason}
             , 'N'
@@ -2941,6 +2950,7 @@
         , participation_path
         , train_understand
         , train_understand_etc
+        , recommend_person
         , apply_status
         , cancel_reason
         , del_yn
@@ -2958,6 +2968,7 @@
             , #{participationPath}
             , #{trainUnderstand}
             , #{trainUnderstandEtc}
+            , #{recommendPerson}
             , #{applyStatus}
             , #{cancelReason}
             , 'N'
@@ -3216,6 +3227,7 @@
              , h.participation_path
              , h.train_understand
              , h.train_understand_etc
+             , h.recommend_person
              , h.apply_status
              , h.cancel_dttm
              , h.cancel_reason
@@ -3240,6 +3252,7 @@
              , hs.participation_path
              , hs.train_understand
              , hs.train_understand_etc
+             , hs.recommend_person
              , hs.apply_status
              , hs.cancel_dttm
              , hs.cancel_reason
@@ -3284,6 +3297,7 @@
              , t.participation_path
              , t.train_understand
              , t.train_understand_etc
+             , t.recommend_person
              , t.apply_status
              , t.cancel_dttm
              , t.cancel_reason
@@ -3346,6 +3360,7 @@
           , participation_path = #{participationPath}
           , train_understand = #{trainUnderstand}
           , train_understand_etc = #{trainUnderstandEtc}
+          , recommend_person = #{recommendPerson}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3358,6 +3373,7 @@
           , participation_path = #{participationPath}
           , train_understand = #{trainUnderstand}
           , train_understand_etc = #{trainUnderstandEtc}
+          , recommend_person = #{recommendPerson}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3378,6 +3394,7 @@
           , participation_path = #{participationPath}
           , train_understand = #{trainUnderstand}
           , train_understand_etc = #{trainUnderstandEtc}
+          , recommend_person = #{recommendPerson}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
