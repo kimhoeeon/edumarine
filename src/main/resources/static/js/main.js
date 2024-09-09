@@ -534,7 +534,7 @@ function f_pw_init(){
                     let jsonObj = {
                         subject: '[ 경기해양레저 인력양성센터 ] 비밀번호 초기화 요청', //제목
                         body: "", //본문
-                        template: "24", //템플릿 번호
+                        template: "93", //템플릿 번호
                         receiver: [{"email": email}]
                     }
 
