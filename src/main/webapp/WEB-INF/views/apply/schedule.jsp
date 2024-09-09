@@ -312,20 +312,30 @@
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
+    <script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
+    <script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
+    <script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
+    <script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
-<script src="<%request.getContextPath();%>/static/js/front/schedule.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/front/schedule.js?ver=<%=System.currentTimeMillis()%>"></script>
 
+    <script>
+        document.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                let focusEl = document.activeElement;
+                if(document.getElementById('search_text') === focusEl) {
+                    scheduleList(1 , '');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

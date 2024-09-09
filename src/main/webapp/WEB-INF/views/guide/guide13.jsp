@@ -250,9 +250,9 @@
                                         <td>교육기간</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">선외기 기초정비교육 : 8/25, 9/22, 10/27</div>
-                                                <div class="text">선내기 기초정비교육 : 9/8, 10/27</div>
-                                                <div class="text">세일요트엔진 기초정비교육 : 9/1, 11/3</div>
+                                                <div class="text">선외기 응급조치교육 : 8/24, 9/21, 10/26</div>
+                                                <div class="text">선내기 응급조치교육 : 9/7, 10/26</div>
+                                                <div class="text">세일요트엔진 응급조치교육 : 8/31, 11/2</div>
                                             </div>
                                         </td>
                                     </tr>

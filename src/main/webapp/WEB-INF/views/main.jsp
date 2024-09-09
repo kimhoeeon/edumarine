@@ -124,7 +124,7 @@
 
     <!-- floating -->
     <div class="floating">
-        <a href="<%request.getContextPath();%>/static/file/edumarine_brochure.pdf" target="_blank">
+        <a href="<%request.getContextPath();%>/static/file/2024_경기해양레저인력양성센터_브로슈어.pdf" target="_blank">
             <p><span class="bold">Brochure</span><br>Download</p>
             <img src="<%request.getContextPath();%>/static/img/icon_download_yellow.png">
         </a>
