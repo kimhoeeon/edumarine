@@ -530,4 +530,17 @@ public interface EduMarineMngMapper {
     List<SmsSendDTO> selectSmsSendEmergencyList(String boarderGbn);
 
     Integer updateEmergencyTrainSeq(EmergencyDTO emergencyDTO);
+
+    List<GeneratorDTO> selectGeneratorList(SearchDTO searchDTO);
+
+    GeneratorDTO selectGeneratorSingle(String seq);
+
+    Integer updateGeneratorApplyStatus(GeneratorDTO info);
+
+    List<GeneratorDetailDTO> selectExcelGeneratorDetailList();
+
+    List<SmsSendDTO> selectSmsSendGeneratorList(String boarderGbn);
+
+    Integer updateGeneratorTrainSeq(GeneratorDTO generatorDTO);
+
 }

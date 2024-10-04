@@ -76,19 +76,19 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
 
     <%-- favicon --%>
-    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -100,10 +100,10 @@
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 </head>
 
 <body>
@@ -117,7 +117,7 @@
         <div class="sub_top sub_top_guide">
             <div class="inner">
                 <div class="sub_top_nav">
-                    <span class="home"><img src="<%request.getContextPath();%>/static/img/icon_home_mini.png" alt="홈 아이콘"></span>
+                    <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span>
                     <span>교육 안내</span>
                     <span>마리나 선박 정비사 실무교육</span>
                 </div>
@@ -143,6 +143,7 @@
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>--%>
                     <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
+                    <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
@@ -156,47 +157,46 @@
                     <!-- guide_top -->
                     <div class="guide_top">
                         <div class="guide_top_tit">
-                            <div class="big">마리나 선박 정비사 실무교육</div>
+                            <div class="big">마리나선박 정비사 실기교육</div>
                             <div class="eng">Marina Ship Mechanic Practical Training</div>
                             <div class="text">
-                                마리나항만법 개정으로 마리나선박의 선외기 및 선내기 정비를 위해서는 마리나선박정비사 자격증을 취득해야 하고 해양레저 유지보수 분야의<br>
-                                기술인력 수요 증가에 따라 마리나 선박 정비관련 현장 실무인재를 양성하기 위해 교육생을 모집하오니 관심 있는 분들의 많은 지원 바랍니다.
+                                마리나 선박과 관련된 선외기 및 선내기, 선체 정비관련 현장 실무 기술자를 양성하기 위하여 마리나 선박 정비사 실무과정을 개설합니다.<br>
+                                마리나항만법에 의한 국가자격증인 마리나선박정비사(선외기, 선내기, FRP선체) 자격증 취득을 희망하시는 분들과 해양레저산업 분야 기술자가 되어 취업 및 창업을 희망하시는 분들의 많은 지원 바랍니다.
                             </div>
                         </div>
                         <div class="guide_top_bnr">
                             <div class="bnr_box w700">
-                                <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/bg_guide_top_02.jpg"></div>
+                                <div class="bg_box"><img src="/img/bg_guide_top_02.jpg"></div>
                                 <div class="text_box">
                                     <div class="big">교육 목적</div>
                                     <div class="small">
-                                        마리나선박정비사 자격증 취득을 위한<br>
-                                        현장 실무형 인재양성과 해양레저분야 취업지원 등
+                                        국가자격증인 마리나선박정비사 자격증을 보유한 기술자 양성 및 현장 실무에 적합한 해양레저분야 기술자 양성을 통한 해양레저산업 활성화 및 성장에 기여
                                     </div>
                                 </div>
                             </div>
                             <ul class="info_box">
                                 <li class="r3">
-                                    <div class="tit">실무형 인재 양성</div>
+                                    <div class="tit">실무형 인재 양성 프로그램</div>
                                     <div class="text">
-                                        <p>기업요구에 맞춘 프로그램</p>
-                                        <p>근무현장 견학 및 실습</p>
-                                        <p>산업종사자와 멘토링 시스템 구축</p>
-                                    </div>
-                                </li>
-                                <li class="r4">
-                                    <div class="tit">전문적 기술능력 배양</div>
-                                    <div class="text">
-                                        <p>이론 및 실기분야에 최정예 인력 양성</p>
-                                        <p>산업현장에 필요한 전문적 기술 지도</p>
-                                        <p>교육생 사후 관리로 지속적 상위 프로그램 교육</p>
+                                        <p>기업 현장 실무에 맞춘 교육과정</p>
+                                        <p>근무 현장 견학 및 실습을 통한 현장 체험</p>
+                                        <p>해양레저분야 종사자와 멘토링 시스템 구축</p>
                                     </div>
                                 </li>
                                 <li class="r3">
-                                    <div class="tit">취업성공 지원</div>
+                                    <div class="tit">전문적 기술 능력 습득 프로그램</div>
                                     <div class="text">
-                                        <p>1 : 1 커리어 코칭</p>
-                                        <p>기본 역량강화 교육</p>
-                                        <p>진로결정 컨설팅 지원</p>
+                                        <p>이론 및 실습을 병행한 교육과정 진행</p>
+                                        <p>현장실무에 필요한 전문적 기술 습득</p>
+                                        <p>교육생 기술 수준 향상을 위한 상위 프로그램 진행</p>
+                                    </div>
+                                </li>
+                                <li class="r3">
+                                    <div class="tit">취업 및 창업 성공 지원 프로그램</div>
+                                    <div class="text">
+                                        <p>현장 경력자 초빙하여 커리어 코칭 진행</p>
+                                        <p>산업현장에 대한 이해를 넓히기 위한 현장 견학 진행</p>
+                                        <p>진로 결정을 돕기 위한 1:1 컨설팅 진행</p>
                                     </div>
                                 </li>
                             </ul>
@@ -551,8 +551,8 @@
                                         </c:forEach>
                                     </ul>
                                     <div class="img">
-                                        <img src="<%request.getContextPath();%>/static/img/img_guide_marina.png" class="pc">
-                                        <img src="<%request.getContextPath();%>/static/img/img_guide_marina_m.png" class="m">
+                                        <img src="/img/img_guide_marina.png" class="pc">
+                                        <img src="/img/img_guide_marina_m.png" class="m">
                                     </div>
                                 </div>
                             </li>
@@ -633,44 +633,44 @@
                         <div class="guide_info_5">
                             <ul class="info_list">
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_01.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_01.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_01.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_01.png"></div>
                                         <div class="text">엔진수리점/<br>유지보수</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_02.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_02.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_02.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_02.png"></div>
                                         <div class="text">보트 판매사</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_03.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_03.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_03.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_03.png"></div>
                                         <div class="text">보트 제조사</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_04.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_04.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_04.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_04.png"></div>
                                         <div class="text">창업</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_05.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_05.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_05.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_05.png"></div>
                                         <div class="text">마리나</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_06.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_06.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_06.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_06.png"></div>
                                         <div class="text">선외기<br>수입사/대리점</div>
                                     </div>
                                 </li>
@@ -696,15 +696,15 @@
                                 <div class="tit">교육문의</div>
                                 <ul>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_tel.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_tel.png"></div>
                                         <div class="text">Tel. 1811-7891</div>
                                     </li>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_talk.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_talk.png"></div>
                                         <div class="text">카카오톡 [경기 해양레저인력양성센터] 검색</div>
                                     </li>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_email.png"></div>
                                         <div class="text">E-mail. <span class="underline">edu@edumarine.org</span> 또는
                                             <a href="https://marinetech.kr" target="_blank">https://marinetech.kr</a>
                                         </div>
@@ -742,14 +742,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="/js/jquery-migrate-3.3.0.js"></script>
+<script src="/js/jquery.cookie.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/swiper.js"></script>
+<script src="/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

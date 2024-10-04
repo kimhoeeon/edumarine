@@ -336,6 +336,9 @@ public class EduMarineController {
                 case "EDU15":
                     trainName = "응급조치교육";
                     break;
+                case "EDU16":
+                    trainName = "발전기 정비 교육";
+                    break;
                 default:
                     trainName = searchText;
                     break;
@@ -644,6 +647,17 @@ public class EduMarineController {
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply18/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply18_update_status(@RequestBody GeneratorDTO generatorDTO) {
+        System.out.println("EduMarineController > apply_eduApply18_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1681,6 +1695,80 @@ public class EduMarineController {
         //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergency(emergencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply18.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply18(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply18");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply18");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply18/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply18_preCheck(@RequestBody GeneratorDTO generatorDTO) {
+        System.out.println("EduMarineController > apply_eduApply18_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectGeneratorPreCheck(generatorDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply18/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply18_insert(@RequestBody GeneratorDTO generatorDTO) {
+        System.out.println("EduMarineController > apply_eduApply18_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertGenerator(generatorDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply18_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply18_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply18_modify");
+        ModelAndView mv = new ModelAndView();
+
+        GeneratorDTO info = eduMarineService.processSelectGeneratorSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply18_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply18/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply18_update(@RequestBody GeneratorDTO generatorDTO) {
+        System.out.println("EduMarineController > mypage_eduApply18_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateGenerator(generatorDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -3098,6 +3186,14 @@ public class EduMarineController {
         return mv;
     }
 
+    @RequestMapping(value = "/guide/guide14.do", method = RequestMethod.GET)
+    public ModelAndView guide_guide14() {
+        System.out.println("EduMarineController > guide_guide14");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/guide14");
+        return mv;
+    }
+
     //***************************************************************************
     // Common
     //***************************************************************************
@@ -3334,6 +3430,10 @@ public class EduMarineController {
                         // 선외기 기초정비교육
                         // 선내기 기초정비교육
                         // 세일요트 기초정비교육
+                        // 선외기 응급조치교육
+                        // 선내기 응급조치교육
+                        // 세일요트 응급조치교육
+                        // 발전기 정비 교육
                         if (paymentDTO.getTrainName().contains("상시")) {
 
                             // regular table
@@ -3523,6 +3623,20 @@ public class EduMarineController {
                                 }
                             }
 
+                        } else if (paymentDTO.getTrainName().contains("발전기")) {
+
+                            // Generator table
+                            GeneratorDTO generatorDTO = new GeneratorDTO();
+                            generatorDTO.setSeq(paymentDTO.getTableSeq());
+                            generatorDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
                         }
                     }
                 }
@@ -3701,6 +3815,13 @@ public class EduMarineController {
                         // 해상엔진 자가정비 (세일요트)
                         // 고마력 선외기 정비 중급 테크니션
                         // 스턴드라이브 정비 전문가과정
+                        // 선외기 기초정비교육
+                        // 선내기 기초정비교육
+                        // 세일요트 기초정비교육
+                        // 선외기 응급조치교육
+                        // 선내기 응급조치교육
+                        // 세일요트 응급조치교육
+                        // 발전기 정비 교육
                         if (paymentDTO.getTrainName().contains("상시")) {
 
                             // regular table
@@ -3884,6 +4005,20 @@ public class EduMarineController {
                             emergencyDTO.setSeq(paymentDTO.getTableSeq());
                             emergencyDTO.setApplyStatus(paymentDTO.getPayStatus());
                             ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("발전기")) {
+
+                            // Generator table
+                            GeneratorDTO generatorDTO = new GeneratorDTO();
+                            generatorDTO.setSeq(paymentDTO.getTableSeq());
+                            generatorDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -4327,6 +4462,48 @@ public class EduMarineController {
                                     successFlag = false;
                                 }
 
+                            }
+
+                        } else if (trainName.contains("기초정비교육")) {
+
+                            // basic table
+                            BasicDTO basicDTO = new BasicDTO();
+                            basicDTO.setSeq(tableSeq);
+                            basicDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (trainName.contains("응급조치교육")) {
+
+                            // basic table
+                            EmergencyDTO emergencyDTO = new EmergencyDTO();
+                            emergencyDTO.setSeq(tableSeq);
+                            emergencyDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (trainName.contains("발전기")) {
+
+                            // Generator table
+                            GeneratorDTO generatorDTO = new GeneratorDTO();
+                            generatorDTO.setSeq(tableSeq);
+                            generatorDTO.setApplyStatus(applyStatus);
+                            ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
                             }
 
                         }

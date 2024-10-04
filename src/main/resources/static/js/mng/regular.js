@@ -85,7 +85,7 @@ $(function(){
                     myModal.show();
                 }
             }else{
-                showMessage('', 'error', '[취소 승인]', '취소 승인할 신청내역을 하나 이상 선택해 주세요.', '');
+                showMessage('', 'error', '[ 취소 승인 ]', '취소 승인할 신청내역을 하나 이상 선택해 주세요.', '');
                 return false;
             }
 
@@ -152,7 +152,7 @@ $(function(){
                     myModal.show();
                 }
             }else{
-                showMessage('', 'error', '[신청 상태 변경]', '신청 상태를 변경할 신청내역을 하나 이상 선택해 주세요.', '');
+                showMessage('', 'error', '[ 신청 상태 변경 ]', '신청 상태를 변경할 신청내역을 하나 이상 선택해 주세요.', '');
                 return false;
             }
 
@@ -387,7 +387,7 @@ function f_customer_regular_detail_modal_set(seq){
             //$('#kt_modal_modify_history').find('.modal-header').find('.closeBtn').click();
             //$('#kt_modal_modify_history').modal('toggle');
 
-            showMessage('', 'error', '[신청 정보]', '신청자 정보가 없습니다.', '');
+            showMessage('', 'error', '[ 신청 정보 ]', '신청자 정보가 없습니다.', '');
         }
     })
     .fail(function (xhr, status, errorThrown) {
@@ -656,7 +656,7 @@ function f_apply_change_btn(){
             });
 
         }else{
-            showMessage('', 'error', '[신청 상태 변경]', '변경할 신청 상태를 선택해 주세요.', '');
+            showMessage('', 'error', '[ 신청 상태 변경 ]', '변경할 신청 상태를 선택해 주세요.', '');
         }
     }
 

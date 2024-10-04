@@ -143,8 +143,8 @@
         <meta name="viewport"
             content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>KG이니시스 결제샘플</title>
-		<link rel="stylesheet" href="<%request.getContextPath();%>/static/css/payment/style.css">
-		<link rel="stylesheet" href="<%request.getContextPath();%>/static/css/payment/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/payment/style.css">
+		<link rel="stylesheet" href="/css/payment/bootstrap.min.css">
 		
 		<script language="javascript" type="text/javascript" src="https://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
         <script type="text/javascript">

@@ -130,6 +130,10 @@ function f_train_calendar_select(category){
                         className = 'edu17';
                         link = '/apply/eduApply17.do';
                         break;
+                    case '발전기 정비 교육':
+                        className = 'edu18';
+                        link = '/apply/eduApply18.do';
+                        break;
                     default:
                         break;
                 }

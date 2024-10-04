@@ -76,19 +76,19 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
 
     <%-- favicon --%>
-    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -100,10 +100,10 @@
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 </head>
 
 <body>
@@ -117,7 +117,7 @@
         <div class="sub_top sub_top_guide">
             <div class="inner">
                 <div class="sub_top_nav">
-                    <span class="home"><img src="<%request.getContextPath();%>/static/img/icon_home_mini.png" alt="홈 아이콘"></span>
+                    <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span>
                     <span>교육 안내</span>
                     <span>위탁교육</span>
                 </div>
@@ -143,6 +143,7 @@
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>--%>
                     <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
+                    <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
@@ -157,15 +158,19 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">위탁교육</div>
-                            <div class="eng">Commissioned Education</div>
+                            <div class="eng">Commissioned education</div>
+                            <div class="text">
+                                선외기 및 선내기, FRP 선체 등과 업무상 관련이 있는 관공서 및 회사, 단체 등의 요구에 부합하는 맞춤교육을 설계하여 진행하고 있습니다.<br>
+                                선외기 및 선내기, FRP 선체 등과 관련된 안전한 관리 및 운영, 직원들의 업무능력 향상을 위한 교육을 원하시는 관공서 및 회사, 단체 등의 많은 신청 바랍니다.
+                            </div>
                         </div>
                         <div class="guide_top_bnr">
                             <div class="bnr_box">
-                                <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/bg_guide_top_04.jpg"></div>
+                                <div class="bg_box"><img src="/img/bg_guide_top_04.jpg"></div>
                                 <div class="text_box">
                                     <div class="big">교육 목적</div>
                                     <div class="small">
-                                        해양레저분야 종사자 직무역량 향상
+                                        직무 담당자들의 선외기 및 선내기, FRP 선체 등에 대한 안전한 관리 및 운영 능력 향상
                                     </div>
                                 </div>
                             </div>
@@ -267,14 +272,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="/js/jquery-migrate-3.3.0.js"></script>
+<script src="/js/jquery.cookie.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/swiper.js"></script>
+<script src="/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

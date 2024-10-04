@@ -76,19 +76,19 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
 
     <%-- favicon --%>
-    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -100,10 +100,10 @@
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 </head>
 
 <body>
@@ -143,6 +143,7 @@
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>--%>
                     <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
+                    <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
@@ -165,7 +166,7 @@
                         </div>
                         <div class="guide_top_bnr">
                             <div class="bnr_box w700">
-                                <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/bg_guide_top_03.jpg"></div>
+                                <div class="bg_box"><img src="/img/bg_guide_top_03.jpg"></div>
                                 <div class="text_box">
                                     <div class="big">교육 목적</div>
                                     <div class="small">
@@ -520,44 +521,44 @@
                         <div class="guide_info_5">
                             <ul class="info_list">
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_01.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_01.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_01.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_01.png"></div>
                                         <div class="text">엔진수리점/<br>유지보수</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_02.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_02.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_02.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_02.png"></div>
                                         <div class="text">보트 판매사</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_03.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_03.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_03.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_03.png"></div>
                                         <div class="text">보트 제조사</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_04.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_04.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_04.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_04.png"></div>
                                         <div class="text">창업</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_05.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_05.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_05.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_05.png"></div>
                                         <div class="text">마리나</div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/img_guide_06.png"></div>
+                                    <div class="bg_box"><img src="/img/img_guide_06.png"></div>
                                     <div class="text_box">
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_06.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_06.png"></div>
                                         <div class="text">선외기<br>수입사/대리점</div>
                                     </div>
                                 </li>
@@ -583,15 +584,15 @@
                                 <div class="tit">교육문의</div>
                                 <ul>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_tel.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_tel.png"></div>
                                         <div class="text">Tel. 1811-7891</div>
                                     </li>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_talk.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_talk.png"></div>
                                         <div class="text">카카오톡 [경기 해양레저인력양성센터] 검색</div>
                                     </li>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_email.png"></div>
                                         <div class="text">E-mail. <span class="underline">edu@edumarine.org</span> 또는
                                             https://yachtmnr.or.kr
                                         </div>
@@ -629,14 +630,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="/js/jquery-migrate-3.3.0.js"></script>
+<script src="/js/jquery.cookie.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/swiper.js"></script>
+<script src="/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>
