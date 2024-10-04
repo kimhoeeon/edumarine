@@ -98,7 +98,7 @@ function searchPosts(pageNum) {
             let writeDate = results[i].writeDate;
             writeDate = writeDate.split(' ')[0].replaceAll('-','.');
 
-            let thumbnailImage = '/static/img/img_sample.jpg';
+            let thumbnailImage = '/img/img_sample.jpg';
             let fullFilePathList = results[i].fullFilePathList;
             if(nvl(fullFilePathList, "") !== ""){
                 thumbnailImage = fullFilePathList[0];

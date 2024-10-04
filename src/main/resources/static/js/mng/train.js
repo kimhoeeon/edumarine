@@ -213,7 +213,7 @@ function f_education_train_remove(seq) {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: '[삭제 사유]',
+                    title: '[ 삭제 사유 ]',
                     text: '사유 입력 후 삭제하기 버튼 클릭 시 데이터는 파일관리>임시휴지통 으로 이동됩니다.',
                     input: 'text',
                     inputPlaceholder: '삭제 사유를 입력해주세요.',
@@ -449,6 +449,7 @@ function f_education_train_form_data_setting() {
             case '고마력 선외기 정비 중급 테크니션 (특별반)':
             case '스턴드라이브 정비 전문가과정':
             case '스턴드라이브 정비 전문가과정 (특별반)':
+            case '발전기 정비 교육':
                 category = '심화과정';
                 break;
             default:
@@ -617,6 +618,9 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             break;
         case '응급조치교육':
             link = '/mng/customer/emergency.do';
+            break;
+        case '발전기 정비 교육':
+            link = '/mng/customer/generator.do';
             break;
         default:
             break;

@@ -448,4 +448,14 @@ public interface EduMarineMngService {
     EmergencyDTO processSelectEmergencySingle(String seq);
 
     List<EmergencyDetailDTO> processSelectExcelEmergencyDetailList();
+
+    List<GeneratorDTO> processSelectGeneratorList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateGeneratorApplyStatus(List<GeneratorDTO> generatorList);
+
+    ResponseDTO processUpdateGeneratorApplyStatusChange(List<GeneratorDTO> generatorList);
+
+    GeneratorDTO processSelectGeneratorSingle(String seq);
+
+    List<GeneratorDetailDTO> processSelectExcelGeneratorDetailList();
 }

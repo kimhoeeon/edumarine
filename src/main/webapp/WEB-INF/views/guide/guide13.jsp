@@ -76,19 +76,19 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
 
     <%-- favicon --%>
-    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -100,10 +100,10 @@
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 </head>
 
 <body>
@@ -117,7 +117,7 @@
         <div class="sub_top sub_top_guide">
             <div class="inner">
                 <div class="sub_top_nav">
-                    <span class="home"><img src="<%request.getContextPath();%>/static/img/icon_home_mini.png" alt="홈 아이콘"></span>
+                    <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span>
                     <span>교육 안내</span>
                     <span>해상엔진 응급조치교육</span>
                 </div>
@@ -143,6 +143,7 @@
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>--%>
                     <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
+                    <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                 </ul>
@@ -166,7 +167,7 @@
                         </div>
                         <div class="guide_top_bnr">
                             <div class="bnr_box w700">
-                                <div class="bg_box"><img src="<%request.getContextPath();%>/static/img/bg_guide_top_03.jpg"></div>
+                                <div class="bg_box"><img src="/img/bg_guide_top_03.jpg"></div>
                                 <div class="text_box">
                                     <div class="big">교육 목적</div>
                                     <div class="small">
@@ -198,7 +199,7 @@
                                     <thead>
                                     <tr>
                                         <th>구분</th>
-                                        <th>해상엔진 기초정비교육 자가정비 과정</th>
+                                        <th>해상엔진 응급조치교육과정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -207,7 +208,7 @@
                                         <td>
                                             <div class="box">
                                                 <ul class="list">
-                                                    <li>선외기, 선내기, 세일요트엔진 기초정비 기술 습득을 원하시는 분</li>
+                                                    <li>선외기 또는 선내기, 세일요트엔진 응급조치 기술 습득을 원하시는 분</li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -216,32 +217,60 @@
                                         <td>교육내용</td>
                                         <td>
                                             <div class="box_number">
-                                                <div class="number">1) 선외기 해상엔진 응급조치교육</div>
+                                                <div class="number">1) 선외기 응급조치교육</div>
                                                 <ul class="list">
-                                                    <li>보트 운항관련 준비물 및 점검사항</li>
-                                                    <li>선외기 엔진 길들이기(Break-in)</li>
-                                                    <li>예기치 않은 고장 발생시 처리방법 (부속시스템 등 병행교육)</li>
-                                                    <li>전자제어시스템 이해</li>
+                                                    <li>선외기 개요 및 작동원리 (가솔린엔진)</li>
+                                                    <li>선외기 길들이기(Break-in)</li>
+                                                    <li>보트 운항관련 준비물 및 점검 사항</li>
+                                                    <li>예기치 않은 고장 발생시 처리방법 (선외기 부속시스템 병행 교육)</li>
+                                                    <li>침수엔진 처리방법</li>
+                                                    <li>비상 시동방법</li>
                                                 </ul><br>
                                             </div>
                                             <div class="box_number">
-                                                <div class="number">2) 선내기 해상엔진 응급조치교육</div>
+                                                <div class="number">2) 선내기 응급조치교육</div>
                                                 <ul class="list">
-                                                    <li>선내기 보트 운항관련 준비물 및 점검사항</li>
-                                                    <li>선내기 예기치 않은 고장 발생시 확인사항</li>
-                                                    <li>선내기 고장 증상과 원인 분석</li>
+                                                    <li>선내기 개요 및 작동원리 (디젤엔진)</li>
+                                                    <li>선내기 길들이기(Break-in)</li>
+                                                    <li>보트 운항관련 준비물 및 점검 사항</li>
+                                                    <li>예기치 않은 고장 발생시 처리방법 (선내기 부속시스템 병행 교육)</li>
                                                     <li>선내기 좌초시 대처방법</li>
-                                                </ul>
+                                                </ul><br>
+                                            </div>
+                                            <div class="box_number">
+                                                <div class="number">3) 세일요트엔진 응급조치교육</div>
+                                                <ul class="list">
+                                                    <li>세일요트엔진 개요 및 작동원리 (디젤엔진)</li>
+                                                    <li>세일요트엔진 길들이기(Break-in)</li>
+                                                    <li>보트 운항관련 준비물 및 점검 사항</li>
+                                                    <li>예기치 않은 고장 발생시 처리방법 (세일요트엔진 부속시스템 병행 교육)</li>
+                                                    <li>세일요트엔진 좌초시 대처방법</li>
+                                                </ul><br>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>교육장비</td>
                                         <td>
-                                            <div class="box">
+                                            <div class="box_number">
+                                                <div class="number">1) 선외기 응급조치교육 장비</div>
                                                 <ul class="list">
-                                                    <li>도하츠 15마력 (2-Stroke Cycle 엔진)</li>
-                                                    <li>혼다 60마력 (4-Stroke Cycle 엔진)</li>
+                                                    <li>도하츠 15마력 및 30마력 (2-Stroke Cycle 선외기)</li>
+                                                    <li>혼다 60마력 (4-Stroke Cycle 선외기)</li>
+                                                    <li>야마하 75마력 (4-Stroke Cycle 선외기)</li>
+                                                    <li>스즈끼 250마력, 머큐리 300마력 등</li>
+                                                </ul><br>
+                                                <div class="number">2) 선내기 응급조치교육 장비</div>
+                                                <ul class="list">
+                                                    <li>Volvo Penta D6 380마력</li>
+                                                    <li>Yanmar 6HYM 700마력 </li>
+                                                    <li>두산 선내기 320마력</li>
+                                                    <li>현대씨즈올 선내기 S2 270마력</li>
+                                                </ul><br>
+                                                <div class="number">3) 세일요트엔진 응급조치교육 장비</div>
+                                                <ul class="list">
+                                                    <li>Volvo Penta D2-75마력</li>
+                                                    <li>Yanmar 3JH5E 39마력</li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -392,15 +421,15 @@
                                 <div class="tit">교육문의</div>
                                 <ul>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_tel.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_tel.png"></div>
                                         <div class="text">Tel. 1811-7891</div>
                                     </li>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_talk.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_talk.png"></div>
                                         <div class="text">카카오톡 [경기 해양레저인력양성센터] 검색</div>
                                     </li>
                                     <li>
-                                        <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_guide_email.png"></div>
+                                        <div class="icon"><img src="/img/icon_guide_email.png"></div>
                                         <div class="text">E-mail. edu@edumarine.org 또는 marinetech.kr</div>
                                     </li>
                                 </ul>
@@ -436,14 +465,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
-<script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="/js/jquery-migrate-3.3.0.js"></script>
+<script src="/js/jquery.cookie.min.js"></script>
 
-<script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/swiper.js"></script>
+<script src="/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

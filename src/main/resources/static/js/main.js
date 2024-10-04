@@ -42,10 +42,9 @@ $(function(){
 
         let fileName = $(this).val();
         if(nvl(fileName,'') !== ''){
-            fileName = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
-
+            let ext = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
             let acceptArr = $(this).attr('accept').toString().replaceAll('.','').split(', ');
-            if(!acceptArr.includes(fileName)){
+            if(!acceptArr.includes(ext)){
                 let alertMsg = '파일 첨부는 ' + $(this).attr('accept').toString() + ' 파일만 가능합니다.';
                 alert(alertMsg);
                 $(this).val(''); //업로드한 파일 제거
@@ -1333,14 +1332,14 @@ function f_main_apply_eduApply01_submit(trainSeq){
     let secondApplicationField = $('#secondApplicationField').val();
     let thirdApplicationField = $('#thirdApplicationField').val();
 
-    /*if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }*/
-    if(nvl(region,'') === ''){ showMessage('', 'error', '[신청 정보]', '거주지역을 입력해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
-    if(nvl(firstApplicationField,'') === ''){ showMessage('', 'error', '[신청 정보]', '1순위 신청분야를 선택해 주세요.', ''); return false; }
-    if(nvl(secondApplicationField,'') === ''){ showMessage('', 'error', '[신청 정보]', '2순위 신청분야를 선택해 주세요.', ''); return false; }
-    if(nvl(thirdApplicationField,'') === ''){ showMessage('', 'error', '[신청 정보]', '3순위 신청분야를 선택해 주세요.', ''); return false; }
+    /*if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }*/
+    if(nvl(region,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '거주지역을 입력해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(nvl(firstApplicationField,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '1순위 신청분야를 선택해 주세요.', ''); return false; }
+    if(nvl(secondApplicationField,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '2순위 신청분야를 선택해 주세요.', ''); return false; }
+    if(nvl(thirdApplicationField,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '3순위 신청분야를 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -1357,7 +1356,7 @@ function f_main_apply_eduApply01_submit(trainSeq){
     form.applyStatus = '결제완료';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -1373,7 +1372,7 @@ function f_main_apply_eduApply01_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -1396,7 +1395,7 @@ function f_main_apply_eduApply01_submit(trainSeq){
                             f_sms_notify_sending('2', seqJson); // 2 수강신청 후
 
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: '신청이 완료되었습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -1408,7 +1407,7 @@ function f_main_apply_eduApply01_submit(trainSeq){
                             });
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -1440,11 +1439,11 @@ function f_main_apply_eduApply01_modify_submit(seq){
     let secondApplicationField = $('#secondApplicationField').val();
     let thirdApplicationField = $('#thirdApplicationField').val();
 
-    if(nvl(region,'') === ''){ showMessage('', 'error', '[신청 정보]', '거주지역을 입력해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
-    if(nvl(firstApplicationField,'') === ''){ showMessage('', 'error', '[신청 정보]', '1순위 신청분야를 선택해 주세요.', ''); return false; }
-    if(nvl(secondApplicationField,'') === ''){ showMessage('', 'error', '[신청 정보]', '2순위 신청분야를 선택해 주세요.', ''); return false; }
-    if(nvl(thirdApplicationField,'') === ''){ showMessage('', 'error', '[신청 정보]', '3순위 신청분야를 선택해 주세요.', ''); return false; }
+    if(nvl(region,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '거주지역을 입력해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(nvl(firstApplicationField,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '1순위 신청분야를 선택해 주세요.', ''); return false; }
+    if(nvl(secondApplicationField,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '2순위 신청분야를 선택해 주세요.', ''); return false; }
+    if(nvl(thirdApplicationField,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '3순위 신청분야를 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -1455,7 +1454,7 @@ function f_main_apply_eduApply01_modify_submit(seq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -1476,7 +1475,7 @@ function f_main_apply_eduApply01_modify_submit(seq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -1504,83 +1503,83 @@ function f_main_apply_eduApply02_submit(trainSeq){
     console.log(trainSeq);
     /*
     let nameEn = $('#nameEn').val();
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '성명(영문)을 입력해 주세요.', ''); return false; }
+    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '성명(영문)을 입력해 주세요.', ''); return false; }
 
     let birthYear = $('#birth-year').val();
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
 
     let birthMonth = $('#birth-month').val();
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
 
     let birthDay = $('#birth-day').val();
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
 
     let sexLen = $('input[type=radio][name=sex]:checked').length;
-    if(sexLen === 0){ showMessage('', 'error', '[신청 정보]', '성별을 선택해 주세요.', ''); return false; }*/
+    if(sexLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '성별을 선택해 주세요.', ''); return false; }*/
 
     /*let address = $('#address').val();
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
 
     let addressDetail = $('#addressDetail').val();
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
 
     let bodyPhoto = $('#bodyPhoto').val();
-    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', ''); return false; }
+    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상반신 사진을 첨부해주세요.', ''); return false; }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
-    if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
+    if(topClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '상의 사이즈를 선택해 주세요.', ''); return false; }
 
     let bottomClothesSizeLen = $('input[type=radio][name=bottomClothesSize]:checked').length;
-    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '하의 사이즈를 선택해 주세요.', ''); return false; }
+    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '하의 사이즈를 선택해 주세요.', ''); return false; }
 
     let shoesSizeLen = $('input[type=radio][name=shoesSize]:checked').length;
-    if(shoesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
+    if(shoesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
 
     let participationPathLen = $('input[type=radio][name=participationPath]:checked').length;
-    if(participationPathLen === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로를 선택해 주세요.', ''); return false; }
+    if(participationPathLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로를 선택해 주세요.', ''); return false; }
 
     let gradeGbn = $('#gradeGbn').val();
-    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[신청 정보]', '졸업구분을 입력해 주세요.', ''); return false; }
+    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '졸업구분을 입력해 주세요.', ''); return false; }
 
     let schoolName = $('#schoolName').val();
-    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[신청 정보]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
+    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
 
     let major = $('#major').val();
-    if(nvl(major,'') === ''){ showMessage('', 'error', '[신청 정보]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
+    if(nvl(major,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
 
     let militaryGbnLen = $('input[type=radio][name=militaryGbn]:checked').length;
-    if(militaryGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '병역 항목을 선택해 주세요.', ''); return false; }
+    if(militaryGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '병역 항목을 선택해 주세요.', ''); return false; }
 
     let militaryVal = $('input[type=radio][name=militaryGbn]:checked').val();
     if(militaryVal === '미필'){
         let militaryReason = $('#militaryReason').val();
         if(nvl(militaryReason,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '미필 사유를 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '미필 사유를 입력해 주세요.', ''); return false;
         }
     }
 
     let disabledGbnLen = $('input[type=radio][name=disabledGbn]:checked').length;
-    if(disabledGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '장애인 항목을 선택해 주세요.', ''); return false; }
+    if(disabledGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '장애인 항목을 선택해 주세요.', ''); return false; }
 
     let jobSupportGbnLen = $('input[type=radio][name=jobSupportGbn]:checked').length;
-    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
+    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
 
     let techEduGbnLen = $('input[type=radio][name=techEduGbn]:checked').length;
-    if(techEduGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '테크니션 교육 경험 항목을 선택해 주세요.', ''); return false; }
+    if(techEduGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '테크니션 교육 경험 항목을 선택해 주세요.', ''); return false; }
 
     let techEduGbnVal = $('input[type=radio][name=techEduGbn]:checked').val();
     if(techEduGbnVal === '있음'){
         let techEduName = $('#techEduName').val();
         if(nvl(techEduName,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '교육명을 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '교육명을 입력해 주세요.', ''); return false;
         }
     }
 
     let gradeLicense = $('#gradeLicense').val();
-    if (nvl(gradeLicense,'') === ''){ showMessage('', 'error', '[신청 정보]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', ''); return false; }
+    if (nvl(gradeLicense,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', ''); return false; }
 
     let activityReason =  $('#activityReason').val();
-    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[신청 정보]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
+    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
 
     let memberSeq = $('input[type=hidden][name=memberSeq]').val();
 
@@ -1649,7 +1648,7 @@ function f_main_apply_eduApply02_submit(trainSeq){
     form.licenseList = licenseList_json_arr;
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청서 접수 후 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -1665,7 +1664,7 @@ function f_main_apply_eduApply02_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -1771,7 +1770,7 @@ function f_main_apply_eduApply02_submit(trainSeq){
                         }else if(data.resultCode === "99"){
 
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -1802,7 +1801,7 @@ function f_main_apply_eduApply02_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -1815,57 +1814,57 @@ function f_main_apply_eduApply02_modify_submit(el, boarderSeq){
     if(bodyPhotoFile_li === 0){
         let bodyPhoto = $('#bodyPhoto').val();
         if (nvl(bodyPhoto,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', '');
+            showMessage('', 'error', '[ 신청 정보 ]', '상반신 사진을 첨부해주세요.', '');
             return false;
         }
     }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
-    if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
+    if(topClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '상의 사이즈를 선택해 주세요.', ''); return false; }
 
     let bottomClothesSizeLen = $('input[type=radio][name=bottomClothesSize]:checked').length;
-    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '하의 사이즈를 선택해 주세요.', ''); return false; }
+    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '하의 사이즈를 선택해 주세요.', ''); return false; }
 
     let shoesSizeLen = $('input[type=radio][name=shoesSize]:checked').length;
-    if(shoesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
+    if(shoesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
 
     let participationPathLen = $('input[type=radio][name=participationPath]:checked').length;
-    if(participationPathLen === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로를 선택해 주세요.', ''); return false; }
+    if(participationPathLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로를 선택해 주세요.', ''); return false; }
 
     let gradeGbn = $('#gradeGbn').val();
-    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[신청 정보]', '졸업구분을 입력해 주세요.', ''); return false; }
+    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '졸업구분을 입력해 주세요.', ''); return false; }
 
     let schoolName = $('#schoolName').val();
-    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[신청 정보]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
+    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
 
     let major = $('#major').val();
-    if(nvl(major,'') === ''){ showMessage('', 'error', '[신청 정보]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
+    if(nvl(major,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
 
     let militaryGbnLen = $('input[type=radio][name=militaryGbn]:checked').length;
-    if(militaryGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '병역 항목을 선택해 주세요.', ''); return false; }
+    if(militaryGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '병역 항목을 선택해 주세요.', ''); return false; }
 
     let militaryVal = $('input[type=radio][name=militaryGbn]:checked').val();
     if(militaryVal === '미필'){
         let militaryReason = $('#militaryReason').val();
         if(nvl(militaryReason,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '미필 사유를 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '미필 사유를 입력해 주세요.', ''); return false;
         }
     }
 
     let disabledGbnLen = $('input[type=radio][name=disabledGbn]:checked').length;
-    if(disabledGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '장애인 항목을 선택해 주세요.', ''); return false; }
+    if(disabledGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '장애인 항목을 선택해 주세요.', ''); return false; }
 
     let jobSupportGbnLen = $('input[type=radio][name=jobSupportGbn]:checked').length;
-    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
+    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
 
     let techEduGbnLen = $('input[type=radio][name=techEduGbn]:checked').length;
-    if(techEduGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '테크니션 교육 경험 항목을 선택해 주세요.', ''); return false; }
+    if(techEduGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '테크니션 교육 경험 항목을 선택해 주세요.', ''); return false; }
 
     let techEduGbnVal = $('input[type=radio][name=techEduGbn]:checked').val();
     if(techEduGbnVal === '있음'){
         let techEduName = $('#techEduName').val();
         if(nvl(techEduName,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '교육명을 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '교육명을 입력해 주세요.', ''); return false;
         }
     }
 
@@ -1873,13 +1872,13 @@ function f_main_apply_eduApply02_modify_submit(el, boarderSeq){
     if(gradeLicenseFile_li === 0){
         let gradeLicense = $('#gradeLicense').val();
         if (nvl(gradeLicense,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', '');
+            showMessage('', 'error', '[ 신청 정보 ]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', '');
             return false;
         }
     }
 
     let activityReason =  $('#activityReason').val();
-    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[신청 정보]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
+    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
 
     let memberSeq = $('input[type=hidden][name=memberSeq]').val();
     let trainSeq = $('input[type=hidden][name=trainSeq]').val();
@@ -1950,7 +1949,7 @@ function f_main_apply_eduApply02_modify_submit(el, boarderSeq){
     form.licenseList = licenseList_json_arr;
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -1998,7 +1997,7 @@ function f_main_apply_eduApply02_modify_submit(el, boarderSeq){
                             if (result.dismiss === Swal.DismissReason.timer) {
 
                                 Swal.fire({
-                                    title: '[신청 정보 수정]',
+                                    title: '[ 신청 정보 수정 ]',
                                     html: '신청 정보가 수정되었습니다.',
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
@@ -2031,83 +2030,83 @@ function f_main_apply_eduApply03_submit(trainSeq){
     console.log(trainSeq);
     /*
     let nameEn = $('#nameEn').val();
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '성명(영문)을 입력해 주세요.', ''); return false; }
+    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '성명(영문)을 입력해 주세요.', ''); return false; }
 
     let birthYear = $('#birth-year').val();
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
 
     let birthMonth = $('#birth-month').val();
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
 
     let birthDay = $('#birth-day').val();
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
 
     let sexLen = $('input[type=radio][name=sex]:checked').length;
-    if(sexLen === 0){ showMessage('', 'error', '[신청 정보]', '성별을 선택해 주세요.', ''); return false; }
+    if(sexLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '성별을 선택해 주세요.', ''); return false; }
 
     let address = $('#address').val();
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
 
     let addressDetail = $('#addressDetail').val();
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }
     */
     let bodyPhoto = $('#bodyPhoto').val();
-    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', ''); return false; }
+    if (nvl(bodyPhoto,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상반신 사진을 첨부해주세요.', ''); return false; }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
-    if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
+    if(topClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '상의 사이즈를 선택해 주세요.', ''); return false; }
 
     let bottomClothesSizeLen = $('input[type=radio][name=bottomClothesSize]:checked').length;
-    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '하의 사이즈를 선택해 주세요.', ''); return false; }
+    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '하의 사이즈를 선택해 주세요.', ''); return false; }
 
     let shoesSizeLen = $('input[type=radio][name=shoesSize]:checked').length;
-    if(shoesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
+    if(shoesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
 
     let participationPathLen = $('input[type=radio][name=participationPath]:checked').length;
-    if(participationPathLen === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로를 선택해 주세요.', ''); return false; }
+    if(participationPathLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로를 선택해 주세요.', ''); return false; }
 
     let gradeGbn = $('#gradeGbn').val();
-    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[신청 정보]', '졸업구분을 입력해 주세요.', ''); return false; }
+    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '졸업구분을 입력해 주세요.', ''); return false; }
 
     let schoolName = $('#schoolName').val();
-    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[신청 정보]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
+    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
 
     let major = $('#major').val();
-    if(nvl(major,'') === ''){ showMessage('', 'error', '[신청 정보]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
+    if(nvl(major,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
 
     let militaryGbnLen = $('input[type=radio][name=militaryGbn]:checked').length;
-    if(militaryGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '병역 항목을 선택해 주세요.', ''); return false; }
+    if(militaryGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '병역 항목을 선택해 주세요.', ''); return false; }
 
     let militaryVal = $('input[type=radio][name=militaryGbn]:checked').val();
     if(militaryVal === '미필'){
         let militaryReason = $('#militaryReason').val();
         if(nvl(militaryReason,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '미필 사유를 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '미필 사유를 입력해 주세요.', ''); return false;
         }
     }
 
     let disabledGbnLen = $('input[type=radio][name=disabledGbn]:checked').length;
-    if(disabledGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '장애인 항목을 선택해 주세요.', ''); return false; }
+    if(disabledGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '장애인 항목을 선택해 주세요.', ''); return false; }
 
     let jobSupportGbnLen = $('input[type=radio][name=jobSupportGbn]:checked').length;
-    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
+    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
 
     let knowPathLen = $('input[type=radio][name=knowPath]:checked').length;
-    if(knowPathLen === 0){ showMessage('', 'error', '[신청 정보]', '본 사업을 알게 된 경로 항목을 선택해 주세요.', ''); return false; }
+    if(knowPathLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '본 사업을 알게 된 경로 항목을 선택해 주세요.', ''); return false; }
 
     let knowPathVal = $('input[type=radio][name=knowPath]:checked').val();
     if(knowPathVal === '기타'){
         let knowPathReason = $('#knowPathReason').val();
         if(nvl(knowPathReason,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '기타 경로를 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '기타 경로를 입력해 주세요.', ''); return false;
         }
     }
 
     let gradeLicense = $('#gradeLicense').val();
-    if (nvl(gradeLicense,'') === ''){ showMessage('', 'error', '[신청 정보]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', ''); return false; }
+    if (nvl(gradeLicense,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', ''); return false; }
 
     let activityReason =  $('#activityReason').val();
-    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[신청 정보]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
+    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
 
     let memberSeq = $('input[type=hidden][name=memberSeq]').val();
 
@@ -2176,7 +2175,7 @@ function f_main_apply_eduApply03_submit(trainSeq){
     form.licenseList = licenseList_json_arr;
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청서 접수 후 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -2192,7 +2191,7 @@ function f_main_apply_eduApply03_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -2298,7 +2297,7 @@ function f_main_apply_eduApply03_submit(trainSeq){
                         }else if(data.resultCode === "99"){
 
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -2328,7 +2327,7 @@ function f_main_apply_eduApply03_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -2341,57 +2340,57 @@ function f_main_apply_eduApply03_modify_submit(el, boarderSeq){
     if(bodyPhotoFile_li === 0){
         let bodyPhoto = $('#bodyPhoto').val();
         if (nvl(bodyPhoto,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '상반신 사진을 첨부해주세요.', '');
+            showMessage('', 'error', '[ 신청 정보 ]', '상반신 사진을 첨부해주세요.', '');
             return false;
         }
     }
 
     let topClothesSizeLen = $('input[type=radio][name=topClothesSize]:checked').length;
-    if(topClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '상의 사이즈를 선택해 주세요.', ''); return false; }
+    if(topClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '상의 사이즈를 선택해 주세요.', ''); return false; }
 
     let bottomClothesSizeLen = $('input[type=radio][name=bottomClothesSize]:checked').length;
-    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '하의 사이즈를 선택해 주세요.', ''); return false; }
+    if(bottomClothesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '하의 사이즈를 선택해 주세요.', ''); return false; }
 
     let shoesSizeLen = $('input[type=radio][name=shoesSize]:checked').length;
-    if(shoesSizeLen === 0){ showMessage('', 'error', '[신청 정보]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
+    if(shoesSizeLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '안전화 사이즈를 선택해 주세요.', ''); return false; }
 
     let participationPathLen = $('input[type=radio][name=participationPath]:checked').length;
-    if(participationPathLen === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로를 선택해 주세요.', ''); return false; }
+    if(participationPathLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로를 선택해 주세요.', ''); return false; }
 
     let gradeGbn = $('#gradeGbn').val();
-    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[신청 정보]', '졸업구분을 입력해 주세요.', ''); return false; }
+    if(nvl(gradeGbn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '졸업구분을 입력해 주세요.', ''); return false; }
 
     let schoolName = $('#schoolName').val();
-    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[신청 정보]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
+    if(nvl(schoolName,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '최종학력에 해당하는 학교명을 입력해 주세요.', ''); return false; }
 
     let major = $('#major').val();
-    if(nvl(major,'') === ''){ showMessage('', 'error', '[신청 정보]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
+    if(nvl(major,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '전공을 입력해 주세요.<br>(없을 시 "없음" 기재)', ''); return false; }
 
     let militaryGbnLen = $('input[type=radio][name=militaryGbn]:checked').length;
-    if(militaryGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '병역 항목을 선택해 주세요.', ''); return false; }
+    if(militaryGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '병역 항목을 선택해 주세요.', ''); return false; }
 
     let militaryVal = $('input[type=radio][name=militaryGbn]:checked').val();
     if(militaryVal === '미필'){
         let militaryReason = $('#militaryReason').val();
         if(nvl(militaryReason,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '미필 사유를 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '미필 사유를 입력해 주세요.', ''); return false;
         }
     }
 
     let disabledGbnLen = $('input[type=radio][name=disabledGbn]:checked').length;
-    if(disabledGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '장애인 항목을 선택해 주세요.', ''); return false; }
+    if(disabledGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '장애인 항목을 선택해 주세요.', ''); return false; }
 
     let jobSupportGbnLen = $('input[type=radio][name=jobSupportGbn]:checked').length;
-    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[신청 정보]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
+    if(jobSupportGbnLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '취업지원대상 항목을 선택해 주세요.', ''); return false; }
 
     let knowPathLen = $('input[type=radio][name=knowPath]:checked').length;
-    if(knowPathLen === 0){ showMessage('', 'error', '[신청 정보]', '본 사업을 알게 된 경로 항목을 선택해 주세요.', ''); return false; }
+    if(knowPathLen === 0){ showMessage('', 'error', '[ 신청 정보 ]', '본 사업을 알게 된 경로 항목을 선택해 주세요.', ''); return false; }
 
     let knowPathVal = $('input[type=radio][name=knowPath]:checked').val();
     if(knowPathVal === '기타'){
         let knowPathReason = $('#knowPathReason').val();
         if(nvl(knowPathReason,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '기타 경로를 입력해 주세요.', ''); return false;
+            showMessage('', 'error', '[ 신청 정보 ]', '기타 경로를 입력해 주세요.', ''); return false;
         }
     }
 
@@ -2399,13 +2398,13 @@ function f_main_apply_eduApply03_modify_submit(el, boarderSeq){
     if(gradeLicenseFile_li === 0){
         let gradeLicense = $('#gradeLicense').val();
         if (nvl(gradeLicense,'') === ''){
-            showMessage('', 'error', '[신청 정보]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', '');
+            showMessage('', 'error', '[ 신청 정보 ]', '최종학교 졸업 (졸업예정)증명서를 첨부해 주세요.', '');
             return false;
         }
     }
 
     let activityReason =  $('#activityReason').val();
-    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[신청 정보]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
+    if (nvl(activityReason,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '자격 및 경력, 대외 활동 사항을 입력해 주세요.', ''); return false; }
 
     let memberSeq = $('input[type=hidden][name=memberSeq]').val();
     let trainSeq = $('input[type=hidden][name=trainSeq]').val();
@@ -2476,7 +2475,7 @@ function f_main_apply_eduApply03_modify_submit(el, boarderSeq){
     form.licenseList = licenseList_json_arr;
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -2524,7 +2523,7 @@ function f_main_apply_eduApply03_modify_submit(el, boarderSeq){
                             if (result.dismiss === Swal.DismissReason.timer) {
 
                                 Swal.fire({
-                                    title: '[신청 정보 수정]',
+                                    title: '[ 신청 정보 수정 ]',
                                     html: '신청 정보가 수정되었습니다.',
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
@@ -2565,14 +2564,14 @@ function f_main_apply_eduApply04_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -2589,7 +2588,7 @@ function f_main_apply_eduApply04_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -2605,7 +2604,7 @@ function f_main_apply_eduApply04_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -2681,7 +2680,7 @@ function f_main_apply_eduApply04_submit(trainSeq){
                             }
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -2711,7 +2710,7 @@ function f_main_apply_eduApply04_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -2723,8 +2722,8 @@ function f_main_apply_eduApply04_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -2735,7 +2734,7 @@ function f_main_apply_eduApply04_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -2756,7 +2755,7 @@ function f_main_apply_eduApply04_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -2792,14 +2791,14 @@ function f_main_apply_eduApply05_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -2816,7 +2815,7 @@ function f_main_apply_eduApply05_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -2832,7 +2831,7 @@ function f_main_apply_eduApply05_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -2909,7 +2908,7 @@ function f_main_apply_eduApply05_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -2939,7 +2938,7 @@ function f_main_apply_eduApply05_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -2951,8 +2950,8 @@ function f_main_apply_eduApply05_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -2963,7 +2962,7 @@ function f_main_apply_eduApply05_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -2984,7 +2983,7 @@ function f_main_apply_eduApply05_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -3020,14 +3019,14 @@ function f_main_apply_eduApply06_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -3044,7 +3043,7 @@ function f_main_apply_eduApply06_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -3060,7 +3059,7 @@ function f_main_apply_eduApply06_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -3137,7 +3136,7 @@ function f_main_apply_eduApply06_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -3168,7 +3167,7 @@ function f_main_apply_eduApply06_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -3180,8 +3179,8 @@ function f_main_apply_eduApply06_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -3192,7 +3191,7 @@ function f_main_apply_eduApply06_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -3213,7 +3212,7 @@ function f_main_apply_eduApply06_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -3248,16 +3247,16 @@ function f_main_apply_eduApply07_submit(trainSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     }else{
         for(let i=0; i<trainUnderstandArr.length; i++){
@@ -3265,7 +3264,7 @@ function f_main_apply_eduApply07_submit(trainSeq){
             if(trainCheckVal === '4'){
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if(nvl(trainUnderstandEtc,'') === ''){
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -3299,7 +3298,7 @@ function f_main_apply_eduApply07_submit(trainSeq){
 
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -3315,7 +3314,7 @@ function f_main_apply_eduApply07_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -3392,7 +3391,7 @@ function f_main_apply_eduApply07_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -3423,7 +3422,7 @@ function f_main_apply_eduApply07_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -3436,10 +3435,10 @@ function f_main_apply_eduApply07_modify_submit(el, boarderSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     } else {
         for (let i = 0; i < trainUnderstandArr.length; i++) {
@@ -3447,7 +3446,7 @@ function f_main_apply_eduApply07_modify_submit(el, boarderSeq){
             if (trainCheckVal === '4') {
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if (nvl(trainUnderstandEtc, '') === '') {
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -3474,7 +3473,7 @@ function f_main_apply_eduApply07_modify_submit(el, boarderSeq){
     form.trainUnderstand = trainUnderstand;
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -3495,7 +3494,7 @@ function f_main_apply_eduApply07_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -3530,16 +3529,16 @@ function f_main_apply_eduApply08_submit(trainSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     }else{
         for(let i=0; i<trainUnderstandArr.length; i++){
@@ -3547,7 +3546,7 @@ function f_main_apply_eduApply08_submit(trainSeq){
             if(trainCheckVal === '4'){
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if(nvl(trainUnderstandEtc,'') === ''){
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -3580,7 +3579,7 @@ function f_main_apply_eduApply08_submit(trainSeq){
     form.trainUnderstand = trainUnderstand;
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -3596,7 +3595,7 @@ function f_main_apply_eduApply08_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -3673,7 +3672,7 @@ function f_main_apply_eduApply08_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -3704,7 +3703,7 @@ function f_main_apply_eduApply08_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -3717,10 +3716,10 @@ function f_main_apply_eduApply08_modify_submit(el, boarderSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     } else {
         for (let i = 0; i < trainUnderstandArr.length; i++) {
@@ -3728,7 +3727,7 @@ function f_main_apply_eduApply08_modify_submit(el, boarderSeq){
             if (trainCheckVal === '4') {
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if (nvl(trainUnderstandEtc, '') === '') {
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -3755,7 +3754,7 @@ function f_main_apply_eduApply08_modify_submit(el, boarderSeq){
     form.trainUnderstand = trainUnderstand;
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -3776,7 +3775,7 @@ function f_main_apply_eduApply08_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -3811,16 +3810,16 @@ function f_main_apply_eduApply09_submit(trainSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     }else{
         for(let i=0; i<trainUnderstandArr.length; i++){
@@ -3828,7 +3827,7 @@ function f_main_apply_eduApply09_submit(trainSeq){
             if(trainCheckVal === '4'){
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if(nvl(trainUnderstandEtc,'') === ''){
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -3862,7 +3861,7 @@ function f_main_apply_eduApply09_submit(trainSeq){
 
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -3878,7 +3877,7 @@ function f_main_apply_eduApply09_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -3955,7 +3954,7 @@ function f_main_apply_eduApply09_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -3986,7 +3985,7 @@ function f_main_apply_eduApply09_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -3999,10 +3998,10 @@ function f_main_apply_eduApply09_modify_submit(el, boarderSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     } else {
         for (let i = 0; i < trainUnderstandArr.length; i++) {
@@ -4010,7 +4009,7 @@ function f_main_apply_eduApply09_modify_submit(el, boarderSeq){
             if (trainCheckVal === '4') {
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if (nvl(trainUnderstandEtc, '') === '') {
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -4037,7 +4036,7 @@ function f_main_apply_eduApply09_modify_submit(el, boarderSeq){
     form.trainUnderstand = trainUnderstand;
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -4058,7 +4057,7 @@ function f_main_apply_eduApply09_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -4093,16 +4092,16 @@ function f_main_apply_eduApply10_submit(trainSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     }else{
         for(let i=0; i<trainUnderstandArr.length; i++){
@@ -4110,7 +4109,7 @@ function f_main_apply_eduApply10_submit(trainSeq){
             if(trainCheckVal === '4'){
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if(nvl(trainUnderstandEtc,'') === ''){
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -4144,7 +4143,7 @@ function f_main_apply_eduApply10_submit(trainSeq){
 
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -4160,7 +4159,7 @@ function f_main_apply_eduApply10_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -4237,7 +4236,7 @@ function f_main_apply_eduApply10_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -4268,7 +4267,7 @@ function f_main_apply_eduApply10_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -4281,10 +4280,10 @@ function f_main_apply_eduApply10_modify_submit(el, boarderSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     } else {
         for (let i = 0; i < trainUnderstandArr.length; i++) {
@@ -4292,7 +4291,7 @@ function f_main_apply_eduApply10_modify_submit(el, boarderSeq){
             if (trainCheckVal === '4') {
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if (nvl(trainUnderstandEtc, '') === '') {
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -4319,7 +4318,7 @@ function f_main_apply_eduApply10_modify_submit(el, boarderSeq){
     form.trainUnderstand = trainUnderstand;*/
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -4340,7 +4339,7 @@ function f_main_apply_eduApply10_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -4375,16 +4374,16 @@ function f_main_apply_eduApply11_submit(trainSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     }else{
         for(let i=0; i<trainUnderstandArr.length; i++){
@@ -4392,7 +4391,7 @@ function f_main_apply_eduApply11_submit(trainSeq){
             if(trainCheckVal === '4'){
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if(nvl(trainUnderstandEtc,'') === ''){
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -4426,7 +4425,7 @@ function f_main_apply_eduApply11_submit(trainSeq){
 
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -4442,7 +4441,7 @@ function f_main_apply_eduApply11_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -4519,7 +4518,7 @@ function f_main_apply_eduApply11_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -4550,7 +4549,7 @@ function f_main_apply_eduApply11_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -4563,10 +4562,10 @@ function f_main_apply_eduApply11_modify_submit(el, boarderSeq){
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
     let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
     if (trainUnderstandArr.length === 0) {
-        showMessage('', 'error', '[신청 정보]', '교육 이해 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
         return false;
     } else {
         for (let i = 0; i < trainUnderstandArr.length; i++) {
@@ -4574,7 +4573,7 @@ function f_main_apply_eduApply11_modify_submit(el, boarderSeq){
             if (trainCheckVal === '4') {
                 let trainUnderstandEtc = $('#trainUnderstandEtc').val();
                 if (nvl(trainUnderstandEtc, '') === '') {
-                    showMessage('', 'error', '[신청 정보]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -4601,7 +4600,7 @@ function f_main_apply_eduApply11_modify_submit(el, boarderSeq){
     form.trainUnderstand = trainUnderstand;*/
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -4622,7 +4621,7 @@ function f_main_apply_eduApply11_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -4658,14 +4657,14 @@ function f_main_apply_eduApply12_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -4685,7 +4684,7 @@ function f_main_apply_eduApply12_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -4701,7 +4700,7 @@ function f_main_apply_eduApply12_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -4778,7 +4777,7 @@ function f_main_apply_eduApply12_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -4808,7 +4807,7 @@ function f_main_apply_eduApply12_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -4820,8 +4819,8 @@ function f_main_apply_eduApply12_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -4832,7 +4831,7 @@ function f_main_apply_eduApply12_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -4853,7 +4852,7 @@ function f_main_apply_eduApply12_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -4889,14 +4888,14 @@ function f_main_apply_eduApply13_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -4916,7 +4915,7 @@ function f_main_apply_eduApply13_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -4932,7 +4931,7 @@ function f_main_apply_eduApply13_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -5009,7 +5008,7 @@ function f_main_apply_eduApply13_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -5039,7 +5038,7 @@ function f_main_apply_eduApply13_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -5051,8 +5050,8 @@ function f_main_apply_eduApply13_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5063,7 +5062,7 @@ function f_main_apply_eduApply13_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -5084,7 +5083,7 @@ function f_main_apply_eduApply13_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -5120,14 +5119,14 @@ function f_main_apply_eduApply14_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5147,7 +5146,7 @@ function f_main_apply_eduApply14_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -5163,7 +5162,7 @@ function f_main_apply_eduApply14_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -5240,7 +5239,7 @@ function f_main_apply_eduApply14_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -5270,7 +5269,7 @@ function f_main_apply_eduApply14_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -5282,8 +5281,8 @@ function f_main_apply_eduApply14_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5294,7 +5293,7 @@ function f_main_apply_eduApply14_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -5315,7 +5314,7 @@ function f_main_apply_eduApply14_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -5351,14 +5350,14 @@ function f_main_apply_eduApply15_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5378,7 +5377,7 @@ function f_main_apply_eduApply15_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -5394,7 +5393,7 @@ function f_main_apply_eduApply15_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -5471,7 +5470,7 @@ function f_main_apply_eduApply15_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -5501,7 +5500,7 @@ function f_main_apply_eduApply15_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -5513,8 +5512,8 @@ function f_main_apply_eduApply15_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5525,7 +5524,7 @@ function f_main_apply_eduApply15_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -5546,7 +5545,7 @@ function f_main_apply_eduApply15_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -5582,14 +5581,14 @@ function f_main_apply_eduApply16_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5609,7 +5608,7 @@ function f_main_apply_eduApply16_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -5625,7 +5624,7 @@ function f_main_apply_eduApply16_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -5702,7 +5701,7 @@ function f_main_apply_eduApply16_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -5732,7 +5731,7 @@ function f_main_apply_eduApply16_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -5744,8 +5743,8 @@ function f_main_apply_eduApply16_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5756,7 +5755,7 @@ function f_main_apply_eduApply16_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -5777,7 +5776,7 @@ function f_main_apply_eduApply16_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -5813,14 +5812,14 @@ function f_main_apply_eduApply17_submit(trainSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[신청 정보]', '영문 이름을 입력해 주세요.', ''); return false; }
-    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-연도를 선택해 주세요.', ''); return false; }
-    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-월을 선택해 주세요.', ''); return false; }
-    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[신청 정보]', '생년월일-일을 선택해 주세요.', ''); return false; }
-    if(nvl(address,'') === ''){ showMessage('', 'error', '[신청 정보]', '주소를 입력해 주세요.', ''); return false; }
-    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[신청 정보]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5840,7 +5839,7 @@ function f_main_apply_eduApply17_submit(trainSeq){
     form.applyStatus = '결제대기';
 
     Swal.fire({
-        title: '[신청 정보]',
+        title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
         icon: 'info',
         showCancelButton: true,
@@ -5856,7 +5855,7 @@ function f_main_apply_eduApply17_submit(trainSeq){
             if(resultCnt > 0) {
 
                 Swal.fire({
-                    title: '[신청 정보]',
+                    title: '[ 신청 정보 ]',
                     html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
                     icon: 'info',
                     confirmButtonColor: '#3085d6',
@@ -5933,7 +5932,7 @@ function f_main_apply_eduApply17_submit(trainSeq){
 
                         }else if(data.resultCode === "99"){
                             Swal.fire({
-                                title: '[신청 정보]',
+                                title: '[ 신청 정보 ]',
                                 html: data.resultMessage,
                                 icon: 'info',
                                 confirmButtonColor: '#3085d6',
@@ -5963,7 +5962,7 @@ function f_main_apply_eduApply17_modify_submit(el, boarderSeq){
     let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
     if(changeYn === 'N'){
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -5975,8 +5974,8 @@ function f_main_apply_eduApply17_modify_submit(el, boarderSeq){
     let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[신청 정보]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
-    if(participationPathArr.length === 0){ showMessage('', 'error', '[신청 정보]', '참여경로 항목을 선택해 주세요.', ''); return false; }
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
@@ -5987,7 +5986,7 @@ function f_main_apply_eduApply17_modify_submit(el, boarderSeq){
     form.id = sessionStorage.getItem('id');
 
     Swal.fire({
-        title: '[신청 정보 수정]',
+        title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
@@ -6008,7 +6007,7 @@ function f_main_apply_eduApply17_modify_submit(el, boarderSeq){
                 success: function (data) {
                     if (data.resultCode === "0") {
                         Swal.fire({
-                            title: '[신청 정보 수정]',
+                            title: '[ 신청 정보 수정 ]',
                             html: '신청 정보가 수정되었습니다.',
                             icon: 'info',
                             confirmButtonColor: '#3085d6',
@@ -6016,6 +6015,288 @@ function f_main_apply_eduApply17_modify_submit(el, boarderSeq){
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 window.location.href = '/mypage/eduApply17_modify.do?seq=' + data.customValue;
+                            }
+                        });
+                    }else {
+                        showMessage('', 'error', '에러 발생', '신청 정보 수정을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+
+        }
+    });
+}
+
+function f_main_apply_eduApply18_submit(trainSeq){
+
+    /*let nameEn = $('#nameEn').val();
+    let birthYear = $('#birth-year').val();
+    let birthMonth = $('#birth-month').val();
+    let birthDay = $('#birth-day').val();
+    let address = $('#address').val();
+    let addressDetail = $('#addressDetail').val();*/
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+    let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
+
+    /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
+    if(nvl(birthYear,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-연도를 선택해 주세요.', ''); return false; }
+    if(nvl(birthMonth,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-월을 선택해 주세요.', ''); return false; }
+    if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if (trainUnderstandArr.length === 0) {
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
+        return false;
+    }else{
+        for(let i=0; i<trainUnderstandArr.length; i++){
+            let trainCheckVal = trainUnderstandArr.eq(i).val();
+            if(trainCheckVal === '4'){
+                let trainUnderstandEtc = $('#trainUnderstandEtc').val();
+                if(nvl(trainUnderstandEtc,'') === ''){
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    return false;
+                }
+            }
+        }
+    }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육SEQ
+    form.trainSeq = trainSeq;
+
+    //신청현황
+    form.applyStatus = '결제대기';
+
+    //교육이해
+    let trainUnderstand = '';
+    let trainUnderstandArrLen = trainUnderstandArr.length;
+    for(let i=0; i<trainUnderstandArrLen; i++){
+        trainUnderstand += trainUnderstandArr.eq(i).val();
+        if((i+1) !== trainUnderstandArrLen){
+            trainUnderstand += '^';
+        }
+    }
+    form.trainUnderstand = trainUnderstand;
+
+
+    Swal.fire({
+        title: '[ 신청 정보 ]',
+        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '신청하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            let resultCnt = ajaxConnect('/apply/eduApply18/preCheck.do', 'post', { memberSeq: form.memberSeq });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[ 신청 정보 ]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+            }else{
+
+                $.ajax({
+                    url: '/apply/eduApply18/insert.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(form),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.resultCode === "0") {
+
+                            let seqJson = { seq: data.customValue, trainSeq : trainSeq };
+                            f_sms_notify_sending('2', seqJson); // 2 수강신청 후
+
+                            let device = deviceGbn();
+
+                            if(device === 'PC'){
+
+                                // 결제모듈 Call
+                                let paymentForm = document.createElement('form');
+                                paymentForm.setAttribute('method', 'post'); //POST 메서드 적용
+                                paymentForm.setAttribute('action', '/apply/payment.do');
+
+                                let hiddenRegularSeq = document.createElement('input');
+                                hiddenRegularSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenRegularSeq.setAttribute('name', 'tableSeq');
+                                hiddenRegularSeq.setAttribute('value', data.customValue);
+                                paymentForm.appendChild(hiddenRegularSeq);
+
+                                let hiddenTrainSeq = document.createElement('input');
+                                hiddenTrainSeq.setAttribute('type', 'hidden'); //값 입력
+                                hiddenTrainSeq.setAttribute('name', 'trainSeq');
+                                hiddenTrainSeq.setAttribute('value', trainSeq);
+                                paymentForm.appendChild(hiddenTrainSeq);
+
+                                let hiddenBuyerName = document.createElement('input');
+                                hiddenBuyerName.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerName.setAttribute('name', 'buyername');
+                                hiddenBuyerName.setAttribute('value', form.nameKo);
+                                paymentForm.appendChild(hiddenBuyerName);
+
+                                let hiddenBuyerTel = document.createElement('input');
+                                hiddenBuyerTel.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerTel.setAttribute('name', 'buyertel');
+                                hiddenBuyerTel.setAttribute('value', form.phone);
+                                paymentForm.appendChild(hiddenBuyerTel);
+
+                                let hiddenBuyerEmail = document.createElement('input');
+                                hiddenBuyerEmail.setAttribute('type', 'hidden'); //값 입력
+                                hiddenBuyerEmail.setAttribute('name', 'buyeremail');
+                                hiddenBuyerEmail.setAttribute('value', form.email);
+                                paymentForm.appendChild(hiddenBuyerEmail);
+
+                                document.body.appendChild(paymentForm);
+                                paymentForm.submit();
+
+                            }else if(device === 'MOBILE'){
+
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(data.customValue);
+                                $('#popupPaySel #trainSeq').val(trainSeq);
+                                $('#popupPaySel #buyername').val(form.nameKo);
+                                $('#popupPaySel #buyertel').val(form.phone);
+                                $('#popupPaySel #buyeremail').val(form.email);
+
+                            }
+
+                        }else if(data.resultCode === "99"){
+                            Swal.fire({
+                                title: '[ 신청 정보 ]',
+                                html: data.resultMessage,
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/apply/schedule.do'; // 목록으로 이동
+                                }
+                            });
+                        }else {
+                            showMessage('', 'error', '에러 발생', '신청 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    }
+                })//ajax
+
+            }
+
+        }
+    });
+
+}
+
+function f_main_apply_eduApply18_modify_submit(el, boarderSeq){
+
+    let changeYn = $(el).siblings('input[type=hidden][name=chg_changeYn]').val();
+    if(changeYn === 'N'){
+        Swal.fire({
+            title: '[ 교육 신청 정보 ]',
+            html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '확인'
+        });
+        return;
+    }
+
+    let clothesSizeArr = $('input[type=radio][name=clothesSize]:checked');
+    let participationPathArr = $('input[type=radio][name=participationPath]:checked');
+    let trainUnderstandArr = $('input[type=checkbox][name=trainUnderstand]:checked');
+
+    if(clothesSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '작업복 사이즈 항목을 선택해 주세요.', ''); return false; }
+    if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
+    if (trainUnderstandArr.length === 0) {
+        showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목을 선택해 주세요.', '');
+        return false;
+    } else {
+        for (let i = 0; i < trainUnderstandArr.length; i++) {
+            let trainCheckVal = trainUnderstandArr.eq(i).val();
+            if (trainCheckVal === '4') {
+                let trainUnderstandEtc = $('#trainUnderstandEtc').val();
+                if (nvl(trainUnderstandEtc, '') === '') {
+                    showMessage('', 'error', '[ 신청 정보 ]', '교육 이해 항목 중 기타 항목을 입력해 주세요.', '');
+                    return false;
+                }
+            }
+        }
+    }
+
+    let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    //이메일
+    form.email = form.email + '@' + $('#domain').val();
+
+    //ID
+    form.id = sessionStorage.getItem('id');
+
+    //교육이해
+    let trainUnderstand = '';
+    let trainUnderstandArrLen = trainUnderstandArr.length;
+    for(let i=0; i<trainUnderstandArrLen; i++){
+        trainUnderstand += trainUnderstandArr.eq(i).val();
+        if((i+1) !== trainUnderstandArrLen){
+            trainUnderstand += '^';
+        }
+    }
+    form.trainUnderstand = trainUnderstand;
+
+    Swal.fire({
+        title: '[ 신청 정보 수정 ]',
+        html: '입력된 정보로 수정하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '수정하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '/mypage/eduApply18/update.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(form),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[ 신청 정보 수정 ]',
+                            html: '신청 정보가 수정되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/mypage/eduApply18_modify.do?seq=' + data.customValue;
                             }
                         });
                     }else {
@@ -6090,7 +6371,13 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
         //고마력 선외기 정비 중급 테크니션 (특별반)
         //스턴드라이브 정비 전문가과정
         //스턴드라이브 정비 전문가과정 (특별반)
-        //선외기 기초정비교육
+        // 선외기 기초정비교육
+        // 선내기 기초정비교육
+        // 세일요트 기초정비교육
+        // 선외기 응급조치교육
+        // 선내기 응급조치교육
+        // 세일요트 응급조치교육
+        // 발전기 정비 교육
         
         let cancelUrl = '';
         switch (trainName){
@@ -6144,6 +6431,9 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
                 break;
             case '세일요트 응급조치교육':
                 cancelUrl = '/apply/eduApply17/update/status.do';
+                break;
+            case '발전기 정비 교육':
+                cancelUrl = '/apply/eduApply18/update/status.do';
                 break;
             default:
                 break;
@@ -6203,7 +6493,7 @@ function f_edu_apply_modify_btn(trainStartDttm, trainName, seq){
 
     if(today >= trainStartDttm) {
         Swal.fire({
-            title: '[교육 신청 정보]',
+            title: '[ 교육 신청 정보 ]',
             html: '죄송합니다. 교육 당일 이후 수정은 불가합니다.',
             icon: 'info',
             confirmButtonColor: '#3085d6',
@@ -6263,6 +6553,9 @@ function f_edu_apply_modify_btn(trainStartDttm, trainName, seq){
                 break;
             case '세일요트 응급조치교육':
                 location = '/mypage/eduApply17_modify.do';
+                break;
+            case '발전기 정비 교육':
+                location = '/mypage/eduApply18_modify.do';
                 break;
             default:
                 break;

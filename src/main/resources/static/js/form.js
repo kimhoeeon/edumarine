@@ -120,7 +120,7 @@ $(document).ready(function () {
             }
         }else{
             Swal.fire({
-                title: '[교육 신청 정보]',
+                title: '[ 교육 신청 정보 ]',
                 html: '죄송합니다. 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
                 icon: 'info',
                 confirmButtonColor: '#3085d6',
@@ -157,7 +157,7 @@ $(document).ready(function () {
             }
         }else{
             Swal.fire({
-                title: '[교육 신청 정보]',
+                title: '[ 교육 신청 정보 ]',
                 html: '죄송합니다. 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
                 icon: 'info',
                 confirmButtonColor: '#3085d6',
@@ -499,5 +499,3 @@ $(document).ready(function () {
 
 
 });
-
-

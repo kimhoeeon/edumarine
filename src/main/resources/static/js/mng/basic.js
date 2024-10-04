@@ -73,7 +73,7 @@ $(function(){
                     myModal.show();
                 }
             }else{
-                showMessage('', 'error', '[취소 승인]', '취소 승인할 신청내역을 하나 이상 선택해 주세요.', '');
+                showMessage('', 'error', '[ 취소 승인 ]', '취소 승인할 신청내역을 하나 이상 선택해 주세요.', '');
                 return false;
             }
 
@@ -140,7 +140,7 @@ $(function(){
                     myModal.show();
                 }
             }else{
-                showMessage('', 'error', '[신청 상태 변경]', '신청 상태를 변경할 신청내역을 하나 이상 선택해 주세요.', '');
+                showMessage('', 'error', '[ 신청 상태 변경 ]', '신청 상태를 변경할 신청내역을 하나 이상 선택해 주세요.', '');
                 return false;
             }
 
@@ -296,7 +296,7 @@ function f_customer_basic_remove(seq){
     //console.log('삭제버튼');
     if(nullToEmpty(seq) !== ""){
         Swal.fire({
-            title: '[삭제 사유]',
+            title: '[ 삭제 사유 ]',
             text: '사유 입력 후 삭제하기 버튼 클릭 시 데이터는 파일관리>임시휴지통 으로 이동됩니다.',
             input: 'text',
             inputPlaceholder: '삭제 사유를 입력해주세요.',
@@ -583,7 +583,7 @@ function f_apply_change_btn(){
             });
 
         }else{
-            showMessage('', 'error', '[신청 상태 변경]', '변경할 신청 상태를 선택해 주세요.', '');
+            showMessage('', 'error', '[ 신청 상태 변경 ]', '변경할 신청 상태를 선택해 주세요.', '');
         }
     }
 

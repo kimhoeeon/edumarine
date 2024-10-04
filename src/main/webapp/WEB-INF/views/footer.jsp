@@ -24,15 +24,15 @@
     <div class="footer_bot">
         <div class="inner">
             <div class="footer_logo">
-                <div class="logo"><img src="<%request.getContextPath();%>/static/img/logo.png" alt="로고"></div>
+                <div class="logo"><img src="/img/logo.png" alt="로고"></div>
                 <div class="host">
                     <div class="box">
                         <div class="gubun">주최</div>
-                        <div class="img"><img src="<%request.getContextPath();%>/static/img/logo_host_01.png" alt="경기도 로고"></div>
+                        <div class="img"><img src="/img/logo_host_01.png" alt="경기도 로고"></div>
                     </div>
                     <div class="box">
                         <div class="gubun">주관</div>
-                        <div class="img"><img src="<%request.getContextPath();%>/static/img/logo_host_03.png" alt="케이워터 로고"></div>
+                        <div class="img"><img src="/img/logo_host_03.png" alt="케이워터 로고"></div>
                     </div>
                 </div>
             </div>

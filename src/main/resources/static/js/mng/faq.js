@@ -94,7 +94,7 @@ function f_board_faq_remove(seq){
     if(nullToEmpty(seq) !== ''){
 
         Swal.fire({
-            title: '[삭제 사유]',
+            title: '[ 삭제 사유 ]',
             text: '사유 입력 후 삭제하기 버튼 클릭 시 데이터는 파일관리>임시휴지통 으로 이동됩니다.',
             input: 'text',
             inputPlaceholder: '삭제 사유를 입력해주세요.',

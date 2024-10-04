@@ -82,25 +82,25 @@
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
     <%-- favicon --%>
-    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -124,9 +124,9 @@
 
     <!-- floating -->
     <div class="floating">
-        <a href="<%request.getContextPath();%>/static/file/2024_경기해양레저인력양성센터_브로슈어.pdf" target="_blank">
+        <a href="/file/2024_경기해양레저인력양성센터_브로슈어.pdf" target="_blank">
             <p><span class="bold">Brochure</span><br>Download</p>
-            <img src="<%request.getContextPath();%>/static/img/icon_download_yellow.png">
+            <img src="/img/icon_download_yellow.png">
         </a>
     </div>
     <!-- //floating -->
@@ -181,37 +181,37 @@
                     <ul class="main_menu_wrap">
                         <li>
                             <a href="/edumarine/introduce.do">
-                                <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_05.png" alt="센터소개 아이콘"></div>
+                                <div class="icon"><img src="/img/icon_main_menu_05.png" alt="센터소개 아이콘"></div>
                                 <div class="text">센터소개</div>
                             </a>
                         </li>
                         <li>
                             <a href="/guide/guide01.do">
-                                <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_01.png" alt="교육과정 아이콘"></div>
+                                <div class="icon"><img src="/img/icon_main_menu_01.png" alt="교육과정 아이콘"></div>
                                 <div class="text">교육과정</div>
                             </a>
                         </li>
                         <li>
                             <a href="/apply/schedule.do">
-                                <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_02.png" alt="교육일정 아이콘"></div>
+                                <div class="icon"><img src="/img/icon_main_menu_02.png" alt="교육일정 아이콘"></div>
                                 <div class="text">교육일정</div>
                             </a>
                         </li>
                         <li>
                             <a href="javascript:void(0);" onclick="alert('준비 중입니다.');">
-                                <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_04.png" alt="수료증발급 아이콘"></div>
+                                <div class="icon"><img src="/img/icon_main_menu_04.png" alt="수료증발급 아이콘"></div>
                                 <div class="text">수료증발급</div>
                             </a>
                         </li>
                         <li>
                             <a href="/job/community_list.do">
-                                <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_07.png" alt="커뮤니티 아이콘"></div>
+                                <div class="icon"><img src="/img/icon_main_menu_07.png" alt="커뮤니티 아이콘"></div>
                                 <div class="text">커뮤니티</div>
                             </a>
                         </li>
                         <li>
                             <a href="/edumarine/way.do">
-                                <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_menu_06.png" alt="오시는길 아이콘"></div>
+                                <div class="icon"><img src="/img/icon_main_menu_06.png" alt="오시는길 아이콘"></div>
                                 <div class="text">오시는길</div>
                             </a>
                         </li>
@@ -277,7 +277,7 @@
                     </c:if>
                     <c:if test="${empty engineList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -311,7 +311,7 @@
                     </c:if>
                     <c:if test="${empty frpList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -345,7 +345,7 @@
                     </c:if>
                     <c:if test="${empty basicList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -379,7 +379,7 @@
                     </c:if>
                     <c:if test="${empty emergencyList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -409,7 +409,7 @@
                     </c:if>
                     <c:if test="${empty marinaList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -443,7 +443,7 @@
                     </c:if>
                     <c:if test="${empty highHorsePowerList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -477,7 +477,7 @@
                     </c:if>
                     <c:if test="${empty highSelfList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -511,7 +511,7 @@
                     </c:if>
                     <c:if test="${empty highSpecialList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -545,7 +545,7 @@
                     </c:if>
                     <c:if test="${empty sterndriveList}">
                         <div class="edu_none">
-                            <div class="icon"><img src="<%request.getContextPath();%>/static/img/icon_main_edu_no.png"></div>
+                            <div class="icon"><img src="/img/icon_main_edu_no.png"></div>
                             <div class="text">해당 교육 과정은 개설 예정입니다</div>
                         </div>
                     </c:if>
@@ -626,14 +626,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
-    <script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/jquery-migrate-3.3.0.js"></script>
+    <script src="/js/jquery.cookie.min.js"></script>
 
-    <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/form.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/swiper.js"></script>
+    <script src="/js/form.js"></script>
+    <script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <c:import url="footer.jsp" charEncoding="UTF-8"/>
 
@@ -671,7 +671,7 @@
                 <input type="checkbox" id="id_today_${popup.seq}" onclick="CloseMainPopup('${popup.seq}')">
                 <label for="id_today_${popup.seq}"> 오늘 하루 그만보기 </label>
                 <a href="javascript:CloseMainPopup('${popup.seq}');">
-                    <img src="<%request.getContextPath();%>/static/img/close_w.png">
+                    <img src="/img/close_w.png">
                 </a>
             </div>
         </div>

@@ -272,4 +272,14 @@ public interface EduMarineService {
     ResponseDTO processUpdateEmergency(EmergencyDTO emergencyDTO);
 
     ResponseDTO processUpdateEmergencyPayStatus(EmergencyDTO emergencyDTO);
+
+    Integer processSelectGeneratorPreCheck(GeneratorDTO generatorDTO);
+
+    ResponseDTO processInsertGenerator(GeneratorDTO generatorDTO);
+
+    GeneratorDTO processSelectGeneratorSingle(String seq);
+
+    ResponseDTO processUpdateGenerator(GeneratorDTO generatorDTO);
+
+    ResponseDTO processUpdateGeneratorPayStatus(GeneratorDTO generatorDTO);
 }

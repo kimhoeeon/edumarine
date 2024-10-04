@@ -14,14 +14,14 @@
                 <a href="/logout.do" onclick="sessionStorage.clear();">로그아웃</a>
                 <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${id}' })" class="mypage">마이페이지</a>
             </c:if>
-            <a href="/sitemap.do" class="sitemap"><img src="<%request.getContextPath();%>/static/img/icon_menu_white.png" alt="메뉴 아이콘"></a>
+            <a href="/sitemap.do" class="sitemap"><img src="/img/icon_menu_white.png" alt="메뉴 아이콘"></a>
         </div>
     </div>
     <!-- //header_top -->
     <!-- header_bottom -->
     <div class="header_bot">
         <div class="inner">
-            <h1><a href="/" class="logo"><img src="<%request.getContextPath();%>/static/img/logo.png" alt="로고"></a></h1>
+            <h1><a href="/" class="logo"><img src="/img/logo.png" alt="로고"></a></h1>
             <a href="#a" class="m_menu">
                 <span>메뉴</span>
             </a>
@@ -62,6 +62,7 @@
                             <li><a href="/guide/guide07.do">해상엔진 자가정비 (선내기)</a></li>
                             <li><a href="/guide/guide08.do">해상엔진 자가정비 (세일요트)</a></li>--%>
                             <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
+                            <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
                             <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                             <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
                         </ul>

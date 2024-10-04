@@ -337,4 +337,16 @@ public interface EduMarineMapper {
     EmergencyDTO selectEmergencySingle(String seq);
 
     Integer updateEmergency(EmergencyDTO emergencyDTO);
+
+    Integer selectGeneratorPreCheck(GeneratorDTO generatorDTO);
+
+    String getGeneratorSeq();
+
+    Integer insertGenerator(GeneratorDTO generatorDTO);
+
+    GeneratorDTO selectGeneratorSingle(String seq);
+
+    Integer updateGenerator(GeneratorDTO generatorDTO);
+
+    Integer updateGeneratorPayStatus(GeneratorDTO generatorDTO);
 }

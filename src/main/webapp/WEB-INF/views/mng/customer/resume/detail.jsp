@@ -9,15 +9,15 @@
 <head>
     <title>경기해양레저 인력양성센터</title>
 
-    <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
 
-    <script src="<%request.getContextPath();%>/static/js/jquery-3.6.0.min.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/jquery-migrate-3.3.0.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/jquery-migrate-3.3.0.js"></script>
+    <script src="/js/jquery.cookie.min.js"></script>
+    <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <style>
         body {

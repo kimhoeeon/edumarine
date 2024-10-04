@@ -61,19 +61,19 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
 
     <%-- favicon --%>
-    <link rel="apple-touch-icon" sizes="57x57" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="<%request.getContextPath();%>/static/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%request.getContextPath();%>/static/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="<%request.getContextPath();%>/static/img/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%request.getContextPath();%>/static/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="<%request.getContextPath();%>/static/img/favicon/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -83,16 +83,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
     <!--end::Fonts-->
     <!--begin::Vendor Stylesheets(used for this page only)-->
-    <link href="<%request.getContextPath();%>/static/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Vendor Stylesheets-->
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="<%request.getContextPath();%>/static/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
-    <link href="<%request.getContextPath();%>/static/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Global Stylesheets Bundle-->
 
     <!--begin::custom Mng css-->
-    <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/mngStyle.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/mngStyle.css" rel="stylesheet" type="text/css"/>
     <!--end::custom Mng css-->
 </head>
 <!--end::Head-->
@@ -162,7 +162,7 @@ if (document.documentElement) {
                     <!--begin::Mobile logo-->
                     <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                         <a href="/mng/main.do" class="d-lg-none">
-                            <img alt="Logo" src="<%request.getContextPath();%>/static/assets/media/logos/default-small.svg" class="h-30px"/>
+                            <img alt="Logo" src="/assets/media/logos/default-small.svg" class="h-30px"/>
                         </a>
                     </div>
                     <!--end::Mobile logo-->
@@ -390,6 +390,16 @@ if (document.documentElement) {
                                                                         <a href="/mng/customer/sternspecial.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">스턴드라이브 정비 (특별반)</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/generator.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">발전기 정비 교육</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1014,9 +1024,9 @@ if (document.documentElement) {
                     <div class="app-sidebar-logo pe-4 justify-content-center h-90px" id="kt_app_sidebar_logo">
                         <!--begin::Logo image-->
                         <a href="/mng/main.do">
-                            <img alt="Logo" src="<%request.getContextPath();%>/static/img/mng_logo.png<%--/static/assets/media/logos/default-dark.svg--%>"
+                            <img alt="Logo" src="/img/mng_logo.png<%--/static/assets/media/logos/default-dark.svg--%>"
                                  class="h-80px app-sidebar-logo-default"/>
-                            <img alt="Logo" src="<%request.getContextPath();%>/static/img/mng_logo.png<%--assets/media/logos/default-small.svg--%>"
+                            <img alt="Logo" src="/img/mng_logo.png<%--assets/media/logos/default-small.svg--%>"
                                  class="h-80px app-sidebar-logo-minimize"/>
                         </a>
                         <!--end::Logo image-->
@@ -1269,6 +1279,18 @@ if (document.documentElement) {
 													<span class="bullet bullet-dot"></span>
 												</span>
                                                 <span class="menu-title">스턴드라이브 정비 (특별반)</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/generator.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">발전기 정비 교육</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1859,6 +1881,7 @@ if (document.documentElement) {
                                                         <option value="응급조치교육 (선외기)">응급조치교육 (선외기)</option>
                                                         <option value="응급조치교육 (선내기)">응급조치교육 (선내기)</option>
                                                         <option value="응급조치교육 (세일요트)">응급조치교육 (세일요트)</option>
+                                                        <option value="발전기 정비 교육">발전기 정비 교육</option>
                                                     </select>
                                                 </div>
                                                 <!--end::Col-->
@@ -2105,7 +2128,7 @@ if (document.documentElement) {
                                                 <!--end:Action-->
 
                                                     <!--begin::글쓰기-->
-                                                    <a href="<%request.getContextPath();%>/static/file/sms/sms_file_upload_sample.xlsx" class="btn btn-success btn-active-light-success" download>
+                                                    <a href="/file/sms/sms_file_upload_sample.xlsx" class="btn btn-success btn-active-light-success" download>
                                                         <i class="ki-duotone ki-exit-down fs-2">
                                                             <span class="path1"></span>
                                                             <span class="path2"></span>
@@ -2363,28 +2386,28 @@ if (document.documentElement) {
 
     <!--begin::Javascript-->
 
-    <script>var hostUrl = "<%request.getContextPath();%>/static/assets/";</script>
+    <script>var hostUrl = "/assets/";</script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script src="<%request.getContextPath();%>/static/assets/plugins/global/plugins.bundle.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/scripts.bundle.js"></script>
+    <script src="/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="/assets/js/scripts.bundle.js"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
-    <script src="<%request.getContextPath();%>/static/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/widgets.bundle.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/widgets.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/apps/chat/chat.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/utilities/modals/create-app.js"></script>
-    <script src="<%request.getContextPath();%>/static/assets/js/custom/utilities/modals/users-search.js"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
+    <script src="/assets/js/widgets.bundle.js"></script>
+    <script src="/assets/js/custom/widgets.js"></script>
+    <script src="/assets/js/custom/apps/chat/chat.js"></script>
+    <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+    <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
+    <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
-    <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/sms.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/mng/sms.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
