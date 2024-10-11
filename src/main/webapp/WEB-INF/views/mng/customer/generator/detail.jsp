@@ -154,7 +154,7 @@ if (document.documentElement) {
                     <!--begin::Mobile logo-->
                     <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                         <a href="/mng/main.do" class="d-lg-none">
-                            <img alt="Logo" src="/assets/media/logos/default-small.svg" class="h-30px"/>
+                            <img alt="Logo" src="/img/mng_main_logo.png<%--/assets/media/logos/default-small.svg--%>" class="h-30px"/>
                         </a>
                     </div>
                     <!--end::Mobile logo-->

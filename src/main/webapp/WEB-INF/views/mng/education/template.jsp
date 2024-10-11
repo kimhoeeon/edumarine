@@ -162,7 +162,7 @@ if (document.documentElement) {
                     <!--begin::Mobile logo-->
                     <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                         <a href="/mng/main.do" class="d-lg-none">
-                            <img alt="Logo" src="/assets/media/logos/default-small.svg" class="h-30px"/>
+                            <img alt="Logo" src="/img/mng_main_logo.png<%--/assets/media/logos/default-small.svg--%>" class="h-30px"/>
                         </a>
                     </div>
                     <!--end::Mobile logo-->
@@ -1822,6 +1822,11 @@ if (document.documentElement) {
                                         </div>
                                         <div class="card-toolbar">
                                             <ul class="nav nav-light-success nav-bold nav-pills">
+                                                <%--<li class="nav-item">
+                                                    <a class="nav-link active" id="all" data-toggle="tab" href="#kt_tab_pane_4_0">
+                                                        <span class="nav-text">전체 교육 일정</span>
+                                                    </a>
+                                                </li>--%>
                                                 <li class="nav-item">
                                                     <a class="nav-link active" id="marina" data-toggle="tab" href="#kt_tab_pane_4_1">
                                                         <span class="nav-text">마리나 선박 정비사 실무교육</span>
@@ -1859,11 +1864,153 @@ if (document.documentElement) {
                                                         <span class="nav-text">스턴드라이브 정비</span>
                                                     </a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="basic" data-toggle="tab" href="#kt_tab_pane_4_10">
+                                                        <span class="nav-text">기초정비교육</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="emergency" data-toggle="tab" href="#kt_tab_pane_4_11">
+                                                        <span class="nav-text">응급조치교육</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="generator" data-toggle="tab" href="#kt_tab_pane_4_9">
+                                                        <span class="nav-text">발전기 정비 교육</span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="tab-content">
+                                            <%--<div class="tab-pane fade show active" id="kt_tab_pane_4_0" role="tabpanel" aria-labelledby="kt_tab_pane_4_0">
+
+                                                <!-- 전체 교육 일정 -->
+                                                <div class="guide_tp_01">
+                                                    <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                                    <div class="table">
+                                                        <table>
+                                                            <thead>
+                                                            <!-- 과정명 -->
+                                                            <tr>
+                                                                <th class="gubun">구분</th>
+                                                                <th>과정명</th>
+                                                                <th>일정</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- 교육내용 -->
+                                                            <tr>
+                                                                <td class="gubun">정규</td>
+                                                                <td id="edu_all_order_title_1">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="과정명"/>
+                                                                    </div>
+                                                                </td>
+                                                                <td id="edu_all_order_contents_1">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            &lt;%&ndash;<c:if test="${m_contentsList eq null or empty m_contentsList}">&ndash;%&gt;
+                                                                                <div class="mb-2 edu_all_order_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육일정"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            &lt;%&ndash;</c:if>&ndash;%&gt;
+                                                                            &lt;%&ndash;<c:forEach var="info" items="${m_contentsList}" begin="0" end="${m_contentsList.size()}" step="1" varStatus="status">
+                                                                                <c:if test="${info.middle eq 'inboarder'}">
+                                                                                    <div class="mb-2 edu_all_order_contents_detail" data-repeater-item>
+                                                                                        <div class="input-group">
+                                                                                            <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육일정"/>
+                                                                                            <div class="input-group-append">
+                                                                                                <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                    <i class="ki-duotone ki-minus"></i>
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </c:if>
+                                                                            </c:forEach>&ndash;%&gt;
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육내용 -->
+                                                            <tr>
+                                                                <td class="gubun">정규</td>
+                                                                <td id="edu_all_order_title_2">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="과정명"/>
+                                                                    </div>
+                                                                </td>
+                                                                <td id="edu_all_order_contents_2">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                                &lt;%&ndash;<c:if test="${m_contentsList eq null or empty m_contentsList}">&ndash;%&gt;
+                                                                            <div class="mb-2 edu_all_order_contents_detail" data-repeater-item>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control" name="text-input" placeholder="교육일정"/>
+                                                                                    <div class="input-group-append">
+                                                                                        <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                            <i class="ki-duotone ki-minus"></i>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                                &lt;%&ndash;</c:if>&ndash;%&gt;
+                                                                                &lt;%&ndash;<c:forEach var="info" items="${m_contentsList}" begin="0" end="${m_contentsList.size()}" step="1" varStatus="status">
+                                                                                    <c:if test="${info.middle eq 'inboarder'}">
+                                                                                        <div class="mb-2 edu_all_order_contents_detail" data-repeater-item>
+                                                                                            <div class="input-group">
+                                                                                                <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육일정"/>
+                                                                                                <div class="input-group-append">
+                                                                                                    <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                        <i class="ki-duotone ki-minus"></i>
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </c:if>
+                                                                                </c:forEach>&ndash;%&gt;
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- //전체 교육 일정 -->
+
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <div></div>
+                                                    <div>
+                                                        <button type="button" onclick="f_train_template_marina_save();" class="btn font-weight-bold btn-primary mr-2">저장</button>
+                                                        <button type="button" onclick="f_train_template_init('all');" class="btn font-weight-bold btn-secondary">취소</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- //마리나 선박 정비사 실기교육 -->
+                                            </div>--%>
                                             <div class="tab-pane fade show active" id="kt_tab_pane_4_1" role="tabpanel" aria-labelledby="kt_tab_pane_4_1">
 
                                                 <!-- 마리나 선박 정비사 실기교육 -->
@@ -2778,7 +2925,7 @@ if (document.documentElement) {
                                                                     <textarea class="form-control" placeholder="모집기간"></textarea>
                                                                 </div>
                                                                 <div class="cmnt">
-                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
                                                                     <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
                                                                 </div>
                                                             </div>
@@ -3025,7 +3172,7 @@ if (document.documentElement) {
                                                                     <textarea class="form-control" placeholder="모집기간"></textarea>
                                                                 </div>
                                                                 <div class="cmnt">
-                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
                                                                     <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
                                                                 </div>
                                                             </div>
@@ -3272,7 +3419,7 @@ if (document.documentElement) {
                                                                     <textarea class="form-control" placeholder="모집기간"></textarea>
                                                                 </div>
                                                                 <div class="cmnt">
-                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
                                                                     <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
                                                                 </div>
                                                             </div>
@@ -3556,7 +3703,7 @@ if (document.documentElement) {
                                                                     <textarea class="form-control" placeholder="모집기간"></textarea>
                                                                 </div>
                                                                 <div class="cmnt">
-                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
                                                                     <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
                                                                 </div>
                                                             </div>
@@ -3840,7 +3987,7 @@ if (document.documentElement) {
                                                                     <textarea class="form-control" placeholder="모집기간"></textarea>
                                                                 </div>
                                                                 <div class="cmnt">
-                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
                                                                     <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
                                                                 </div>
                                                             </div>
@@ -4124,7 +4271,7 @@ if (document.documentElement) {
                                                                     <textarea class="form-control" placeholder="모집기간"></textarea>
                                                                 </div>
                                                                 <div class="cmnt">
-                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
                                                                     <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
                                                                 </div>
                                                             </div>
@@ -4137,6 +4284,914 @@ if (document.documentElement) {
                                                     <div>
                                                         <button type="button" onclick="f_train_template_sterndrive_save();" class="btn font-weight-bold btn-primary mr-2">저장</button>
                                                         <button type="button" onclick="f_train_template_init('sterndrive');" class="btn font-weight-bold btn-secondary">취소</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- //스턴드라이브 정비 전문가과정 -->
+
+                                            </div>
+                                            <div class="tab-pane fade" id="kt_tab_pane_4_10" role="tabpanel" aria-labelledby="kt_tab_pane_4_10">
+
+                                                <!-- 기초정비교육 -->
+                                                <div class="guide_tp_01">
+                                                    <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                                    <div class="table">
+                                                        <table>
+                                                            <thead>
+                                                            <!-- 과정명 -->
+                                                            <tr>
+                                                                <th class="gubun">구분</th>
+                                                                <th>해상엔진 기초정비교육과정</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- 교육대상 -->
+                                                            <tr>
+                                                                <td class="gubun">교육대상</td>
+                                                                <td id="edu_basic_target">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${b_targetList eq null or empty b_targetList}">
+                                                                                <div class="mb-2 edu_basic_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${b_targetList}" begin="0" end="${b_targetList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_basic_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육내용 -->
+                                                            <tr>
+                                                                <td class="gubun">교육내용</td>
+                                                                <td id="edu_basic_contents">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${b_contentsList eq null or empty b_contentsList}">
+                                                                                <div class="mb-2 edu_basic_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${b_contentsList}" begin="0" end="${b_contentsList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_basic_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장비</td>
+                                                                <td id="edu_basic_stuff">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${b_stuffList eq null or empty b_stuffList}">
+                                                                                <div class="mb-2 edu_basic_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${b_stuffList}" begin="0" end="${b_stuffList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_basic_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육기간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육기간</td>
+                                                                <td id="edu_basic_period">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${b_periodList eq null or empty b_periodList}">
+                                                                                <div class="mb-2 edu_basic_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${b_periodList}" begin="0" end="${b_periodList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_basic_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육일수 -->
+                                                            <tr>
+                                                                <td class="gubun">교육일수</td>
+                                                                <td id="edu_basic_days">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육일수"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육시간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육시간</td>
+                                                                <td id="edu_basic_time">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육시간"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장소 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장소</td>
+                                                                <td id="edu_basic_place">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${b_placeList eq null or empty b_placeList}">
+                                                                                <div class="mb-2 edu_basic_place_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육장소"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${b_placeList}" begin="0" end="${b_placeList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_basic_place_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육장소"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육인원 -->
+                                                            <tr>
+                                                                <td class="gubun">교육인원</td>
+                                                                <td id="edu_basic_persons">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육인원"/>
+                                                                    </div>
+                                                                    <div class="cmnt">
+                                                                        <p>· 주1) 교육 신청 현황에 따라 조정 가능합니다.</p>
+                                                                        <p>· 주2) 교육신청자가 최소 인원(4명)에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육비</td>
+                                                                <td id="edu_basic_pay">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육비"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- //기초정비교육 -->
+
+                                                <!-- 기초정비교육 -->
+                                                <div class="guide_tp_02">
+                                                    <ul>
+                                                        <li id="edu_basic_apply_method">
+                                                            <div class="gubun">신청방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="신청방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <input type="text" class="form-control" placeholder="URL입력"/>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_basic_recruit_method">
+                                                            <div class="gubun">모집방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 신청취소 등 교육인원 축소 대비 대기인원 접수</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_basic_recruit_period">
+                                                            <div class="gubun">모집마감</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집기간"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육정원(15명)에게 개별적으로 교육확정 문자 알림 예정</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <div></div>
+                                                    <div>
+                                                        <button type="button" onclick="f_train_template_basic_save();" class="btn font-weight-bold btn-primary mr-2">저장</button>
+                                                        <button type="button" onclick="f_train_template_init('basic');" class="btn font-weight-bold btn-secondary">취소</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- //기초정비교육 -->
+
+                                            </div>
+                                            <div class="tab-pane fade" id="kt_tab_pane_4_11" role="tabpanel" aria-labelledby="kt_tab_pane_4_11">
+
+                                                <!-- 기초정비교육 -->
+                                                <div class="guide_tp_01">
+                                                    <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                                    <div class="table">
+                                                        <table>
+                                                            <thead>
+                                                            <!-- 과정명 -->
+                                                            <tr>
+                                                                <th class="gubun">구분</th>
+                                                                <th>해상엔진 응급조치교육과정</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- 교육대상 -->
+                                                            <tr>
+                                                                <td class="gubun">교육대상</td>
+                                                                <td id="edu_emergency_target">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${y_targetList eq null or empty y_targetList}">
+                                                                                <div class="mb-2 edu_emergency_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${y_targetList}" begin="0" end="${y_targetList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_emergency_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육내용 -->
+                                                            <tr>
+                                                                <td class="gubun">교육내용</td>
+                                                                <td id="edu_emergency_contents">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${y_contentsList eq null or empty y_contentsList}">
+                                                                                <div class="mb-2 edu_emergency_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${y_contentsList}" begin="0" end="${y_contentsList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_emergency_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장비</td>
+                                                                <td id="edu_emergency_stuff">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${y_stuffList eq null or empty y_stuffList}">
+                                                                                <div class="mb-2 edu_emergency_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${y_stuffList}" begin="0" end="${y_stuffList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_emergency_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육기간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육기간</td>
+                                                                <td id="edu_emergency_period">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${y_periodList eq null or empty y_periodList}">
+                                                                                <div class="mb-2 edu_emergency_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${y_periodList}" begin="0" end="${y_periodList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_emergency_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육일수 -->
+                                                            <tr>
+                                                                <td class="gubun">교육일수</td>
+                                                                <td id="edu_emergency_days">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육일수"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육시간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육시간</td>
+                                                                <td id="edu_emergency_time">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육시간"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장소 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장소</td>
+                                                                <td id="edu_emergency_place">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${y_placeList eq null or empty y_placeList}">
+                                                                                <div class="mb-2 edu_emergency_place_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육장소"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${y_placeList}" begin="0" end="${y_placeList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_emergency_place_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육장소"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육인원 -->
+                                                            <tr>
+                                                                <td class="gubun">교육인원</td>
+                                                                <td id="edu_emergency_persons">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육인원"/>
+                                                                    </div>
+                                                                    <div class="cmnt">
+                                                                        <p>· 주1) 교육 신청 현황에 따라 조정 가능합니다.</p>
+                                                                        <p>· 주2) 교육신청자가 최소 인원(4명)에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육비</td>
+                                                                <td id="edu_emergency_pay">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육비"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- //기초정비교육 -->
+
+                                                <!-- 기초정비교육 -->
+                                                <div class="guide_tp_02">
+                                                    <ul>
+                                                        <li id="edu_emergency_apply_method">
+                                                            <div class="gubun">신청방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="신청방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <input type="text" class="form-control" placeholder="URL입력"/>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_emergency_recruit_method">
+                                                            <div class="gubun">모집방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 신청취소 등 교육인원 축소 대비 대기인원 접수</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_emergency_recruit_period">
+                                                            <div class="gubun">모집마감</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집기간"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육정원(15명)에게 개별적으로 교육확정 문자 알림 예정</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <div></div>
+                                                    <div>
+                                                        <button type="button" onclick="f_train_template_emergency_save();" class="btn font-weight-bold btn-primary mr-2">저장</button>
+                                                        <button type="button" onclick="f_train_template_init('emergency');" class="btn font-weight-bold btn-secondary">취소</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- //응급조치교육 -->
+
+                                            </div>
+                                            <div class="tab-pane fade" id="kt_tab_pane_4_9" role="tabpanel" aria-labelledby="kt_tab_pane_4_9">
+
+                                                <!-- 발전기 정비 교육 -->
+                                                <div class="guide_tp_01">
+                                                    <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
+                                                    <div class="table">
+                                                        <table>
+                                                            <thead>
+                                                            <!-- 과정명 -->
+                                                            <tr>
+                                                                <th class="gubun">구분</th>
+                                                                <th>발전기 정비 교육</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <!-- 교육대상 -->
+                                                            <tr>
+                                                                <td class="gubun">교육대상</td>
+                                                                <td id="edu_generator_target">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kg_docs_repeater_basic">
+                                                                            <c:if test="${g_targetList eq null or empty g_targetList}">
+                                                                                <div class="mb-2 edu_generator_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${g_targetList}" begin="0" end="${g_targetList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_generator_target_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육대상"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육내용 -->
+                                                            <tr>
+                                                                <td class="gubun">교육내용</td>
+                                                                <td id="edu_generator_contents">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${g_contentsList eq null or empty g_contentsList}">
+                                                                                <div class="mb-2 edu_generator_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${g_contentsList}" begin="0" end="${g_contentsList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_generator_contents_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육내용"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육기간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육기간</td>
+                                                                <td id="edu_generator_period">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${g_periodList eq null or empty g_periodList}">
+                                                                                <div class="mb-2 edu_generator_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${g_periodList}" begin="0" end="${g_periodList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_generator_period_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육기간"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육일수 -->
+                                                            <tr>
+                                                                <td class="gubun">교육일수</td>
+                                                                <td id="edu_generator_days">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육일수"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육시간 -->
+                                                            <tr>
+                                                                <td class="gubun">교육시간</td>
+                                                                <td id="edu_generator_time">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육시간"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장소 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장소</td>
+                                                                <td id="edu_generator_place">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="장소명"/>
+                                                                    </div>
+                                                                    <div class="address">
+                                                                        <input type="text" class="form-control" placeholder="상세주소"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육인원 -->
+                                                            <tr>
+                                                                <td class="gubun">교육인원</td>
+                                                                <td id="edu_generator_persons">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육인원"/>
+                                                                    </div>
+                                                                    <div class="cmnt">
+                                                                        <p>· 주1) 교육 신청 현황에 따라 조정 가능합니다.</p>
+                                                                        <p>· 주2) 교육신청자가 최소 인원에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육비</td>
+                                                                <td id="edu_generator_pay">
+                                                                    <div class="item">
+                                                                        <input type="text" class="form-control" placeholder="교육비"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- 교육장비 -->
+                                                            <tr>
+                                                                <td class="gubun">교육장비</td>
+                                                                <td id="edu_generator_stuff">
+                                                                    <div class="form-group mb-3">
+                                                                        <a href="javascript:;" class="btn btn-light-warning" data-repeater-create>
+                                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                                            Add
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="item list form-group row">
+                                                                        <div data-repeater-list="kt_docs_repeater_basic">
+                                                                            <c:if test="${g_stuffList eq null or empty g_stuffList}">
+                                                                                <div class="mb-2 edu_generator_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:forEach var="info" items="${g_stuffList}" begin="0" end="${g_stuffList.size()}" step="1" varStatus="status">
+                                                                                <div class="mb-2 edu_generator_stuff_detail" data-repeater-item>
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="text-input" value="${info.value}" placeholder="교육장비"/>
+                                                                                        <div class="input-group-append">
+                                                                                            <a href="javascript:;" class="btn font-weight-bold btn-light-danger btn-icon" data-repeater-delete>
+                                                                                                <i class="ki-duotone ki-minus"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:forEach>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- //고마력 선외기 정비 중급 테크니션 -->
+
+                                                <!-- 고마력 선외기 정비 중급 테크니션 -->
+                                                <div class="guide_tp_02">
+                                                    <ul>
+                                                        <li id="edu_generator_apply_method">
+                                                            <div class="gubun">신청방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="신청방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <input type="text" class="form-control" placeholder="URL입력"/>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_generator_recruit_method">
+                                                            <div class="gubun">모집방법</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집방법"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 신청취소 등 교육인원 축소 대비 대기인원 접수</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li id="edu_generator_recruit_period">
+                                                            <div class="gubun">모집마감</div>
+                                                            <div class="naeyong">
+                                                                <div class="item">
+                                                                    <textarea class="form-control" placeholder="모집기간"></textarea>
+                                                                </div>
+                                                                <div class="cmnt">
+                                                                    <p>※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</p>
+                                                                    <p>※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <div></div>
+                                                    <div>
+                                                        <button type="button" onclick="f_train_template_generator_save();" class="btn font-weight-bold btn-primary mr-2">저장</button>
+                                                        <button type="button" onclick="f_train_template_init('generator');" class="btn font-weight-bold btn-secondary">취소</button>
                                                     </div>
                                                 </div>
 
@@ -4519,6 +5574,94 @@ if (document.documentElement) {
             // 모집기간
             let t_recruitPeriod = '${t_recruitPeriod.value}'.replaceAll('<br/>', '\r\n');
             $('#edu_sterndrive_recruit_period').find('.item').find('textarea').val(t_recruitPeriod);
+
+            /********************
+             * Basic
+             * ******************/
+            // 교육일수
+            $('#edu_basic_days').find('input[type=text]').val('${b_days.value}');
+
+            // 교육시간
+            $('#edu_basic_time').find('input[type=text]').val('${b_time.value}');
+
+            // 교육인원
+            $('#edu_basic_persons').find('input[type=text]').val('${b_persons.value}');
+
+            // 교육비
+            $('#edu_basic_pay').find('input[type=text]').val('${b_pay.value}');
+
+            // 신청방법
+            let b_applyMethod = '${b_applyMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_basic_apply_method').find('.item').find('textarea').val(b_applyMethod);
+            $('#edu_basic_apply_method').find('.cmnt').find('input[type=text]').val('${b_applyMethodUrl.value}');
+
+            // 모집방법
+            let b_recruitMethod = '${b_recruitMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_basic_recruit_method').find('.item').find('textarea').val(b_recruitMethod);
+
+            // 모집기간
+            let b_recruitPeriod = '${b_recruitPeriod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_basic_recruit_period').find('.item').find('textarea').val(b_recruitPeriod);
+
+            /********************
+             * Emergency
+             * ******************/
+            // 교육일수
+            $('#edu_emergency_days').find('input[type=text]').val('${y_days.value}');
+
+            // 교육시간
+            $('#edu_emergency_time').find('input[type=text]').val('${y_time.value}');
+
+            // 교육인원
+            $('#edu_emergency_persons').find('input[type=text]').val('${y_persons.value}');
+
+            // 교육비
+            $('#edu_emergency_pay').find('input[type=text]').val('${y_pay.value}');
+
+            // 신청방법
+            let y_applyMethod = '${y_applyMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_emergency_apply_method').find('.item').find('textarea').val(y_applyMethod);
+            $('#edu_emergency_apply_method').find('.cmnt').find('input[type=text]').val('${y_applyMethodUrl.value}');
+
+            // 모집방법
+            let y_recruitMethod = '${y_recruitMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_emergency_recruit_method').find('.item').find('textarea').val(y_recruitMethod);
+
+            // 모집기간
+            let y_recruitPeriod = '${y_recruitPeriod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_emergency_recruit_period').find('.item').find('textarea').val(y_recruitPeriod);
+            
+            /********************
+             * 발전기 정비 교육
+             * ******************/
+            // 교육일수
+            $('#edu_generator_days').find('input[type=text]').val('${g_days.value}');
+
+            // 교육시간
+            $('#edu_generator_time').find('input[type=text]').val('${g_time.value}');
+
+            // 교육장소
+            $('#edu_generator_place').find('.item').find('input[type=text]').val('${g_place.value}');
+            $('#edu_generator_place').find('.address').find('input[type=text]').val('${g_placeDetail.value}');
+
+            // 교육인원
+            $('#edu_generator_persons').find('input[type=text]').val('${g_persons.value}');
+
+            // 교육비
+            $('#edu_generator_pay').find('input[type=text]').val('${g_pay.value}');
+
+            // 신청방법
+            let g_applyMethod = '${g_applyMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_generator_apply_method').find('.item').find('textarea').val(g_applyMethod);
+            $('#edu_generator_apply_method').find('.cmnt').find('input[type=text]').val('${g_applyMethodUrl.value}');
+
+            // 모집방법
+            let g_recruitMethod = '${g_recruitMethod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_generator_recruit_method').find('.item').find('textarea').val(g_recruitMethod);
+
+            // 모집기간
+            let g_recruitPeriod = '${g_recruitPeriod.value}'.replaceAll('<br/>', '\r\n');
+            $('#edu_generator_recruit_period').find('.item').find('textarea').val(g_recruitPeriod);
 
         })
     </script>

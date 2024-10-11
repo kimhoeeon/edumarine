@@ -341,7 +341,7 @@
                                 <div class="gubun">모집마감</div>
                                 <div class="naeyong">
                                     <div class="text">${h_recruitPeriod.value}</div>
-                                    <div class="small">※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</div>
+                                    <div class="small">※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</div>
                                     <div class="small">※ 마감일 기준 교육정원(16명)에게 개별적으로 교육확정 문자 알림 예정</div>
                                 </div>
                             </li>
