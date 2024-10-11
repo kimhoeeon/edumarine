@@ -486,9 +486,11 @@ button {
 .board_wrap .post_number {font-size: 1.4rem; width: 100%;}
 .board_wrap .post_number .number {font-weight: 700; color: #083274;}
 .board_wrap .board_search {display: flex; justify-content: flex-end; width: 100%; gap: 5px;}
+.board_wrap .board_search select {padding: 5px 30px 5px  5px; line-height: normal;}
+.board_wrap .board_search .search_bar input {padding: 5px;}
 .board_wrap .board_search select,
 .board_wrap .board_search .search_bar input {
-    border:0; border-radius: 0; border-bottom: 1px solid #111; font-size: 1.4rem; padding: 5px; height: 40px;
+    border:0; border-radius: 0; border-bottom: 1px solid #111; font-size: 1.4rem; height: 40px;
 }
 .board_wrap .board_search .search_bar {position: relative;}
 .board_wrap .board_search .search_bar .search_btn {

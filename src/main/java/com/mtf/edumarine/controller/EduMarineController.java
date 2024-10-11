@@ -3174,6 +3174,55 @@ public class EduMarineController {
     public ModelAndView guide_guide12() {
         System.out.println("EduMarineController > guide_guide12");
         ModelAndView mv = new ModelAndView();
+
+        //기초정비교육
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateBasicInfoList = eduMarineService.processSelectTrainTemplateList("basic");
+        if(trainTemplateBasicInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> placeList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> stuffList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateBasicInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("place")){
+                    placeList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("b_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("b_time", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("b_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("b_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("b_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("b_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("b_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("b_recruitPeriod", info);
+                }else if(info.getSmall().equals("stuff")){
+                    stuffList.add(info);
+                }
+
+            } //for
+
+            mv.addObject("b_targetList", targetList);
+            mv.addObject("b_contentsList", contentsList);
+            mv.addObject("b_periodList", periodList);
+            mv.addObject("b_placeList", placeList);
+            mv.addObject("b_stuffList", stuffList);
+
+        } //기초정비교육
+
         mv.setViewName("/guide/guide12");
         return mv;
     }
@@ -3182,6 +3231,55 @@ public class EduMarineController {
     public ModelAndView guide_guide13() {
         System.out.println("EduMarineController > guide_guide13");
         ModelAndView mv = new ModelAndView();
+
+        //응급조치교육
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateEmergencyInfoList = eduMarineService.processSelectTrainTemplateList("emergency");
+        if(trainTemplateEmergencyInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> placeList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> stuffList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateEmergencyInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("place")){
+                    placeList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("y_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("y_time", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("y_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("y_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("y_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("y_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("y_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("y_recruitPeriod", info);
+                }else if(info.getSmall().equals("stuff")){
+                    stuffList.add(info);
+                }
+
+            } //for
+
+            mv.addObject("y_targetList", targetList);
+            mv.addObject("y_contentsList", contentsList);
+            mv.addObject("y_periodList", periodList);
+            mv.addObject("y_placeList", placeList);
+            mv.addObject("y_stuffList", stuffList);
+
+        } //응급조치교육
+        
         mv.setViewName("/guide/guide13");
         return mv;
     }
@@ -3190,6 +3288,55 @@ public class EduMarineController {
     public ModelAndView guide_guide14() {
         System.out.println("EduMarineController > guide_guide14");
         ModelAndView mv = new ModelAndView();
+
+        //발전기 정비 교육
+        List<TrainTemplateDTO.TrainTemplateInfo> trainTemplateGeneratorInfoList = eduMarineService.processSelectTrainTemplateList("generator");
+        if(trainTemplateGeneratorInfoList != null){
+            List<TrainTemplateDTO.TrainTemplateInfo> targetList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> contentsList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> periodList = new ArrayList<>();
+            List<TrainTemplateDTO.TrainTemplateInfo> stuffList = new ArrayList<>();
+
+            for(TrainTemplateDTO.TrainTemplateInfo info: trainTemplateGeneratorInfoList){
+                if(info.getSmall().equals("target")){
+                    targetList.add(info);
+                }else if(info.getSmall().equals("contents")){
+                    contentsList.add(info);
+                }else if(info.getSmall().equals("period")){
+                    periodList.add(info);
+                }else if(info.getSmall().equals("days")){
+                    mv.addObject("g_days", info);
+                }else if(info.getSmall().equals("time")){
+                    mv.addObject("g_time", info);
+                }else if(info.getSmall().equals("place")){
+                    mv.addObject("g_place", info);
+                }else if(info.getSmall().equals("placeDetail")){
+                    mv.addObject("g_placeDetail", info);
+                }else if(info.getSmall().equals("persons")){
+                    mv.addObject("g_persons", info);
+                }else if(info.getSmall().equals("pay")){
+                    mv.addObject("g_pay", info);
+                }else if(info.getSmall().equals("applyMethod")){
+                    mv.addObject("g_applyMethod", info);
+                }else if(info.getSmall().equals("applyMethodUrl")){
+                    mv.addObject("g_applyMethodUrl", info);
+                }else if(info.getSmall().equals("recruitMethod")){
+                    mv.addObject("g_recruitMethod", info);
+                }else if(info.getSmall().equals("recruitPeriod")){
+                    mv.addObject("g_recruitPeriod", info);
+                }else if(info.getSmall().equals("stuff")){
+                    stuffList.add(info);
+                }
+
+            } //for
+
+            mv.addObject("g_targetList", targetList);
+            mv.addObject("g_contentsList", contentsList);
+            mv.addObject("g_periodList", periodList);
+            mv.addObject("g_stuffList", stuffList);
+
+        } //발전기 정비 교육
+        
         mv.setViewName("/guide/guide14");
         return mv;
     }

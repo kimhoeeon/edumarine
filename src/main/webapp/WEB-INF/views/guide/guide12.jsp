@@ -208,7 +208,9 @@
                                         <td>
                                             <div class="box">
                                                 <ul class="list">
-                                                    <li>선외기 또는 선내기, 세일요트엔진에 대한 유지관리기술 습득을 원하시는 분</li>
+                                                    <c:forEach var="info" items="${b_targetList}" begin="0" end="${b_targetList.size()}" step="1" varStatus="status">
+                                                        <li>${info.value}</li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </td>
@@ -217,27 +219,16 @@
                                         <td>교육내용</td>
                                         <td>
                                             <div class="box_number">
-                                                <div class="number">1) 선외기 기초정비교육</div>
-                                                <ul class="list">
-                                                    <li>유지관리 스케쥴(Maintenance Schedule)</li>
-                                                    <li>선외기 구조 및 구성부품 기능</li>
-                                                    <li>유지관리 항목(Maintenance Items) 점검내용 및 실습</li>
-                                                    <li>선외기 장기 보관 전후 조치사항</li>
-                                                </ul><br>
-                                                <div class="number">2) 선내기 기초정비교육</div>
-                                                <ul class="list">
-                                                    <li>유지관리 스케쥴(Maintenance Schedule)</li>
-                                                    <li>선내기 구조 및 구성부품 기능</li>
-                                                    <li>유지관리 항목(Maintenance Items) 점검내용 및 실습</li>
-                                                    <li>선내기 장기 보관시 조치사항</li>
-                                                </ul><br>
-                                                <div class="number">3) 세일요트엔진 기초정비교육</div>
-                                                <ul class="list">
-                                                    <li>유지관리 스케쥴(Maintenance Schedule)</li>
-                                                    <li>세일요트엔진 구조 및 구성부품 기능</li>
-                                                    <li>유지관리 항목(Maintenance Items) 점검내용 및 실습</li>
-                                                    <li>세일요트엔진 장기 보관시 조치사항</li>
-                                                </ul>
+                                                <c:forEach var="info" items="${b_contentsList}" begin="0" end="${b_contentsList.size()}" step="1" varStatus="status">
+                                                    <c:choose>
+                                                        <c:when test="${fn:contains(info.value, ')') and not fn:contains(info.value, '(')}">
+                                                            <div style="margin-bottom: 10px; margin-top: 20px;">${info.value}</div>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div style="margin-bottom: 10px;">${info.value}</div>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
                                             </div>
                                         </td>
                                     </tr>
@@ -245,25 +236,16 @@
                                         <td>교육장비</td>
                                         <td>
                                             <div class="box_number">
-                                                <div class="number">1) 선외기 기초정비교육 장비</div>
-                                                <ul class="list">
-                                                    <li>도하츠 15마력 및 30마력 (2-Stroke Cycle 선외기)</li>
-                                                    <li>혼다 60마력 (4-Stroke Cycle 선외기)</li>
-                                                    <li>야마하 75마력 (4-Stroke Cycle 선외기)</li>
-                                                    <li>스즈끼 250마력, 머큐리 300마력 등</li>
-                                                </ul><br>
-                                                <div class="number">2) 선내기 기초정비교육 장비</div>
-                                                <ul class="list">
-                                                    <li>Volvo Penta D6 380마력</li>
-                                                    <li>Yanmar 6HYM 700마력 </li>
-                                                    <li>두산 선내기 320마력</li>
-                                                    <li>현대씨즈올 선내기 S2 270마력</li>
-                                                </ul><br>
-                                                <div class="number">3) 세일요트엔진 기초정비교육 장비</div>
-                                                <ul class="list">
-                                                    <li>Volvo Penta D2-75마력</li>
-                                                    <li>Yanmar 3JH5E 39마력</li>
-                                                </ul>
+                                                <c:forEach var="info" items="${b_stuffList}" begin="0" end="${b_stuffList.size()}" step="1" varStatus="status">
+                                                    <c:choose>
+                                                        <c:when test="${fn:contains(info.value, ')') and not fn:contains(info.value, '(')}">
+                                                            <div style="margin-bottom: 10px; margin-top: 20px;">${info.value}</div>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div style="margin-bottom: 10px;">${info.value}</div>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
                                             </div>
                                         </td>
                                     </tr>
@@ -271,9 +253,11 @@
                                         <td>교육기간</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">선외기 기초정비교육 : 8/25, 9/22, 10/27</div>
-                                                <div class="text">선내기 기초정비교육 : 9/8, 10/27</div>
-                                                <div class="text">세일요트엔진 기초정비교육 : 9/1, 11/3</div>
+                                                <ul class="list">
+                                                    <c:forEach var="info" items="${b_periodList}" begin="0" end="${b_periodList.size()}" step="1" varStatus="status">
+                                                        <li>${info.value}</li>
+                                                    </c:forEach>
+                                                </ul>
                                             </div>
                                         </td>
                                     </tr>
@@ -281,7 +265,9 @@
                                         <td>교육일수</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">1일 (1일 7시간)</div>
+                                                <div class="text">
+                                                    ${b_days.value}
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -289,7 +275,9 @@
                                         <td>교육시간</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">09:30 ~ 17:30 (점심시간: 12:30 ~ 13:30)</div>
+                                                <div class="text">
+                                                    ${b_time.value}
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -298,9 +286,9 @@
                                         <td>
                                             <div class="box">
                                                 <ul class="list">
-                                                    <li>선외기 기초정비교육 : 경기테크노파크(경기도 안산시 상록구 해안로 705 경기테크노파크)</li>
-                                                    <li>선내기 기초정비교육 : 김포아라마리나(경기도 김포시 고촌읍 아라육로 152번길 210)</li>
-                                                    <li>세일요트 기초정비교육 : 김포아라마리나(경기도 김포시 고촌읍 아라육로 152번길 210)</li>
+                                                    <c:forEach var="info" items="${b_placeList}" begin="0" end="${b_placeList.size()}" step="1" varStatus="status">
+                                                        <li>${info.value}</li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </td>
@@ -309,7 +297,9 @@
                                         <td>교육인원</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">16명(차수 당)</div>
+                                                <div class="text">
+                                                    ${b_persons.value}
+                                                </div>
                                                 <ul class="list small">
                                                     <li>주1) 교육 신청 현황에 따라 조정 가능합니다.</li>
                                                     <li>주2) 교육신청자가 최소 인원(4명)에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</li>
@@ -321,7 +311,9 @@
                                         <td>교육비</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">150,000원</div>
+                                                <div class="text">
+                                                    ${b_pay.value}
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -346,21 +338,21 @@
                             <li>
                                 <div class="gubun">신청방법</div>
                                 <div class="naeyong">
-                                    <div class="text">에듀마린 홈페이지(<span class="underline"><a href="https://edumarine.org/main.do" target="_blank">www.edumarine.org</a></span>)에서 해당 과정 신청 접수 및 상시 접수</div>
+                                    <div class="text">${b_applyMethod.value} (<span class="underline"><a href="${b_applyMethodUrl.value}" target="_blank">${b_applyMethodUrl.value}</a></span>)</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집방법</div>
                                 <div class="naeyong">
-                                    <div class="text">모집일로부터 신청 선착순으로 마감</div>
+                                    <div class="text">${b_recruitMethod.value}</div>
                                     <div class="small">※ 신청취소 등 교육인원 축소 대비 대기인원 접수</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집마감</div>
                                 <div class="naeyong">
-                                    <div class="text">해당 차수 교육개설 7일전</div>
-                                    <div class="small">※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</div>
+                                    <div class="text">${b_recruitPeriod.value}</div>
+                                    <div class="small">※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</div>
                                     <div class="small">※ 마감일 기준 교육정원(15명)에게 개별적으로 교육확정 문자 알림 예정</div>
                                 </div>
                             </li>

@@ -5,6 +5,8 @@
 
 $(function () {
 
+    //전체교육일정
+    
     //마리나 선박 정비사 실무교육
     //교육내용
     $('#edu_marina_outboarder_contents,' +
@@ -211,6 +213,80 @@ $(function () {
         '#edu_sterndrive_contents,' +
         '#edu_sterndrive_period,' +
         '#edu_sterndrive_stuff').repeater({
+        initEmpty: false,
+        defaultValues: {
+            'text-input': ''
+        },
+        isFirstItemUndeletable: true,
+
+        show: function () {
+            $(this).slideDown();
+        },
+
+        hide: function (deleteElement) {
+            $(this).slideUp(deleteElement);
+        }
+    });
+
+    //기초정비교육
+    //교육대상
+    //교육내용
+    //교육기간
+    //교육장비
+    $('#edu_basic_target,' +
+        '#edu_basic_contents,' +
+        '#edu_basic_period,' +
+        '#edu_basic_place,' +
+        '#edu_basic_stuff').repeater({
+        initEmpty: false,
+        defaultValues: {
+            'text-input': ''
+        },
+        isFirstItemUndeletable: true,
+
+        show: function () {
+            $(this).slideDown();
+        },
+
+        hide: function (deleteElement) {
+            $(this).slideUp(deleteElement);
+        }
+    })
+
+    //응급조치교육
+    //교육대상
+    //교육내용
+    //교육기간
+    //교육장비
+    $('#edu_emergency_target,' +
+        '#edu_emergency_contents,' +
+        '#edu_emergency_period,' +
+        '#edu_emergency_place,' +
+        '#edu_emergency_stuff').repeater({
+        initEmpty: false,
+        defaultValues: {
+            'text-input': ''
+        },
+        isFirstItemUndeletable: true,
+
+        show: function () {
+            $(this).slideDown();
+        },
+
+        hide: function (deleteElement) {
+            $(this).slideUp(deleteElement);
+        }
+    });
+    
+    //발전기 정비 교육
+    //교육대상
+    //교육내용
+    //교육기간
+    //교육장비
+    $('#edu_generator_target,' +
+        '#edu_generator_contents,' +
+        '#edu_generator_period,' +
+        '#edu_generator_stuff').repeater({
         initEmpty: false,
         defaultValues: {
             'text-input': ''
@@ -1934,6 +2010,637 @@ function f_train_template_sterndrive_save(){
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 f_train_template_init('sterndrive');
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '교육 안내 템플릿 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+        }
+    });
+
+}
+
+function f_train_template_basic_save(){
+    console.log('f_train_template_basic_save');
+
+    let main_json_arr = [];
+    // 교육대상
+    let basic_target_arr = $('#edu_basic_target').find('input[type=text]');
+    for(let i=0; i<basic_target_arr.length; i++){
+        let basic_target = basic_target_arr.eq(i).val();
+        let basic_target_json_obj = {
+            major: 'basic',
+            middle: 'info',
+            small: 'target',
+            value: basic_target,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(basic_target_json_obj);
+    }
+
+    // 교육내용
+    let basic_contents_arr = $('#edu_basic_contents').find('input[type=text]');
+    for(let i=0; i<basic_contents_arr.length; i++){
+        let basic_contents = basic_contents_arr.eq(i).val();
+        let basic_contents_json_obj = {
+            major: 'basic',
+            middle: 'info',
+            small: 'contents',
+            value: basic_contents,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(basic_contents_json_obj);
+    }
+
+    // 교육기간
+    let basic_period_arr = $('#edu_basic_period').find('input[type=text]');
+    for(let i=0; i<basic_period_arr.length; i++){
+        let basic_period = basic_period_arr.eq(i).val();
+        let basic_period_json_obj = {
+            major: 'basic',
+            middle: 'info',
+            small: 'period',
+            value: basic_period,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(basic_period_json_obj);
+    }
+
+    // 교육일수
+    let basic_days = $('#edu_basic_days').find('input[type=text]').val();
+    let basic_days_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'days',
+        value: basic_days
+    };
+    main_json_arr.push(basic_days_json_obj);
+
+    // 교육시간
+    let basic_time = $('#edu_basic_time').find('input[type=text]').val();
+    let basic_time_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'time',
+        value: basic_time
+    };
+    main_json_arr.push(basic_time_json_obj);
+
+    // 교육장소
+    let basic_place_arr = $('#edu_basic_place').find('input[type=text]');
+    for(let i=0; i<basic_place_arr.length; i++){
+        let basic_place = basic_place_arr.eq(i).val();
+        let basic_place_json_obj = {
+            major: 'basic',
+            middle: 'info',
+            small: 'place',
+            value: basic_place,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(basic_place_json_obj);
+    }
+
+    // 교육인원
+    let basic_persons = $('#edu_basic_persons').find('input[type=text]').val();
+    let basic_persons_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'persons',
+        value: basic_persons
+    };
+    main_json_arr.push(basic_persons_json_obj);
+
+    // 교육비
+    // 선외기 정비사 실무교육
+    let basic_pay = $('#edu_basic_pay').find('input[type=text]').val();
+    let basic_pay_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'pay',
+        value: basic_pay
+    };
+    main_json_arr.push(basic_pay_json_obj);
+
+    // 교육장비
+    let basic_stuff_arr = $('#edu_basic_stuff').find('input[type=text]');
+    for(let i=0; i<basic_stuff_arr.length; i++){
+        let basic_stuff = basic_stuff_arr.eq(i).val();
+        let basic_stuff_json_obj = {
+            major: 'basic',
+            middle: 'info',
+            small: 'stuff',
+            value: basic_stuff,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(basic_stuff_json_obj);
+    }
+
+    // 신청방법
+    let applyMethod = $('#edu_basic_apply_method').find('.item').find('textarea').val();
+    let applyMethod_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'applyMethod',
+        value: applyMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(applyMethod_json_obj);
+    let applyMethodUrl = $('#edu_basic_apply_method').find('.cmnt').find('input[type=text]').val();
+
+    if(nvl(applyMethodUrl, '') !== ''){
+        if(!checkUrl(applyMethodUrl)){
+            showMessage('', 'error', '[템플릿 등록 안내]', '신청방법 항목의 URL 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            return false;
+        }
+    }
+
+    let applyMethodUrl_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'applyMethodUrl',
+        value: applyMethodUrl
+    };
+    main_json_arr.push(applyMethodUrl_json_obj);
+
+    // 모집방법
+    let recruitMethod = $('#edu_basic_recruit_method').find('.item').find('textarea').val();
+    let recruitMethod_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'recruitMethod',
+        value: recruitMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitMethod_json_obj);
+
+    // 모집기간
+    let recruitPeriod = $('#edu_basic_recruit_period').find('.item').find('textarea').val();
+    let recruitPeriod_json_obj = {
+        major: 'basic',
+        middle: 'info',
+        small: 'recruitPeriod',
+        value: recruitPeriod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitPeriod_json_obj);
+
+    let main_json_obj = {
+        gbn: 'basic',
+        data: main_json_arr
+    }
+
+    Swal.fire({
+        title: '입력된 정보를 저장하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '저장',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/mng/education/template/save.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(main_json_obj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '교육 안내 템플릿 정보 저장',
+                            html: '교육 안내 템플릿 정보가 저장되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                f_train_template_init('basic');
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '교육 안내 템플릿 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+        }
+    });
+
+}
+
+function f_train_template_emergency_save(){
+    console.log('f_train_template_emergency_save');
+
+    let main_json_arr = [];
+    // 교육대상
+    let emergency_target_arr = $('#edu_emergency_target').find('input[type=text]');
+    for(let i=0; i<emergency_target_arr.length; i++){
+        let emergency_target = emergency_target_arr.eq(i).val();
+        let emergency_target_json_obj = {
+            major: 'emergency',
+            middle: 'info',
+            small: 'target',
+            value: emergency_target,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(emergency_target_json_obj);
+    }
+
+    // 교육내용
+    let emergency_contents_arr = $('#edu_emergency_contents').find('input[type=text]');
+    for(let i=0; i<emergency_contents_arr.length; i++){
+        let emergency_contents = emergency_contents_arr.eq(i).val();
+        let emergency_contents_json_obj = {
+            major: 'emergency',
+            middle: 'info',
+            small: 'contents',
+            value: emergency_contents,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(emergency_contents_json_obj);
+    }
+
+    // 교육기간
+    let emergency_period_arr = $('#edu_emergency_period').find('input[type=text]');
+    for(let i=0; i<emergency_period_arr.length; i++){
+        let emergency_period = emergency_period_arr.eq(i).val();
+        let emergency_period_json_obj = {
+            major: 'emergency',
+            middle: 'info',
+            small: 'period',
+            value: emergency_period,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(emergency_period_json_obj);
+    }
+
+    // 교육일수
+    let emergency_days = $('#edu_emergency_days').find('input[type=text]').val();
+    let emergency_days_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'days',
+        value: emergency_days
+    };
+    main_json_arr.push(emergency_days_json_obj);
+
+    // 교육시간
+    let emergency_time = $('#edu_emergency_time').find('input[type=text]').val();
+    let emergency_time_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'time',
+        value: emergency_time
+    };
+    main_json_arr.push(emergency_time_json_obj);
+
+    // 교육장소
+    let emergency_place_arr = $('#edu_emergency_place').find('input[type=text]');
+    for(let i=0; i<emergency_place_arr.length; i++){
+        let emergency_place = emergency_place_arr.eq(i).val();
+        let emergency_place_json_obj = {
+            major: 'emergency',
+            middle: 'info',
+            small: 'place',
+            value: emergency_place,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(emergency_place_json_obj);
+    }
+
+    // 교육인원
+    let emergency_persons = $('#edu_emergency_persons').find('input[type=text]').val();
+    let emergency_persons_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'persons',
+        value: emergency_persons
+    };
+    main_json_arr.push(emergency_persons_json_obj);
+
+    // 교육비
+    // 선외기 정비사 실무교육
+    let emergency_pay = $('#edu_emergency_pay').find('input[type=text]').val();
+    let emergency_pay_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'pay',
+        value: emergency_pay
+    };
+    main_json_arr.push(emergency_pay_json_obj);
+
+    // 교육장비
+    let emergency_stuff_arr = $('#edu_emergency_stuff').find('input[type=text]');
+    for(let i=0; i<emergency_stuff_arr.length; i++){
+        let emergency_stuff = emergency_stuff_arr.eq(i).val();
+        let emergency_stuff_json_obj = {
+            major: 'emergency',
+            middle: 'info',
+            small: 'stuff',
+            value: emergency_stuff,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(emergency_stuff_json_obj);
+    }
+
+    // 신청방법
+    let applyMethod = $('#edu_emergency_apply_method').find('.item').find('textarea').val();
+    let applyMethod_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'applyMethod',
+        value: applyMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(applyMethod_json_obj);
+    let applyMethodUrl = $('#edu_emergency_apply_method').find('.cmnt').find('input[type=text]').val();
+
+    if(nvl(applyMethodUrl, '') !== ''){
+        if(!checkUrl(applyMethodUrl)){
+            showMessage('', 'error', '[템플릿 등록 안내]', '신청방법 항목의 URL 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            return false;
+        }
+    }
+
+    let applyMethodUrl_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'applyMethodUrl',
+        value: applyMethodUrl
+    };
+    main_json_arr.push(applyMethodUrl_json_obj);
+
+    // 모집방법
+    let recruitMethod = $('#edu_emergency_recruit_method').find('.item').find('textarea').val();
+    let recruitMethod_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'recruitMethod',
+        value: recruitMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitMethod_json_obj);
+
+    // 모집기간
+    let recruitPeriod = $('#edu_emergency_recruit_period').find('.item').find('textarea').val();
+    let recruitPeriod_json_obj = {
+        major: 'emergency',
+        middle: 'info',
+        small: 'recruitPeriod',
+        value: recruitPeriod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitPeriod_json_obj);
+
+    let main_json_obj = {
+        gbn: 'emergency',
+        data: main_json_arr
+    }
+
+    Swal.fire({
+        title: '입력된 정보를 저장하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '저장',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/mng/education/template/save.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(main_json_obj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '교육 안내 템플릿 정보 저장',
+                            html: '교육 안내 템플릿 정보가 저장되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                f_train_template_init('emergency');
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '교육 안내 템플릿 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                }
+            })//ajax
+        }
+    });
+
+}
+
+function f_train_template_generator_save(){
+    console.log('f_train_template_generator_save');
+
+    let main_json_arr = [];
+    // 교육대상
+    let generator_target_arr = $('#edu_generator_target').find('input[type=text]');
+    for(let i=0; i<generator_target_arr.length; i++){
+        let generator_target = generator_target_arr.eq(i).val();
+        let generator_target_json_obj = {
+            major: 'generator',
+            middle: 'info',
+            small: 'target',
+            value: generator_target,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(generator_target_json_obj);
+    }
+
+    // 교육내용
+    let generator_contents_arr = $('#edu_generator_contents').find('input[type=text]');
+    for(let i=0; i<generator_contents_arr.length; i++){
+        let generator_contents = generator_contents_arr.eq(i).val();
+        let generator_contents_json_obj = {
+            major: 'generator',
+            middle: 'info',
+            small: 'contents',
+            value: generator_contents,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(generator_contents_json_obj);
+    }
+
+    // 교육기간
+    let generator_period_arr = $('#edu_generator_period').find('input[type=text]');
+    for(let i=0; i<generator_period_arr.length; i++){
+        let generator_period = generator_period_arr.eq(i).val();
+        let generator_period_json_obj = {
+            major: 'generator',
+            middle: 'info',
+            small: 'period',
+            value: generator_period,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(generator_period_json_obj);
+    }
+
+    // 교육일수
+    let generator_days = $('#edu_generator_days').find('input[type=text]').val();
+    let generator_days_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'days',
+        value: generator_days
+    };
+    main_json_arr.push(generator_days_json_obj);
+
+    // 교육시간
+    let generator_time = $('#edu_generator_time').find('input[type=text]').val();
+    let generator_time_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'time',
+        value: generator_time
+    };
+    main_json_arr.push(generator_time_json_obj);
+
+    // 교육장소
+    let generator_place = $('#edu_generator_place').find('.item').find('input[type=text]').val();
+    let generator_place_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'place',
+        value: generator_place
+    };
+    main_json_arr.push(generator_place_json_obj);
+    let generator_placeDetail = $('#edu_generator_place').find('.address').find('input[type=text]').val();
+    let generator_placeDetail_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'placeDetail',
+        value: generator_placeDetail
+    };
+    main_json_arr.push(generator_placeDetail_json_obj);
+
+    // 교육인원
+    let generator_persons = $('#edu_generator_persons').find('input[type=text]').val();
+    let generator_persons_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'persons',
+        value: generator_persons
+    };
+    main_json_arr.push(generator_persons_json_obj);
+
+    // 교육비
+    // 선외기 정비사 실무교육
+    let generator_pay = $('#edu_generator_pay').find('input[type=text]').val();
+    let generator_pay_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'pay',
+        value: generator_pay
+    };
+    main_json_arr.push(generator_pay_json_obj);
+
+    // 교육장비
+    let generator_stuff_arr = $('#edu_generator_stuff').find('input[type=text]');
+    for(let i=0; i<generator_stuff_arr.length; i++){
+        let generator_stuff = generator_stuff_arr.eq(i).val();
+        let generator_stuff_json_obj = {
+            major: 'generator',
+            middle: 'info',
+            small: 'stuff',
+            value: generator_stuff,
+            note: (i+1).toString()
+        };
+        main_json_arr.push(generator_stuff_json_obj);
+    }
+
+    // 신청방법
+    let applyMethod = $('#edu_generator_apply_method').find('.item').find('textarea').val();
+    let applyMethod_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'applyMethod',
+        value: applyMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(applyMethod_json_obj);
+    let applyMethodUrl = $('#edu_generator_apply_method').find('.cmnt').find('input[type=text]').val();
+
+    if(nvl(applyMethodUrl, '') !== ''){
+        if(!checkUrl(applyMethodUrl)){
+            showMessage('', 'error', '[템플릿 등록 안내]', '신청방법 항목의 URL 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            return false;
+        }
+    }
+
+    let applyMethodUrl_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'applyMethodUrl',
+        value: applyMethodUrl
+    };
+    main_json_arr.push(applyMethodUrl_json_obj);
+
+    // 모집방법
+    let recruitMethod = $('#edu_generator_recruit_method').find('.item').find('textarea').val();
+    let recruitMethod_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'recruitMethod',
+        value: recruitMethod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitMethod_json_obj);
+
+    // 모집기간
+    let recruitPeriod = $('#edu_generator_recruit_period').find('.item').find('textarea').val();
+    let recruitPeriod_json_obj = {
+        major: 'generator',
+        middle: 'info',
+        small: 'recruitPeriod',
+        value: recruitPeriod.replaceAll("\n", "<br/>")
+    };
+    main_json_arr.push(recruitPeriod_json_obj);
+
+    let main_json_obj = {
+        gbn: 'generator',
+        data: main_json_arr
+    }
+
+    Swal.fire({
+        title: '입력된 정보를 저장하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '저장',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/mng/education/template/save.do',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(main_json_obj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '교육 안내 템플릿 정보 저장',
+                            html: '교육 안내 템플릿 정보가 저장되었습니다.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                f_train_template_init('generator');
                             }
                         });
                     } else {

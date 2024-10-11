@@ -206,9 +206,9 @@
                                         <td>
                                             <div class="box">
                                                 <ul class="list">
-                                                    <li>선외기·선내기 정비사 실무과정 수료</li>
-                                                    <li>엔진에 대한 지식이 있으신 분</li>
-                                                    <li>전기부분에 대한 기초지식이 있으신 분</li>
+                                                    <c:forEach var="info" items="${g_targetList}" begin="0" end="${g_targetList.size()}" step="1" varStatus="status">
+                                                        <li>${info.value}</li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </td>
@@ -218,11 +218,9 @@
                                         <td>
                                             <div class="box_">
                                                 <ul class="list">
-                                                    <li>전기 및 발전기 이론, 발전기 회로도</li>
-                                                    <li>발전기 구조 및 작동원리</li>
-                                                    <li>발전기 시운전과 구성품 이해</li>
-                                                    <li>발전기 분해 및 조립 실습</li>
-                                                    <li>발전기 회로에 대한 이해 및 고장분석</li>
+                                                    <c:forEach var="info" items="${g_contentsList}" begin="0" end="${g_contentsList.size()}" step="1" varStatus="status">
+                                                        <li>${info.value}</li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </td>
@@ -232,10 +230,9 @@
                                         <td>
                                             <div class="box">
                                                 <ul class="list">
-                                                    <li>YEG450DTLC(Yanmar 4TNV98) : 31.7kW</li>
-                                                    <li>YH170DTLS(Yanmar 3TNV88) : 12.0kW</li>
-                                                    <li>YDG5500N-6EB(Yanmar L100N6) : 5.0kW</li>
-                                                    <li>4TNV98(31.7kW) 1개 엔진을 포함한 총 3개 엔진으로 진행 </li>
+                                                    <c:forEach var="info" items="${g_stuffList}" begin="0" end="${g_stuffList.size()}" step="1" varStatus="status">
+                                                        <li>${info.value}</li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </td>
@@ -244,7 +241,9 @@
                                         <td>교육기간</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">24년 12월 16일(월) ~ 12월 18일(수)</div>
+                                                <c:forEach var="info" items="${g_periodList}" begin="0" end="${g_periodList.size()}" step="1" varStatus="status">
+                                                    <div class="text">${info.value}</div>
+                                                </c:forEach>
                                             </div>
                                         </td>
                                     </tr>
@@ -252,7 +251,7 @@
                                         <td>교육일수</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">3일(평일)</div>
+                                                <div class="text">${g_days.value}</div>
                                             </div>
                                         </td>
                                     </tr>
@@ -260,7 +259,7 @@
                                         <td>교육시간</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">3일, 09:30 ~ 17:30 (점심시간 : 12:30 ~ 13:30)</div>
+                                                <div class="text">${g_time.value}</div>
                                             </div>
                                         </td>
                                     </tr>
@@ -268,7 +267,10 @@
                                         <td>교육장소</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">㈜광남컴퍼니 (경기도 김포시 하성면 석평로 119)</div>
+                                                <div class="text">
+                                                    ${g_place.value}<br>
+                                                    ${g_placeDetail.value}
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -276,7 +278,7 @@
                                         <td>교육인원</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">8명</div>
+                                                <div class="text">${g_persons.value}</div>
                                                 <ul class="list small">
                                                     <li>주1) 교육 신청 현황에 따라 조정 가능합니다.</li>
                                                     <li>주2) 교육신청자가 최소 인원에 미달하는 경우에는 해당 차수의 교육과정이 취소될 수 있습니다.</li>
@@ -288,7 +290,7 @@
                                         <td>교육비</td>
                                         <td>
                                             <div class="box">
-                                                <div class="text">480,000원 (내부 협의 필요)</div>
+                                                <div class="text">${g_pay.value}</div>
                                             </div>
                                         </td>
                                     </tr>
@@ -313,21 +315,21 @@
                             <li>
                                 <div class="gubun">신청방법</div>
                                 <div class="naeyong">
-                                    <div class="text">에듀마린 홈페이지(<span class="underline"><a href="https://edumarine.org/main.do" target="_blank">www.edumarine.org</a></span>)에서 해당 과정 신청 접수 및 상시 접수</div>
+                                    <div class="text">${g_applyMethod.value} (<span class="underline"><a href="${g_applyMethodUrl.value}" target="_blank">${g_applyMethodUrl.value}</a></span>)</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집방법</div>
                                 <div class="naeyong">
-                                    <div class="text">모집일로부터 신청 선착순으로 마감</div>
+                                    <div class="text">${g_recruitMethod.value}</div>
                                     <div class="small">※ 신청취소 등 교육인원 축소 대비 대기인원 접수</div>
                                 </div>
                             </li>
                             <li>
                                 <div class="gubun">모집마감</div>
                                 <div class="naeyong">
-                                    <div class="text">해당 차수 교육개설 7일전</div>
-                                    <div class="small">※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당과정 폐강</div>
+                                    <div class="text">${g_recruitPeriod.value}</div>
+                                    <div class="small">※ 마감일 기준 교육신청 최소정원(4명) 미달 시 해당 과정 폐강</div>
                                     <div class="small">※ 마감일 기준 교육정원(15명)에게 개별적으로 교육확정 문자 알림 예정</div>
                                 </div>
                             </li>
