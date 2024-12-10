@@ -10,7 +10,7 @@
                 <div class="option_box">
                     <a href="https://www.gg.go.kr/" target="_blank">경기도</a>
                     <a href="https://www.mof.go.kr/index.do" target="_blank">해양수산부</a>
-                    <a href="https://www.kweco.or.kr/www/index.do" target="_blank">수자원환경산업진흥</a>
+                    <a href="https://www.kwateromc.co.kr/www/index.do" target="_blank">수자원환경산업진흥</a>
                     <a href="http://kmarina.org/" target="_blank">한국마리나협회</a>
                     <a href="https://www.kibs.com" target="_blank">경기국제보트쇼</a>
                     <a href="https://www.kbf.or.kr/main.do" target="_blank">경기해양레저포럼</a>

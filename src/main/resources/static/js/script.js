@@ -24,16 +24,16 @@ $(document).ready(function () {
     // 뷰포트 너비가 769px 이상일 경우
     if (window.innerWidth >= 769) {
 
-        $(".nav .dept1 > li").on('mouseover', function () {
+        $(".nav .dept1 > li").mouseover(function () {
             $(this).children("ul").addClass('on');
         });
 
-        $(".nav .dept1 > li").on('mouseleave', function () {
+        $(".nav .dept1 > li").mouseleave(function () {
             $(this).children("ul").removeClass('on');
         });
 
     } else {
-        $(".nav .dept1 > li").on('click', function () {
+        $(".nav .dept1 > li").click(function () {
             $(".nav .dept1 > li").not(this).removeClass('on').children("ul").slideUp();
             $(this).toggleClass('on').children("ul").slideToggle();
         });
@@ -45,6 +45,9 @@ $(document).ready(function () {
         $('body').toggleClass('lock_scroll')
     });
 
+    $('.selLang .lang').on('click', function () {
+        $(this).next('.list').slideToggle();
+    });
 
     // tab
     $('.tab_menu li').on('click', function () {

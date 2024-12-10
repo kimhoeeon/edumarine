@@ -1,0 +1,119 @@
+
+
+@media (max-width: 1199px){
+
+
+
+
+}
+
+@media (max-width:899px){
+
+        /* main */
+        .main_tit .head {font-size: 1.125rem}
+        .main_tit .big {font-size: 2rem}
+        .main_tit .small {font-size: 1rem}
+        .main_top .title {font-size: 2rem}
+        .main_top .cont_box .list {gap: 10px;}
+        .main_top .cont_box .item .text {font-size: 1rem; line-height: 1.2}
+        .main_top .cont_box .more {font-size: 0.875rem}
+
+        .main_do .item .tit {font-size: 1rem}
+        .main_do .item .text {font-size: 0.875rem}
+        .main_do .item .number {font-size: 2rem; width: 70px;}
+
+        .main_cur .item .cont .tit {font-size: 1rem}
+        .main_cur .item .cont .text {font-size: 0.875rem}
+
+        .main_cur .item {width: calc(50% - 10px);}
+
+
+        /* marine */
+        .mar_pur .list {flex-wrap: wrap; gap: 40px 20px;}
+        .mar_pur .item {width: calc(50% - 10px);}
+        .mar_gov .gov_box {flex-direction: column; gap: 50px;}
+        .mar_gov .box.gg {width: 100%;}
+        .mar_gov .box.gg .line {height: 50px;}
+        .mar_gov .box.gg .line::after {display: none;}
+        .mar_gov .box.edum {width: 100%; margin-top: 0;}
+
+
+        /* current */
+        .cur_int .box .list {flex-wrap: wrap; justify-content: center;}
+        .cur_int .box .item {width: calc(50% - 20px); max-width: 230px;}
+        .cur_fac .tab_wrap {flex-direction: column;}
+        .cur_fac .tab_menu {flex-direction: row; width: 100%;}
+        .cur_fac .tab_menu li {width: 100%; font-size: 0.875rem; padding: 5px; text-align: center; justify-content: center; line-height: 1.2;}
+        .cur_fac .tab_cont .text {font-size: 0.75rem;}
+        .cur_gro .list {flex-direction: column;}
+        .cur_gro .graph_box {padding:40px 20px 20px;}
+        .cur_gro .graph_box .top {font-size: 1.25rem;}
+        .cur_gro .graph_box .box {width: 100%;}
+        .cur_gro .graph_box .box .graph {margin:0 auto; max-width: 300px;}
+        .cur_div .list {flex-wrap: wrap;}
+        .cur_div .list::after {display: none;}
+        .cur_div .item {width: calc(33.333% - 20px);}
+
+        /* contact */
+        .ct_way .info li {width: 100%;}
+    
+}
+
+@media screen and (max-width:599px){     
+
+    .main_tit {margin-bottom: 40px}
+    .main_tit .head {font-size: 0.94rem;}
+    .main_tit .big {font-size: 1.5rem; line-height: 1.4}
+    .main_tit .small {font-size: 0.875rem}
+
+    .main_top .title {font-size: 1.5rem; line-height: 1.4}
+    .main_top .cont_box .item {padding: 10px 2px; border-width: 2px}
+    .main_top .cont_box .item .text {font-size: 0.75rem}
+
+    .main_do .list {padding: 0 20px;}
+    .main_do .item {flex-direction: column; align-items: flex-start;}
+    .main_do .item .number {width: 100%; font-size: 1.5rem; margin-bottom: 10px}
+    .main_do .item .box {border:0; padding-left: 0}
+
+    .main_cur .item {width: 100%; min-height: 200px}
+
+    /* marine */
+    .mar_sum .list {padding:30px 20px;}
+    .mar_sum .item {flex-direction: column; gap: 15px;}
+    .mar_sum .item .gu {height: 32px; line-height: 32px; border-radius: 5px; width: 100%;}
+    .mar_sum .item .nae {margin: 0 3px; font-size: 0.875rem}
+    .mar_pur .item {width: 100%;}
+    .mar_pur .item .tit {font-size: 1rem;}
+    .mar_pur .item .text {font-size: 0.875rem;}
+    .mar_dir .item {flex-direction: column; gap: 15px;}
+    .mar_dir .item .gu {width: 40px; height: 40px; line-height: 40px; font-size: 1.125rem;}
+    .mar_dir .item .nae {font-size: 0.875rem; text-align: center;}
+    .mar_gov .box.gg .line {height: 25px;}
+    .mar_gov .box.edum .item::before {height: 20px;}
+    .mar_gov .box.edum .line {display: none;}
+    .mar_gov .list {flex-direction: column;}
+    .mar_gov .item .text p {font-size: 0.875rem;}
+    .mar_cen .tab_menu li {font-size: 0.875rem; }
+    .mar_cen .tab_cont .box {gap: 20px; padding: 30px 20px;}
+
+    /*  current */
+    .cur_int .box .text {font-size: 0.75rem;}
+    .cur_int .box .text .big {font-size: 1rem;}
+    .cur_fac .tab_menu {flex-wrap: wrap; justify-content: center;}
+    .cur_fac .tab_menu li {width: calc(33.333% - 6.666px);}
+    .cur_div .list {gap: 20px;}
+    .cur_div .item {width: calc(50% - 10px);}
+
+    /* contact */
+    .ct_way .tab_menu li {font-size: 0.75rem;}
+    .ct_way .map {aspect-ratio: 3/2;}
+    .ct_way .info li {font-size: 0.875rem; flex-wrap: wrap; align-items: flex-start;}
+    .ct_way .info .nae {margin-left: 50px; margin-top: -30px; width: 100%;}
+
+
+    /* edu */
+    .edu_equ .tb_box .img img {width: 50%;}
+
+
+}
+

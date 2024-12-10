@@ -209,7 +209,7 @@
                             </ul>
                             <!-- guide_btn_box -->
                             <div class="guide_btn_box">
-                                <div class="btn_box"><a href="https://www.kweco.or.kr/www/contents.do?key=742" target="_blank">교통안내 바로가기</a></div>
+                                <div class="btn_box"><a href="https://www.kwateromc.co.kr/www/contents.do?key=797" target="_blank">교통안내 바로가기</a></div>
                             </div>
                             <!-- //guide_btn_box -->
                         </div>

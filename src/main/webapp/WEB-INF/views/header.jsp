@@ -14,6 +14,13 @@
                 <a href="/logout.do" onclick="sessionStorage.clear();">로그아웃</a>
                 <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${id}' })" class="mypage">마이페이지</a>
             </c:if>
+            <div class="selLang">
+                <div class="lang">KOR</div>
+                <div class="list">
+                    <a href="/main.do">KOR</a>
+                    <a href="/eng/index.do">ENG</a>
+                </div>
+            </div>
             <a href="/sitemap.do" class="sitemap"><img src="/img/icon_menu_white.png" alt="메뉴 아이콘"></a>
         </div>
     </div>
@@ -35,6 +42,13 @@
                         <a href="/logout.do" onclick="sessionStorage.clear();">로그아웃</a>
                         <a href="javascript:void(0);" onclick="f_page_move('/mypage/eduApplyInfo.do',{ id: '${id}' })" class="mypage">마이페이지</a>
                     </c:if>
+                    <div class="selLang">
+                        <div class="lang">KOR</div>
+                        <div class="list">
+                            <a href="/main.do">KOR</a>
+                            <a href="/eng/index.do">ENG</a>
+                        </div>
+                    </div>
                 </div>
                 <ul class="dept1">
                     <li>
