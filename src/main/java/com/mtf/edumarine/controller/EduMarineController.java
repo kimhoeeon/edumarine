@@ -3342,6 +3342,62 @@ public class EduMarineController {
     }
 
     //***************************************************************************
+    // ENG
+    //***************************************************************************
+
+    @RequestMapping(value = "/eng/index.do", method = RequestMethod.GET)
+    public ModelAndView eng_index() {
+        System.out.println("EduMarineController > eng_index");
+
+        /* 방문자 수 카운트 */
+        eduMarineService.processStatisticsAccessor();
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/index");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/marine/intro.do", method = RequestMethod.GET)
+    public ModelAndView eng_marine_intro() {
+        System.out.println("EduMarineController > eng_marine_intro");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/marine/intro");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/current/current.do", method = RequestMethod.GET)
+    public ModelAndView eng_current_current() {
+        System.out.println("EduMarineController > eng_current_current");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/current/current");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/edu/curriculum.do", method = RequestMethod.GET)
+    public ModelAndView eng_edu_curriculum() {
+        System.out.println("EduMarineController > eng_edu_curriculum");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/edu/curriculum");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/edu/equipment.do", method = RequestMethod.GET)
+    public ModelAndView eng_edu_equipment() {
+        System.out.println("EduMarineController > eng_edu_equipment");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/edu/equipment");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/contact/contact.do", method = RequestMethod.GET)
+    public ModelAndView eng_contact_contact() {
+        System.out.println("EduMarineController > eng_contact_contact");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/contact/contact");
+        return mv;
+    }
+
+    //***************************************************************************
     // Common
     //***************************************************************************
 

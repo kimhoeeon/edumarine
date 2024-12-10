@@ -174,7 +174,7 @@ function loginFormSubmit() {
                     if(resultCode === '0'){
 
                         form.submit(); // /mng/main.do
-                    }else if(resultCode === '-4'){
+                    }/*else if(resultCode === '-4'){
 
                         Swal.fire({
                             title: '[인증 필요]',
@@ -301,7 +301,7 @@ function loginFormSubmit() {
                             }
                         })
 
-                    }else{
+                    }*/else{
                         showMessage('', 'error', '로그인 실패', resultMsg, '');
                     }
                 } else {

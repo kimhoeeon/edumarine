@@ -97,13 +97,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                     }//로그인 유효 여부
 
                 }else{
-                    if("Y".equals(db_validYn)){
+                    /*if("Y".equals(db_validYn)){
                         // 로그인 유효 여부 Update
                         AdminDTO req_adminDTO = new AdminDTO();
                         req_adminDTO.setSeq(db_adminDTO.getSeq());
                         req_adminDTO.setValidYn("N");
                         eduMarineMngMapper.updateAdminMngValidYn(req_adminDTO);
-                    }
+                    }*/
 
                     resultCode = "-2";
                     resultMsg = "비밀번호를 다시 확인해주세요.";

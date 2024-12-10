@@ -218,7 +218,7 @@
                     AND ( gbn LIKE CONCAT('%',#{searchText},'%') or gbn_depth LIKE CONCAT('%',#{searchText},'%') )
                  </if>
                  <if test='year != null and year != ""'>
-                    AND (train_start_dttm LIKE CONCAT('%',#{year},'%') OR train_end_dttm LIKE CONCAT('%',#{year},'%'))
+                    AND SUBSTRING(train_start_dttm,1,4) <![CDATA[>=]]> #{year}
                  </if>
                  ) AS totalRecords
         FROM train
@@ -231,7 +231,7 @@
             AND ( gbn LIKE CONCAT('%',#{searchText},'%') or gbn_depth LIKE CONCAT('%',#{searchText},'%') )
         </if>
         <if test='year != null and year != ""'>
-            AND (train_start_dttm LIKE CONCAT('%',#{year},'%') OR train_end_dttm LIKE CONCAT('%',#{year},'%'))
+            AND SUBSTRING(train_start_dttm,1,4) <![CDATA[>=]]> #{year}
         </if>
         ORDER BY gbn = '상시신청' DESC, closing_yn, train_start_dttm
         <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>

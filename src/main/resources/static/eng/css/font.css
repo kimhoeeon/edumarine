@@ -1,0 +1,87 @@
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 100;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-1Thin.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-1Thin.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 200;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-2ExtraLight.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-2ExtraLight.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 300;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-3Light.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-3Light.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 400;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-4Regular.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-4Regular.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 500;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-5Medium.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-5Medium.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 600;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-6SemiBold.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-6SemiBold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 700;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-7Bold.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-7Bold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 800;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-8ExtraBold.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-8ExtraBold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Paperlogy';
+    font-weight: 900;
+    font-style: normal;
+    src: url('/eng/fonts/Paperlogy-9Black.woff2') format('font-woff2'),
+         url('/eng/fonts/Paperlogy-9Black.woff') format('woff');
+    font-display: swap;
+}
+
+html, input, select, textarea {
+	font-family: 'Paperlogy', sans-serif;
+    font-size:16px; font-weight: 500; word-break: keep-all;
+	}
+
+body {font-size: 1rem; line-height: 1.5;}

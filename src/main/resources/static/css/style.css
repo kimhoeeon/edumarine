@@ -196,13 +196,26 @@ button {
 /* header */
 #header { background: #fff; position: fixed; width: 100%; z-index: 997; top: 0; border-bottom: 1px solid #ededed; }
 #header .header_top {background: #083274; height: 50px;}
-#header .header_top .inner {display: flex; justify-content: flex-end; align-items: center; height: 100%;}
-#header .header_top a {
-    display: flex; align-items: center; justify-content: center; flex-direction: column; margin-left:30px; color: #fff;
+#header .header_top .inner {display: flex; justify-content: flex-end; align-items: center; height: 100%; gap: 30px;}
+#header .header_top .inner > a {
+    display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff;
     font-size: 1.3rem; line-height: 1;
 }
 #header .header_top .sitemap {width: 50px; border-right: 1px solid #637797; border-left: 1px solid #637797;  height: 100%;}
 #header .header_top .sitemap img {width: 24px;}
+
+#header .selLang {position: relative; height: 100%; display: flex; align-items: center;}
+#header .selLang .lang {color: #fff; font-size: 1.3rem; display: flex; align-items: center; gap: 5px; cursor: pointer; line-height: 1;}
+#header .selLang .lang::after {
+    display: block; content: ""; width: 5px; height: 5px; border-top: 1px solid #fff; border-right: 1px solid #fff;
+    transform: rotate(135deg); margin-bottom: 6px;
+}
+#header .selLang .list {
+    position: absolute; top: 80%; left: 50%; transform: translateX(-50%); font-size: 1.3rem; padding:10px 5px; width: 100px; border-radius: 10px;
+    background: #fff; border: 1px solid #ededed; text-align: center; display: none; z-index: 1;
+}
+#header .selLang .list a {display: block; padding: 3px 0;}
+
 #header .header_bot {height: 90px;}
 #header .header_bot .inner {display: flex; align-items: center; height: 100%;}
 #header .header_bot h1 {flex: 1 0 0; height: 100%;}
@@ -474,7 +487,7 @@ button {
 }
 .sked_list_wrap .sked_list .btn {flex-basis: 110px; max-width: 110px;}
 .sked_list_wrap .sked_list .btn a {
-    display: block; width: 100%; border-radius: 50px; background: #083274; color: #fff;
+    display: block; width: 100%; border-radius: 50px; background: #bb0000; color: #fff;
     text-align: center; padding: 10px 0 7px; font-size: 1.5rem;
 }
 
@@ -1063,7 +1076,7 @@ button {
 .guide_plan td p.small {font-size: 1.3rem; color: #777;}
 .guide_plan .bg {background: #F9FBFF;}
 .guide_plan .gubun {width: 100px;}
-.guide_plan .name {width: 400px;}
+.guide_plan .name {width: 200px;}
 
 .guide_top {display: flex; flex-direction: column; gap: 40px; padding-bottom: 60px; word-break: keep-all; }
 .guide_top_tit .big {font-size: 3.2rem; line-height: 1;}

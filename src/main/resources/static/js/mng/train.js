@@ -379,10 +379,10 @@ function f_education_train_save(seq) {
                                             break;
                                     }
 
-                                    if(keyword !== ''){
+                                    /*if(keyword !== ''){
                                         let keywordJson = { keyword : keyword };
                                         f_sms_notify_sending('8', keywordJson); // 8 키워드알림 템플릿
-                                    }
+                                    }*/
 
                                     Swal.fire({
                                         title: '교육 정보 등록',

@@ -109,7 +109,7 @@
     .guide_all_inquiry {flex-direction: column; gap: 20px;}
     .guide_all_inquiry .tit_box {flex-basis: auto;}
 
-    .guide_plan .name {width: 250px;}
+    .guide_plan .name {width: 100px;}
 
     .guide_sub_tit {font-size: 1.6rem;}
     .guide_top_tit .big {font-size: 2.8rem;}
@@ -232,8 +232,9 @@
         transition: all .5s;
     }
     #header .nav.on {left: 0;}
-    #header .nav .mobile_top {display: block; background: #013B90; padding:0 20px; height:50px; line-height: 50px;}
-    #header .nav .mobile_top a {font-size: 1.3rem; margin-right: 30px; color: #fff; display: inline-block;}
+    #header .nav .mobile_top {display: flex; align-items: center; gap: 30px; background: #013B90; padding:0 20px; height:50px;}
+    #header .nav .mobile_top > a {font-size: 1.3rem; color: #fff;}
+    .hd_nav .nav .moblie_top .selLang {margin-left: auto;}
     #header .nav .dept1 {display: block;}
     #header .nav .dept1 > li {border-bottom:1px solid #ededed; position: relative;}    
     #header .nav .dept1 > li::after {
