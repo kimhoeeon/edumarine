@@ -177,65 +177,65 @@
                                     <col style="width: 28%;">
                                 </colgroup>
                                 <thead>
-                                <tr>
-                                    <th><div class="box">Course Name</div></th>
-                                    <th><div class="box">Boat Engineer<br>(Outboard engine vessel maintenance)</div></th>
-                                    <th><div class="box">Boat Engineer<br>(Inboard engine vessel maintenance)</div></th>
-                                    <th><div class="box">Boat Engineer<br>(FRP Hull maintenance)</div></th>
-                                </tr>
+                                    <tr>
+                                        <th><div class="box">Course Name</div></th>
+                                        <th><div class="box">Boat Engineer<br>(Outboard engine vessel maintenance)</div></th>
+                                        <th><div class="box">Boat Engineer<br>(Inboard engine vessel maintenance)</div></th>
+                                        <th><div class="box">Boat Engineer<br>(FRP Hull maintenance)</div></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><div class="box bgSky center">Training Target</div></td>
-                                    <td colspan="3">
-                                        <div class="box center">Among those who completed the theory course provided by Marina Professional Training Institutions designated by the Ministry Oceans and Fisheries, anyone that wants to acquire the certificate</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="box bgSky center">Purpose of Training</div></td>
-                                    <td colspan="2">
-                                        <div class="box">
-                                            <div class="p">Acquiring skills to maintain marine engine</div>
-                                            <div class="p">Equipping engineers with the ability to use technical literatures</div>
-                                            <div class="p">Those who completed the course earn the qualification to take the exam for marina boat engineer certificate</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="box">
-                                            <div class="p">Acquiring skills to maintain FRP Hull</div>
-                                            <div class="p">Equipping engineers with the ability to use technical literatures</div>
-                                            <div class="p">Those who completed the course earn the qualification to take the exam for marina boat engineer certificate</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="box bgSky center">Training Contents</div></td>
-                                    <td>
-                                        <div class="box">
-                                            <div class="p">Understanding of the marine engine</div>
-                                            <div class="p">Understanding of outboard engine system</div>
-                                            <div class="p">Two-stroke outboard engine Practice</div>
-                                            <div class="p">Four-stroke outboard engine Practice</div>
-                                            <div class="p">Outboard engine service and maintenance</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="box">
-                                            <div class="p">Understanding of the marine engine</div>
-                                            <div class="p">Diesel engine system</div>
-                                            <div class="p">Inboard engine maintenance practice</div>
-                                            <div class="p">Inboard engine service and maintenance</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="box">
-                                            <div class="p">Understanding of FRP hull</div>
-                                            <div class="p">Hull management and maintenance</div>
-                                            <div class="p">FRP lamination and the basics of engineering</div>
-                                            <div class="p">Base coating to repair hull damage</div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Training Target</div></td>
+                                        <td colspan="3">
+                                            <div class="box center">Among those who completed the theory course provided by Marina Professional Training Institutions designated by the Ministry Oceans and Fisheries, anyone that wants to acquire the certificate</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Purpose of Training</div></td>
+                                        <td colspan="2">
+                                            <div class="box">
+                                                <div class="p">Acquiring skills to maintain marine engine</div>
+                                                <div class="p">Equipping engineers with the ability to use technical literatures</div>
+                                                <div class="p">Those who completed the course earn the qualification to take the exam for marina boat engineer certificate</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="p">Acquiring skills to maintain FRP Hull</div>
+                                                <div class="p">Equipping engineers with the ability to use technical literatures</div>
+                                                <div class="p">Those who completed the course earn the qualification to take the exam for marina boat engineer certificate</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Training Contents</div></td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="p">Understanding of the marine engine</div>
+                                                <div class="p">Understanding of outboard engine system</div>
+                                                <div class="p">Two-stroke outboard engine Practice</div>
+                                                <div class="p">Four-stroke outboard engine Practice</div>
+                                                <div class="p">Outboard engine service and maintenance</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="p">Understanding of the marine engine</div>
+                                                <div class="p">Diesel engine system</div>
+                                                <div class="p">Inboard engine maintenance practice</div>
+                                                <div class="p">Inboard engine service and maintenance</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="p">Understanding of FRP hull</div>
+                                                <div class="p">Hull management and maintenance</div>
+                                                <div class="p">FRP lamination and the basics of engineering</div>
+                                                <div class="p">Base coating to repair hull damage</div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -253,54 +253,54 @@
                                     <col style="width: 28%;">
                                 </colgroup>
                                 <thead>
-                                <tr>
-                                    <th><div class="box">Course Name</div></th>
-                                    <th><div class="box">High-horsepower outboard maintenance</div></th>
-                                    <th><div class="box">Sterndrive maintenance</div></th>
-                                    <th><div class="box">Sail engine repair and maintenance</div></th>
-                                </tr>
+                                    <tr>
+                                        <th><div class="box">Course Name</div></th>
+                                        <th><div class="box">High-horsepower outboard maintenance</div></th>
+                                        <th><div class="box">Sterndrive maintenance</div></th>
+                                        <th><div class="box">Sail engine repair and maintenance</div></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><div class="box bgSky center">Training Target</div></td>
-                                    <td colspan="3">
-                                        <div class="box">
-                                            <div class="p">Those who completed the marine engine technician training</div>
-                                            <div class="p">Those who completed practice course for marina boat (inboard/outboard engine)</div>
-                                            <div class="p">Anyone who has experiences related to engine repair</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="box bgSky center">Purpose of Training</div></td>
-                                    <td><div class="box center">Nurturing intermediate level technician for outboard engine</div></td>
-                                    <td><div class="box center">Sterndrive repair and maintenance</div></td>
-                                    <td><div class="box center">Sail engine repair and maintenance</div></td>
-                                </tr>
-                                <tr>
-                                    <td><div class="box bgSky center">Training Contents</div></td>
-                                    <td>
-                                        <div class="box">
-                                            <div class="p">Understanding of high-horsepower outboard engine system</div>
-                                            <div class="p">High-horsepower outboard engine disassembly and assembly practice</div>
-                                            <div class="p">Understanding of maintenance and fault diagnosis for high-horsepower outboard engine</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="box">
-                                            <div class="p">Understanding of sterndrive</div>
-                                            <div class="p">Method to maintain and inspect sterndrive</div>
-                                            <div class="p">Fault of sterndrive and corrective action</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="box">
-                                            <div class="p">Understanding of sail engine</div>
-                                            <div class="p">Method to maintain and inspect sail engine</div>
-                                            <div class="p">Fault of sail engine and corrective action</div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Training Target</div></td>
+                                        <td colspan="3">
+                                            <div class="box">
+                                                <div class="p">Those who completed the marine engine technician training</div>
+                                                <div class="p">Those who completed practice course for marina boat (inboard/outboard engine)</div>
+                                                <div class="p">Anyone who has experiences related to engine repair</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Purpose of Training</div></td>
+                                        <td><div class="box center">Nurturing intermediate level technician for outboard engine</div></td>
+                                        <td><div class="box center">Sterndrive repair and maintenance</div></td>
+                                        <td><div class="box center">Sail engine repair and maintenance</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Training Contents</div></td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="p">Understanding of high-horsepower outboard engine system</div>
+                                                <div class="p">High-horsepower outboard engine disassembly and assembly practice</div>
+                                                <div class="p">Understanding of maintenance and fault diagnosis for high-horsepower outboard engine</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="p">Understanding of sterndrive</div>
+                                                <div class="p">Method to maintain and inspect sterndrive</div>
+                                                <div class="p">Fault of sterndrive and corrective action</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="box">
+                                                <div class="p">Understanding of sail engine</div>
+                                                <div class="p">Method to maintain and inspect sail engine</div>
+                                                <div class="p">Fault of sail engine and corrective action</div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -324,47 +324,47 @@
                                     <col style="width: 28%;">
                                 </colgroup>
                                 <thead>
-                                <tr>
-                                    <th><div class="box">Course Name</div></th>
-                                    <th><div class="box">Emergency response for marine engine </div></th>
-                                    <th><div class="box">Basic maintenance of marine engine</div></th>
-                                    <th><div class="box">Advanced self-repairment</div></th>
-                                </tr>
+                                    <tr>
+                                        <th><div class="box">Course Name</div></th>
+                                        <th><div class="box">Emergency response for marine engine </div></th>
+                                        <th><div class="box">Basic maintenance of marine engine</div></th>
+                                        <th><div class="box">Advanced self-repair</div></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><div class="box bgSky center">Training Target</div></td>
-                                    <td colspan="3">
-                                        <div class="box">
-                                            <div class="p">Those who completed the marine engine technician training</div>
-                                            <div class="p">Those who completed practicum course for marina boat (inboard/outboard engine)</div>
-                                            <div class="p">Anyone who has experiences related to engine repair</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="box bgSky center">Purpose of Training</div></td>
-                                    <td><div class="box center">Nurturing intermediate level technician for outboard engine</div></td>
-                                    <td><div class="box center">Sterndrive repair and maintenance</div></td>
-                                    <td><div class="box center">Sail engine repair and maintenance</div></td>
-                                </tr>
-                                <tr>
-                                    <td><div class="box bgSky center">Training Contents</div></td>
-                                    <td colspan="3">
-                                        <div class="boxCol">
+                                    <tr>
+                                        <td><div class="box bgSky center">Training Target</div></td>
+                                        <td colspan="3">
                                             <div class="box">
-                                                <div class="p">Understanding of high-horsepower outboard engine system</div>
-                                                <div class="p">High-horsepower outboard engine disassembly and assembly practice</div>
-                                                <div class="p">Understanding of maintenance and fault diagnosis for high-horsepower outboard engine</div>
+                                                <div class="p">Those who completed the marine engine technician training</div>
+                                                <div class="p">Those who completed practicum course for marina boat (inboard/outboard engine)</div>
+                                                <div class="p">Anyone who has experiences related to engine repair</div>
                                             </div>
-                                            <div class="box">
-                                                <div class="p">Understanding of sail engine</div>
-                                                <div class="p">Method to maintain and inspect sail engine</div>
-                                                <div class="p">Fault of sail engine and corrective action</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Purpose of Training</div></td>
+                                        <td><div class="box center">Nurturing intermediate level technician for outboard engine</div></td>
+                                        <td><div class="box center">Sterndrive repair and maintenance</div></td>
+                                        <td><div class="box center">Sail engine repair and maintenance</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="box bgSky center">Training Contents</div></td>
+                                        <td colspan="3">
+                                            <div class="boxCol">
+                                                <div class="box">
+                                                    <div class="p">Understanding of high-horsepower outboard engine system</div>
+                                                    <div class="p">High-horsepower outboard engine disassembly and assembly practice</div>
+                                                    <div class="p">Understanding of maintenance and fault diagnosis for high-horsepower outboard engine</div>
+                                                </div>
+                                                <div class="box">
+                                                    <div class="p">Understanding of sail engine</div>
+                                                    <div class="p">Method to maintain and inspect sail engine</div>
+                                                    <div class="p">Fault of sail engine and corrective action</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
