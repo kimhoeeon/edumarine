@@ -252,7 +252,7 @@
                 <div class="sec_tit">
                     <div class="big">Gyeonggi Marina’s Facility</div>
                     <div class="small">
-                        Gyeonggi Province is promoting large scale marina projects at Jeongok, Gimpo, Jebu, Holgot, Bang-a-meori.<br>
+                        Gyeonggi Province is promoting large scale marina projects at Jeongok, Gimpo, Jebu, Helgot, Bang-a-meori.<br>
                         Those marinas are equipped with land/water moorages,<br>
                         <span class="bold colorMain">which prevents vessels from natural disasters such as tidal difference, typhoon</span>, etc.<br>
                         Gyeonggi bay will become the hub of the marine leisure tourism industry in the northeast<br>

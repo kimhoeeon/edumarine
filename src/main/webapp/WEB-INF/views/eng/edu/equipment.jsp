@@ -295,7 +295,7 @@
                                     <tr>
                                         <td rowspan="2"><div class="box bgSky">Electric</div></td>
                                         <td><div class="box">270HP, 6 cylinders, 3800rpm</div></td>
-                                        <td><div class="box">Hyundai Seaseall</div></td>
+                                        <td><div class="box">Hyundai Seasall</div></td>
                                         <td><div class="box">s270s</div></td>
                                         <td><div class="box">-</div></td>
                                     </tr>
@@ -306,7 +306,7 @@
                                         <td><div class="box">-</div></td>
                                     </tr>
                                     <tr>
-                                        <td rowspan="4"><div class="box bgSky">Mechnical</div></td>
+                                        <td rowspan="4"><div class="box bgSky">Mechanical</div></td>
                                         <td><div class="box">75HP, 4 cylinders, 3000rpm</div></td>
                                         <td><div class="box">Volvo Penta</div></td>
                                         <td><div class="box">D2-75+150S</div></td>
