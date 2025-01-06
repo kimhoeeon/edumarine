@@ -20,6 +20,7 @@ let KTProjectList = function () {
             '#c1f119', //기초정비교육
             '#4a18de', //응급조치교육
             '#5fa7c5', //발전기 정비 교육
+            '#c51d9e', //선외기/선내기 직무역량 강화과정
         ];
 
         // init chart

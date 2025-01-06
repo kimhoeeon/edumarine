@@ -404,6 +404,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/competency.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -1295,6 +1305,18 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/competency.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -1882,6 +1904,7 @@ if (document.documentElement) {
                                                         <option value="응급조치교육 (선내기)">응급조치교육 (선내기)</option>
                                                         <option value="응급조치교육 (세일요트)">응급조치교육 (세일요트)</option>
                                                         <option value="발전기 정비 교육">발전기 정비 교육</option>
+                                                        <option value="선외기/선내기 직무역량 강화과정">선외기/선내기 직무역량 강화과정</option>
                                                     </select>
                                                 </div>
                                                 <!--end::Col-->

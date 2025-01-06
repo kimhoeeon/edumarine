@@ -138,8 +138,8 @@
                     <li><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
                     <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
                     <li><a href="/guide/guide05.do">위탁교육</a></li>
-                    <li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>
-                    <li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>
+                    <%--<li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>
+                    <li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>--%>
                     <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
                     <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
                     <li class="on"><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>

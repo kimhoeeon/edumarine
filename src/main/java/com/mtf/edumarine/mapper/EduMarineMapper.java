@@ -340,13 +340,25 @@ public interface EduMarineMapper {
 
     Integer selectGeneratorPreCheck(GeneratorDTO generatorDTO);
 
+    GeneratorDTO selectGeneratorSingle(String seq);
+
     String getGeneratorSeq();
 
     Integer insertGenerator(GeneratorDTO generatorDTO);
 
-    GeneratorDTO selectGeneratorSingle(String seq);
-
     Integer updateGenerator(GeneratorDTO generatorDTO);
 
     Integer updateGeneratorPayStatus(GeneratorDTO generatorDTO);
+
+    Integer SelectCompetencyPreCheck(CompetencyDTO competencyDTO);
+
+    CompetencyDTO selectCompetencySingle(String seq);
+
+    String getCompetencySeq();
+
+    Integer insertCompetency(CompetencyDTO competencyDTO);
+
+    Integer updateCompetency(CompetencyDTO competencyDTO);
+
+    Integer updateCompetencyPayStatus(CompetencyDTO competencyDTO);
 }

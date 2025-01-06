@@ -543,4 +543,16 @@ public interface EduMarineMngMapper {
 
     Integer updateGeneratorTrainSeq(GeneratorDTO generatorDTO);
 
+    List<CompetencyDTO> selectCompetencyList(SearchDTO searchDTO);
+
+    CompetencyDTO selectCompetencySingle(String seq);
+
+    Integer updateCompetencyApplyStatus(CompetencyDTO info);
+
+    List<CompetencyDetailDTO> selectExcelCompetencyDetailList();
+
+    List<SmsSendDTO> selectSmsSendCompetencyList(String boarderGbn);
+
+    Integer updateCompetencyTrainSeq(CompetencyDTO competencyDTO);
+
 }

@@ -570,7 +570,7 @@ function f_customer_emergency_detail_excel_download(tableId , name){
     if(dataCount > 0){
 
         Swal.fire({
-            title: '[전체 신청자 정보 상세 다운로드]',
+            title: '[ 전체 신청자 정보 상세 다운로드 ]',
             html: '엑셀 다운로드 사유 입력 후 다운로드 가능합니다.<br>파일 > 파일관리 > 다운로드내역',
             input: 'text',
             inputPlaceholder: '엑셀 다운로드 사유를 입력해주세요.',
@@ -640,7 +640,7 @@ function f_customer_emergency_detail_excel_download(tableId , name){
             }
         })
     }else{
-        showMessage('', 'info', '[전체 신청자 정보 상세 다운로드]', '엑셀로 추출할 데이터가 없습니다.', '');
+        showMessage('', 'info', '[ 전체 신청자 정보 상세 다운로드 ]', '엑셀로 추출할 데이터가 없습니다.', '');
     }
 }
 
