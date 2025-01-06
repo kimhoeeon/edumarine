@@ -243,6 +243,10 @@ function searchPosts(pageNum, categoryValue) {
                             thumbnailImage = '/img/thumbnail_generator.png';
                             applyPath = '/apply/eduApply18.do';
                             break;
+                        case '선외기/선내기 직무역량 강화과정':
+                            thumbnailImage = '/img/thumbnail_competency.png';
+                            applyPath = '/apply/eduApply19.do';
+                            break;
                         default:
                             break;
                     }
@@ -379,7 +383,7 @@ function f_apply_page_move(trainSeq, endpoint){
     let id = sessionStorage.getItem('id');
     if(nvl(id,'') !== ''){
         Swal.fire({
-            title: '[교육 신청]',
+            title: '[ 교육 신청 ]',
             html: '신청 페이지로 이동하시겠습니까?',
             icon: 'info',
             showCancelButton: true,
@@ -394,7 +398,7 @@ function f_apply_page_move(trainSeq, endpoint){
         });
     }else{
         Swal.fire({
-            title: '[교육 신청]',
+            title: '[ 교육 신청 ]',
             html: '로그인이 필요합니다.<br> 로그인 페이지로 이동하시겠습니까?',
             icon: 'info',
             showCancelButton: true,

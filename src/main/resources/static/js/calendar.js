@@ -134,6 +134,10 @@ function f_train_calendar_select(category){
                         className = 'edu18';
                         link = '/apply/eduApply18.do';
                         break;
+                    case '선외기/선내기 직무역량 강화과정':
+                        className = 'edu19';
+                        link = '/apply/eduApply19.do';
+                        break;
                     default:
                         break;
                 }

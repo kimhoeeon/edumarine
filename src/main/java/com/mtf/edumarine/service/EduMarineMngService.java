@@ -458,4 +458,14 @@ public interface EduMarineMngService {
     GeneratorDTO processSelectGeneratorSingle(String seq);
 
     List<GeneratorDetailDTO> processSelectExcelGeneratorDetailList();
+
+    List<CompetencyDTO> processSelectCompetencyList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateCompetencyApplyStatus(List<CompetencyDTO> competencyList);
+
+    ResponseDTO processUpdateCompetencyApplyStatusChange(List<CompetencyDTO> competencyList);
+
+    CompetencyDTO processSelectCompetencySingle(String seq);
+
+    List<CompetencyDetailDTO> processSelectExcelCompetencyDetailList();
 }

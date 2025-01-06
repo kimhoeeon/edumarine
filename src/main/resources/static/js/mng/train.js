@@ -443,6 +443,7 @@ function f_education_train_form_data_setting() {
             case '자가정비 심화과정 (고마력 선외기)':
             case '기초정비교육':
             case '응급조치교육':
+            case '선외기/선내기 직무역량 강화과정':
                 category = '단기과정';
                 break;
             case '고마력 선외기 정비 중급 테크니션':
@@ -574,7 +575,7 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
     console.log(gbn, nextTime, trainApplyCnt);
 
     if(trainApplyCnt === '0'){
-        showMessage('', 'info', '[신청명단보기]', '현재 신청자가 없는 교육입니다.', '');
+        showMessage('', 'info', '[ 신청명단보기 ]', '현재 신청자가 없는 교육입니다.', '');
         return;
     }
 
@@ -622,6 +623,9 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
         case '발전기 정비 교육':
             link = '/mng/customer/generator.do';
             break;
+        case '선외기/선내기 직무역량 강화과정':
+            link = '/mng/customer/competency.do';
+            break;
         default:
             break;
     }
@@ -633,6 +637,6 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             window.location.href = link + '?nextTime=' + nextTime;
         }
     }else{
-        showMessage('', 'info', '[신청명단보기]', '신청 명단 페이지가 존재하지 않습니다.', '');
+        showMessage('', 'info', '[ 신청명단보기 ]', '신청 명단 페이지가 존재하지 않습니다.', '');
     }
 }

@@ -339,6 +339,9 @@ public class EduMarineController {
                 case "EDU16":
                     trainName = "발전기 정비 교육";
                     break;
+                case "EDU17":
+                    trainName = "선외기/선내기 직무역량 강화과정"; //TODO 교육추가
+                    break;
                 default:
                     trainName = searchText;
                     break;
@@ -658,6 +661,17 @@ public class EduMarineController {
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply19/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply19_update_status(@RequestBody CompetencyDTO competencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply19_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1769,6 +1783,80 @@ public class EduMarineController {
         //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateGenerator(generatorDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply19.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply19(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply19");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply19");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply19/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply19_preCheck(@RequestBody CompetencyDTO competencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply19_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectCompetencyPreCheck(competencyDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply19/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply19_insert(@RequestBody CompetencyDTO competencyDTO) {
+        System.out.println("EduMarineController > apply_eduApply19_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertCompetency(competencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply19_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply19_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply19_modify");
+        ModelAndView mv = new ModelAndView();
+
+        CompetencyDTO info = eduMarineService.processSelectCompetencySingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply19_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply19/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply19_update(@RequestBody CompetencyDTO competencyDTO) {
+        System.out.println("EduMarineController > mypage_eduApply19_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateCompetency(competencyDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -3637,6 +3725,7 @@ public class EduMarineController {
                         // 선내기 응급조치교육
                         // 세일요트 응급조치교육
                         // 발전기 정비 교육
+                        // 선외기/선내기 직무역량 강화과정
                         if (paymentDTO.getTrainName().contains("상시")) {
 
                             // regular table
@@ -3840,6 +3929,20 @@ public class EduMarineController {
                                 }
                             }
 
+                        } else if (paymentDTO.getTrainName().contains("직무역량")) {
+
+                            // Competency table
+                            CompetencyDTO competencyDTO = new CompetencyDTO();
+                            competencyDTO.setSeq(paymentDTO.getTableSeq());
+                            competencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
                         }
                     }
                 }
@@ -4025,6 +4128,7 @@ public class EduMarineController {
                         // 선내기 응급조치교육
                         // 세일요트 응급조치교육
                         // 발전기 정비 교육
+                        // 선외기/선내기 직무역량 강화과정
                         if (paymentDTO.getTrainName().contains("상시")) {
 
                             // regular table
@@ -4222,6 +4326,20 @@ public class EduMarineController {
                             generatorDTO.setSeq(paymentDTO.getTableSeq());
                             generatorDTO.setApplyStatus(paymentDTO.getPayStatus());
                             ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
+
+                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                }
+                            }
+
+                        } else if (paymentDTO.getTrainName().contains("직무역량")) {
+
+                            // Competency table
+                            CompetencyDTO competencyDTO = new CompetencyDTO();
+                            competencyDTO.setSeq(paymentDTO.getTableSeq());
+                            competencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                            ResponseDTO result = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 if ("결제완료".equals(paymentDTO.getPayStatus())) {
