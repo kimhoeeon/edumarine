@@ -409,7 +409,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/competency.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                                                            <span class="menu-title" style="letter-spacing: -1px;">선외기/선내기 직무역량 강화과정</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1312,7 +1312,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                                <span class="menu-title" style="letter-spacing: -1px;">선외기/선내기 직무역량 강화과정</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1881,7 +1881,7 @@ if (document.documentElement) {
                                         <!--begin::Card toolbar-->
                                         <div class="card-toolbar flex-row-fluid gap-5">
 
-                                                <%--begin::환불내역존재--%>
+                                            <%--begin::환불내역존재--%>
                                             <div class="w-100 mw-150px">
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="condition_send_yn">
@@ -1890,7 +1890,7 @@ if (document.documentElement) {
                                                     <input class="form-check-input" type="checkbox" id="condition_send_yn" onchange="f_newsletter_subscriber_search()"/>
                                                 </div>
                                             </div>
-                                                <%--end::환불내역존재--%>
+                                            <%--end::환불내역존재--%>
 
                                             <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
 

@@ -51,4 +51,6 @@ public class SterndriveDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

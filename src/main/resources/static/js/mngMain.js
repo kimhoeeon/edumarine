@@ -464,7 +464,7 @@ function nullToEmpty(nullStr){
 function nvl(str, defaultStr){
 
 
-    if(typeof str === "undefined" || typeof str === undefined || str === null || str === "" || str === "null" || Object.keys(str).length === 0){
+    if(typeof str === "undefined" || typeof str === undefined || str === null || str === "" || str === "null" || Object.keys(str).length === 0 || (typeof str === "object" && !Object.keys(str).length)){
         str = defaultStr ;
     }
 

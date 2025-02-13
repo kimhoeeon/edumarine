@@ -48,4 +48,6 @@ public class GeneratorDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

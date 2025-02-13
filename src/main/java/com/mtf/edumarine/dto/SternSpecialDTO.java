@@ -44,4 +44,6 @@ public class SternSpecialDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

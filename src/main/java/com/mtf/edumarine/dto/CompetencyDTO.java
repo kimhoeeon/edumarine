@@ -48,4 +48,6 @@ public class CompetencyDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

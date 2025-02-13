@@ -46,4 +46,6 @@ public class SailyachtDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

@@ -191,17 +191,20 @@ function f_customer_boarder_search(){
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
 
+    let year = $('#condition_year option:selected').val();
     let applyStatus = $('#condition_apply_status option:selected').val();
     let jobSupportYn = $('#condition_job_support_yn option:selected').val();
     let time = $('#condition_time option:selected').val();
-    if(nullToEmpty(searchText) === ''){
+    if(nvl(searchText,'') === ''){
         jsonObj = {
+            year: year,
             time: time,
             applyStatus: applyStatus,
             jobSupportYn: jobSupportYn
         };
     }else{
         jsonObj = {
+            year: year,
             time: time,
             applyStatus: applyStatus,
             jobSupportYn: jobSupportYn,
@@ -214,8 +217,8 @@ function f_customer_boarder_search(){
 
     dataTbl.rows.add(resData).draw();
 
-    dataTbl.column(4).nodes().to$().addClass('d-flex');
-    dataTbl.column(4).nodes().to$().addClass('justify-content-center');
+    dataTbl.column(5).nodes().to$().addClass('d-flex');
+    dataTbl.column(5).nodes().to$().addClass('justify-content-center');
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
@@ -241,6 +244,7 @@ function f_customer_boarder_search(){
 function f_customer_boarder_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_year').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_apply_status').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_job_support_yn').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
