@@ -48,4 +48,6 @@ public class EmergencyDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

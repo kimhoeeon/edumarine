@@ -1928,24 +1928,7 @@
              , IFNULL(m.name_en, b.name_en) as nameEn
              , IFNULL(m.phone, b.phone) as phone
              , IFNULL(m.email, b.email) as email
-             , b.top_clothes_size
-             , b.bottom_clothes_size
-             , b.shoes_size
-             , b.participation_path
-             , b.grade_gbn
-             , b.school_name
-             , b.major
-             , b.military_gbn
-             , b.military_reason
-             , b.disabled_gbn
              , b.job_support_gbn
-             , b.tech_edu_gbn
-             , b.tech_edu_name
-             , b.apply_reason
-             , b.tech_reason
-             , b.activity_reason
-             , b.plan_reason
-             , b.etc_reason
              , b.apply_status
              , b.cancel_dttm
              , b.cancel_reason
@@ -1958,6 +1941,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM boarder b
         LEFT JOIN member m
         ON b.member_seq = m.seq
@@ -1985,7 +1969,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, b.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, b.init_regi_dttm DESC
     </select>
 
     <select id="selectBoarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BoarderDTO">
@@ -2109,24 +2096,7 @@
              , IFNULL(m.name_en, f.name_en) as nameEn
              , IFNULL(m.phone, f.phone) as phone
              , IFNULL(m.email, f.email) as email
-             , f.top_clothes_size
-             , f.bottom_clothes_size
-             , f.shoes_size
-             , f.participation_path
-             , f.grade_gbn
-             , f.school_name
-             , f.major
-             , f.military_gbn
-             , f.military_reason
-             , f.disabled_gbn
              , f.job_support_gbn
-             , f.know_path
-             , f.know_path_reason
-             , f.apply_reason
-             , f.tech_reason
-             , f.activity_reason
-             , f.plan_reason
-             , f.etc_reason
              , f.apply_status
              , f.cancel_dttm
              , f.cancel_reason
@@ -2139,6 +2109,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = f.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = f.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM frp f
         LEFT JOIN member m
         on f.member_seq = m.seq
@@ -2166,7 +2137,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, f.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, f.init_regi_dttm DESC
     </select>
 
     <select id="selectFrpSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FrpDTO">
@@ -2251,6 +2225,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = b.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM basic b
         LEFT JOIN member m
         ON b.member_seq = m.seq
@@ -2278,7 +2253,10 @@
         <if test='boarderGbn != null and boarderGbn != ""'>
             AND b.boarder_gbn = #{boarderGbn}
         </if>
-        ORDER BY m.grade IS NULL, b.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, b.init_regi_dttm DESC
     </select>
 
     <select id="selectBasicSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.BasicDTO">
@@ -2348,6 +2326,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM emergency e
         LEFT JOIN member m
         ON e.member_seq = m.seq
@@ -2375,7 +2354,10 @@
         <if test='boarderGbn != null and boarderGbn != ""'>
             AND e.boarder_gbn = #{boarderGbn}
         </if>
-        ORDER BY m.grade IS NULL, e.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, e.init_regi_dttm DESC
     </select>
 
     <select id="selectEmergencySingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EmergencyDTO">
@@ -2446,6 +2428,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = g.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = g.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM generator g
         LEFT JOIN member m
         ON g.member_seq = m.seq
@@ -2470,7 +2453,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, g.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, g.init_regi_dttm DESC
     </select>
 
     <select id="selectGeneratorSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.GeneratorDTO">
@@ -2541,6 +2527,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = c.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = c.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM competency c
         LEFT JOIN member m
         ON c.member_seq = m.seq
@@ -2565,7 +2552,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, c.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, c.init_regi_dttm DESC
     </select>
 
     <select id="selectCompetencySingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.CompetencyDTO">
@@ -2634,6 +2624,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = o.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = o.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM outboarder o
         LEFT JOIN member m
         ON o.member_seq = m.seq
@@ -2658,7 +2649,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, o.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, o.init_regi_dttm DESC
     </select>
 
     <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
@@ -2725,6 +2719,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = i.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = i.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM inboarder i
         LEFT JOIN member m
         ON i.member_seq = m.seq
@@ -2749,7 +2744,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, i.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, i.init_regi_dttm DESC
     </select>
 
     <select id="selectInboarderSingle" parameterType="com.mtf.edumarine.dto.InboarderDTO" resultType="com.mtf.edumarine.dto.InboarderDTO">
@@ -2864,6 +2862,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM sailyacht s
         LEFT JOIN member m
         ON s.member_seq = m.seq
@@ -2888,7 +2887,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, s.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, s.init_regi_dttm DESC
     </select>
 
     <select id="selectSailyachtSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SailyachtDTO">
@@ -2958,6 +2960,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = h.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = h.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM highhorsepower h
         LEFT JOIN member m
         ON h.member_seq = m.seq
@@ -2982,7 +2985,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, h.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, h.init_regi_dttm DESC
     </select>
 
     <select id="selectHighhorsepowerSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighHorsePowerDTO">
@@ -3055,6 +3061,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = e.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM highself e
         LEFT JOIN member m
         ON e.member_seq = m.seq
@@ -3079,7 +3086,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, e.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, e.init_regi_dttm DESC
     </select>
 
     <select id="selectHighSelfSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighSelfDTO">
@@ -3147,6 +3157,7 @@
         , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = c.seq) as payMethod
         , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = c.seq) as cancelGbn
         , t.next_time
+        , t.train_start_dttm
         FROM highspecial c
         LEFT JOIN member m
         ON c.member_seq = m.seq
@@ -3171,7 +3182,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, c.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, c.init_regi_dttm DESC
     </select>
 
     <select id="selectHighSpecialSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.HighSpecialDTO">
@@ -3239,6 +3253,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = s.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM sterndrive s
         LEFT JOIN member m
         ON s.member_seq = m.seq
@@ -3263,7 +3278,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, s.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, s.init_regi_dttm DESC
     </select>
 
     <select id="selectSterndriveSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SterndriveDTO">
@@ -3331,6 +3349,7 @@
              , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = ss.seq) as payMethod
              , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = ss.seq) as cancelGbn
              , t.next_time
+             , t.train_start_dttm
         FROM sternspecial ss
         LEFT JOIN member m
         ON ss.member_seq = m.seq
@@ -3355,7 +3374,10 @@
         <if test='time != null and time != ""'>
             AND t.next_time = #{time}
         </if>
-        ORDER BY m.grade IS NULL, ss.name_ko
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, ss.init_regi_dttm DESC
     </select>
 
     <select id="selectSternSpecialSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SternSpecialDTO">

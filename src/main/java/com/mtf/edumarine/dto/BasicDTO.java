@@ -48,4 +48,6 @@ public class BasicDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

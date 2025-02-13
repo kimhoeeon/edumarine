@@ -210,16 +210,19 @@ function f_customer_basic_search(){
     let searchText = $('#search_text').val();
 
     let applyStatus = $('#condition_apply_status option:selected').val();
+    let year = $('#condition_year option:selected').val();
     let time = $('#condition_time option:selected').val();
     let boarderGbn = $('#condition_boarder_gbn option:selected').val();
     if(nvl(searchText,'') === ''){
         jsonObj = {
+            year: year,
             time: time,
             applyStatus: applyStatus,
             boarderGbn: boarderGbn
         };
     }else{
         jsonObj = {
+            year: year,
             time: time,
             applyStatus: applyStatus,
             boarderGbn: boarderGbn,
@@ -232,8 +235,8 @@ function f_customer_basic_search(){
 
     dataTbl.rows.add(resData).draw();
 
-    dataTbl.column(5).nodes().to$().addClass('d-flex');
-    dataTbl.column(5).nodes().to$().addClass('justify-content-center');
+    dataTbl.column(6).nodes().to$().addClass('d-flex');
+    dataTbl.column(6).nodes().to$().addClass('justify-content-center');
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
@@ -260,6 +263,7 @@ function f_customer_basic_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
     $('#condition_apply_status').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_year').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_boarder_gbn').val('').select2({minimumResultsForSearch: Infinity});
 

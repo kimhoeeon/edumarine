@@ -401,7 +401,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/competency.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                                                            <span class="menu-title" style="letter-spacing: -1px;">선외기/선내기 직무역량 강화과정</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1294,7 +1294,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                                <span class="menu-title" style="letter-spacing: -1px;">선외기/선내기 직무역량 강화과정</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>

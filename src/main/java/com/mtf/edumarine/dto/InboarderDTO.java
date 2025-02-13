@@ -46,4 +46,6 @@ public class InboarderDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

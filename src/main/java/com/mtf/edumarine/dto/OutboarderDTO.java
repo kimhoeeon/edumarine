@@ -46,4 +46,6 @@ public class OutboarderDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

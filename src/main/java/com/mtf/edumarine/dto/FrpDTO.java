@@ -66,4 +66,6 @@ public class FrpDTO {
     String payMethod;
     String changeYn;
     String nextTime;
+
+    String trainStartDttm;
 }

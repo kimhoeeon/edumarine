@@ -425,7 +425,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/competency.do"
                                                                            class="menu-link active">
-                                                                            <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                                                            <span class="menu-title" style="letter-spacing: -1px;">선외기/선내기 직무역량 강화과정</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1328,7 +1328,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">선외기/선내기 직무역량 강화과정</span>
+                                                <span class="menu-title" style="letter-spacing: -1px;">선외기/선내기 직무역량 강화과정</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1914,6 +1914,20 @@ if (document.documentElement) {
                                             <%--begin::신청상태--%>
                                             <div class="w-100 mw-175px">
                                                 <!--begin::Select2-->
+                                                <select id="condition_year" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 연도 -" onchange="f_customer_competency_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 연도 -</option>
+                                                    <option value="2025" selected>2025</option>
+                                                    <option value="2024">2024</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::신청상태--%>
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-175px">
+                                                <!--begin::Select2-->
                                                 <select id="condition_time" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 차시 -" onchange="f_customer_competency_search()">
@@ -1984,6 +1998,7 @@ if (document.documentElement) {
                                                     </th>
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
+                                                    <th class="text-center min-w-50px">연도</th>
                                                     <th class="text-center min-w-50px">차시</th>
                                                     <th class="text-center min-w-75px">신청상태</th>
                                                     <th class="text-center min-w-75px">등급</th>
@@ -1996,6 +2011,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

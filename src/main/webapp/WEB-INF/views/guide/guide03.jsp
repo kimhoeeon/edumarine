@@ -209,7 +209,7 @@
                         <!-- guide_tit_box -->
                         <div class="guide_tit_box">
                             <div class="num">01</div>
-                            <div class="name">2024년도 교육과정 안내</div>
+                            <div class="name">과정 안내</div>
                         </div>
                         <!-- //guide_tit_box -->
                         <!-- guide_table -->

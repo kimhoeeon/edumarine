@@ -542,30 +542,34 @@ let DTCustomerBoarder = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -575,6 +579,7 @@ let DTCustomerBoarder = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -586,6 +591,16 @@ let DTCustomerBoarder = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -787,30 +802,34 @@ let DTCustomerFrp = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -820,6 +839,7 @@ let DTCustomerFrp = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -831,6 +851,16 @@ let DTCustomerFrp = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -1032,30 +1062,34 @@ let DTCustomerBasic = function () {
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 8,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 9,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1066,6 +1100,7 @@ let DTCustomerBasic = function () {
                 { data: 'rownum' },
                 { data: 'seq' },
                 { data: 'boarderGbn' },
+                { data: 'year' },
                 { data: 'nextTime' },
                 { data: 'applyStatus' },
                 { data: 'grade' },
@@ -1076,6 +1111,16 @@ let DTCustomerBasic = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -1277,30 +1322,34 @@ let DTCustomerEmergency = function () {
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 8,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 9,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1311,6 +1360,7 @@ let DTCustomerEmergency = function () {
                 { data: 'rownum' },
                 { data: 'seq' },
                 { data: 'boarderGbn' },
+                { data: 'year' },
                 { data: 'nextTime' },
                 { data: 'applyStatus' },
                 { data: 'grade' },
@@ -1321,6 +1371,16 @@ let DTCustomerEmergency = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -1522,30 +1582,34 @@ let DTCustomerOutboarder = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1555,6 +1619,7 @@ let DTCustomerOutboarder = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -1565,6 +1630,16 @@ let DTCustomerOutboarder = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -1766,30 +1841,34 @@ let DTCustomerInboarder = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1799,6 +1878,7 @@ let DTCustomerInboarder = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -1809,6 +1889,16 @@ let DTCustomerInboarder = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -2010,30 +2100,34 @@ let DTCustomerSailyacht = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -2043,6 +2137,7 @@ let DTCustomerSailyacht = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -2053,6 +2148,16 @@ let DTCustomerSailyacht = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -2254,30 +2359,34 @@ let DTCustomerHighhorsepower = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -2287,6 +2396,7 @@ let DTCustomerHighhorsepower = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -2297,6 +2407,16 @@ let DTCustomerHighhorsepower = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -2498,30 +2618,34 @@ let DTCustomerHighself = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -2531,6 +2655,7 @@ let DTCustomerHighself = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -2541,6 +2666,16 @@ let DTCustomerHighself = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -2742,30 +2877,34 @@ let DTCustomerHighspecial = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -2775,6 +2914,7 @@ let DTCustomerHighspecial = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -2785,6 +2925,16 @@ let DTCustomerHighspecial = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -2986,30 +3136,34 @@ let DTCustomerSterndrive = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -3019,6 +3173,7 @@ let DTCustomerSterndrive = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -3029,6 +3184,16 @@ let DTCustomerSterndrive = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -3230,30 +3395,34 @@ let DTCustomerSternspecial = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -3263,6 +3432,7 @@ let DTCustomerSternspecial = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -3273,6 +3443,16 @@ let DTCustomerSternspecial = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -3474,30 +3654,34 @@ let DTCustomerGenerator = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -3507,6 +3691,7 @@ let DTCustomerGenerator = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -3517,6 +3702,16 @@ let DTCustomerGenerator = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
@@ -3718,30 +3913,34 @@ let DTCustomerCompetency = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'render': function (data, type, row) { return renderContactCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -3751,6 +3950,7 @@ let DTCustomerCompetency = function () {
                 { data: '' },
                 { data: 'rownum' },
                 { data: 'seq'},
+                { data: 'year'},
                 { data: 'nextTime'},
                 { data: 'applyStatus'},
                 { data: 'grade'},
@@ -3761,6 +3961,16 @@ let DTCustomerCompetency = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
     }
 
     function renderNextTimeCell(data, type, row) {
