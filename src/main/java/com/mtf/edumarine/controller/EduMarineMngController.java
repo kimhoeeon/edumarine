@@ -4128,7 +4128,7 @@ public class EduMarineMngController {
             //response.put("uuid",uuid);
             response.put("fileName", file);
 
-            System.out.println("[full file path] : " + uploadPath + File.separator + uuid + "_" + file);
+            System.out.println("[full file path] : " + uploadPath + File.separator + file);
             /*System.System.out.println("[uploadPath.getPath()2] : " + uploadPath.getPath());
             System.System.out.println("[uuid] : " + uuid);
             System.System.out.println("[fileName] : " + oriFile);

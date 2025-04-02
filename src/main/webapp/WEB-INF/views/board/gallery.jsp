@@ -76,7 +76,7 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
 
     <!-- swiper 외부 라이브러리 -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <%-- favicon --%>
     <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
@@ -228,7 +228,7 @@
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
