@@ -5,7 +5,7 @@
   Time: 오후 5:21
   To change this template use File | Settings | File Templates.
 --%>
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 <%--script
 <script src="/js/jquery-1.9.1.min.js"></script>

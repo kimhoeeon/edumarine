@@ -95,7 +95,7 @@
     <%-- favicon --%>
 
     <!-- swiper 외부 라이브러리 -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
@@ -252,7 +252,7 @@
                                                     <td>'25. 1. 2.(목) ~ 8. 28.(목)</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>특별반4차: '25. 11. 12.(수) ~ 11. 20.(목)</td>
+                                                    <td>특별반4차: '25. 11. 12.(수) ~ 11. 18.(토,일 포함)</td>
                                                     <td>'25. 1. 2.(목) ~ 11. 5.(목)</td>
                                                 </tr>
                                                 <tr>
@@ -339,7 +339,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="bg gubun" rowspan="2" colspan="2">[심화] 발전기 정비 교육_3일</td>
-                                                    <td>1차: '25. 5. 7.(수) ~ 5. 9.(금)</td>
+                                                    <td>1차: '25. 5. 14.(수) ~ 5. 16.(금)</td>
                                                     <td>'25. 1. 2.(목) ~ 4. 30.(수)</td>
                                                 </tr>
                                                 <tr>
@@ -626,7 +626,7 @@
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 

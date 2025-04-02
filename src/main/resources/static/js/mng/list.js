@@ -619,7 +619,7 @@ function requestMakeMailFormat(data){
 
     let cpEmail;
     if(nvl(note,'') === '개발사') {
-        cpEmail = 'leebk@kwateromc.co.kr';
+        cpEmail = 'jove0904@kwateromc.co.kr';
     }else{
         // kyj@meetingfan.com
         // khe@meetingfan.com
