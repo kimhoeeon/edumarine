@@ -141,7 +141,7 @@
                 <div class="join_wrap form_wrap">
 
                     <!-- 과정안내 -->
-                    <div class="form_guide">
+                    <%--<div class="form_guide">
                         <div class="tit">과정안내</div>
                         <ul class="list">
                             <li>
@@ -180,7 +180,7 @@
                                 <div class="naeyong">330,000</div>
                             </li>
                         </ul>
-                    </div>
+                    </div>--%>
                     <!-- //과정안내 -->
 
                     <!-- form box -->
