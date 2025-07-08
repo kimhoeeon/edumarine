@@ -51,15 +51,6 @@
     <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
     <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
     <%-- favicon --%>
     <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
@@ -402,6 +393,26 @@ if (document.documentElement) {
                                                                         <a href="/mng/customer/competency.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title" style="letter-spacing: -1px;">선외기/선내기 직무역량 강화과정</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/famtourin.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">선내기 팸투어</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/famtourout.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">선외기 팸투어</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1309,6 +1320,30 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/famtourin.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">선내기 팸투어</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/famtourout.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">선외기 팸투어</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -1869,6 +1904,8 @@ if (document.documentElement) {
                                                             <option value="응급조치교육" <c:if test="${info.gbn eq '응급조치교육'}">selected</c:if> >응급조치교육</option>
                                                             <option value="발전기 정비 교육" <c:if test="${info.gbn eq '발전기 정비 교육'}">selected</c:if> >발전기 정비 교육</option>
                                                             <option value="선외기/선내기 직무역량 강화과정" <c:if test="${info.gbn eq '선외기/선내기 직무역량 강화과정'}">selected</c:if> >선외기/선내기 직무역량 강화과정</option>
+                                                            <option value="선내기 팸투어" <c:if test="${info.gbn eq '선내기 팸투어'}">selected</c:if> >선내기 팸투어</option>
+                                                            <option value="선외기 팸투어" <c:if test="${info.gbn eq '선외기 팸투어'}">selected</c:if> >선외기 팸투어</option>
                                                         </select>
                                                     </div>
                                                 </div>

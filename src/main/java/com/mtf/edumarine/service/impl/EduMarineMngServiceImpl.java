@@ -3956,6 +3956,220 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<FamtourinDTO> processSelectFamtourinList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectFamtourinList");
+        return eduMarineMngMapper.selectFamtourinList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public FamtourinDTO processSelectFamtourinSingle(String seq) {
+        System.out.println("EduMarineMngServiceImpl > processSelectFamtourinSingle");
+        return eduMarineMngMapper.selectFamtourinSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateFamtourinApplyStatus(List<FamtourinDTO> famtourinList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateFamtourinApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(FamtourinDTO info : famtourinList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    FamtourinDTO famtourinInfo = eduMarineMngMapper.selectFamtourinSingle(info.getSeq());
+                    if(famtourinInfo != null){
+
+                        // 결제대기 , 취소완료 건 취소승인처리
+                        Integer result = eduMarineMngMapper.updateFamtourinApplyStatus(info);
+                        if(result == 0){
+                            resultCode = CommConstants.RESULT_CODE_FAIL;
+                            resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                            break;
+                        }else{
+                            // 교육 신청인원 빼기
+                            eduMarineMngMapper.updateTrainApplyCnt(famtourinInfo.getTrainSeq());
+                        }
+
+                    }//generatorInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFamtourinApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateFamtourinApplyStatusChange(List<FamtourinDTO> famtourinList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateFamtourinApplyStatusChange");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(FamtourinDTO info : famtourinList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    FamtourinDTO famtourinInfo = eduMarineMngMapper.selectFamtourinSingle(info.getSeq());
+                    if(famtourinInfo != null){
+
+                        boolean cancelApiCallYn = ("수강완료".equals(info.getApplyStatus()) && "수강확정".equals(famtourinInfo.getApplyStatus()))
+                                || ("환급대기".equals(info.getApplyStatus()) && "수강완료".equals(famtourinInfo.getApplyStatus()))
+                                ;
+
+                        if(cancelApiCallYn){
+
+                            Integer result = eduMarineMngMapper.updateFamtourinApplyStatus(info);
+
+                            if(result == 0){
+                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                break;
+                            }
+
+                        }
+
+                    }//regularInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFamtourinApplyStatusChange ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<FamtouroutDTO> processSelectFamtouroutList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectFamtouroutList");
+        return eduMarineMngMapper.selectFamtouroutList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public FamtouroutDTO processSelectFamtouroutSingle(String seq) {
+        System.out.println("EduMarineMngServiceImpl > processSelectFamtouroutSingle");
+        return eduMarineMngMapper.selectFamtouroutSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateFamtouroutApplyStatus(List<FamtouroutDTO> famtouroutList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateFamtouroutApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(FamtouroutDTO info : famtouroutList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    FamtouroutDTO famtouroutInfo = eduMarineMngMapper.selectFamtouroutSingle(info.getSeq());
+                    if(famtouroutInfo != null){
+
+                        // 결제대기 , 취소완료 건 취소승인처리
+                        Integer result = eduMarineMngMapper.updateFamtouroutApplyStatus(info);
+                        if(result == 0){
+                            resultCode = CommConstants.RESULT_CODE_FAIL;
+                            resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                            break;
+                        }else{
+                            // 교육 신청인원 빼기
+                            eduMarineMngMapper.updateTrainApplyCnt(famtouroutInfo.getTrainSeq());
+                        }
+
+                    }//generatorInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFamtouroutApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateFamtouroutApplyStatusChange(List<FamtouroutDTO> famtouroutList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateFamtouroutApplyStatusChange");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(FamtouroutDTO info : famtouroutList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    FamtouroutDTO famtouroutInfo = eduMarineMngMapper.selectFamtouroutSingle(info.getSeq());
+                    if(famtouroutInfo != null){
+
+                        boolean cancelApiCallYn = ("수강완료".equals(info.getApplyStatus()) && "수강확정".equals(famtouroutInfo.getApplyStatus()))
+                                || ("환급대기".equals(info.getApplyStatus()) && "수강완료".equals(famtouroutInfo.getApplyStatus()))
+                                ;
+
+                        if(cancelApiCallYn){
+
+                            Integer result = eduMarineMngMapper.updateFamtouroutApplyStatus(info);
+
+                            if(result == 0){
+                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                break;
+                            }
+
+                        }
+
+                    }//regularInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFamtouroutApplyStatusChange ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<OutboarderDTO> processSelectOutboarderList(SearchDTO searchDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectOutboarderList");
         return eduMarineMngMapper.selectOutboarderList(searchDTO);
@@ -7382,6 +7596,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             case "선외기/선내기 직무역량 강화과정":
                 responseList = eduMarineMngMapper.selectSmsSendCompetencyList(boarderGbn);
                 break;
+            case "선내기 팸투어":
+                responseList = eduMarineMngMapper.selectSmsSendFamtourinList(boarderGbn);
+                break;
+            case "선외기 팸투어":
+                responseList = eduMarineMngMapper.selectSmsSendFamtouroutList(boarderGbn);
+                break;
             default:
                 break;
         }
@@ -8072,6 +8292,20 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<FamtourinDetailDTO> processSelectExcelFamtourinDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelFamtourinDetailList");
+        return eduMarineMngMapper.selectExcelFamtourinDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<FamtouroutDetailDTO> processSelectExcelFamtouroutDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelFamtouroutDetailList");
+        return eduMarineMngMapper.selectExcelFamtouroutDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public StatisticsDTO processSelectMemberCount(StatisticsDTO statisticsDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectMemberCount");
         return eduMarineMngMapper.selectMemberCount(statisticsDTO);
@@ -8446,6 +8680,18 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 competencyDTO.setSeq(tableSeq);
                                 competencyDTO.setTrainSeq(newTrainSeq);
                                 updTableResult = eduMarineMngMapper.updateCompetencyTrainSeq(competencyDTO);
+                                break;
+                            case "선내기 팸투어":
+                                FamtourinDTO famtourinDTO = new FamtourinDTO();
+                                famtourinDTO.setSeq(tableSeq);
+                                famtourinDTO.setTrainSeq(newTrainSeq);
+                                updTableResult = eduMarineMngMapper.updateFamtourinTrainSeq(famtourinDTO);
+                                break;
+                            case "선외기 팸투어":
+                                FamtouroutDTO famtouroutDTO = new FamtouroutDTO();
+                                famtouroutDTO.setSeq(tableSeq);
+                                famtouroutDTO.setTrainSeq(newTrainSeq);
+                                updTableResult = eduMarineMngMapper.updateFamtouroutTrainSeq(famtouroutDTO);
                                 break;
                             default:
                                 break;

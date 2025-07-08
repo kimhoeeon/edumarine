@@ -67,15 +67,6 @@
     <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
     <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
     <!-- swiper 외부 라이브러리 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 

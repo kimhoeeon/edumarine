@@ -598,10 +598,10 @@
                        WHERE del_yn = 'N'
                        AND gbn = #{gbn}
                        ) LISTA
-                <if test='gbn == "창업자"'>
+                <if test='gbn == "창업처"'>
                 ORDER BY LISTA.employ_year asc , LISTA.employ_name desc
                 </if>
-                <if test='gbn == "취업자"'>
+                <if test='gbn == "취업처"'>
                 ORDER BY LISTA.employ_name desc , LISTA.init_regi_dttm desc
                 </if>
                 ) LISTB
@@ -1880,6 +1880,30 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateFamtourinPayStatus" parameterType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateFamtourinPayStatus */
+        UPDATE famtourin
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateFamtouroutPayStatus" parameterType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateFamtouroutPayStatus */
+        UPDATE famtourout
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectEduApplyInfoList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EduApplyInfoDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoList */
         SELECT LISTB.*
@@ -2078,6 +2102,30 @@
                      FROM competency cp
                      WHERE cp.member_seq = #{memberSeq}
                        AND cp.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '선내기 팸투어' AS trainName
+                          , fi.train_seq
+                          , fi.apply_status AS payStatus
+                          , fi.seq
+                          , fi.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = fi.member_seq and p.table_seq = fi.seq and p.train_seq = fi.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainEndDttm
+                     FROM famtourin fi
+                     WHERE fi.member_seq = #{memberSeq}
+                       AND fi.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '선외기 팸투어' AS trainName
+                          , fo.train_seq
+                          , fo.apply_status AS payStatus
+                          , fo.seq
+                          , fo.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = fo.member_seq and p.table_seq = fo.seq and p.train_seq = fo.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainEndDttm
+                     FROM famtourout fo
+                     WHERE fo.member_seq = #{memberSeq}
+                       AND fo.apply_status NOT LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2254,6 +2302,28 @@
                      FROM competency cp
                      WHERE cp.member_seq = #{memberSeq}
                        AND cp.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '선내기 팸투어' AS trainName
+                          , fi.train_seq
+                          , fi.apply_status AS payStatus
+                          , fi.seq
+                          , fi.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainEndDttm
+                     FROM famtourin fi
+                     WHERE fi.member_seq = #{memberSeq}
+                       AND fi.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '선외기 팸투어' AS trainName
+                          , fo.train_seq
+                          , fo.apply_status AS payStatus
+                          , fo.seq
+                          , fo.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainEndDttm
+                     FROM famtourout fo
+                     WHERE fo.member_seq = #{memberSeq}
+                       AND fo.apply_status LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -3424,6 +3494,142 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="getFamtourinSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getFamtourinSeq */
+        SELECT CONCAT('FI', LPAD(nextval('famtourin_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertFamtourin" parameterType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertFamtourin */
+        INSERT INTO famtourin
+        ( seq
+        , member_seq
+        , train_seq
+        , apply_day
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , <![CDATA[#{applyDay}]]>
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'FAMTOURIN'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'FAMTOURIN'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectFamtourinSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFamtourinSingle */
+        SELECT cp.seq
+             , cp.member_seq
+             , cp.train_seq
+             , cp.apply_day
+             , cp.apply_status
+             , cp.cancel_dttm
+             , cp.cancel_reason
+             , cp.del_yn
+             , cp.note
+             , cp.init_regi_pic
+             , cp.init_regi_dttm
+             , cp.final_regi_pic
+             , cp.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = cp.member_seq AND p.table_seq = cp.seq AND p.train_seq = cp.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
+        FROM famtourin cp
+        WHERE cp.seq = #{seq}
+    </select>
+
+    <update id="updateFamtourin" parameterType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateFamtourin */
+        UPDATE famtourin
+        SET apply_day = <![CDATA[#{applyDay}]]>
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+    
+    <select id="getFamtouroutSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getFamtouroutSeq */
+        SELECT CONCAT('FO', LPAD(nextval('famtourout_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertFamtourout" parameterType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertFamtourout */
+        INSERT INTO famtourout
+        ( seq
+        , member_seq
+        , train_seq
+        , apply_day
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{memberSeq}
+            , #{trainSeq}
+            , <![CDATA[#{applyDay}]]>
+            , #{applyStatus}
+            , #{cancelReason}
+            , 'N'
+            , #{note}
+            , 'FAMTOUROUT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'FAMTOUROUT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectFamtouroutSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFamtouroutSingle */
+        SELECT cp.seq
+             , cp.member_seq
+             , cp.train_seq
+             , cp.apply_day
+             , cp.apply_status
+             , cp.cancel_dttm
+             , cp.cancel_reason
+             , cp.del_yn
+             , cp.note
+             , cp.init_regi_pic
+             , cp.init_regi_dttm
+             , cp.final_regi_pic
+             , cp.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = cp.member_seq AND p.table_seq = cp.seq AND p.train_seq = cp.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
+        FROM famtourout cp
+        WHERE cp.seq = #{seq}
+    </select>
+
+    <update id="updateFamtourout" parameterType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateFamtourout */
+        UPDATE famtourout
+        SET apply_day = <![CDATA[#{applyDay}]]>
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectOutboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectOutboarderSingle */
         SELECT o.seq
@@ -3755,10 +3961,26 @@
           AND apply_status NOT LIKE '%취소%'
     </select>
 
-    <select id="SelectCompetencyPreCheck" parameterType="com.mtf.edumarine.dto.CompetencyDTO" resultType="java.lang.Integer">
-        /* com.mtf.edumarine.mapper.EdumarineMapper.SelectCompetencyPreCheck */
+    <select id="selectCompetencyPreCheck" parameterType="com.mtf.edumarine.dto.CompetencyDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectCompetencyPreCheck */
         SELECT COUNT(1)
         FROM competency
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectFamtourinPreCheck" parameterType="com.mtf.edumarine.dto.FamtourinDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFamtourinPreCheck */
+        SELECT COUNT(1)
+        FROM famtourin
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectFamtouroutPreCheck" parameterType="com.mtf.edumarine.dto.FamtouroutDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectFamtouroutPreCheck */
+        SELECT COUNT(1)
+        FROM famtourout
         WHERE member_seq = #{memberSeq}
           AND apply_status NOT LIKE '%취소%'
     </select>

@@ -46,6 +46,7 @@
                     <p><span class="gubun">Tel</span>+82-1811-7891</p>
                     <p><span class="gubun">Fax</span>+82-031-983-4396</p>
                     <p><span class="gubun">Email</span>edu@edumarine.org</p>
+                    <p><span class="gubun">Telecommunication sales number</span>제 2024-대전유성-0376호</p>
                 </div>
                 <div class="copyright">Copyright(c) Korea Marine Education Academy. All rights reserved</div>
             </div>

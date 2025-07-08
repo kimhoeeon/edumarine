@@ -343,9 +343,11 @@ function f_education_train_save(seq) {
                                     let keyword = '';
                                     switch (gbn){
                                         case '해상엔진 자가정비 (선외기)':
+                                        case '선외기 팸투어':
                                             keyword = '선외기';
                                             break;
                                         case '해상엔진 자가정비 (선내기)':
+                                        case '선내기 팸투어':
                                             keyword = '선내기';
                                             break;
                                         case '마리나 선박 선외기 정비사 실무과정':
@@ -452,6 +454,10 @@ function f_education_train_form_data_setting() {
             case '스턴드라이브 정비 전문가과정 (특별반)':
             case '발전기 정비 교육':
                 category = '심화과정';
+                break;
+            case '선내기 팸투어':
+            case '선외기 팸투어':
+                category = '팸투어';
                 break;
             default:
                 break;
@@ -625,6 +631,12 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             break;
         case '선외기/선내기 직무역량 강화과정':
             link = '/mng/customer/competency.do';
+            break;
+        case '선내기 팸투어':
+            link = '/mng/customer/famtourin.do';
+            break;
+        case '선외기 팸투어':
+            link = '/mng/customer/famtourout.do';
             break;
         default:
             break;

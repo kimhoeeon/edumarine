@@ -67,15 +67,6 @@
     <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
     <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
     <%-- favicon --%>
     <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">

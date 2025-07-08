@@ -66,15 +66,6 @@
     <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
     <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
     <%-- favicon --%>
     <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
@@ -179,7 +170,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td rowspan="4" class="bg name">선외기 실무과정 (4회)</td>
+                                                    <td rowspan="5" class="bg name">선외기 실무과정 (5회)</td>
                                                     <td>1차: '25. 1. 13.(월) ~ 2. 18.(화)</td>
                                                     <td>'25. 12. 16.(월) ~ 1. 3.(금)</td>
                                                 </tr>
@@ -196,7 +187,11 @@
                                                     <td>'25. 9. 8(월) ~ 9. 26.(금)</td>
                                                 </tr>
                                                 <tr>
-                                                    <td rowspan="3" class="bg name">선내기 실무과정 (3회)</td>
+                                                    <td>5차: '25. 11. 24(월) ~ 12. 23.(화)</td>
+                                                    <td>'25. 10. 20(월) ~ 11. 14.(금)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td rowspan="4" class="bg name">선내기 실무과정 (4회)</td>
                                                     <td>1차: '25. 3. 10.(월) ~ 4. 8.(화)</td>
                                                     <td>'25.  2. 10.(월) ~ 2. 28.(금)</td>
                                                 </tr>
@@ -207,6 +202,10 @@
                                                 <tr>
                                                     <td>3차: '25. 10. 16.(목) ~ 11. 14.(금)</td>
                                                     <td>'25. 9. 15.(월) ~ 10. 2.(목)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4차: '25. 11. 24.(월) ~ 12. 23.(화)</td>
+                                                    <td>'25. 10. 20.(월) ~ 11. 14.(금)</td>
                                                 </tr>
                                                 <tr>
                                                     <td rowspan="2" class="bg name">FRP선체 실무과정 (2회)</td>

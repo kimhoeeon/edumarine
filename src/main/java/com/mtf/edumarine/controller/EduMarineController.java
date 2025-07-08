@@ -340,7 +340,13 @@ public class EduMarineController {
                     trainName = "발전기 정비 교육";
                     break;
                 case "EDU17":
-                    trainName = "선외기/선내기 직무역량 강화과정"; //TODO 교육추가
+                    trainName = "선외기/선내기 직무역량 강화과정";
+                    break;
+                case "EDU18":
+                    trainName = "선내기 팸투어";
+                    break;
+                case "EDU19":
+                    trainName = "선외기 팸투어";
                     break;
                 default:
                     trainName = searchText;
@@ -672,6 +678,36 @@ public class EduMarineController {
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply20/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply20_update_status(@RequestBody FamtourinDTO famtourinDTO) {
+        System.out.println("EduMarineController > apply_eduApply20_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateFamtourinPayStatus(famtourinDTO);
+
+        if("결제완료".equals(famtourinDTO.getApplyStatus())) {
+            eduMarineService.processUpdateTrainApplyCnt(famtourinDTO.getTrainSeq());
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply21/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply21_update_status(@RequestBody FamtouroutDTO famtouroutDTO) {
+        System.out.println("EduMarineController > apply_eduApply21_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateFamtouroutPayStatus(famtouroutDTO);
+
+        if("결제완료".equals(famtouroutDTO.getApplyStatus())) {
+            eduMarineService.processUpdateTrainApplyCnt(famtouroutDTO.getTrainSeq());
+        }
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1860,6 +1896,154 @@ public class EduMarineController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/apply/eduApply20.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply20(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply20");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply20");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply20/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply20_preCheck(@RequestBody FamtourinDTO famtourinDTO) {
+        System.out.println("EduMarineController > apply_eduApply20_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectFamtourinPreCheck(famtourinDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply20/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply20_insert(@RequestBody FamtourinDTO famtourinDTO) {
+        System.out.println("EduMarineController > apply_eduApply20_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertFamtourin(famtourinDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply20_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply20_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply20_modify");
+        ModelAndView mv = new ModelAndView();
+
+        FamtourinDTO info = eduMarineService.processSelectFamtourinSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply20_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply20/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply20_update(@RequestBody FamtourinDTO famtourinDTO) {
+        System.out.println("EduMarineController > mypage_eduApply20_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateFamtourin(famtourinDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply21.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply21(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply21");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply21");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply21/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply21_preCheck(@RequestBody FamtouroutDTO famtouroutDTO) {
+        System.out.println("EduMarineController > apply_eduApply21_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectFamtouroutPreCheck(famtouroutDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply21/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply21_insert(@RequestBody FamtouroutDTO famtouroutDTO) {
+        System.out.println("EduMarineController > apply_eduApply21_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertFamtourout(famtouroutDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply21_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply21_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply21_modify");
+        ModelAndView mv = new ModelAndView();
+
+        FamtouroutDTO info = eduMarineService.processSelectFamtouroutSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || "".equals(modYn)){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply21_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply21/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply21_update(@RequestBody FamtouroutDTO famtouroutDTO) {
+        System.out.println("EduMarineController > mypage_eduApply21_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateFamtourout(famtouroutDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
     
     @RequestMapping(value = "/apply/faq.do", method = RequestMethod.GET)
     public ModelAndView apply_faq() {
@@ -2084,7 +2268,7 @@ public class EduMarineController {
         System.out.println("EduMarineController > job_state01");
         ModelAndView mv = new ModelAndView();
 
-        String gbn = "창업자";
+        String gbn = "창업처";
         List<EmploymentDTO> employmentList = eduMarineService.processSelectEmploymentList(gbn);
         mv.addObject("employmentList", employmentList);
         mv.setViewName("/job/state01");
@@ -2096,7 +2280,7 @@ public class EduMarineController {
         System.out.println("EduMarineController > job_state02");
         ModelAndView mv = new ModelAndView();
 
-        String gbn = "취업자";
+        String gbn = "취업처";
         List<EmploymentDTO> employmentList = eduMarineService.processSelectEmploymentList(gbn);
         mv.addObject("employmentList", employmentList);
         mv.setViewName("/job/state02");
@@ -4482,6 +4666,8 @@ public class EduMarineController {
         mv.setViewName("/apply/payment_m");
         return mv;
     }
+
+
 
     private static Object convertMapToObject(Map<String,String> map,Object obj){
         String keyAttribute = null;

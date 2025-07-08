@@ -361,14 +361,23 @@ function showMessage(selector, icon, title, msg, confirmButtonColor) {
     if (typeof title == "undefined" || title == null) title = '';
     if (typeof confirmButtonColor == "undefined" || confirmButtonColor == null || confirmButtonColor === '') confirmButtonColor = '#00a8ff';
 
+    if( selector !== '' ) {
+        $(':focus').trigger('blur');
+    }
+
     Swal.fire({
         icon: icon,
         title: title,
-        html: msg,
+        html: '<span style="font-size: 1.2em;">' + msg + '</span>',
+        allowOutsideClick: false,
         confirmButtonColor: confirmButtonColor
     })
         .then(() => {
-            $(selector).focus();
+            if( selector && selector !== '' ){
+                setTimeout(function() {
+                    $(selector).trigger('focus');
+                }, 200);
+            }
         });
 }
 

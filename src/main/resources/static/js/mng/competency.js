@@ -301,7 +301,7 @@ function f_apply_cancel_btn(){
 
         if(nvl(md_cancel_gbn_val,'') !== '') {
             Swal.fire({
-                title: '취소 승인',
+                title: '[ 취소 승인 ]',
                 html: '취소 승인 처리하시겠습니까 ?',
                 icon: 'info',
                 showCancelButton: true,
@@ -544,7 +544,7 @@ function f_customer_competency_train_change_modal_set(seq, name, applyStatus, ne
 
         $('#kt_modal_apply_edu_change').modal('show');
     }else{
-        showMessage('', 'error', '[ 신청 교육 변경 ]', '교육 변경 불가한 내역입니다. (취소신청/취소완료)', '');
+        showMessage('', 'error', '[ 신청 교육 변경 ]', '교육 변경 불가한 내역입니다.<br>(신청상태 : 취소신청/취소완료)', '');
         return false;
     }
 

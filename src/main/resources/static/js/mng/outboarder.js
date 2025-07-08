@@ -473,7 +473,7 @@ function f_apply_cancel_btn(){
 
         if(nvl(md_cancel_gbn_val,'') !== '') {
             Swal.fire({
-                title: '취소 승인',
+                title: '[ 취소 승인 ]',
                 html: '취소 승인 처리하시겠습니까 ?',
                 icon: 'info',
                 showCancelButton: true,

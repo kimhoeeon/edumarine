@@ -64,6 +64,10 @@
                         <span class="gubun">이메일</span>
                         edu@edumarine.org
                     </p>
+                    <p class="text2">
+                        <span class="gubun">통신판매업신고번호</span>
+                        제 2024-대전유성-0376호
+                    </p>
                 </div>
                 <div class="copyright">Copyright(c) 경기해양레저인력양성센터. All rights reserved</div>
             </div>

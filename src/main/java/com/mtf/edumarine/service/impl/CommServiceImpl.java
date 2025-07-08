@@ -148,7 +148,7 @@ public class CommServiceImpl implements CommService {
     public SmsResponseDTO smsSend_certNum(SmsDTO smsDTO) {
 
         String certNum = sendSMS();
-        String message = "[EDU marine] 인증번호 확인\n"
+        String message = "[ EDU marine ] 인증번호 확인\n"
                 + "[ " + certNum + " ]\n"
                 + "본인 확인 인증번호를 입력해주세요!";
 
@@ -185,7 +185,7 @@ public class CommServiceImpl implements CommService {
             sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
             sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
             sms.put("testmode_yn", ""); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
-            sms.put("title", "[EDU marine]"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
+            sms.put("title", "[ EDU marine ]"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
 
             String image = "";
             //image = "/tmp/pic_57f358af08cf7_sms_.jpg"; // MMS 이미지 파일 위치
@@ -352,6 +352,72 @@ public class CommServiceImpl implements CommService {
                         smsReq5.setSeq(sailyachtDTO.getMemberSeq());
                         phone = commMapper.getSmsSendingJoinList(smsReq5);
                         break;
+                    case "highhorsepower":
+                        HighHorsePowerDTO highHorsePowerDTO = eduMarineMngService.processSelectHighhorsepowerSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq6 = new SmsNotificationDTO();
+                        smsReq6.setSeq(highHorsePowerDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq6);
+                        break;
+                    case "highself":
+                        HighSelfDTO highSelfDTO = eduMarineMngService.processSelectHighSelfSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq7 = new SmsNotificationDTO();
+                        smsReq7.setSeq(highSelfDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq7);
+                        break;
+                    case "highspecial":
+                        HighSpecialDTO highSpecialDTO = eduMarineMngService.processSelectHighSpecialSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq8 = new SmsNotificationDTO();
+                        smsReq8.setSeq(highSpecialDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq8);
+                        break;
+                    case "sterndrive":
+                        SterndriveDTO sterndriveDTO = eduMarineMngService.processSelectSterndriveSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq9 = new SmsNotificationDTO();
+                        smsReq9.setSeq(sterndriveDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq9);
+                        break;
+                    case "sternspecial":
+                        SternSpecialDTO sternSpecialDTO = eduMarineMngService.processSelectSternSpecialSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq10 = new SmsNotificationDTO();
+                        smsReq10.setSeq(sternSpecialDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq10);
+                        break;
+                    case "basic":
+                        BasicDTO basicDTO = eduMarineMngService.processSelectBasicSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq11 = new SmsNotificationDTO();
+                        smsReq11.setSeq(basicDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq11);
+                        break;
+                    case "emergency":
+                        EmergencyDTO emergencyDTO = eduMarineMngService.processSelectEmergencySingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq12 = new SmsNotificationDTO();
+                        smsReq12.setSeq(emergencyDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq12);
+                        break;
+                    case "generator":
+                        GeneratorDTO generatorDTO = eduMarineMngService.processSelectGeneratorSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq13 = new SmsNotificationDTO();
+                        smsReq13.setSeq(generatorDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq13);
+                        break;
+                    case "competency":
+                        CompetencyDTO competencyDTO = eduMarineMngService.processSelectCompetencySingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq14 = new SmsNotificationDTO();
+                        smsReq14.setSeq(competencyDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq14);
+                        break;
+                    case "famtourin":
+                        FamtourinDTO famtourinDTO = eduMarineMngService.processSelectFamtourinSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq15 = new SmsNotificationDTO();
+                        smsReq15.setSeq(famtourinDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq15);
+                        break;
+                    case "famtourout":
+                        FamtouroutDTO famtouroutDTO = eduMarineMngService.processSelectFamtouroutSingle(smsNotificationDTO.getSeq());
+                        SmsNotificationDTO smsReq16 = new SmsNotificationDTO();
+                        smsReq16.setSeq(famtouroutDTO.getMemberSeq());
+                        phone = commMapper.getSmsSendingJoinList(smsReq16);
+                        break;
                     default:
                         break;
                 }
@@ -473,108 +539,165 @@ public class CommServiceImpl implements CommService {
         String target = smsNotificationDTO.getTarget();
         if (target != null && !"".equals(target)) {
 
-            if ("1".equals(target)) { // 회원가입 직후
-                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if (templateDTO != null) {
-                    content = templateDTO.getContent();
-                }
-            } else if ("2".equals(target)) { // 수강신청 후
-                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if (templateDTO != null) {
-                    TrainDTO trainReq = new TrainDTO();
-                    trainReq.setSeq(smsNotificationDTO.getTrainSeq());
-                    TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
-                    content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
-                            .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
-                            .replace("%eduDate%", trainRes.getTrainStartDttm() + "-" + trainRes.getTrainEndDttm())
-                    ;
-                }
-            } else if ("5".equals(target)) { // 취소완료 후
-                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if (templateDTO != null) {
-
-                    String trainTableName = smsNotificationDTO.getTrainTable();
-                    String trainSeq = "";
-                    switch (trainTableName){
-                        case "boarder":
-                            BoarderDTO boarderDTO = eduMarineMngService.processSelectBoarderSingle(smsNotificationDTO.getSeq());
-                            trainSeq = boarderDTO.getTrainSeq();
-                            break;
-                        case "frp":
-                            FrpDTO frpDTO = eduMarineMngService.processSelectFrpSingle(smsNotificationDTO.getSeq());
-                            trainSeq = frpDTO.getTrainSeq();
-                            break;
-                        case "outboarder":
-                            OutboarderDTO outboarderDTO = eduMarineMngService.processSelectOutboarderSingle(smsNotificationDTO.getSeq());
-                            trainSeq = outboarderDTO.getTrainSeq();
-                            break;
-                        case "inboarder":
-                            InboarderDTO inboarderReq = new InboarderDTO();
-                            inboarderReq.setSeq(smsNotificationDTO.getSeq());
-                            InboarderDTO inboarderDTO = eduMarineMngService.processSelectInboarderSingle(inboarderReq);
-                            trainSeq = inboarderDTO.getTrainSeq();
-                            break;
-                        case "sailyacht":
-                            SailyachtDTO sailyachtDTO = eduMarineMngService.processSelectSailyachtSingle(smsNotificationDTO.getSeq());
-                            trainSeq = sailyachtDTO.getTrainSeq();
-                            break;
-                        default:
-                            break;
+            switch (target) {
+                case "1": { // 회원가입 직후
+                    TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                    if (templateDTO != null) {
+                        content = templateDTO.getContent();
                     }
-
-                    if(!"".equals(trainSeq)){
-                        DecimalFormat df = new DecimalFormat("###,###");
-
+                    break;
+                }
+                case "2": { // 수강신청 후
+                    TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                    if (templateDTO != null) {
                         TrainDTO trainReq = new TrainDTO();
-                        trainReq.setSeq(trainSeq);
+                        trainReq.setSeq(smsNotificationDTO.getTrainSeq());
                         TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
                         content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
                                 .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
-                                .replace("%eduPrice%", df.format(trainRes.getPaySum()))
+                                .replace("%eduDate%", trainRes.getTrainStartDttm() + "-" + trainRes.getTrainEndDttm())
                         ;
                     }
+                    break;
                 }
-            } else if ("6".equals(target)) { // 가상계좌 안내
-                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if (templateDTO != null) {
-                    TrainDTO trainReq = new TrainDTO();
-                    trainReq.setSeq(smsNotificationDTO.getTrainSeq());
-                    TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
-                    content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
-                            .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
-                    ;
+                case "5": { // 취소완료 후
+                    TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                    if (templateDTO != null) {
 
-                    PaymentDTO payReq = new PaymentDTO();
-                    payReq.setSeq(smsNotificationDTO.getPaymentSeq());
-                    PaymentDTO payRes = eduMarineMngService.processSelectPaymentSingle(payReq);
-                    content = content.replace("%vacctBank%", payRes.getVactBankName())
-                            .replace("%vacctNum%", payRes.getVactNum())
-                            .replace("%vacctName%", payRes.getVactName())
-                    ;
+                        String trainTableName = smsNotificationDTO.getTrainTable();
+                        String trainSeq = "";
+                        switch (trainTableName) {
+                            case "boarder":
+                                BoarderDTO boarderDTO = eduMarineMngService.processSelectBoarderSingle(smsNotificationDTO.getSeq());
+                                trainSeq = boarderDTO.getTrainSeq();
+                                break;
+                            case "frp":
+                                FrpDTO frpDTO = eduMarineMngService.processSelectFrpSingle(smsNotificationDTO.getSeq());
+                                trainSeq = frpDTO.getTrainSeq();
+                                break;
+                            case "outboarder":
+                                OutboarderDTO outboarderDTO = eduMarineMngService.processSelectOutboarderSingle(smsNotificationDTO.getSeq());
+                                trainSeq = outboarderDTO.getTrainSeq();
+                                break;
+                            case "inboarder":
+                                InboarderDTO inboarderReq = new InboarderDTO();
+                                inboarderReq.setSeq(smsNotificationDTO.getSeq());
+                                InboarderDTO inboarderDTO = eduMarineMngService.processSelectInboarderSingle(inboarderReq);
+                                trainSeq = inboarderDTO.getTrainSeq();
+                                break;
+                            case "sailyacht":
+                                SailyachtDTO sailyachtDTO = eduMarineMngService.processSelectSailyachtSingle(smsNotificationDTO.getSeq());
+                                trainSeq = sailyachtDTO.getTrainSeq();
+                                break;
+                            case "highhorsepower":
+                                HighHorsePowerDTO highHorsePowerDTO = eduMarineMngService.processSelectHighhorsepowerSingle(smsNotificationDTO.getSeq());
+                                trainSeq = highHorsePowerDTO.getTrainSeq();
+                                break;
+                            case "highself":
+                                HighSelfDTO highSelfDTO = eduMarineMngService.processSelectHighSelfSingle(smsNotificationDTO.getSeq());
+                                trainSeq = highSelfDTO.getTrainSeq();
+                                break;
+                            case "highspecial":
+                                HighSpecialDTO highSpecialDTO = eduMarineMngService.processSelectHighSpecialSingle(smsNotificationDTO.getSeq());
+                                trainSeq = highSpecialDTO.getTrainSeq();
+                                break;
+                            case "sterndrive":
+                                SterndriveDTO sterndriveDTO = eduMarineMngService.processSelectSterndriveSingle(smsNotificationDTO.getSeq());
+                                trainSeq = sterndriveDTO.getTrainSeq();
+                                break;
+                            case "sternspecial":
+                                SternSpecialDTO sternSpecialDTO = eduMarineMngService.processSelectSternSpecialSingle(smsNotificationDTO.getSeq());
+                                trainSeq = sternSpecialDTO.getTrainSeq();
+                                break;
+                            case "basic":
+                                BasicDTO basicDTO = eduMarineMngService.processSelectBasicSingle(smsNotificationDTO.getSeq());
+                                trainSeq = basicDTO.getTrainSeq();
+                                break;
+                            case "emergency":
+                                EmergencyDTO emergencyDTO = eduMarineMngService.processSelectEmergencySingle(smsNotificationDTO.getSeq());
+                                trainSeq = emergencyDTO.getTrainSeq();
+                                break;
+                            case "generator":
+                                GeneratorDTO generatorDTO = eduMarineMngService.processSelectGeneratorSingle(smsNotificationDTO.getSeq());
+                                trainSeq = generatorDTO.getTrainSeq();
+                                break;
+                            case "competency":
+                                CompetencyDTO competencyDTO = eduMarineMngService.processSelectCompetencySingle(smsNotificationDTO.getSeq());
+                                trainSeq = competencyDTO.getTrainSeq();
+                                break;
+                            case "famtourin":
+                                FamtourinDTO famtourinDTO = eduMarineMngService.processSelectFamtourinSingle(smsNotificationDTO.getSeq());
+                                trainSeq = famtourinDTO.getTrainSeq();
+                                break;
+                            case "famtourout":
+                                FamtouroutDTO famtouroutDTO = eduMarineMngService.processSelectFamtouroutSingle(smsNotificationDTO.getSeq());
+                                trainSeq = famtouroutDTO.getTrainSeq();
+                                break;
+                            default:
+                                break;
+                        }
 
-                    String vactDate = payRes.getVactDate().concat(payRes.getVactTime());
-                    SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                    SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    // String 타입을 Date 타입으로 변환
-                    Date formatDate = null;
-                    try {
-                        formatDate = dtFormat.parse(vactDate);
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
+                        if (!"".equals(trainSeq)) {
+                            DecimalFormat df = new DecimalFormat("###,###");
+
+                            TrainDTO trainReq = new TrainDTO();
+                            trainReq.setSeq(trainSeq);
+                            TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
+                            content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
+                                    .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
+                                    .replace("%eduPrice%", df.format(trainRes.getPaySum()))
+                            ;
+                        }
                     }
-                    // Date타입의 변수를 새롭게 지정한 포맷으로 변환
-                    String newVactDate = newDtFormat.format(formatDate);
-                    content = content.replace("%vacctLimit%", newVactDate);
+                    break;
                 }
-            } else if ("7".equals(target)){ // 수업 개설 2일전 교육안내
-                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if (templateDTO != null) {
-                    content = templateDTO.getContent();
+                case "6": { // 가상계좌 안내
+                    TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                    if (templateDTO != null) {
+                        TrainDTO trainReq = new TrainDTO();
+                        trainReq.setSeq(smsNotificationDTO.getTrainSeq());
+                        TrainDTO trainRes = eduMarineMngService.processSelectTrainSingle(trainReq);
+                        content = templateDTO.getContent().replace("%eduName%", trainRes.getGbn())
+                                .replace("%eduTime%", String.valueOf(trainRes.getNextTime()))
+                        ;
+
+                        PaymentDTO payReq = new PaymentDTO();
+                        payReq.setSeq(smsNotificationDTO.getPaymentSeq());
+                        PaymentDTO payRes = eduMarineMngService.processSelectPaymentSingle(payReq);
+                        content = content.replace("%vacctBank%", payRes.getVactBankName())
+                                .replace("%vacctNum%", payRes.getVactNum())
+                                .replace("%vacctName%", payRes.getVactName())
+                        ;
+
+                        String vactDate = payRes.getVactDate().concat(payRes.getVactTime());
+                        SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                        SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // String 타입을 Date 타입으로 변환
+                        Date formatDate = null;
+                        try {
+                            formatDate = dtFormat.parse(vactDate);
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // Date타입의 변수를 새롭게 지정한 포맷으로 변환
+                        String newVactDate = newDtFormat.format(formatDate);
+                        content = content.replace("%vacctLimit%", newVactDate);
+                    }
+                    break;
                 }
-            } else if ("8".equals(target)) { // 키워드 알림
-                TemplateDTO templateDTO = commMapper.getTemplateContent(target);
-                if (templateDTO != null) {
-                    content = templateDTO.getContent().replace("%keyword%", smsNotificationDTO.getKeyword());
+                case "7": { // 수업 개설 2일전 교육안내
+                    TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                    if (templateDTO != null) {
+                        content = templateDTO.getContent();
+                    }
+                    break;
+                }
+                case "8": { // 키워드 알림
+                    TemplateDTO templateDTO = commMapper.getTemplateContent(target);
+                    if (templateDTO != null) {
+                        content = templateDTO.getContent().replace("%keyword%", smsNotificationDTO.getKeyword());
+                    }
+                    break;
                 }
             }
 

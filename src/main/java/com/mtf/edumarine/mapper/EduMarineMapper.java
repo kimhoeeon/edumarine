@@ -350,7 +350,7 @@ public interface EduMarineMapper {
 
     Integer updateGeneratorPayStatus(GeneratorDTO generatorDTO);
 
-    Integer SelectCompetencyPreCheck(CompetencyDTO competencyDTO);
+    Integer selectCompetencyPreCheck(CompetencyDTO competencyDTO);
 
     CompetencyDTO selectCompetencySingle(String seq);
 
@@ -361,4 +361,28 @@ public interface EduMarineMapper {
     Integer updateCompetency(CompetencyDTO competencyDTO);
 
     Integer updateCompetencyPayStatus(CompetencyDTO competencyDTO);
+
+    Integer selectFamtourinPreCheck(FamtourinDTO famtourinDTO);
+
+    FamtourinDTO selectFamtourinSingle(String seq);
+
+    String getFamtourinSeq();
+
+    Integer insertFamtourin(FamtourinDTO famtourinDTO);
+
+    Integer updateFamtourin(FamtourinDTO famtourinDTO);
+
+    Integer updateFamtourinPayStatus(FamtourinDTO famtourinDTO);
+
+    Integer selectFamtouroutPreCheck(FamtouroutDTO famtouroutDTO);
+
+    FamtouroutDTO selectFamtouroutSingle(String seq);
+
+    String getFamtouroutSeq();
+
+    Integer insertFamtourout(FamtouroutDTO famtouroutDTO);
+
+    Integer updateFamtourout(FamtouroutDTO famtouroutDTO);
+
+    Integer updateFamtouroutPayStatus(FamtouroutDTO famtouroutDTO);
 }

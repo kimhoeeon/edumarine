@@ -66,15 +66,6 @@
     <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
     <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
     <%-- favicon --%>
     <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
@@ -146,19 +137,19 @@
 
                     <!-- sub_tab_btn -->
                     <ul class="sub_tab_btn">
-                        <li><a href="/job/state01.do">창업자 현황</a></li>
-                        <li class="on"><a href="/job/state02.do">취업자 현황</a></li>
+                        <li><a href="/job/state01.do">창업처 현황</a></li>
+                        <li class="on"><a href="/job/state02.do">취업처 현황</a></li>
                     </ul>
                     <!-- //sub_tab_btn -->
 
                     <!-- table_wrap -->
                     <div class="table_wrap">
                         <div class="sub_box_tit">
-                            <div class="big">주요 취업자 현황</div>
+                            <div class="big">주요 취업처 현황</div>
                         </div>
                         <div class="table_top">
-                            <div class="left">총 ${employmentList.size()}명(관련분야 종사자)</div>
-                            <div class="right">2016 ~ 2021년 기준</div>
+                            <div class="left">총 ${employmentList.size()}개소</div>
+                            <div class="right">2016 ~ 2024년 기준</div>
                         </div>
 
                         <!-- table_box -->

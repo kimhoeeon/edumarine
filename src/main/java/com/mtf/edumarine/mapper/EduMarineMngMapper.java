@@ -555,4 +555,28 @@ public interface EduMarineMngMapper {
 
     Integer updateCompetencyTrainSeq(CompetencyDTO competencyDTO);
 
+    List<FamtourinDTO> selectFamtourinList(SearchDTO searchDTO);
+
+    FamtourinDTO selectFamtourinSingle(String seq);
+
+    Integer updateFamtourinApplyStatus(FamtourinDTO info);
+
+    List<FamtourinDetailDTO> selectExcelFamtourinDetailList();
+
+    List<SmsSendDTO> selectSmsSendFamtourinList(String boarderGbn);
+
+    Integer updateFamtourinTrainSeq(FamtourinDTO famtourinDTO);
+
+    List<FamtouroutDTO> selectFamtouroutList(SearchDTO searchDTO);
+
+    FamtouroutDTO selectFamtouroutSingle(String seq);
+
+    Integer updateFamtouroutApplyStatus(FamtouroutDTO info);
+
+    List<FamtouroutDetailDTO> selectExcelFamtouroutDetailList();
+
+    List<SmsSendDTO> selectSmsSendFamtouroutList(String boarderGbn);
+
+    Integer updateFamtouroutTrainSeq(FamtouroutDTO famtouroutDTO);
+
 }

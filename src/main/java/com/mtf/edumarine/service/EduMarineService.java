@@ -292,4 +292,26 @@ public interface EduMarineService {
     ResponseDTO processUpdateCompetency(CompetencyDTO competencyDTO);
 
     ResponseDTO processUpdateCompetencyPayStatus(CompetencyDTO competencyDTO);
+
+    Integer processSelectFamtourinPreCheck(FamtourinDTO famtourinDTO);
+
+    ResponseDTO processInsertFamtourin(FamtourinDTO famtourinDTO);
+
+    FamtourinDTO processSelectFamtourinSingle(String seq);
+
+    ResponseDTO processUpdateFamtourin(FamtourinDTO famtourinDTO);
+
+    ResponseDTO processUpdateFamtourinPayStatus(FamtourinDTO famtourinDTO);
+
+    Integer processSelectFamtouroutPreCheck(FamtouroutDTO famtouroutDTO);
+
+    ResponseDTO processInsertFamtourout(FamtouroutDTO famtouroutDTO);
+
+    FamtouroutDTO processSelectFamtouroutSingle(String seq);
+
+    ResponseDTO processUpdateFamtourout(FamtouroutDTO famtouroutDTO);
+
+    ResponseDTO processUpdateFamtouroutPayStatus(FamtouroutDTO famtouroutDTO);
+    
+    
 }

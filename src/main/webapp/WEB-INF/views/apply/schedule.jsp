@@ -66,15 +66,6 @@
     <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
     <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
     <%-- favicon --%>
     <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
@@ -162,6 +153,7 @@
                                             <li class="option_item" data-value="정규과정">정규과정</li>
                                             <li class="option_item" data-value="단기과정">단기과정</li>
                                             <li class="option_item" data-value="심화과정">심화과정</li>
+                                            <li class="option_item" data-value="팸투어">팸투어</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -265,6 +257,7 @@
                                             <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('정규과정')" value="정규">정규과정</label>
                                             <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('단기과정')" value="단기">단기과정</label>
                                             <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('심화과정')" value="중급">심화과정</label>
+                                            <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('팸투어')" value="중급">팸투어</label>
                                         </div>
                                         <div class="calTable">
                                             <table class="calendar">

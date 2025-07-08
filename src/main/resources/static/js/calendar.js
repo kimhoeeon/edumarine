@@ -53,7 +53,9 @@ function f_train_calendar_select(category){
                 let gbn = results[i].gbn;
                 let gbnDepth = results[i].gbnDepth;
                 let category = results[i].category;
-                category = category.toString().replaceAll('과정','');
+                if(category !== '팸투어'){
+                    category = category.toString().replaceAll('과정','');
+                }
                 let trainStartDttm = results[i].trainStartDttm;
                 trainStartDttm = trainStartDttm.toString().replaceAll('.','-');
                 let trainEndDttm = results[i].trainEndDttm;
@@ -137,6 +139,14 @@ function f_train_calendar_select(category){
                     case '선외기/선내기 직무역량 강화과정':
                         className = 'edu19';
                         link = '/apply/eduApply19.do';
+                        break;
+                    case '선내기 팸투어':
+                        className = 'edu20';
+                        link = '/apply/eduApply20.do';
+                        break;
+                    case '선외기 팸투어':
+                        className = 'edu21';
+                        link = '/apply/eduApply21.do';
                         break;
                     default:
                         break;
