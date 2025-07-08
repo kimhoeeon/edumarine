@@ -249,7 +249,7 @@ function f_request_list_remove(seq){
                     Swal.fire({
                         icon: 'info',
                         title: '[ 요청사항 & 문의 ]',
-                        html: '<span style="font-size: 1.1em;">요청사항 & 문의가 삭제되었습니다.</span>',
+                        html: '<span style="font-size: 1.2em;">요청사항 & 문의가 삭제되었습니다.</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
@@ -366,7 +366,7 @@ function f_progress_step_change_modal_btn(){
                         Swal.fire({
                             icon: 'info',
                             title: '[ 진행 단계 변경 ]',
-                            html: '<span style="font-size: 1.1em;">진행 단계 변경이 정상 완료되었습니다.</span>',
+                            html: '<span style="font-size: 1.2em;">진행 단계 변경이 정상 완료되었습니다.</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
@@ -432,7 +432,7 @@ function f_complete_expect_change_modal_btn(){
                         Swal.fire({
                             icon: 'info',
                             title: '[ 처리 예정 일시 변경 ]',
-                            html: '<span style="font-size: 1.1em;">처리 예정 일시 변경이 정상 완료되었습니다.</span>',
+                            html: '<span style="font-size: 1.2em;">처리 예정 일시 변경이 정상 완료되었습니다.</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'

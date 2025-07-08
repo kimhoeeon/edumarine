@@ -468,4 +468,24 @@ public interface EduMarineMngService {
     CompetencyDTO processSelectCompetencySingle(String seq);
 
     List<CompetencyDetailDTO> processSelectExcelCompetencyDetailList();
+
+    List<FamtourinDTO> processSelectFamtourinList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateFamtourinApplyStatus(List<FamtourinDTO> famtourinList);
+
+    ResponseDTO processUpdateFamtourinApplyStatusChange(List<FamtourinDTO> famtourinList);
+
+    FamtourinDTO processSelectFamtourinSingle(String seq);
+
+    List<FamtourinDetailDTO> processSelectExcelFamtourinDetailList();
+
+    List<FamtouroutDTO> processSelectFamtouroutList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateFamtouroutApplyStatus(List<FamtouroutDTO> famtouroutList);
+
+    ResponseDTO processUpdateFamtouroutApplyStatusChange(List<FamtouroutDTO> famtouroutList);
+
+    FamtouroutDTO processSelectFamtouroutSingle(String seq);
+
+    List<FamtouroutDetailDTO> processSelectExcelFamtouroutDetailList();
 }

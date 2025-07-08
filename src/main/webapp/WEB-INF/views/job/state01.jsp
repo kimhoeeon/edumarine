@@ -66,15 +66,6 @@
     <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
     <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
 
-    <!-- 캐시를 바로 만료시킴. -->
-    <meta http-equiv="Expires" content="-1" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
-    <meta http-equiv="Cache-Control" content="no-cache" />
-
     <%-- favicon --%>
     <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
@@ -146,19 +137,19 @@
 
                     <!-- sub_tab_btn -->
                     <ul class="sub_tab_btn">
-                        <li class="on"><a href="/job/state01.do">창업자 현황</a></li>
-                        <li><a href="/job/state02.do">취업자 현황</a></li>
+                        <li class="on"><a href="/job/state01.do">창업처 현황</a></li>
+                        <li><a href="/job/state02.do">취업처 현황</a></li>
                     </ul>
                     <!-- //sub_tab_btn -->
 
                     <!-- table_wrap -->
                     <div class="table_wrap">
                         <div class="sub_box_tit">
-                            <div class="big">주요 창업자 현황</div>
+                            <div class="big">주요 창업처 현황</div>
                         </div>
                         <div class="table_top">
-                            <div class="left">총 ${employmentList.size()}명(선박정비 관련)</div>
-                            <div class="right">2016 ~ 2021년 기준</div>
+                            <div class="left">총 ${employmentList.size()}개소</div>
+                            <div class="right">2016 ~ 2024년 기준</div>
                         </div>
 
                         <!-- table_box -->
@@ -166,9 +157,8 @@
                             <table style="min-width: 700px;">
                                 <colgroup>
                                     <col width="6%">
-                                    <col width="14%">
+                                    <col width="20%">
                                     <col width="12%">
-                                    <col width="10%">
                                     <col width="12%">
                                     <col>
                                 </colgroup>
@@ -177,7 +167,6 @@
                                         <th>구분</th>
                                         <th>회사명</th>
                                         <th>대표자</th>
-                                        <th>설립연도</th>
                                         <th>분야</th>
                                         <th>주소</th>
                                     </tr>
@@ -189,20 +178,15 @@
                                         <tr>
                                             <td>${info.rownum}</td>
                                             <td>${info.employName}</td>
-                                            <td>${info.employCeo}</td>
-                                            <td>${info.employYear}년</td>
+                                            <td>${fn:substring(info.employCeo, 0, 1)}*${fn:substring(info.employCeo, fn:length(info.employCeo)-1,fn:length(info.employCeo))}</td>
                                             <td>${info.employField}</td>
-                                            <td>${info.employAddress}
-                                                <c:if test="${info.employAddressDetail ne null and info.employAddressDetail ne ''}">
-                                                , ${info.employAddressDetail}
-                                                </c:if>
-                                            </td>
+                                            <td>${info.employAddress}</td>
                                         </tr>
                                     </c:forEach>
                                 </c:if>
                                 <c:if test="${empty employmentList}">
                                     <tr>
-                                        <td colspan="6">데이터 없음</td>
+                                        <td colspan="5">데이터 없음</td>
                                     </tr>
                                 </c:if>
 

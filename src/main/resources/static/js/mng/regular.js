@@ -564,7 +564,7 @@ function f_apply_cancel_btn(){
     if (nvl(idArr,'') !== ''){
 
         Swal.fire({
-            title: '취소 승인',
+            title: '[ 취소 승인 ]',
             html: '취소 승인 처리하시겠습니까 ?',
             icon: 'info',
             showCancelButton: true,

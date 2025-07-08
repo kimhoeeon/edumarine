@@ -102,26 +102,34 @@ $(document).ready(function () {
             let trainName = $(this).parent().siblings('.subject').find('a').text();
             if(nvl(trainName,'') !== ''){
                 $('#popupCancelEdu').find('.train_name').text(trainName);
+
                 let seq = $(this).attr('value');
-                let payStatus = $(this).data('status');
-                let payMethod = $(this).data('value');
-                payMethod = payMethod.toLowerCase();
-                if(payMethod.includes('card')){
+
+                if(trainName.toString().includes('팸투어')){
                     $("#popupCancelEdu .refund_account_box").css("display", "none");
+
+                    $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + '' + "','" + '' + "')");
                 }else{
-                    if(payStatus === '입금대기'){
+                    let payStatus = $(this).data('status');
+                    let payMethod = $(this).data('value');
+                    payMethod = payMethod.toLowerCase();
+                    if(payMethod.includes('card')){
                         $("#popupCancelEdu .refund_account_box").css("display", "none");
                     }else{
-                        $("#popupCancelEdu .refund_account_box").css("display", "block");
+                        if(payStatus === '입금대기'){
+                            $("#popupCancelEdu .refund_account_box").css("display", "none");
+                        }else{
+                            $("#popupCancelEdu .refund_account_box").css("display", "block");
+                        }
                     }
-                }
 
-                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "','" + payStatus + "')");
+                    $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "','" + payStatus + "')");
+                }
             }
         }else{
             Swal.fire({
                 title: '[ 교육 신청 정보 ]',
-                html: '죄송합니다. 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
+                html: '죄송합니다.<br> 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
                 icon: 'info',
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: '확인'
@@ -141,24 +149,34 @@ $(document).ready(function () {
             $('#popupCancelEdu').addClass('on');
 
             if(nvl(trainName,'') !== ''){
+
                 $('#popupCancelEdu').find('.train_name').text(trainName);
-                payMethod = payMethod.toLowerCase();
-                if(payMethod.includes('card')){
+
+                if(trainName.toString().includes('팸투어')){
+
                     $("#popupCancelEdu .refund_account_box").css("display", "none");
+
+                    $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + '' + "','" + '' + "')");
+
                 }else{
-                    if(applyStatus === '입금대기'){
+                    payMethod = payMethod.toLowerCase();
+                    if(payMethod.includes('card')){
                         $("#popupCancelEdu .refund_account_box").css("display", "none");
                     }else{
-                        $("#popupCancelEdu .refund_account_box").css("display", "block");
+                        if(applyStatus === '입금대기'){
+                            $("#popupCancelEdu .refund_account_box").css("display", "none");
+                        }else{
+                            $("#popupCancelEdu .refund_account_box").css("display", "block");
+                        }
                     }
-                }
 
-                $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "','" + applyStatus + "')");
+                    $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + payMethod + "','" + applyStatus + "')");
+                }
             }
         }else{
             Swal.fire({
                 title: '[ 교육 신청 정보 ]',
-                html: '죄송합니다. 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
+                html: '죄송합니다.<br> 교육 4일 전 ~ 교육 시작일 이후 취소는 불가합니다.',
                 icon: 'info',
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: '확인'

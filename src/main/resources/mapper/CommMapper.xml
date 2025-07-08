@@ -78,6 +78,61 @@
                    , s.member_seq
               FROM sailyacht s
               WHERE s.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT h.train_seq
+                   , h.member_seq
+              FROM highhorsepower h
+              WHERE h.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT hs.train_seq
+                   , hs.member_seq
+              FROM highself hs
+              WHERE hs.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT hp.train_seq
+                   , hp.member_seq
+              FROM highspecial hp
+              WHERE hp.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT sd.train_seq
+                   , sd.member_seq
+              FROM sterndrive sd
+              WHERE sd.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT ss.train_seq
+                   , ss.member_seq
+              FROM sternspecial ss
+              WHERE ss.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT bs.train_seq
+                   , bs.member_seq
+              FROM basic bs
+              WHERE bs.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT em.train_seq
+                   , em.member_seq
+              FROM emergency em
+              WHERE em.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT ge.train_seq
+                   , ge.member_seq
+              FROM generator ge
+              WHERE ge.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT cp.train_seq
+                   , cp.member_seq
+              FROM competency cp
+              WHERE cp.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT fi.train_seq
+                   , fi.member_seq
+              FROM famtourin fi
+              WHERE fi.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              SELECT fo.train_seq
+                   , fo.member_seq
+              FROM famtourout fo
+              WHERE fo.apply_status NOT LIKE CONCAT('%', '취소', '%')
               ) r
         JOIN member m
         ON r.member_seq = m.seq
@@ -101,13 +156,17 @@
              , (CASE
                     WHEN sms_yn = 1 OR regularCnt = 1
                         THEN CASE
-                                 WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 THEN '교육생(단기)'
-                                 WHEN boarderCnt = 1 OR frpCnt = 1 OR highhorsepowerCnt = 1 OR sterndriveCnt = 1 THEN '교육생(정규)'
+                                 WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 OR basicCnt = 1
+                                          OR emergencyCnt = 1 OR famtourinCnt = 1 OR famtouroutCnt = 1 THEN '교육생(단기)'
+                                 WHEN boarderCnt = 1 OR frpCnt = 1 OR highhorsepowerCnt = 1 OR sterndriveCnt = 1 OR highselfCnt = 1
+                                          OR highspecialCnt = 1 OR sternspecialCnt = 1 OR generatorCnt = 1 OR competencyCnt = 1 THEN '교육생(정규)'
                                  ELSE '관심사용자'
                         END
                     ELSE CASE
-                             WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 THEN '교육생(단기)'
-                             WHEN boarderCnt = 1 OR frpCnt = 1 OR highhorsepowerCnt = 1 OR sterndriveCnt = 1 THEN '교육생(정규)'
+                             WHEN outboarderCnt = 1 OR inboarderCnt = 1 OR sailyachtCnt = 1 OR basicCnt = 1
+                                      OR emergencyCnt = 1 OR famtourinCnt = 1 OR famtouroutCnt = 1 THEN '교육생(단기)'
+                             WHEN boarderCnt = 1 OR frpCnt = 1 OR highhorsepowerCnt = 1 OR sterndriveCnt = 1 OR highselfCnt = 1
+                                      OR highspecialCnt = 1 OR sternspecialCnt = 1 OR generatorCnt = 1 OR competencyCnt = 1 THEN '교육생(정규)'
                              ELSE '일반회원'
                         END
             END) AS afterGrade
@@ -138,8 +197,35 @@
                       FROM highhorsepower h
                       WHERE h.member_seq = m.seq AND h.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS highhorsepowerCnt
                    , (SELECT COUNT(*)
+                      FROM highself hs
+                      WHERE hs.member_seq = m.seq AND hs.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS highselfCnt
+                   , (SELECT COUNT(*)
+                      FROM highspecial hp
+                      WHERE hp.member_seq = m.seq AND hp.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS highspecialCnt
+                   , (SELECT COUNT(*)
                       FROM sterndrive t
                       WHERE t.member_seq = m.seq AND t.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS sterndriveCnt
+                   , (SELECT COUNT(*)
+                      FROM sternspecial sp
+                      WHERE sp.member_seq = m.seq AND sp.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS sternspecialCnt
+                   , (SELECT COUNT(*)
+                      FROM basic ba
+                      WHERE ba.member_seq = m.seq AND ba.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS basicCnt
+                   , (SELECT COUNT(*)
+                      FROM emergency em
+                      WHERE em.member_seq = m.seq AND em.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS emergencyCnt
+                   , (SELECT COUNT(*)
+                      FROM generator gn
+                      WHERE gn.member_seq = m.seq AND gn.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS generatorCnt
+                   , (SELECT COUNT(*)
+                      FROM competency ct
+                      WHERE ct.member_seq = m.seq AND ct.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS competencyCnt
+                   , (SELECT COUNT(*)
+                      FROM famtourin fi
+                      WHERE fi.member_seq = m.seq AND fi.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS famtourinCnt
+                   , (SELECT COUNT(*)
+                      FROM famtourout fo
+                      WHERE fo.member_seq = m.seq AND fo.apply_status NOT LIKE CONCAT('%', '취소', '%')) AS famtouroutCnt
               FROM member m
               WHERE m.apply_status != '탈퇴'
                 AND m.del_yn = 'N') rs
@@ -188,4 +274,3 @@
     </select>
 
 </mapper>
-

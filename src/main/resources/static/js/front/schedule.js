@@ -247,6 +247,14 @@ function searchPosts(pageNum, categoryValue) {
                             thumbnailImage = '/img/thumbnail_competency.png';
                             applyPath = '/apply/eduApply19.do';
                             break;
+                        case '선내기 팸투어':
+                            thumbnailImage = '/img/thumbnail_famtourin.png';
+                            applyPath = '/apply/eduApply20.do';
+                            break;
+                        case '선외기 팸투어':
+                            thumbnailImage = '/img/thumbnail_famtourout.png';
+                            applyPath = '/apply/eduApply21.do';
+                            break;
                         default:
                             break;
                     }

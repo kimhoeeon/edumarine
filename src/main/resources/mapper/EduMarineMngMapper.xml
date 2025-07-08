@@ -1966,7 +1966,7 @@
         <if test='jobSupportYn != null and jobSupportYn != ""'>
             AND b.job_support_gbn = #{jobSupportYn}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -2134,7 +2134,7 @@
         <if test='jobSupportYn != null and jobSupportYn != ""'>
             AND f.job_support_gbn = #{jobSupportYn}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -2247,7 +2247,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND b.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='boarderGbn != null and boarderGbn != ""'>
@@ -2348,7 +2348,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND e.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='boarderGbn != null and boarderGbn != ""'>
@@ -2450,7 +2450,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND g.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -2549,7 +2549,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND c.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -2588,6 +2588,180 @@
     <update id="updateCompetencyApplyStatus" parameterType="com.mtf.edumarine.dto.CompetencyDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateCompetencyApplyStatus */
         UPDATE competency
+        SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+    
+    <select id="selectFamtourinList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFamtourinList */
+        SELECT fi.seq
+             , fi.member_seq
+             , fi.train_seq
+             , m.grade
+             , m.id
+             , IFNULL(m.name, fi.name_ko) as nameKo
+             , IFNULL(m.name_en, fi.name_en) as nameEn
+             , IFNULL(m.phone, fi.phone) as phone
+             , IFNULL(m.email, fi.email) as email
+             , fi.apply_day
+             , fi.apply_status
+             , fi.cancel_dttm
+             , fi.cancel_reason
+             , fi.del_yn
+             , fi.note
+             , fi.init_regi_pic
+             , fi.init_regi_dttm
+             , fi.final_regi_pic
+             , fi.final_regi_dttm
+             , t.next_time
+             , t.train_start_dttm
+        FROM famtourin fi
+        LEFT JOIN member m
+        ON fi.member_seq = m.seq
+        LEFT JOIN train t
+        ON fi.train_seq = t.seq
+        WHERE 1=1
+          AND fi.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND fi.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null'>
+            AND t.next_time = #{time}
+        </if>
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, fi.init_regi_dttm DESC
+    </select>
+
+    <select id="selectFamtourinSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFamtourinSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , apply_day
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM famtourin
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateFamtourinApplyStatus" parameterType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFamtourinApplyStatus */
+        UPDATE famtourin
+        SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+    
+    <select id="selectFamtouroutList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFamtouroutList */
+        SELECT fo.seq
+             , fo.member_seq
+             , fo.train_seq
+             , m.grade
+             , m.id
+             , IFNULL(m.name, fo.name_ko) as nameKo
+             , IFNULL(m.name_en, fo.name_en) as nameEn
+             , IFNULL(m.phone, fo.phone) as phone
+             , IFNULL(m.email, fo.email) as email
+             , fo.apply_day
+             , fo.apply_status
+             , fo.cancel_dttm
+             , fo.cancel_reason
+             , fo.del_yn
+             , fo.note
+             , fo.init_regi_pic
+             , fo.init_regi_dttm
+             , fo.final_regi_pic
+             , fo.final_regi_dttm
+             , t.next_time
+             , t.train_start_dttm
+        FROM famtourout fo
+        LEFT JOIN member m
+        ON fo.member_seq = m.seq
+        LEFT JOIN train t
+        ON fo.train_seq = t.seq
+        WHERE 1=1
+          AND fo.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND fo.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null'>
+            AND t.next_time = #{time}
+        </if>
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, fo.init_regi_dttm DESC
+    </select>
+
+    <select id="selectFamtouroutSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectFamtouroutSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , apply_day
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM famtourout
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateFamtouroutApplyStatus" parameterType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFamtouroutApplyStatus */
+        UPDATE famtourout
         SET apply_status = #{applyStatus}
           <if test='applyStatus eq "취소신청"'>
             , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -2646,7 +2820,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND o.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -2741,7 +2915,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND i.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -2884,7 +3058,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND s.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -2982,7 +3156,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND h.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -3083,7 +3257,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND e.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -3179,7 +3353,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND c.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -3275,7 +3449,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND s.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -3371,7 +3545,7 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND ss.apply_status = #{applyStatus}
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND t.next_time = #{time}
         </if>
         <if test='year != null and year != ""'>
@@ -3449,7 +3623,7 @@
                 AND gbn LIKE BINARY CONCAT('%',#{searchText},'%')
             </if>
         </if>
-        <if test='time != null and time != ""'>
+        <if test='time != null'>
             AND next_time = #{time}
         </if>
         <if test='category != null and category != ""'>
@@ -4393,6 +4567,48 @@
           AND m.del_yn = 'N'
           AND m.sms_yn = '1'
         ORDER BY c.init_regi_dttm DESC
+    </select>
+
+    <select id="selectSmsSendFamtourinList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendFamtourinList */
+        SELECT fi.seq AS tableSeq
+             , fi.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = fi.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , fi.apply_status
+        FROM `member` m
+        JOIN famtourin fi
+        ON m.seq = fi.member_seq
+        WHERE fi.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY fi.init_regi_dttm DESC
+    </select>
+    
+    <select id="selectSmsSendFamtouroutList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendFamtouroutList */
+        SELECT fo.seq AS tableSeq
+             , fo.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = fo.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , fo.apply_status
+        FROM `member` m
+        JOIN famtourout fo
+        ON m.seq = fo.member_seq
+        WHERE fo.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY fo.init_regi_dttm DESC
     </select>
 
     <select id="selectSmsSendOutboarderList" resultType="com.mtf.edumarine.dto.SmsSendDTO">
@@ -5529,6 +5745,74 @@
               ON c.member_seq = m.seq) rst
         ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
     </select>
+    
+    <select id="selectExcelFamtourinDetailList" resultType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelFamtourinDetailList */
+        SELECT rst.*
+        FROM (SELECT fi.seq,
+                     fi.member_seq,
+                     fi.train_seq,
+                     fi.apply_status,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(fi.name_ko, m.name)                  AS nameKo,
+                     IFNULL(fi.name_en, m.name_en)               AS name_en,
+                     IFNULL(fi.phone, m.phone)                   AS phone,
+                     IFNULL(fi.email, m.email)                   AS email,
+                     IFNULL(fi.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(fi.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(fi.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(fi.address, m.address)               AS address,
+                     IFNULL(fi.address_detail, m.address_detail) AS addressDetail,
+                     fi.apply_day,
+                     fi.cancel_dttm,
+                     fi.cancel_reason,
+                     fi.del_yn,
+                     fi.note,
+                     fi.init_regi_pic,
+                     fi.init_regi_dttm,
+                     fi.final_regi_pic,
+                     fi.final_regi_dttm
+              FROM famtourin fi
+              LEFT JOIN member m
+              ON fi.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+    
+    <select id="selectExcelFamtouroutDetailList" resultType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelFamtouroutDetailList */
+        SELECT rst.*
+        FROM (SELECT fo.seq,
+                     fo.member_seq,
+                     fo.train_seq,
+                     fo.apply_status,
+                     IFNULL(m.apply_status, '-')                AS memberStatus,
+                     IFNULL(m.id, '-')                          AS id,
+                     IFNULL(fo.name_ko, m.name)                  AS nameKo,
+                     IFNULL(fo.name_en, m.name_en)               AS name_en,
+                     IFNULL(fo.phone, m.phone)                   AS phone,
+                     IFNULL(fo.email, m.email)                   AS email,
+                     IFNULL(fo.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(fo.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(fo.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(fo.address, m.address)               AS address,
+                     IFNULL(fo.address_detail, m.address_detail) AS addressDetail,
+                     fo.apply_day,
+                     fo.cancel_dttm,
+                     fo.cancel_reason,
+                     fo.del_yn,
+                     fo.note,
+                     fo.init_regi_pic,
+                     fo.init_regi_dttm,
+                     fo.final_regi_pic,
+                     fo.final_regi_dttm
+              FROM famtourout fo
+              LEFT JOIN member m
+              ON fo.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
 
     <select id="selectMemberCount" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
         /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectMemberCount */
@@ -5719,6 +6003,30 @@
                 </if>
                 AND cp.apply_status NOT LIKE '%대기%'
                 AND cp.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM famtourin fi
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND fi.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND fi.apply_status LIKE '%취소%'
+                </if>
+                AND fi.apply_status NOT LIKE '%대기%'
+                AND fi.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM famtourout fo
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND fo.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND fo.apply_status LIKE '%취소%'
+                </if>
+                AND fo.apply_status NOT LIKE '%대기%'
+                AND fo.del_yn = 'N'
               ) r
     </select>
 
@@ -5844,7 +6152,19 @@
               FROM competency cp
               WHERE cp.apply_status NOT LIKE '%취소%'
                 and cp.apply_status NOT LIKE '%대기%'
-                and cp.del_yn = 'N') r
+                and cp.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM famtourin fi
+              WHERE fi.apply_status NOT LIKE '%취소%'
+                and fi.apply_status NOT LIKE '%대기%'
+                and fi.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM famtourout fo
+              WHERE fo.apply_status NOT LIKE '%취소%'
+                and fo.apply_status NOT LIKE '%대기%'
+                and fo.del_yn = 'N') r
     </select>
 
     <select id="selectRegularTrainInfoList" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO$TrainInfo">
@@ -6196,6 +6516,16 @@
              , cp.train_seq
         FROM competency cp
         WHERE cp.seq = #{seq}
+        UNION ALL
+        SELECT '선내기 팸투어' AS trainName
+             , fi.train_seq
+        FROM famtourin fi
+        WHERE fi.seq = #{seq}
+        UNION ALL
+        SELECT '선외기 팸투어' AS trainName
+             , fo.train_seq
+        FROM famtourin fo
+        WHERE fo.seq = #{seq}
     </select>
 
     <update id="updateBoarderTrainSeq" parameterType="com.mtf.edumarine.dto.BoarderDTO">
@@ -6305,6 +6635,22 @@
     <update id="updateCompetencyTrainSeq" parameterType="com.mtf.edumarine.dto.CompetencyDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateCompetencyTrainSeq */
         UPDATE competency
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateFamtourinTrainSeq" parameterType="com.mtf.edumarine.dto.FamtourinDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFamtourinTrainSeq */
+        UPDATE famtourin
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateFamtouroutTrainSeq" parameterType="com.mtf.edumarine.dto.FamtouroutDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFamtouroutTrainSeq */
+        UPDATE famtourout
         SET train_seq = #{trainSeq}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
