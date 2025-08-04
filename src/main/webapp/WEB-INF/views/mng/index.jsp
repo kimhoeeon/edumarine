@@ -105,11 +105,13 @@
     </div>
 
 <script>
-    /*document.addEventListener("keyup", function(event) {
+    document.addEventListener("keyup", function(event) {
         if (event.key === 'Enter') {
-            loginFormSubmit();
+            if(!Swal.isVisible()) {
+                loginFormSubmit();
+            }
         }
-    });*/
+    });
 </script>
 
 <%--<script type="text/javascript">

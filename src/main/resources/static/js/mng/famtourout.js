@@ -265,7 +265,7 @@ function f_customer_famtourout_remove(seq){
 
                     let jsonObj = {
                         targetSeq: seq,
-                        targetTable: 'competency',
+                        targetTable: 'famtourout',
                         deleteReason: result.value,
                         targetMenu: getTargetMenu('mng_customer_famtourout_table'),
                         delYn: 'Y'

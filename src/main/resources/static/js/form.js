@@ -57,18 +57,21 @@ $(document).ready(function () {
     //년도 selectbox만들기               
     for (var i = 1940; i <= year; i++) {
         $('#birth-year').append('<option value="' + i + '">' + i + '</option>');
+        $('#rc-birth-year').append('<option value="' + i + '">' + i + '</option>');
     }
 
     // 월별 selectbox 만들기            
     for (var i = 1; i <= 12; i++) {
         var mm = i > 9 ? i : "0" + i;
         $('#birth-month').append('<option value="' + mm + '">' + mm + '</option>');
+        $('#rc-birth-month').append('<option value="' + mm + '">' + mm + '</option>');
     }
 
     // 일별 selectbox 만들기
     for (var i = 1; i <= 31; i++) {
         var dd = i > 9 ? i : "0" + i;
         $('#birth-day').append('<option value="' + dd + '">' + dd + '</option>');
+        $('#rc-birth-day').append('<option value="' + dd + '">' + dd + '</option>');
     }
 
     // input file 폼 디자인

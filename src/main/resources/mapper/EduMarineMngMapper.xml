@@ -2468,6 +2468,10 @@
              , participation_path
              , train_understand
              , train_understand_etc
+             , recommend_person
+             , rc_birth_year
+             , rc_birth_month
+             , rc_birth_day
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -2836,6 +2840,10 @@
              , train_seq
              , clothes_size
              , participation_path
+             , recommend_person
+             , rc_birth_year
+             , rc_birth_month
+             , rc_birth_day
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -2931,6 +2939,10 @@
              , train_seq
              , clothes_size
              , participation_path
+             , recommend_person
+             , rc_birth_year
+             , rc_birth_month
+             , rc_birth_day
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -3074,6 +3086,10 @@
              , train_seq
              , clothes_size
              , participation_path
+             , recommend_person
+             , rc_birth_year
+             , rc_birth_month
+             , rc_birth_day
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -3367,6 +3383,10 @@
         SELECT seq
              , member_seq
              , train_seq
+             , recommend_person
+             , rc_birth_year
+             , rc_birth_month
+             , rc_birth_day
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -3559,6 +3579,10 @@
         SELECT seq
              , member_seq
              , train_seq
+             , recommend_person
+             , rc_birth_year
+             , rc_birth_month
+             , rc_birth_day
              , apply_status
              , cancel_dttm
              , cancel_reason
@@ -5290,6 +5314,10 @@
                      IFNULL(o.address_detail, m.address_detail) AS addressDetail,
                      o.clothes_size,
                      o.participation_path,
+                     o.recommend_person,
+                     o.rc_birth_year,
+                     o.rc_birth_month,
+                     o.rc_birth_day,
                      o.cancel_dttm,
                      o.cancel_reason,
                      o.refund_bank_code,
@@ -5329,6 +5357,10 @@
                      IFNULL(i.address_detail, m.address_detail) AS addressDetail,
                      i.clothes_size,
                      i.participation_path,
+                     i.recommend_person,
+                     i.rc_birth_year,
+                     i.rc_birth_month,
+                     i.rc_birth_day,
                      i.cancel_dttm,
                      i.cancel_reason,
                      i.refund_bank_code,
@@ -5368,6 +5400,10 @@
                      IFNULL(s.address_detail, m.address_detail) AS addressDetail,
                      s.clothes_size,
                      s.participation_path,
+                     s.recommend_person,
+                     s.rc_birth_year,
+                     s.rc_birth_month,
+                     s.rc_birth_day,
                      s.cancel_dttm,
                      s.cancel_reason,
                      s.refund_bank_code,
@@ -5477,16 +5513,20 @@
                      c.member_seq,
                      c.train_seq,
                      c.apply_status,
-                     IFNULL(m.apply_status, '-')                AS memberStatus,
-                     IFNULL(m.id, '-')                          AS id,
-                     IFNULL(c.name_ko, m.name)                  AS nameKo,
-                     IFNULL(c.name_en, m.name_en)               AS name_en,
-                     IFNULL(c.phone, m.phone)                   AS phone,
-                     IFNULL(c.email, m.email)                   AS email,
-                     IFNULL(c.birth_year, m.birth_year)         AS birthYear,
-                     IFNULL(c.birth_month, m.birth_month)       AS birthMonth,
-                     IFNULL(c.birth_day, m.birth_day)           AS birthDay,
-                     IFNULL(m.sex, '-')                         AS sex,
+                     IFNULL(m.apply_status, '-')          AS memberStatus,
+                     IFNULL(m.id, '-')                    AS id,
+                     IFNULL(c.name_ko, m.name)            AS nameKo,
+                     IFNULL(c.name_en, m.name_en)         AS name_en,
+                     IFNULL(c.phone, m.phone)             AS phone,
+                     IFNULL(c.email, m.email)             AS email,
+                     IFNULL(c.birth_year, m.birth_year)   AS birthYear,
+                     IFNULL(c.birth_month, m.birth_month) AS birthMonth,
+                     IFNULL(c.birth_day, m.birth_day)     AS birthDay,
+                     IFNULL(m.sex, '-')                   AS sex,
+                     c.recommend_person,
+                     c.rc_birth_year,
+                     c.rc_birth_month,
+                     c.rc_birth_day,
                      c.cancel_dttm,
                      c.cancel_reason,
                      c.refund_bank_code,
@@ -5564,6 +5604,10 @@
                      IFNULL(ss.birth_month, m.birth_month)       AS birthMonth,
                      IFNULL(ss.birth_day, m.birth_day)           AS birthDay,
                      IFNULL(m.sex, '-')                         AS sex,
+                     ss.recommend_person,
+                     ss.rc_birth_year,
+                     ss.rc_birth_month,
+                     ss.rc_birth_day,
                      ss.cancel_dttm,
                      ss.cancel_reason,
                      ss.refund_bank_code,
@@ -5687,6 +5731,10 @@
                      g.participation_path,
                      g.train_understand,
                      g.train_understand_etc,
+                     g.recommend_person,
+                     g.rc_birth_year,
+                     g.rc_birth_month,
+                     g.rc_birth_day,
                      g.cancel_dttm,
                      g.cancel_reason,
                      g.refund_bank_code,

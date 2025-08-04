@@ -266,6 +266,34 @@
                                         </div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="gubun">
+                                        <p>추천인</p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="recommendPerson" name="recommendPerson" value="${info.recommendPerson}" placeholder="추천인명 입력">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun">
+                                        <p>추천인 생년월일</p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input form_birth">
+                                            <select class="box" id="rc-birth-year" name="rcBirthYear">
+                                                <option disabled selected>출생 연도</option>
+                                            </select>
+                                            <select class="box" id="rc-birth-month" name="rcBirthMonth">
+                                                <option disabled selected>월</option>
+                                            </select>
+                                            <select class="box" id="rc-birth-day" name="rcBirthDay">
+                                                <option disabled selected>일</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <!-- //form box -->
@@ -415,6 +443,10 @@
         $('#birth-year option').prop('disabled',true);
         $('#birth-month option').prop('disabled',true);
         $('#birth-day option').prop('disabled',true);
+
+        $('#rc-birth-year').val('${info.rcBirthYear}');
+        $('#rc-birth-month').val('${info.rcBirthMonth}');
+        $('#rc-birth-day').val('${info.rcBirthDay}');
 
         let modYn = '${modYn}';
         if(nvl(modYn,'') !== ''){

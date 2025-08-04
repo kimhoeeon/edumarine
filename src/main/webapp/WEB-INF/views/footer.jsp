@@ -68,6 +68,10 @@
                         <span class="gubun">통신판매업신고번호</span>
                         제 2024-대전유성-0376호
                     </p>
+                    <p class="text2">
+                        <span class="gubun">본사주소</span>
+                        대전광역시 유성구 테크노8로34, 3~6층(용산동,비엘타워)
+                    </p>
                 </div>
                 <div class="copyright">Copyright(c) 경기해양레저인력양성센터. All rights reserved</div>
             </div>

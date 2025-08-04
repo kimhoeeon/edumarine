@@ -257,6 +257,60 @@
                                         <div class="cmnt">수료증 발급에 필요한 자료이므로 정확한 기재 부탁 드립니다.</div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="gubun req"><p>주소</p></div>
+                                    <div class="naeyong">
+                                        <div class="input form_address">
+                                            <div class="address_box">
+                                                <input type="text" id="address" name="address" value="${info.address}" placeholder="주소" readonly="readonly">
+                                                <%--<input type="button" onclick="execDaumPostcode('address','addressDetail')" value="주소 검색">
+                                                <div id="map" style="width:300px;height:300px;margin-top:10px;display:none">
+                                                </div>--%>
+                                            </div>
+                                            <div class="address_box">
+                                                <input type="text" id="addressDetail" name="addressDetail" value="${info.addressDetail}" placeholder="상세주소" readonly="readonly">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- //form box -->
+
+                        <!-- form box -->
+                        <div class="form_box">
+                            <div class="form_tit">
+                                <div class="big">신청정보</div>
+                            </div>
+                            <ul class="form_list">
+                                <li>
+                                    <div class="gubun">
+                                        <p>추천인</p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input">
+                                            <input type="text" id="recommendPerson" name="recommendPerson" placeholder="추천인명 입력">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gubun">
+                                        <p>추천인 생년월일</p>
+                                    </div>
+                                    <div class="naeyong">
+                                        <div class="input form_birth">
+                                            <select class="box" id="rc-birth-year" name="rcBirthYear">
+                                                <option disabled selected>출생 연도</option>
+                                            </select>
+                                            <select class="box" id="rc-birth-month" name="rcBirthMonth">
+                                                <option disabled selected>월</option>
+                                            </select>
+                                            <select class="box" id="rc-birth-day" name="rcBirthDay">
+                                                <option disabled selected>일</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <!-- //form box -->
