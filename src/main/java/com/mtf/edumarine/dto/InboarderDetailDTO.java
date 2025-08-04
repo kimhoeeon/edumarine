@@ -27,6 +27,10 @@ public class InboarderDetailDTO {
     String addressDetail; //상세주소
     String clothesSize; //작업복사이즈
     String participationPath; //참여경로
+    String recommendPerson; //추천인
+    String rcBirthYear; //출생년도
+    String rcBirthMonth; //출생월
+    String rcBirthDay; //출생일
     String payYn; //결제여부
     Integer paySum; //결제금액
     String applyStatus;

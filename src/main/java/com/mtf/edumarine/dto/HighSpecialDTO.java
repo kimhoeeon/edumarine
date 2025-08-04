@@ -22,6 +22,10 @@ public class HighSpecialDTO {
     String birthYear; //출생년도
     String birthMonth; //출생월
     String birthDay; //출생일
+    String recommendPerson; //추천인
+    String rcBirthYear; //출생년도
+    String rcBirthMonth; //출생월
+    String rcBirthDay; //출생일
     String sex;
     String payYn; //결제여부
     Integer paySum; //결제금액

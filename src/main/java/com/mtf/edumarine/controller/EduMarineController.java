@@ -818,7 +818,7 @@ public class EduMarineController {
         if(info != null){
             mv.addObject("info", info);
 
-            if(modYn == null || "".equals(modYn)){
+            if(modYn == null || modYn.isEmpty()){
                 modYn = "Y";
             }
             mv.addObject("modYn", modYn);
@@ -870,7 +870,7 @@ public class EduMarineController {
         if(info != null){
             mv.addObject("info", info);
 
-            if(modYn == null || "".equals(modYn)){
+            if(modYn == null || modYn.isEmpty()){
                 modYn = "Y";
             }
             mv.addObject("modYn", modYn);
@@ -911,7 +911,7 @@ public class EduMarineController {
         if(info != null){
             mv.addObject("info", info);
 
-            if(modYn == null || "".equals(modYn)){
+            if(modYn == null || modYn.isEmpty()){
                 modYn = "Y";
             }
             mv.addObject("modYn", modYn);
@@ -1207,7 +1207,7 @@ public class EduMarineController {
         if(info != null){
             mv.addObject("info", info);
 
-            if(modYn == null || "".equals(modYn)){
+            if(modYn == null || modYn.isEmpty()){
                 modYn = "Y";
             }
             mv.addObject("modYn", modYn);
@@ -1281,7 +1281,7 @@ public class EduMarineController {
         if(info != null){
             mv.addObject("info", info);
 
-            if(modYn == null || "".equals(modYn)){
+            if(modYn == null || modYn.isEmpty()){
                 modYn = "Y";
             }
             mv.addObject("modYn", modYn);
@@ -1799,7 +1799,7 @@ public class EduMarineController {
         if(info != null){
             mv.addObject("info", info);
 
-            if(modYn == null || "".equals(modYn)){
+            if(modYn == null || modYn.isEmpty()){
                 modYn = "Y";
             }
             mv.addObject("modYn", modYn);

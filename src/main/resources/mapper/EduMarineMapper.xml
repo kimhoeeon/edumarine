@@ -2832,6 +2832,10 @@
         , train_seq
         , clothes_size
         , participation_path
+        , recommend_person
+        , rc_birth_year
+        , rc_birth_month
+        , rc_birth_day
         , apply_status
         , cancel_reason
         , del_yn
@@ -2839,23 +2843,24 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{memberSeq}
-            , #{trainSeq}
-            , #{clothesSize}
-            , #{participationPath}
-            , #{applyStatus}
-            , #{cancelReason}
-            , 'N'
-            , #{note}
-            , 'INBOARDER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'INBOARDER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{memberSeq}
+               , #{trainSeq}
+               , #{clothesSize}
+               , #{participationPath}
+               , #{recommendPerson}
+               , #{rcBirthYear}
+               , #{rcBirthMonth}
+               , #{rcBirthDay}
+               , #{applyStatus}
+               , #{cancelReason}
+               , 'N'
+               , #{note}
+               , 'INBOARDER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'INBOARDER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="selectInboarderSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.InboarderDTO">
@@ -2865,6 +2870,10 @@
              , i.train_seq
              , i.clothes_size
              , i.participation_path
+             , i.recommend_person
+             , i.rc_birth_year
+             , i.rc_birth_month
+             , i.rc_birth_day
              , i.apply_status
              , i.cancel_dttm
              , i.cancel_reason
@@ -2885,6 +2894,10 @@
         UPDATE inboarder
         SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
+          , recommend_person = #{recommendPerson}
+          , rc_birth_year = #{rcBirthYear}
+          , rc_birth_month = #{rcBirthMonth}
+          , rc_birth_day = #{rcBirthDay}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -2904,6 +2917,10 @@
         , train_seq
         , clothes_size
         , participation_path
+        , recommend_person
+        , rc_birth_year
+        , rc_birth_month
+        , rc_birth_day
         , apply_status
         , cancel_reason
         , del_yn
@@ -2911,23 +2928,24 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{memberSeq}
-            , #{trainSeq}
-            , #{clothesSize}
-            , #{participationPath}
-            , #{applyStatus}
-            , #{cancelReason}
-            , 'N'
-            , #{note}
-            , 'OUTBOARDER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'OUTBOARDER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{memberSeq}
+               , #{trainSeq}
+               , #{clothesSize}
+               , #{participationPath}
+               , #{recommendPerson}
+               , #{rcBirthYear}
+               , #{rcBirthMonth}
+               , #{rcBirthDay}
+               , #{applyStatus}
+               , #{cancelReason}
+               , 'N'
+               , #{note}
+               , 'OUTBOARDER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'OUTBOARDER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="getSailyachtSeq" resultType="java.lang.String">
@@ -2944,6 +2962,10 @@
         , train_seq
         , clothes_size
         , participation_path
+        , recommend_person
+        , rc_birth_year
+        , rc_birth_month
+        , rc_birth_day
         , apply_status
         , cancel_reason
         , del_yn
@@ -2951,23 +2973,24 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{memberSeq}
-            , #{trainSeq}
-            , #{clothesSize}
-            , #{participationPath}
-            , #{applyStatus}
-            , #{cancelReason}
-            , 'N'
-            , #{note}
-            , 'SAILYACHT'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'SAILYACHT'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{memberSeq}
+               , #{trainSeq}
+               , #{clothesSize}
+               , #{participationPath}
+               , #{recommendPerson}
+               , #{rcBirthYear}
+               , #{rcBirthMonth}
+               , #{rcBirthDay}
+               , #{applyStatus}
+               , #{cancelReason}
+               , 'N'
+               , #{note}
+               , 'SAILYACHT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'SAILYACHT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="getHighHorsePowerSeq" resultType="java.lang.String">
@@ -3074,6 +3097,10 @@
         ( seq
         , member_seq
         , train_seq
+        , recommend_person
+        , rc_birth_year
+        , rc_birth_month
+        , rc_birth_day
         , apply_status
         , cancel_reason
         , del_yn
@@ -3081,21 +3108,22 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{memberSeq}
-            , #{trainSeq}
-            , #{applyStatus}
-            , #{cancelReason}
-            , 'N'
-            , #{note}
-            , 'HIGHSPECIAL'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'HIGHSPECIAL'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{memberSeq}
+               , #{trainSeq}
+               , #{recommendPerson}
+               , #{rcBirthYear}
+               , #{rcBirthMonth}
+               , #{rcBirthDay}
+               , #{applyStatus}
+               , #{cancelReason}
+               , 'N'
+               , #{note}
+               , 'HIGHSPECIAL'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'HIGHSPECIAL'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="getSterndriveSeq" resultType="java.lang.String">
@@ -3156,6 +3184,10 @@
         ( seq
         , member_seq
         , train_seq
+        , recommend_person
+        , rc_birth_year
+        , rc_birth_month
+        , rc_birth_day
         , apply_status
         , cancel_reason
         , del_yn
@@ -3163,21 +3195,22 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{memberSeq}
-            , #{trainSeq}
-            , #{applyStatus}
-            , #{cancelReason}
-            , 'N'
-            , #{note}
-            , 'STERNSPECIAL'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'STERNSPECIAL'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{memberSeq}
+               , #{trainSeq}
+               , #{recommendPerson}
+               , #{rcBirthYear}
+               , #{rcBirthMonth}
+               , #{rcBirthDay}
+               , #{applyStatus}
+               , #{cancelReason}
+               , 'N'
+               , #{note}
+               , 'STERNSPECIAL'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'STERNSPECIAL'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="getBasicSeq" resultType="java.lang.String">
@@ -3354,6 +3387,10 @@
         , participation_path
         , train_understand
         , train_understand_etc
+        , recommend_person
+        , rc_birth_year
+        , rc_birth_month
+        , rc_birth_day
         , apply_status
         , cancel_reason
         , del_yn
@@ -3361,25 +3398,26 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{memberSeq}
-            , #{trainSeq}
-            , #{clothesSize}
-            , #{participationPath}
-            , #{trainUnderstand}
-            , #{trainUnderstandEtc}
-            , #{applyStatus}
-            , #{cancelReason}
-            , 'N'
-            , #{note}
-            , 'GENERATOR'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'GENERATOR'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{memberSeq}
+               , #{trainSeq}
+               , #{clothesSize}
+               , #{participationPath}
+               , #{trainUnderstand}
+               , #{trainUnderstandEtc}
+               , #{recommendPerson}
+               , #{rcBirthYear}
+               , #{rcBirthMonth}
+               , #{rcBirthDay}
+               , #{applyStatus}
+               , #{cancelReason}
+               , 'N'
+               , #{note}
+               , 'GENERATOR'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'GENERATOR'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="selectGeneratorSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.GeneratorDTO">
@@ -3389,6 +3427,12 @@
              , ge.train_seq
              , ge.clothes_size
              , ge.participation_path
+             , ge.train_understand
+             , ge.train_understand_etc
+             , ge.recommend_person
+             , ge.rc_birth_year
+             , ge.rc_birth_month
+             , ge.rc_birth_day
              , ge.apply_status
              , ge.cancel_dttm
              , ge.cancel_reason
@@ -3411,6 +3455,10 @@
           , participation_path = #{participationPath}
           , train_understand = #{trainUnderstand}
           , train_understand_etc = #{trainUnderstandEtc}
+          , recommend_person = #{recommendPerson}
+          , rc_birth_year = #{rcBirthYear}
+          , rc_birth_month = #{rcBirthMonth}
+          , rc_birth_day = #{rcBirthDay}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3637,6 +3685,10 @@
              , o.train_seq
              , o.clothes_size
              , o.participation_path
+             , o.recommend_person
+             , o.rc_birth_year
+             , o.rc_birth_month
+             , o.rc_birth_day
              , o.apply_status
              , o.cancel_dttm
              , o.cancel_reason
@@ -3659,6 +3711,10 @@
              , s.train_seq
              , s.clothes_size
              , s.participation_path
+             , s.recommend_person
+             , s.rc_birth_year
+             , s.rc_birth_month
+             , s.rc_birth_day
              , s.apply_status
              , s.cancel_dttm
              , s.cancel_reason
@@ -3729,6 +3785,10 @@
         SELECT c.seq
              , c.member_seq
              , c.train_seq
+             , c.recommend_person
+             , c.rc_birth_year
+             , c.rc_birth_month
+             , c.rc_birth_day
              , c.apply_status
              , c.cancel_dttm
              , c.cancel_reason
@@ -3774,6 +3834,10 @@
         SELECT ss.seq
              , ss.member_seq
              , ss.train_seq
+             , ss.recommend_person
+             , ss.rc_birth_year
+             , ss.rc_birth_month
+             , ss.rc_birth_day
              , ss.apply_status
              , ss.cancel_dttm
              , ss.cancel_reason
@@ -3794,6 +3858,10 @@
         UPDATE outboarder
         SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
+          , recommend_person = #{recommendPerson}
+          , rc_birth_year = #{rcBirthYear}
+          , rc_birth_month = #{rcBirthMonth}
+          , rc_birth_day = #{rcBirthDay}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3804,6 +3872,10 @@
         UPDATE sailyacht
         SET clothes_size = #{clothesSize}
           , participation_path = #{participationPath}
+          , recommend_person = #{recommendPerson}
+          , rc_birth_year = #{rcBirthYear}
+          , rc_birth_month = #{rcBirthMonth}
+          , rc_birth_day = #{rcBirthDay}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3838,7 +3910,11 @@
     <update id="updateHighSpecial" parameterType="com.mtf.edumarine.dto.HighSpecialDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateHighSpecial */
         UPDATE highspecial
-        SET note = #{note}
+        SET recommend_person = #{recommendPerson}
+          , rc_birth_year = #{rcBirthYear}
+          , rc_birth_month = #{rcBirthMonth}
+          , rc_birth_day = #{rcBirthDay}
+          , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -3859,7 +3935,11 @@
     <update id="updateSternSpecial" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateSternSpecial */
         UPDATE sternspecial
-        SET note = #{note}
+        SET recommend_person = #{recommendPerson}
+          , rc_birth_year = #{rcBirthYear}
+          , rc_birth_month = #{rcBirthMonth}
+          , rc_birth_day = #{rcBirthDay}
+          , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>

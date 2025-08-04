@@ -2587,6 +2587,12 @@ function f_main_apply_eduApply04_submit(trainSeq){
     //신청현황
     form.applyStatus = '결제대기';
 
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
+
     Swal.fire({
         title: '[ 신청 정보 ]',
         html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
@@ -2733,6 +2739,12 @@ function f_main_apply_eduApply04_modify_submit(el, boarderSeq){
     //ID
     form.id = sessionStorage.getItem('id');
 
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
+
     Swal.fire({
         title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
@@ -2813,6 +2825,12 @@ function f_main_apply_eduApply05_submit(trainSeq){
 
     //신청현황
     form.applyStatus = '결제대기';
+
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
 
     Swal.fire({
         title: '[ 신청 정보 ]',
@@ -2961,6 +2979,12 @@ function f_main_apply_eduApply05_modify_submit(el, boarderSeq){
     //ID
     form.id = sessionStorage.getItem('id');
 
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
+
     Swal.fire({
         title: '[ 신청 정보 수정 ]',
         html: '입력된 정보로 수정하시겠습니까?',
@@ -3041,6 +3065,12 @@ function f_main_apply_eduApply06_submit(trainSeq){
 
     //신청현황
     form.applyStatus = '결제대기';
+
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
 
     Swal.fire({
         title: '[ 신청 정보 ]',
@@ -3189,6 +3219,12 @@ function f_main_apply_eduApply06_modify_submit(el, boarderSeq){
 
     //ID
     form.id = sessionStorage.getItem('id');
+
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
 
     Swal.fire({
         title: '[ 신청 정보 수정 ]',
@@ -4130,6 +4166,12 @@ function f_main_apply_eduApply10_submit(trainSeq){
     //신청현황
     form.applyStatus = '결제대기';
 
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
+
     //교육이해
     /*let trainUnderstand = '';
     let trainUnderstandArrLen = trainUnderstandArr.length;
@@ -4306,6 +4348,12 @@ function f_main_apply_eduApply10_modify_submit(el, boarderSeq){
     //ID
     form.id = sessionStorage.getItem('id');
 
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
+
     //교육이해
     /*let trainUnderstand = '';
     let trainUnderstandArrLen = trainUnderstandArr.length;
@@ -4412,6 +4460,12 @@ function f_main_apply_eduApply11_submit(trainSeq){
     //신청현황
     form.applyStatus = '결제대기';
 
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
+
     //교육이해
     /*let trainUnderstand = '';
     let trainUnderstandArrLen = trainUnderstandArr.length;
@@ -4422,7 +4476,6 @@ function f_main_apply_eduApply11_submit(trainSeq){
         }
     }
     form.trainUnderstand = trainUnderstand;*/
-
 
     Swal.fire({
         title: '[ 신청 정보 ]',
@@ -4587,6 +4640,12 @@ function f_main_apply_eduApply11_modify_submit(el, boarderSeq){
 
     //ID
     form.id = sessionStorage.getItem('id');
+
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
 
     //교육이해
     /*let trainUnderstand = '';
@@ -6091,6 +6150,11 @@ function f_main_apply_eduApply18_submit(trainSeq){
     }
     form.trainUnderstand = trainUnderstand;
 
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
 
     Swal.fire({
         title: '[ 신청 정보 ]',
@@ -6266,6 +6330,12 @@ function f_main_apply_eduApply18_modify_submit(el, boarderSeq){
         }
     }
     form.trainUnderstand = trainUnderstand;
+
+    if(nvl(form.recommendPerson,'') === ''){
+        form.rcBirthYear = null;
+        form.rcBirthMonth = null;
+        form.rcBirthDay = null;
+    }
 
     Swal.fire({
         title: '[ 신청 정보 수정 ]',

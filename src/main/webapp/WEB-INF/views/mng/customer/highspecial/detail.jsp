@@ -1881,10 +1881,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육차시</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">교육차시</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="nextTime" name="nextTime" class="form-control form-control-lg form-control-solid-bg" placeholder="교육차시" value="${info.nextTime} 차시" readonly/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1893,10 +1893,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">이름</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">이름</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <!--begin::Row-->
                                                     <div class="row">
                                                         <!--begin::Col-->
@@ -1918,10 +1918,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">연락처</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">연락처</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="phone" name="phone" class="form-control form-control-lg form-control-solid-bg onlyTel" placeholder="연락처" value="${memberInfo.phone}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1930,10 +1930,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">이메일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">이메일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <div class="input-group">
                                                         <c:set var="email1" value="${fn:split(memberInfo.email,'@')[0]}" />
                                                         <c:set var="email2" value="${fn:split(memberInfo.email,'@')[1]}" />
@@ -1963,16 +1963,78 @@ if (document.documentElement) {
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row">
+                                            <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">생년월일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">생년월일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <div class="input-group">
                                                         <input type="text" id="birthYear" name="birthYear" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생연도" value="${memberInfo.birthYear} 년" readonly/>
                                                         <input type="text" id="birthMonth" name="birthMonth" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생월" value="${memberInfo.birthMonth} 월" readonly/>
                                                         <input type="text" id="birthDay" name="birthDay" class="form-control form-control-lg form-control-solid-bg" placeholder="출생일" value="${memberInfo.birthDay} 일" readonly/>
+                                                    </div>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">주소</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <!--begin::Row-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-12">
+                                                            <input type="text" id="address" name="address" class="form-control form-control-lg form-control-solid-bg" placeholder="주소" value="${memberInfo.address}" readonly/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                            <%--<!--begin::Col-->
+                                                            <div class="col-lg-2">
+                                                                <button type="button" class="btn btn-primary" onclick="execDaumPostcode('address','addressDetail')">주소 검색</button>
+                                                            </div>
+                                                            <!--end::Col-->--%>
+                                                    </div>
+                                                    <!--end::Row-->
+                                                    <!--begin::Row-->
+                                                    <div class="row mt-3">
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-12">
+                                                            <input type="text" id="addressDetail" name="addressDetail" class="form-control form-control-lg form-control-solid-bg" value="${memberInfo.addressDetail}" placeholder="상세주소" readonly/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                    </div>
+                                                    <!--end::Row-->
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">추천인</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <input type="text" id="recommendPerson" name="recommendPerson" class="form-control form-control-lg form-control-solid-bg" placeholder="추천인" value="${info.recommendPerson}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">추천인 생년월일</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <div class="input-group">
+                                                        <input type="text" id="rcBirthYear" name="rcBirthYear" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생연도" value="${info.rcBirthYear} 년" readonly/>
+                                                        <input type="text" id="rcBirthMonth" name="rcBirthMonth" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생월" value="${info.rcBirthMonth} 월" readonly/>
+                                                        <input type="text" id="rcBirthDay" name="rcBirthDay" class="form-control form-control-lg form-control-solid-bg" placeholder="출생일" value="${info.rcBirthDay} 일" readonly/>
                                                     </div>
                                                 </div>
                                                 <!--end::Col-->
@@ -2001,10 +2063,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">상태</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">상태</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <input type="text" name="applyStatus" class="form-control form-control-lg form-control-solid-bg" placeholder="상태" value="${info.applyStatus}" readonly/>
                                             </div>
                                             <!--end::Col-->
@@ -2013,10 +2075,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">취소신청일시</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">취소신청일시</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <input type="text" name="cancelDttm" class="form-control form-control-lg form-control-solid-bg" placeholder="취소신청일시" value="${info.cancelDttm}" readonly/>
                                             </div>
                                             <!--end::Col-->
@@ -2025,10 +2087,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">취소사유</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">취소사유</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <input type="text" name="cancelReason" class="form-control form-control-lg form-control-solid-bg" placeholder="취소사유" value="${info.cancelReason}" readonly/>
                                             </div>
                                             <!--end::Col-->
@@ -2057,10 +2119,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">결제방식</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">결제방식</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <c:if test="${fn:contains(fn:toLowerCase(paymentInfo.payMethod), 'card')}">
                                                         <c:set var="payMethod" value="카드"/>
                                                     </c:if>
@@ -2075,10 +2137,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">결제정보</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">결제정보</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <c:if test="${fn:contains(fn:toLowerCase(paymentInfo.payMethod), 'card')}">
                                                         <input type="text" name="payMethod" class="form-control form-control-lg form-control-solid-bg" placeholder="결제방식" value="${paymentInfo.cardPurchaseName} (${paymentInfo.cardNum})" readonly/>
                                                     </c:if>
@@ -2093,10 +2155,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">승인일자</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">승인일자</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" name="applDate" class="form-control form-control-lg form-control-solid-bg" placeholder="승인일자" value="<fmt:formatDate value="${applDate}" pattern="yyyy-MM-dd HH:mm:ss"/>" readonly/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2105,10 +2167,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">결제금액</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">결제금액</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" name="totPrice" class="form-control form-control-lg form-control-solid-bg" placeholder="결제금액" value="<fmt:formatNumber value="${paymentInfo.totPrice}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/> 원" readonly/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2117,10 +2179,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">환불계좌 은행명</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">환불계좌 은행명</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" name="refundBankName" class="form-control form-control-lg form-control-solid-bg" placeholder="환불계좌 은행명" value="${info.refundBankName}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2129,10 +2191,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">환불계좌 예금주명</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">환불계좌 예금주명</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" name="refundBankCustomerName" class="form-control form-control-lg form-control-solid-bg" placeholder="환불계좌 예금주명" value="${info.refundBankCustomerName}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2141,10 +2203,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">환불계좌번호</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">환불계좌번호</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" name="refundBankNumber" class="form-control form-control-lg form-control-solid-bg" placeholder="환불계좌번호" value="${info.refundBankNumber}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
