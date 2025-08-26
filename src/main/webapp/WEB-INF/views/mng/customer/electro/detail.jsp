@@ -2035,7 +2035,7 @@ if (document.documentElement) {
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row mb-6">
+                                            <%--<div class="row mb-6">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6 required">날짜 선택</label>
                                                 <!--end::Label-->
@@ -2055,7 +2055,7 @@ if (document.documentElement) {
                                                     </label>
                                                 </div>
                                                 <!--end::Col-->
-                                            </div>
+                                            </div>--%>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
@@ -2089,7 +2089,7 @@ if (document.documentElement) {
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row mb-6">
+                                            <%--<div class="row mb-6">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">추천인</label>
                                                 <!--end::Label-->
@@ -2098,10 +2098,10 @@ if (document.documentElement) {
                                                     <input type="text" id="recommendPerson" name="recommendPerson" class="form-control form-control-lg form-control-solid-bg" placeholder="추천인" value="${info.recommendPerson}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
-                                            </div>
+                                            </div>--%>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row mb-6">
+                                            <%--<div class="row mb-6">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">추천인 생년월일</label>
                                                 <!--end::Label-->
@@ -2110,7 +2110,7 @@ if (document.documentElement) {
                                                     <input type="text" id="rcBirth" name="rcBirth" class="form-control form-control-lg form-control-solid-bg" placeholder="추천인 생년월일" value="${info.rcBirthYear}-${info.rcBirthMonth}-${info.rcBirthDay}" readonly/>
                                                 </div>
                                                 <!--end::Col-->
-                                            </div>
+                                            </div>--%>
                                             <!--end::Input group-->
                                         </div>
                                         <!--end::Card body-->

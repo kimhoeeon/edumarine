@@ -239,7 +239,7 @@
                                 <div class="big">신청정보</div>
                             </div>
                             <ul class="form_list">
-                                <li>
+                                <%--<li>
                                     <div class="gubun req"><p>날짜 선택</p></div>
                                     <div class="naeyong">
                                         <div class="input">
@@ -248,7 +248,7 @@
                                             <label><input type="radio" name="choiceDate" value="11/18(화)">11/18(화)</label>
                                         </div>
                                     </div>
-                                </li>
+                                </li>--%>
                                 <li>
                                     <div class="gubun req"><p>참여 경로</p></div>
                                     <div class="naeyong">
@@ -261,7 +261,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <%--<li>
                                     <div class="gubun">
                                         <p>추천인</p>
                                     </div>
@@ -288,7 +288,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </li>
+                                </li>--%>
                             </ul>
                         </div>
                         <!-- //form box -->
