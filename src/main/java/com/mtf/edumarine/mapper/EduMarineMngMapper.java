@@ -579,4 +579,15 @@ public interface EduMarineMngMapper {
 
     Integer updateFamtouroutTrainSeq(FamtouroutDTO famtouroutDTO);
 
+    List<ElectroDTO> selectElectroList(SearchDTO searchDTO);
+
+    ElectroDTO selectElectroSingle(String seq);
+
+    Integer updateElectroApplyStatus(ElectroDTO electroDTO);
+
+    List<ElectroDetailDTO> selectExcelElectroDetailList();
+
+    List<SmsSendDTO> selectSmsSendElectroList(String boarderGbn);
+
+    Integer updateElectroTrainSeq(ElectroDTO electroDTO);
 }

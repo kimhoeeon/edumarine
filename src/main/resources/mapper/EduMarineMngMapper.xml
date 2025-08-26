@@ -2776,6 +2776,111 @@
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
+    
+    <select id="selectElectroList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectElectroList */
+        SELECT el.seq
+             , el.member_seq
+             , el.train_seq
+             , m.grade
+             , m.id
+             , IFNULL(m.name, el.name_ko) as nameKo
+             , IFNULL(m.name_en, el.name_en) as nameEn
+             , IFNULL(m.phone, el.phone) as phone
+             , IFNULL(m.email, el.email) as email
+             , el.choice_date
+             , el.apply_status
+             , el.cancel_dttm
+             , el.cancel_reason
+             , el.del_yn
+             , el.note
+             , el.init_regi_pic
+             , el.init_regi_dttm
+             , el.final_regi_pic
+             , el.final_regi_dttm
+             , t.next_time
+             , t.train_start_dttm
+        FROM electro el
+        LEFT JOIN member m
+        ON el.member_seq = m.seq
+        LEFT JOIN train t
+        ON el.train_seq = t.seq
+        WHERE 1=1
+          AND el.del_yn = 'N'
+          <if test='searchText != null and searchText != ""'>
+              <if test='condition eq "NAMEKO"'>
+                  AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "NAMEEN"'>
+                  AND m.name_en LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+              <if test='condition eq "ID"'>
+                  AND m.id LIKE BINARY CONCAT('%',#{searchText},'%')
+              </if>
+          </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND el.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null'>
+            AND t.next_time = #{time}
+        </if>
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, el.init_regi_dttm DESC
+    </select>
+
+    <select id="selectElectroSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectElectroSingle */
+        SELECT seq
+             , member_seq
+             , train_seq
+             , name_ko
+             , name_en
+             , phone
+             , email
+             , birth_year
+             , birth_month
+             , birth_day
+             , address
+             , address_detail
+             , choice_date
+             , participation_path
+             , recommend_person
+             , rc_birth_year
+             , rc_birth_month
+             , rc_birth_day
+             , apply_status
+             , cancel_dttm
+             , cancel_reason
+             , refund_bank_code
+             , refund_bank_name
+             , refund_bank_customer_name
+             , refund_bank_number
+             , del_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+             , (SELECT t.next_time FROM train t WHERE t.seq = train_seq) AS nextTime
+        FROM electro
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateElectroApplyStatus" parameterType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateElectroApplyStatus */
+        UPDATE electro
+        SET apply_status = #{applyStatus}
+          <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          </if>
+          <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
 
     <select id="selectOutboarderList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.OutboarderDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectOutboarderList */
@@ -5862,6 +5967,45 @@
         ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
     </select>
 
+    <select id="selectExcelElectroDetailList" resultType="com.mtf.edumarine.dto.ElectroDetailDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectExcelElectroDetailList */
+        SELECT rst.*
+        FROM (SELECT el.seq,
+                     el.member_seq,
+                     el.train_seq,
+                     el.apply_status,
+                     IFNULL(m.apply_status, '-')                 AS memberStatus,
+                     IFNULL(m.id, '-')                           AS id,
+                     IFNULL(el.name_ko, m.name)                  AS nameKo,
+                     IFNULL(el.name_en, m.name_en)               AS name_en,
+                     IFNULL(el.phone, m.phone)                   AS phone,
+                     IFNULL(el.email, m.email)                   AS email,
+                     IFNULL(el.birth_year, m.birth_year)         AS birthYear,
+                     IFNULL(el.birth_month, m.birth_month)       AS birthMonth,
+                     IFNULL(el.birth_day, m.birth_day)           AS birthDay,
+                     IFNULL(m.sex, '-')                          AS sex,
+                     IFNULL(el.address, m.address)               AS address,
+                     IFNULL(el.address_detail, m.address_detail) AS addressDetail,
+                     el.choice_date,
+                     el.participation_path,
+                     el.recommend_person,
+                     el.rc_birth_year,
+                     el.rc_birth_month,
+                     el.rc_birth_day,
+                     el.cancel_dttm,
+                     el.cancel_reason,
+                     el.del_yn,
+                     el.note,
+                     el.init_regi_pic,
+                     el.init_regi_dttm,
+                     el.final_regi_pic,
+                     el.final_regi_dttm
+              FROM electro el
+              LEFT JOIN member m
+              ON el.member_seq = m.seq) rst
+        ORDER BY rst.member_seq IS NOT NULL DESC, rst.nameKo
+    </select>
+
     <select id="selectMemberCount" parameterType="com.mtf.edumarine.dto.StatisticsDTO" resultType="com.mtf.edumarine.dto.StatisticsDTO">
         /* com.mtf.edumarine.mapper.EdumarineMngMapper.selectMemberCount */
         SELECT COUNT(*) AS inCount
@@ -6075,6 +6219,18 @@
                 </if>
                 AND fo.apply_status NOT LIKE '%대기%'
                 AND fo.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM electro el
+              WHERE 1=1
+                <if test='gbn eq "ALL"'>
+                AND el.apply_status NOT LIKE '%취소%'
+                </if>
+                <if test='gbn eq "CANCEL"'>
+                AND el.apply_status LIKE '%취소%'
+                </if>
+                AND el.apply_status NOT LIKE '%대기%'
+                AND el.del_yn = 'N'
               ) r
     </select>
 
@@ -6212,7 +6368,13 @@
               FROM famtourout fo
               WHERE fo.apply_status NOT LIKE '%취소%'
                 and fo.apply_status NOT LIKE '%대기%'
-                and fo.del_yn = 'N') r
+                and fo.del_yn = 'N'
+              UNION ALL
+              SELECT COUNT(*) AS cnt
+              FROM electro el
+              WHERE el.apply_status NOT LIKE '%취소%'
+                and el.apply_status NOT LIKE '%대기%'
+                and el.del_yn = 'N') r
     </select>
 
     <select id="selectRegularTrainInfoList" parameterType="com.mtf.edumarine.dto.RegularDTO" resultType="com.mtf.edumarine.dto.RegularDTO$TrainInfo">
@@ -6699,6 +6861,14 @@
     <update id="updateFamtouroutTrainSeq" parameterType="com.mtf.edumarine.dto.FamtouroutDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateFamtouroutTrainSeq */
         UPDATE famtourout
+        SET train_seq = #{trainSeq}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateElectroTrainSeq" parameterType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateElectroTrainSeq */
+        UPDATE electro
         SET train_seq = #{trainSeq}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}

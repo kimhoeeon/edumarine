@@ -154,6 +154,7 @@
                                             <li class="option_item" data-value="단기과정">단기과정</li>
                                             <li class="option_item" data-value="심화과정">심화과정</li>
                                             <li class="option_item" data-value="팸투어">팸투어</li>
+                                            <li class="option_item" data-value="협업">협업</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -258,6 +259,7 @@
                                             <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('단기과정')" value="단기">단기과정</label>
                                             <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('심화과정')" value="중급">심화과정</label>
                                             <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('팸투어')" value="중급">팸투어</label>
+                                            <label><input type="radio" name="calendar_edu_cc" onclick="f_train_calendar_select('협업')" value="협업">협업</label>
                                         </div>
                                         <div class="calTable">
                                             <table class="calendar">

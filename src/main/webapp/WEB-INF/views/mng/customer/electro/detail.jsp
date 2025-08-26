@@ -164,7 +164,7 @@ if (document.documentElement) {
                                  id="kt_app_header_menu" data-kt-menu="true">
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                     data-kt-menu-placement="bottom-start" class="menu-item here">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">회원 / 신청</span>
@@ -180,14 +180,14 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_member">회원 관리</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_user">신청자 목록</a>
                                                     </li>
@@ -198,7 +198,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-200px" id="kt_app_header_menu_pages_member">
+                                                <div class="tab-pane w-lg-200px" id="kt_app_header_menu_pages_member">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -238,7 +238,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-200px" id="kt_app_header_menu_pages_user">
+                                                <div class="tab-pane w-lg-200px active" id="kt_app_header_menu_pages_user">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -421,7 +421,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/electro.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">레저선박 해양전자장비 교육</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -463,7 +463,7 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_education">교육 관리</a>
                                                     </li>
@@ -533,7 +533,7 @@ if (document.documentElement) {
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item here">
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">정보센터</span>
@@ -549,14 +549,14 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_board">게시판 관리</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_pop">팝업/배너 관리</a>
                                                     </li>
@@ -581,7 +581,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_board">
+                                                <div class="tab-pane w-lg-400px active" id="kt_app_header_menu_pages_board">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -701,7 +701,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-400px active" id="kt_app_header_menu_pages_pop">
+                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_pop">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -714,7 +714,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/pop/popup.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">팝업 관리</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -997,7 +997,7 @@ if (document.documentElement) {
                                                 <div class="fw-bold d-flex align-items-center fs-5">${sessionScope.id}
                                                     <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Admin</span>
                                                 </div>
-                                                <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">EDU Marine 관리자</a>
+                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">${sessionScope.gbn} 관리자</a>
                                             </div>
                                             <!--end::Username-->
                                         </div>
@@ -1132,7 +1132,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1357,7 +1357,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/customer/electro.do">
+                                            <a class="menu-link active" href="/mng/customer/electro.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1587,7 +1587,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1608,7 +1608,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/pop/popup.do">
+                                            <a class="menu-link" href="/mng/pop/popup.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1826,7 +1826,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        팝업 관리</h1>
+                                        레저선박 해양전자장비 교육</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1841,7 +1841,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">정보센터</li>
+                                        <li class="breadcrumb-item text-muted">회원 / 신청</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1849,7 +1849,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">팝업/배너 관리</li>
+                                        <li class="breadcrumb-item text-muted">신청자 목록</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1857,7 +1857,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">팝업 관리</li>
+                                        <li class="breadcrumb-item text-muted">레저선박 해양전자장비 교육</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1881,13 +1881,251 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-full">
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::form-->
+                                    <form id="dataForm" method="post" onsubmit="return false;">
+                                            <%-- SEQ 값--%>
+                                        <input type="hidden" id="userSeq" name="seq" value="${info.seq}">
+                                        <!--begin::Card header-->
+                                        <div class="card-header border-0">
+                                            <!--begin::Card title-->
+                                            <div class="card-title m-0">
+                                                <h3 class="fw-bold m-0">신청 정보</h3>
+                                            </div>
+                                            <!--end::Card title-->
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body border-top p-9">
+
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">교육차시</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <input type="text" id="nextTime" name="nextTime" class="form-control form-control-lg form-control-solid-bg" placeholder="교육차시" value="${info.nextTime} 차시" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">이름</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <!--begin::Row-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-6">
+                                                            <input type="text" id="nameKo" name="nameKo" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="이름(국문)" value="${memberInfo.name}" readonly/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-6">
+                                                            <input type="text" id="nameEn" name="nameEn" class="form-control form-control-lg form-control-solid-bg" placeholder="이름(영문)" value="${memberInfo.nameEn}" readonly/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                    </div>
+                                                    <!--end::Row-->
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">연락처</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <input type="text" id="phone" name="phone" class="form-control form-control-lg form-control-solid-bg onlyTel" placeholder="연락처" value="${memberInfo.phone}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">이메일</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <div class="input-group">
+                                                        <c:set var="email1" value="${fn:split(memberInfo.email,'@')[0]}" />
+                                                        <c:set var="email2" value="${fn:split(memberInfo.email,'@')[1]}" />
+                                                        <input type="text" id="email" name="email" value="${email1}" class="form-control form-control-solid-bg" placeholder="이메일" readonly/>
+                                                        <span class="input-group-text">@</span>
+                                                        <input type="text" id="domain" name="domain" value="${email2}" class="form-control form-control-solid-bg" placeholder="도메인" readonly/>
+                                                        <select id="email_select" class="form-select form-control-solid-bg ms-4" aria-label="Select Email" disabled>
+                                                            <option selected>직접입력</option>
+                                                            <option value="daum.net" <c:if test="${email2 eq 'daum.net'}">selected</c:if> >daum.net</option>
+                                                            <option value="nate.com" <c:if test="${email2 eq 'nate.com'}">selected</c:if> >nate.com</option>
+                                                            <option value="hanmail.net" <c:if test="${email2 eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
+                                                            <option value="naver.com" <c:if test="${email2 eq 'naver.com'}">selected</c:if> >naver.com</option>
+                                                            <option value="gmail.com" <c:if test="${email2 eq 'gmail.com'}">selected</c:if> >gmail.com</option>
+                                                            <option value="hotmail.com" <c:if test="${email2 eq 'hotmail.com'}">selected</c:if> >hotmail.com</option>
+                                                            <option value="yahoo.co.kr" <c:if test="${email2 eq 'yahoo.co.kr'}">selected</c:if> >yahoo.co.kr</option>
+                                                            <option value="empal.com" <c:if test="${email2 eq 'empal.com'}">selected</c:if> >empal.com</option>
+                                                            <option value="korea.com" <c:if test="${email2 eq 'korea.com'}">selected</c:if> >korea.com</option>
+                                                            <option value="hanmir.com" <c:if test="${email2 eq 'hanmir.com'}">selected</c:if> >hanmir.com</option>
+                                                            <option value="dreamwiz.com" <c:if test="${email2 eq 'dreamwiz.com'}">selected</c:if> >dreamwiz.com</option>
+                                                            <option value="orgio.net" <c:if test="${email2 eq 'orgio.net'}">selected</c:if> >orgio.net</option>
+                                                            <option value="korea.com" <c:if test="${email2 eq 'korea.com'}">selected</c:if> >korea.com</option>
+                                                            <option value="hitel.net" <c:if test="${email2 eq 'hitel.net'}">selected</c:if> >hitel.net</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">생년월일</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <div class="input-group">
+                                                        <input type="text" id="birthYear" name="birthYear" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생연도" value="${memberInfo.birthYear} 년" readonly/>
+                                                        <input type="text" id="birthMonth" name="birthMonth" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="출생월" value="${memberInfo.birthMonth} 월" readonly/>
+                                                        <input type="text" id="birthDay" name="birthDay" class="form-control form-control-lg form-control-solid-bg" placeholder="출생일" value="${memberInfo.birthDay} 일" readonly/>
+                                                    </div>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">주소</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <!--begin::Row-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-12">
+                                                            <input type="text" id="address" name="address" class="form-control form-control-lg form-control-solid-bg" placeholder="주소" value="${memberInfo.address}" readonly/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                            <%--<!--begin::Col-->
+                                                            <div class="col-lg-2">
+                                                                <button type="button" class="btn btn-primary" onclick="execDaumPostcode('address','addressDetail')">주소 검색</button>
+                                                            </div>
+                                                            <!--end::Col-->--%>
+                                                    </div>
+                                                    <!--end::Row-->
+                                                    <!--begin::Row-->
+                                                    <div class="row mt-3">
+                                                        <!--begin::Col-->
+                                                        <div class="col-lg-12">
+                                                            <input type="text" id="addressDetail" name="addressDetail" class="form-control form-control-lg form-control-solid-bg" value="${memberInfo.addressDetail}" placeholder="상세주소" readonly/>
+                                                        </div>
+                                                        <!--end::Col-->
+                                                    </div>
+                                                    <!--end::Row-->
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">날짜 선택</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10 d-flex align-items-center">
+                                                    <label class="me-5">
+                                                        <input type="radio" name="choiceDate" value="9/13(토)" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.choiceDate eq '9/13(토)'}">checked</c:if> disabled/> 9/13(토)
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="choiceDate" value="10/18(토)" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.choiceDate eq '10/18(토)'}">checked</c:if> disabled/> 10/18(토)
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="choiceDate" value="11/18(화)" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.choiceDate eq '11/18(화)'}">checked</c:if> disabled/> 11/18(화)
+                                                    </label>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">참여 경로</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10 d-flex align-items-center">
+                                                    <label class="me-5">
+                                                        <input type="radio" name="participationPath" value="인터넷" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.participationPath eq '인터넷'}">checked</c:if> disabled/> 인터넷
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="participationPath" value="홈페이지" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.participationPath eq '홈페이지'}">checked</c:if> disabled/> 홈페이지
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="participationPath" value="홍보물" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.participationPath eq '홍보물'}">checked</c:if> disabled/> 홍보물
+                                                    </label>
+                                                    <label class="me-5">
+                                                        <input type="radio" name="participationPath" value="지인추천" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.participationPath eq '지인추천'}">checked</c:if> disabled/> 지인추천
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="participationPath" value="기타" class="form-check-input form-control-solid-bg"
+                                                               <c:if test="${info.participationPath eq '기타'}">checked</c:if> disabled/> 기타
+                                                    </label>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">추천인</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <input type="text" id="recommendPerson" name="recommendPerson" class="form-control form-control-lg form-control-solid-bg" placeholder="추천인" value="${info.recommendPerson}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">추천인 생년월일</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <input type="text" id="rcBirth" name="rcBirth" class="form-control form-control-lg form-control-solid-bg" placeholder="추천인 생년월일" value="${info.rcBirthYear}-${info.rcBirthMonth}-${info.rcBirthDay}" readonly/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Card body-->
+                                    </form>
+                                    <!--end::form-->
+                                </div>
+                                <!--end::Basic info-->
+
                                 <!--begin::Basic info-->
                                 <div class="card mb-5 mb-xl-10">
                                     <!--begin::Card header-->
                                     <div class="card-header border-0">
                                         <!--begin::Card title-->
                                         <div class="card-title m-0">
-                                            <h3 class="fw-bold m-0">팝업 상세 정보</h3>
+                                            <h3 class="fw-bold m-0">신청상태</h3>
                                         </div>
                                         <!--end::Card title-->
                                     </div>
@@ -1897,11 +2135,11 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">제목</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">상태</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input type="text" id="title" value="${info.title}" class="form-control form-control-lg form-control-solid-bg" placeholder="제목"/>
+                                            <div class="col-lg-10">
+                                                <input type="text" name="applyStatus" class="form-control form-control-lg form-control-solid-bg" placeholder="상태" value="${info.applyStatus}" readonly/>
                                             </div>
                                             <!--end::Col-->
                                         </div>
@@ -1909,11 +2147,11 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">등록자</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">취소신청일시</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input type="text" id="writer" value="${info.writer eq null ? '관리자' : info.writer}" class="form-control form-control-lg form-control-solid-bg" placeholder="등록자"/>
+                                            <div class="col-lg-10">
+                                                <input type="text" name="cancelDttm" class="form-control form-control-lg form-control-solid-bg" placeholder="취소신청일시" value="${info.cancelDttm}" readonly/>
                                             </div>
                                             <!--end::Col-->
                                         </div>
@@ -1921,182 +2159,11 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">사용 여부</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">취소사유</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8 d-flex align-items-center">
-                                                <label class="me-5"><input type="radio" name="useYn" value="Y" class="form-check-input form-control-solid-bg" <c:if test="${info.useYn == 'Y' or empty info}">checked</c:if> > 사용</label>
-                                                <label><input type="radio" name="useYn" value="N" class="form-check-input form-control-solid-bg" <c:if test="${info.useYn == 'N'}">checked</c:if> > 미사용</label>
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">게시일시 - 만료일시</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input id="validDate" value="${info.publishedDate.concat(' - ').concat(info.expirationDate)}" class="form-control form-control-solid" placeholder="Pick date rage"/>
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">가로 Pixel</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="widthPx" value="${info.widthPx}" min="0" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="가로 Pixel"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 500px)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">세로 Pixel</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="heightPx" value="${info.heightPx}" min="0" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="세로 Pixel"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 0 , 0 일 경우 이미지 높이로 자동 설정)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">브라우저 상단으로부터의 위치</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="topPx" value="${info.topPx}" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="위치"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 0 , 최상단)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-12">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">브라우저 왼/오른쪽으로부터의 위치</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="leftPx" value="${info.leftPx}" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="위치"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 0 , 최좌측 / 최우측)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">정렬</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Select2-->
-                                                <select id="align" name="align" class="form-select form-select-solid" data-control="select2" aria-label="- 정렬 -" data-placeholder="- 정렬 -" data-hide-search="true" onchange="f_center_popup_align_sel_set(this)">
-                                                    <option></option>
-                                                    <option disabled>- 정렬 -</option>
-                                                    <option value="B_LEFT" <c:if test="${info.align eq 'B_LEFT' or empty info}">selected</c:if> >브라우저 왼쪽</option>
-                                                    <option value="B_RIGHT" <c:if test="${info.align eq 'B_RIGHT'}">selected</c:if> >브라우저 오른쪽</option>
-                                                    <option value="CENTER" <c:if test="${info.align eq 'CENTER'}">selected</c:if> >가운데</option>
-                                                </select>
-                                                <!--end::Select2-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-8 h-400px">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <div id="quill_editor_content" class="h-375px">${info.content}</div>
-                                                <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-3">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">팝업 링크</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input type="text" id="linkUrl" value="${info.linkUrl}" class="form-control form-control-lg form-control-solid-bg" placeholder="https://"/>
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6"></label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <p>* 외부링크 - http:// 나 https:// 를 포함한 URL을 입력해주세요. ex) https://naver.com/</p>
-                                                * 사이트 내 링크 - 도메인을 뺀 경로URL을 입력해주세요. ex) /board/notice_list.do
+                                            <div class="col-lg-10">
+                                                <input type="text" name="cancelReason" class="form-control form-control-lg form-control-solid-bg" placeholder="취소사유" value="${info.cancelReason}" readonly/>
                                             </div>
                                             <!--end::Col-->
                                         </div>
@@ -2111,16 +2178,17 @@ if (document.documentElement) {
                                     <!--begin::Actions-->
                                     <div class="card-footer d-flex justify-content-between py-6 px-9">
                                         <div>
-                                            <a href="/mng/pop/popup.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
+                                            <a href="/mng/customer/electro.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>
-                                        <div>
-                                            <button type="button" onclick="f_pop_popup_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_pop_popup_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
-                                        </div>
+                                            <%--<div>
+                                                <button type="button" onclick="f_customer_boarder_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
+                                                <button type="button" onclick="f_customer_boarder_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
+                                            </div>--%>
                                     </div>
                                     <!--end::Actions-->
                                 </div>
                                 <!--end::Basic info-->
+
                             </div>
                             <!--end::Content container-->
                         </div>
@@ -2172,7 +2240,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
-    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
@@ -2182,8 +2249,10 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/mng/popup.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/mng/electro.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->

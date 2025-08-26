@@ -108,7 +108,7 @@ $(document).ready(function () {
 
                 let seq = $(this).attr('value');
 
-                if(trainName.toString().includes('팸투어')){
+                if(trainName.toString().includes('팸투어') || trainName.toString().includes('전자장비')){
                     $("#popupCancelEdu .refund_account_box").css("display", "none");
 
                     $('#popupCancelEdu').find('.edu_cancel_btn').attr('onclick',"f_edu_apply_cancel_btn('" + seq + "','" + trainName + "','" + '' + "','" + '' + "')");
@@ -155,7 +155,7 @@ $(document).ready(function () {
 
                 $('#popupCancelEdu').find('.train_name').text(trainName);
 
-                if(trainName.toString().includes('팸투어')){
+                if(trainName.toString().includes('팸투어') || trainName.toString().includes('전자장비')){
 
                     $("#popupCancelEdu .refund_account_box").css("display", "none");
 

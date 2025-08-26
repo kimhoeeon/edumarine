@@ -1904,6 +1904,18 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateElectroPayStatus" parameterType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateElectroPayStatus */
+        UPDATE electro
+        SET apply_status = #{applyStatus}
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectEduApplyInfoList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.EduApplyInfoDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectEduApplyInfoList */
         SELECT LISTB.*
@@ -2126,6 +2138,18 @@
                      FROM famtourout fo
                      WHERE fo.member_seq = #{memberSeq}
                        AND fo.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '레저선박 해양전자장비 교육' AS trainName
+                          , el.train_seq
+                          , el.apply_status AS payStatus
+                          , el.seq
+                          , el.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = el.member_seq and p.table_seq = el.seq and p.train_seq = el.train_seq) as payMethod
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = el.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = el.train_seq) AS trainEndDttm
+                     FROM electro el
+                     WHERE el.member_seq = #{memberSeq}
+                       AND el.apply_status NOT LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2324,6 +2348,17 @@
                      FROM famtourout fo
                      WHERE fo.member_seq = #{memberSeq}
                        AND fo.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT '레저선박 해양전자장비 교육' AS trainName
+                          , el.train_seq
+                          , el.apply_status AS payStatus
+                          , el.seq
+                          , el.final_regi_dttm
+                          , (SELECT t.train_start_dttm FROM train t WHERE t.seq = el.train_seq) AS trainStartDttm
+                          , (SELECT t.train_end_dttm FROM train t WHERE t.seq = el.train_seq) AS trainEndDttm
+                     FROM electro el
+                     WHERE el.member_seq = #{memberSeq}
+                       AND el.apply_status LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2446,7 +2481,7 @@
              , b.final_regi_pic
              , b.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = b.member_seq AND p.table_seq = b.seq AND p.train_seq = b.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = b.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = b.train_seq) AS changeYn
         FROM boarder b
         WHERE b.seq = #{seq}
     </select>
@@ -2485,7 +2520,7 @@
              , f.final_regi_pic
              , f.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = f.member_seq AND p.table_seq = f.seq AND p.train_seq = f.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = f.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = f.train_seq) AS changeYn
         FROM frp f
         WHERE f.seq = #{seq}
     </select>
@@ -2884,7 +2919,7 @@
              , i.final_regi_pic
              , i.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = i.member_seq AND p.table_seq = i.seq AND p.train_seq = i.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = i.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = i.train_seq) AS changeYn
         FROM inboarder i
         WHERE i.seq = #{seq}
     </select>
@@ -3276,7 +3311,7 @@
              , b.final_regi_pic
              , b.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = b.member_seq AND p.table_seq = b.seq AND p.train_seq = b.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = b.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = b.train_seq) AS changeYn
         FROM basic b
         WHERE b.seq = #{seq}
     </select>
@@ -3355,7 +3390,7 @@
              , em.final_regi_pic
              , em.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = em.member_seq AND p.table_seq = em.seq AND p.train_seq = em.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = em.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = em.train_seq) AS changeYn
         FROM emergency em
         WHERE em.seq = #{seq}
     </select>
@@ -3443,7 +3478,7 @@
              , ge.final_regi_pic
              , ge.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = ge.member_seq AND p.table_seq = ge.seq AND p.train_seq = ge.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = ge.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = ge.train_seq) AS changeYn
         FROM generator ge
         WHERE ge.seq = #{seq}
     </select>
@@ -3455,6 +3490,91 @@
           , participation_path = #{participationPath}
           , train_understand = #{trainUnderstand}
           , train_understand_etc = #{trainUnderstandEtc}
+          , recommend_person = #{recommendPerson}
+          , rc_birth_year = #{rcBirthYear}
+          , rc_birth_month = #{rcBirthMonth}
+          , rc_birth_day = #{rcBirthDay}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getElectroSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getElectroSeq */
+        SELECT CONCAT('EL', LPAD(nextval('electro_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertElectro" parameterType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertElectro */
+        INSERT INTO electro
+        ( seq
+        , member_seq
+        , train_seq
+        , choice_date
+        , participation_path
+        , recommend_person
+        , rc_birth_year
+        , rc_birth_month
+        , rc_birth_day
+        , apply_status
+        , cancel_reason
+        , del_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{memberSeq}
+               , #{trainSeq}
+               , #{choiceDate}
+               , #{participationPath}
+               , #{recommendPerson}
+               , #{rcBirthYear}
+               , #{rcBirthMonth}
+               , #{rcBirthDay}
+               , #{applyStatus}
+               , #{cancelReason}
+               , 'N'
+               , #{note}
+               , 'ELECTRO'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'ELECTRO'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
+    <select id="selectElectroSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectElectroSingle */
+        SELECT el.seq
+             , el.member_seq
+             , el.train_seq
+             , el.choice_date
+             , el.participation_path
+             , el.recommend_person
+             , el.rc_birth_year
+             , el.rc_birth_month
+             , el.rc_birth_day
+             , el.apply_status
+             , el.cancel_dttm
+             , el.cancel_reason
+             , el.del_yn
+             , el.note
+             , el.init_regi_pic
+             , el.init_regi_dttm
+             , el.final_regi_pic
+             , el.final_regi_dttm
+             , (SELECT p.pay_method FROM payment p WHERE p.member_seq = el.member_seq AND p.table_seq = el.seq AND p.train_seq = el.train_seq) AS payMethod
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = el.train_seq) AS changeYn
+        FROM electro el
+        WHERE el.seq = #{seq}
+    </select>
+
+    <update id="updateElectro" parameterType="com.mtf.edumarine.dto.ElectroDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateElectro */
+        UPDATE electro
+        SET choice_date = #{choiceDate}
+          , participation_path = #{participationPath}
           , recommend_person = #{recommendPerson}
           , rc_birth_year = #{rcBirthYear}
           , rc_birth_month = #{rcBirthMonth}
@@ -3525,7 +3645,7 @@
              , cp.final_regi_pic
              , cp.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = cp.member_seq AND p.table_seq = cp.seq AND p.train_seq = cp.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
         FROM competency cp
         WHERE cp.seq = #{seq}
     </select>
@@ -3596,7 +3716,7 @@
              , cp.final_regi_pic
              , cp.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = cp.member_seq AND p.table_seq = cp.seq AND p.train_seq = cp.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
         FROM famtourin cp
         WHERE cp.seq = #{seq}
     </select>
@@ -3664,7 +3784,7 @@
              , cp.final_regi_pic
              , cp.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = cp.member_seq AND p.table_seq = cp.seq AND p.train_seq = cp.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = cp.train_seq) AS changeYn
         FROM famtourout cp
         WHERE cp.seq = #{seq}
     </select>
@@ -3699,7 +3819,7 @@
              , o.final_regi_pic
              , o.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = o.member_seq AND p.table_seq = o.seq AND p.train_seq = o.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = o.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = o.train_seq) AS changeYn
         FROM outboarder o
         WHERE o.seq = #{seq}
     </select>
@@ -3725,7 +3845,7 @@
              , s.final_regi_pic
              , s.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = s.member_seq AND p.table_seq = s.seq AND p.train_seq = s.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = s.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = s.train_seq) AS changeYn
         FROM sailyacht s
         WHERE s.seq = #{seq}
     </select>
@@ -3750,7 +3870,7 @@
              , h.final_regi_pic
              , h.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = h.member_seq AND p.table_seq = h.seq AND p.train_seq = h.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = h.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = h.train_seq) AS changeYn
         FROM highhorsepower h
         WHERE h.seq = #{seq}
     </select>
@@ -3775,7 +3895,7 @@
              , hs.final_regi_pic
              , hs.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = hs.member_seq AND p.table_seq = hs.seq AND p.train_seq = hs.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = hs.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = hs.train_seq) AS changeYn
         FROM highself hs
         WHERE hs.seq = #{seq}
     </select>
@@ -3799,7 +3919,7 @@
              , c.final_regi_pic
              , c.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = c.member_seq AND p.table_seq = c.seq AND p.train_seq = c.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = c.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = c.train_seq) AS changeYn
         FROM highspecial c
         WHERE c.seq = #{seq}
     </select>
@@ -3848,7 +3968,7 @@
              , ss.final_regi_pic
              , ss.final_regi_dttm
              , (SELECT p.pay_method FROM payment p WHERE p.member_seq = ss.member_seq AND p.table_seq = ss.seq AND p.train_seq = ss.train_seq) AS payMethod
-             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 0 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = ss.train_seq) AS changeYn
+             , (SELECT CASE WHEN DATEDIFF(t.train_start_dttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END FROM train t WHERE t.seq = ss.train_seq) AS changeYn
         FROM sternspecial ss
         WHERE ss.seq = #{seq}
     </select>
@@ -4061,6 +4181,14 @@
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectFamtouroutPreCheck */
         SELECT COUNT(1)
         FROM famtourout
+        WHERE member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
+    <select id="selectElectroPreCheck" parameterType="com.mtf.edumarine.dto.ElectroDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectElectroPreCheck */
+        SELECT COUNT(1)
+        FROM electro
         WHERE member_seq = #{memberSeq}
           AND apply_status NOT LIKE '%취소%'
     </select>

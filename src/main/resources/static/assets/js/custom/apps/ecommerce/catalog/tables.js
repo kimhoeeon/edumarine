@@ -4608,6 +4608,237 @@ let DTCustomerFamtourout = function () {
     };
 }();
 
+let DTCustomerElectro = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderYearCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderNextTimeCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderApplyStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderGradeCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderIdCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderContactCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'year'},
+                { data: 'nextTime'},
+                { data: 'applyStatus'},
+                { data: 'grade'},
+                { data: 'id'},
+                { data: 'name'},
+                { data: 'contact'},
+                { data: 'initRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderYearCell(data, type, row) {
+        let renderHTML = '-';
+        let year = row.trainStartDttm;
+        if(nvl(year,'') !== ''){
+            renderHTML = year.toString().substring(0, year.toString().indexOf('.'));
+        }
+
+        return renderHTML;
+    }
+
+    function renderNextTimeCell(data, type, row) {
+        let renderHTML = '-';
+        let nextTime = row.nextTime;
+        if(nvl(nextTime,'') !== ''){
+            renderHTML = nextTime + '차';
+        }
+
+        return renderHTML;
+    }
+
+    function renderGradeCell(data, type, row) {
+        let renderHTML = '-';
+        let grade = row.grade;
+        if(nvl(grade,'') !== ''){
+            renderHTML = grade;
+        }
+
+        return renderHTML;
+    }
+
+    function renderIdCell(data, type, row) {
+        let renderHTML = '-';
+        let id = row.id;
+        if(nvl(id,'') !== ''){
+            renderHTML = id;
+        }
+
+        return renderHTML;
+    }
+
+    function renderContactCell(data, type, row) {
+        let renderHTML = '';
+        let phone = row.phone;
+        if(nvl(phone,'') !== ''){
+            renderHTML += phone;
+        }else{
+            renderHTML += '-';
+        }
+        renderHTML += '</br>';
+        let email = row.email;
+        if(nvl(email,'') !== ''){
+            renderHTML += email;
+        }else{
+            renderHTML += '-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="train_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.nameKo  + ' / ' + row.applyStatus + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderApplyStatusCell(data, type, row) {
+        let renderHTML = '';
+        let applyStatus = row.applyStatus;
+        if(applyStatus.includes('취소')){
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
+        }else{
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += applyStatus;
+            renderHTML += '</div>';
+        }
+        return renderHTML;
+    }
+
+    function renderNameCell(data, type, row) {
+        let renderHTML = '';
+        let nameKo = row.nameKo;
+        let nameEn = row.nameEn;
+        if(nvl(nameKo,'') !== ''){
+            renderHTML += nameKo;
+        }else{
+            renderHTML += '-';
+        }
+        if(nvl(nameEn,'') !== ''){
+            renderHTML += '<br>' + nameEn;
+        }else{
+            renderHTML += '<br>-';
+        }
+
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let name = row.nameKo;
+        let applyStatus = row.applyStatus;
+        let nextTime = row.nextTime;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_electro_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_electro_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_electro_train_change_modal_set(' + '\'' + seq + '\',\'' + name + '\',\'' + applyStatus + '\',\'' + nextTime + '\')" class="menu-link px-3" data-bs-target="#kt_modal_apply_edu_change">교육변경</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_customer_electro_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_customer_electro_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_customer_electro_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_customer_electro_search();
+        }
+    };
+}();
+
 let DTEducationTrain = function () {
     // Shared variables
     let table;
@@ -7260,6 +7491,8 @@ KTUtil.onDOMContentLoaded(function () {
     DTCustomerFamtourin.init(); // /mng/customer/famtourin.do
     // 선외기 팸투어
     DTCustomerFamtourout.init(); // /mng/customer/famtourout.do
+    // 레저선박 해양전자장비 교육
+    DTCustomerElectro.init(); // /mng/customer/electro.do
 
     // 교육>교육관리
     // 교육현황

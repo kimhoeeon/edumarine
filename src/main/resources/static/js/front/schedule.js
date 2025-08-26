@@ -255,6 +255,10 @@ function searchPosts(pageNum, categoryValue) {
                             thumbnailImage = '/img/thumbnail_famtourout.png';
                             applyPath = '/apply/eduApply21.do';
                             break;
+                        case '레저선박 해양전자장비 교육':
+                            thumbnailImage = '/img/thumbnail_electro.png';
+                            applyPath = '/apply/eduApply22.do';
+                            break;
                         default:
                             break;
                     }

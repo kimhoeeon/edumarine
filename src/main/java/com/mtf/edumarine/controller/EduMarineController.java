@@ -348,6 +348,9 @@ public class EduMarineController {
                 case "EDU19":
                     trainName = "선외기 팸투어";
                     break;
+                case "EDU20":
+                    trainName = "레저선박 해양전자장비 교육";
+                    break;
                 default:
                     trainName = searchText;
                     break;
@@ -707,6 +710,21 @@ public class EduMarineController {
 
         if("결제완료".equals(famtouroutDTO.getApplyStatus())) {
             eduMarineService.processUpdateTrainApplyCnt(famtouroutDTO.getTrainSeq());
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply22/update/status.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply22_update_status(@RequestBody ElectroDTO electroDTO) {
+        System.out.println("EduMarineController > apply_eduApply22_update_status");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateElectroPayStatus(electroDTO);
+
+        if("결제완료".equals(electroDTO.getApplyStatus())) {
+            eduMarineService.processUpdateTrainApplyCnt(electroDTO.getTrainSeq());
         }
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
@@ -2041,6 +2059,80 @@ public class EduMarineController {
         //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateFamtourout(famtouroutDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply22.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApply22(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApply22");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            mv.addObject("seq", seq);
+
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info);
+
+        }
+
+        mv.setViewName("/apply/eduApply22");
+        return mv;
+    }
+
+    @RequestMapping(value = "/apply/eduApply22/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApply22_preCheck(@RequestBody ElectroDTO electroDTO) {
+        System.out.println("EduMarineController > apply_eduApply22_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectElectroPreCheck(electroDTO);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/eduApply22/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApply22_insert(@RequestBody ElectroDTO electroDTO) {
+        System.out.println("EduMarineController > apply_eduApply22_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processInsertElectro(electroDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/eduApply22_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApply22_modify(String seq, String modYn) {
+        System.out.println("EduMarineController > mypage_eduApply22_modify");
+        ModelAndView mv = new ModelAndView();
+
+        ElectroDTO info = eduMarineService.processSelectElectroSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            if(modYn == null || modYn.isEmpty()){
+                modYn = "Y";
+            }
+            mv.addObject("modYn", modYn);
+
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+        }
+
+        mv.setViewName("/mypage/eduApply22_modify");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/eduApply22/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApply22_update(@RequestBody ElectroDTO electroDTO) {
+        System.out.println("EduMarineController > mypage_eduApply22_update");
+        //System.out.println(memberDTO.toString());
+
+        ResponseDTO responseDTO = eduMarineService.processUpdateElectro(electroDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

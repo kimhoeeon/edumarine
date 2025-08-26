@@ -4170,6 +4170,113 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ElectroDTO> processSelectElectroList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectElectroList");
+        return eduMarineMngMapper.selectElectroList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ElectroDTO processSelectElectroSingle(String seq) {
+        System.out.println("EduMarineMngServiceImpl > processSelectElectroSingle");
+        return eduMarineMngMapper.selectElectroSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateElectroApplyStatus(List<ElectroDTO> electroList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateElectroApplyStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(ElectroDTO info : electroList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    ElectroDTO electroInfo = eduMarineMngMapper.selectElectroSingle(info.getSeq());
+                    if(electroInfo != null){
+
+                        // 결제대기 , 취소완료 건 취소승인처리
+                        Integer result = eduMarineMngMapper.updateElectroApplyStatus(info);
+                        if(result == 0){
+                            resultCode = CommConstants.RESULT_CODE_FAIL;
+                            resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                            break;
+                        }else{
+                            // 교육 신청인원 빼기
+                            eduMarineMngMapper.updateTrainApplyCnt(electroInfo.getTrainSeq());
+                        }
+
+                    }//generatorInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateElectroApplyStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateElectroApplyStatusChange(List<ElectroDTO> electroList) {
+        System.out.println("EduMarineMngServiceImpl > processUpdateElectroApplyStatusChange");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        try {
+
+            for(ElectroDTO info : electroList){
+                if(!StringUtil.isEmpty(info.getSeq())){
+
+                    ElectroDTO electroInfo = eduMarineMngMapper.selectElectroSingle(info.getSeq());
+                    if(electroInfo != null){
+
+                        boolean cancelApiCallYn = ("수강완료".equals(info.getApplyStatus()) && "수강확정".equals(electroInfo.getApplyStatus()))
+                                || ("환급대기".equals(info.getApplyStatus()) && "수강완료".equals(electroInfo.getApplyStatus()))
+                                ;
+
+                        if(cancelApiCallYn){
+
+                            Integer result = eduMarineMngMapper.updateElectroApplyStatus(info);
+
+                            if(result == 0){
+                                resultCode = CommConstants.RESULT_CODE_FAIL;
+                                resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                break;
+                            }
+
+                        }
+
+                    }//regularInfo
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateElectroApplyStatusChange ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<OutboarderDTO> processSelectOutboarderList(SearchDTO searchDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectOutboarderList");
         return eduMarineMngMapper.selectOutboarderList(searchDTO);
@@ -7602,6 +7709,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             case "선외기 팸투어":
                 responseList = eduMarineMngMapper.selectSmsSendFamtouroutList(boarderGbn);
                 break;
+            case "레저선박 해양전자장비 교육":
+                responseList = eduMarineMngMapper.selectSmsSendElectroList(boarderGbn);
+                break;
             default:
                 break;
         }
@@ -8306,6 +8416,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ElectroDetailDTO> processSelectExcelElectroDetailList() {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelElectroDetailList");
+        return eduMarineMngMapper.selectExcelElectroDetailList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public StatisticsDTO processSelectMemberCount(StatisticsDTO statisticsDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectMemberCount");
         return eduMarineMngMapper.selectMemberCount(statisticsDTO);
@@ -8692,6 +8809,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 famtouroutDTO.setSeq(tableSeq);
                                 famtouroutDTO.setTrainSeq(newTrainSeq);
                                 updTableResult = eduMarineMngMapper.updateFamtouroutTrainSeq(famtouroutDTO);
+                                break;
+                            case "레저선박 해양전자장비 교육":
+                                ElectroDTO electroDTO = new ElectroDTO();
+                                electroDTO.setSeq(tableSeq);
+                                electroDTO.setTrainSeq(newTrainSeq);
+                                updTableResult = eduMarineMngMapper.updateElectroTrainSeq(electroDTO);
                                 break;
                             default:
                                 break;

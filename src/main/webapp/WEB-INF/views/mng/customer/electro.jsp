@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -86,13 +85,23 @@
     <link href="/css/font.css" rel="stylesheet">
     <link href="/css/mngStyle.css" rel="stylesheet" type="text/css"/>
     <!--end::custom Mng css-->
+
+    <style>
+        #spinner { width: 100%; height: 100%; top: 0; left: 0; opacity: .6; background: silver; position: absolute; z-index: 9999; display: none;}
+        #spinner div { width: 100%; height: 100%; display: table; }
+        #spinner span { display: table-cell; text-align: center; vertical-align: middle; }
+        #spinner img { background: white; padding: 1em; border-radius: .7em; }
+    </style>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
-      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
+      data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on"
+      class="app-default">
 <!--begin::Theme mode setup on page load-->
 <script>var defaultThemeMode = "light";
 var themeMode;
@@ -122,6 +131,21 @@ if (document.documentElement) {
 </c:if>
 
 <c:if test="${status eq 'logon'}">
+
+    <div id="spinner">
+        <div>
+            <span>
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif">
+            </span>
+        </div>
+    </div>
+
+    <!--begin::Page loading(append to body)-->
+    <div class="page-loader flex-column bg-dark bg-opacity-25">
+        <span class="spinner-border text-primary" role="status"></span>
+        <span class="text-gray-800 fs-6 fw-semibold mt-5">Loading...</span>
+    </div>
+    <!--end::Page loading-->
 
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -164,7 +188,7 @@ if (document.documentElement) {
                                  id="kt_app_header_menu" data-kt-menu="true">
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                     data-kt-menu-placement="bottom-start" class="menu-item here">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">회원 / 신청</span>
@@ -180,14 +204,14 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_member">회원 관리</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_user">신청자 목록</a>
                                                     </li>
@@ -198,7 +222,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-200px" id="kt_app_header_menu_pages_member">
+                                                <div class="tab-pane w-lg-200px" id="kt_app_header_menu_pages_member">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -238,7 +262,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-200px" id="kt_app_header_menu_pages_user">
+                                                <div class="tab-pane w-lg-200px active" id="kt_app_header_menu_pages_user">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -421,7 +445,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/customer/electro.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">레저선박 해양전자장비 교육</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -463,7 +487,7 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_education">교육 관리</a>
                                                     </li>
@@ -533,7 +557,7 @@ if (document.documentElement) {
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item here">
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">정보센터</span>
@@ -549,14 +573,14 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_board">게시판 관리</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" href="#"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_pop">팝업/배너 관리</a>
                                                     </li>
@@ -581,7 +605,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_board">
+                                                <div class="tab-pane w-lg-400px active" id="kt_app_header_menu_pages_board">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -701,7 +725,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-400px active" id="kt_app_header_menu_pages_pop">
+                                                <div class="tab-pane w-lg-400px" id="kt_app_header_menu_pages_pop">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -714,7 +738,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/pop/popup.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">팝업 관리</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -997,7 +1021,7 @@ if (document.documentElement) {
                                                 <div class="fw-bold d-flex align-items-center fs-5">${sessionScope.id}
                                                     <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Admin</span>
                                                 </div>
-                                                <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">EDU Marine 관리자</a>
+                                                <a href="/mng/main.do" class="fw-semibold text-muted text-hover-primary fs-7">${sessionScope.gbn} 관리자</a>
                                             </div>
                                             <!--end::Username-->
                                         </div>
@@ -1132,7 +1156,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1250,9 +1274,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highhorsepower.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
                                                 <span class="menu-title">고마력 선외기 정비</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1262,8 +1286,8 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highself.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">자가정비 심화과정 (고마력)</span>
                                             </a>
@@ -1274,8 +1298,8 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/highspecial.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">고마력 선외기 정비 (특별반)</span>
                                             </a>
@@ -1298,9 +1322,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/customer/sternspecial.do">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">스턴드라이브 정비 (특별반)</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1357,7 +1381,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/customer/electro.do">
+                                            <a class="menu-link active" href="/mng/customer/electro.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1587,7 +1611,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -1608,7 +1632,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/pop/popup.do">
+                                            <a class="menu-link" href="/mng/pop/popup.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1765,18 +1789,18 @@ if (document.documentElement) {
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
-                                <span class="menu-icon">
-                                    <i class="ki-duotone ki-notification-on fs-2">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                        <span class="path5"></span>
-                                    </i>
-                                </span>
-                                <span class="menu-title">요청사항 & 문의</span>
-                                <span class="menu-arrow"></span>
-                            </span>
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-notification-on fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">요청사항 & 문의</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
                                     <!--end:Menu link-->
                                     <!--begin:Menu sub-->
                                     <div class="menu-sub menu-sub-accordion">
@@ -1784,9 +1808,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/request/list.do">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">요청사항 & 문의 관리</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1826,7 +1850,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        팝업 관리</h1>
+                                        레저선박 해양전자장비 교육</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -1841,7 +1865,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">정보센터</li>
+                                        <li class="breadcrumb-item text-muted">회원 / 신청</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1849,7 +1873,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">팝업/배너 관리</li>
+                                        <li class="breadcrumb-item text-muted">신청자 목록</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -1857,7 +1881,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">팝업 관리</li>
+                                        <li class="breadcrumb-item text-muted">레저선박 해양전자장비 교육</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1865,14 +1889,27 @@ if (document.documentElement) {
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                                    <!--begin::Filter menu-->
-                                    <!--end::Filter menu-->
-                                    <!--begin::Secondary button-->
-                                    <!--end::Secondary button-->
-                                    <!--begin::Primary button-->
-                                    <!--end::Primary button-->
+                                    <!--begin::Export dropdown-->
+                                    <button type="button" onclick="f_excel_export('mng_customer_electro_table', '레저선박_해양전자장비_교육')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Export as Excel</button>
+                                    <!--end::Export dropdown-->
+
+                                    <!--begin::Export dropdown-->
+                                    <button type="button" onclick="f_customer_electro_detail_excel_download('mng_customer_electro_table', '레저선박_해양전자장비_교육_상세')" class="btn btn-warning btn-active-light-warning" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>전체 신청자 정보 상세 다운로드</button>
+                                    <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
+
+                                <!--begin::Hide default export buttons-->
+                                <div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>
+                                <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
                         </div>
@@ -1881,253 +1918,182 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-full">
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
+                                <!--begin::Products-->
+                                <div class="card card-flush">
                                     <!--begin::Card header-->
-                                    <div class="card-header border-0">
+                                    <div class="card-header align-items-center py-5 gap-2">
                                         <!--begin::Card title-->
-                                        <div class="card-title m-0">
-                                            <h3 class="fw-bold m-0">팝업 상세 정보</h3>
-                                        </div>
-                                        <!--end::Card title-->
-                                    </div>
-                                    <!--end::Card header-->
-                                    <!--begin::Card body-->
-                                    <div class="card-body border-top p-9">
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">제목</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input type="text" id="title" value="${info.title}" class="form-control form-control-lg form-control-solid-bg" placeholder="제목"/>
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">등록자</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input type="text" id="writer" value="${info.writer eq null ? '관리자' : info.writer}" class="form-control form-control-lg form-control-solid-bg" placeholder="등록자"/>
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">사용 여부</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8 d-flex align-items-center">
-                                                <label class="me-5"><input type="radio" name="useYn" value="Y" class="form-check-input form-control-solid-bg" <c:if test="${info.useYn == 'Y' or empty info}">checked</c:if> > 사용</label>
-                                                <label><input type="radio" name="useYn" value="N" class="form-check-input form-control-solid-bg" <c:if test="${info.useYn == 'N'}">checked</c:if> > 미사용</label>
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">게시일시 - 만료일시</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input id="validDate" value="${info.publishedDate.concat(' - ').concat(info.expirationDate)}" class="form-control form-control-solid" placeholder="Pick date rage"/>
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">가로 Pixel</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="widthPx" value="${info.widthPx}" min="0" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="가로 Pixel"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 500px)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">세로 Pixel</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="heightPx" value="${info.heightPx}" min="0" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="세로 Pixel"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 0 , 0 일 경우 이미지 높이로 자동 설정)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">브라우저 상단으로부터의 위치</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="topPx" value="${info.topPx}" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="위치"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 0 , 최상단)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-12">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">브라우저 왼/오른쪽으로부터의 위치</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <!--begin::Row-->
-                                                <div class="row">
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6">
-                                                        <input type="number" id="leftPx" value="${info.leftPx}" max="1000" class="form-control form-control-lg form-control-solid-bg" placeholder="위치"/>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-6 d-flex align-items-center">
-                                                        <span>pixel (기본값 : 0 , 최좌측 / 최우측)</span>
-                                                    </div>
-                                                    <!--end::Col-->
-                                                </div>
-                                                <!--end::Row-->
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">정렬</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                        <div class="card-title w-100">
+                                            <%--begin::검색구분--%>
+                                            <div class="w-100 mw-150px">
                                                 <!--begin::Select2-->
-                                                <select id="align" name="align" class="form-select form-select-solid" data-control="select2" aria-label="- 정렬 -" data-placeholder="- 정렬 -" data-hide-search="true" onchange="f_center_popup_align_sel_set(this)">
+                                                <select id="search_box" class="form-select form-select-solid" data-control="select2"
+                                                        aria-label="- 검색조건 -" data-placeholder="- 검색조건 -"
+                                                        data-allow-clear="true" data-hide-search="true">
                                                     <option></option>
-                                                    <option disabled>- 정렬 -</option>
-                                                    <option value="B_LEFT" <c:if test="${info.align eq 'B_LEFT' or empty info}">selected</c:if> >브라우저 왼쪽</option>
-                                                    <option value="B_RIGHT" <c:if test="${info.align eq 'B_RIGHT'}">selected</c:if> >브라우저 오른쪽</option>
-                                                    <option value="CENTER" <c:if test="${info.align eq 'CENTER'}">selected</c:if> >가운데</option>
+                                                    <option disabled>- 검색조건 -</option>
+                                                    <option value="" selected>전체</option>
+                                                    <option value="NAMEKO">이름(국문)</option>
+                                                    <option value="NAMEEN">이름(영문)</option>
+                                                    <option value="ID">아이디</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-8 h-400px">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <div id="quill_editor_content" class="h-375px">${info.content}</div>
-                                                <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
+                                            <%--end::검색구분--%>
+                                            <!--begin::Search-->
+                                            <div class="d-flex align-items-center position-relative my-1 ml15 mr15">
+                                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="검색어 입력"/>
                                             </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-3">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">팝업 링크</label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <input type="text" id="linkUrl" value="${info.linkUrl}" class="form-control form-control-lg form-control-solid-bg" placeholder="https://"/>
+                                            <!--end::Search-->
+                                            <!--begin:Action-->
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" onclick="f_customer_electro_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_customer_electro_search_condition_init()" class="btn btn-secondary me-5">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화</button>
                                             </div>
-                                            <!--end::Col-->
+                                            <!--end:Action-->
+                                            <%--<div class="ms-auto">
+                                                <!--begin::등록-->
+                                                <a href="javascript:void(0);" onclick="f_customer_electro_modify_init_set('');" class="btn btn-primary ms-auto">등록</a>
+                                                <!--end::등록-->
+                                            </div>--%>
                                         </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="row mb-6">
-                                            <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6"></label>
-                                            <!--end::Label-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-8">
-                                                <p>* 외부링크 - http:// 나 https:// 를 포함한 URL을 입력해주세요. ex) https://naver.com/</p>
-                                                * 사이트 내 링크 - 도메인을 뺀 경로URL을 입력해주세요. ex) /board/notice_list.do
+                                        <!--end::Card title-->
+                                        <!--begin::Card toolbar-->
+                                        <div class="card-toolbar flex-row-fluid gap-5">
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-175px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_year" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 연도 -" onchange="f_customer_electro_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 연도 -</option>
+                                                    <option value="2025" selected>2025</option>
+                                                    <option value="2024">2024</option>
+                                                </select>
+                                                <!--end::Select2-->
                                             </div>
-                                            <!--end::Col-->
+                                            <%--end::신청상태--%>
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-175px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_time" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 차시 -" onchange="f_customer_electro_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 차시 -</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::신청상태--%>
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-150px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_apply_status" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 신청상태 -" onchange="f_customer_electro_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 신청상태 -</option>
+                                                    <option value="결제대기">결제대기</option>
+                                                    <option value="결제완료">결제완료</option>
+                                                    <option value="수강확정">수강확정</option>
+                                                    <option value="수강완료">수강완료</option>
+                                                    <option value="환급대기">환급대기</option>
+                                                    <option value="환급완료">환급완료</option>
+                                                    <option value="취소신청">취소신청</option>
+                                                    <option value="취소완료">취소완료</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::신청상태--%>
+
+                                            <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
+
+                                                <!--begin::버튼-->
+                                                <button type="button" id="apply_status_change_btn" class="btn btn-info" data-bs-target="#kt_modal_apply_status_change">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i> 신청 상태 변경</button>
+                                                <!--end::버튼-->
+
+                                                <!--begin::버튼-->
+                                                <button type="button" id="apply_status_cancel_btn" class="btn btn-danger" data-bs-target="#kt_modal_apply_status_cancel">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i> 취소 승인</button>
+                                                <!--end::버튼-->
+
+                                            </div>
+
                                         </div>
-                                        <!--end::Input group-->
+                                        <!--end::Card toolbar-->
+
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-0">
+                                        <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
+                                        <!--begin::Table-->
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_customer_electro_table">
+                                            <thead>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th class="w-10px pe-2">
+                                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                            <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                                                   data-kt-check-target="#mng_customer_electro_table .form-check-input" value="1"/>
+                                                        </div>
+                                                    </th>
+                                                    <th class="text-center min-w-50px">번호</th>
+                                                    <th>seq</th>
+                                                    <th class="text-center min-w-50px">연도</th>
+                                                    <th class="text-center min-w-50px">차시</th>
+                                                    <th class="text-center min-w-75px">신청상태</th>
+                                                    <th class="text-center min-w-75px">등급</th>
+                                                    <th class="text-center min-w-75px">아이디</th>
+                                                    <th class="text-center min-w-75px">이름</th>
+                                                    <th class="text-center min-w-125px">연락처</th>
+                                                    <th class="text-center min-w-125px">등록일시</th>
+                                                    <th class="text-center min-w-75px">기능</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-gray-600">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--end::Table-->
                                     </div>
                                     <!--end::Card body-->
                                 </div>
-                                <!--end::Basic info-->
-
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
-                                    <!--begin::Actions-->
-                                    <div class="card-footer d-flex justify-content-between py-6 px-9">
-                                        <div>
-                                            <a href="/mng/pop/popup.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
-                                        </div>
-                                        <div>
-                                            <button type="button" onclick="f_pop_popup_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_pop_popup_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
-                                        </div>
-                                    </div>
-                                    <!--end::Actions-->
-                                </div>
-                                <!--end::Basic info-->
+                                <!--end::Products-->
                             </div>
                             <!--end::Content container-->
                         </div>
                         <!--end::Content-->
                     </div>
                     <!--end::Content wrapper-->
-
                     <!--begin::Footer-->
                     <div id="kt_app_footer" class="app-footer">
                         <!--begin::Footer container-->
@@ -2151,6 +2117,388 @@ if (document.documentElement) {
     </div>
     <!--end::App-->
 
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_modify_history" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">신청내역 상세보기</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-10 px-lg-10">
+                    <div class="card card-flush py-4">
+
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0">
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">이름</label>
+                                <!--end::Label-->
+                                <div class="d-flex">
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-lg form-control-solid-bg me-2" id="md_name_ko" placeholder="이름(국문)" readonly>
+                                    <!--end::Input-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_name_en" placeholder="이름(영문)" readonly>
+                                    <!--end::Input-->
+                                </div>
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">연락처</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_phone" placeholder="연락처" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">이메일</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_email" placeholder="이메일" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">생년월일</label>
+                                <!--end::Label-->
+                                <div class="d-flex">
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-lg form-control-solid-bg me-3" id="md_birth_year" placeholder="년도" readonly>
+                                    <!--end::Input-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-lg form-control-solid-bg me-3" id="md_birth_month" placeholder="월" readonly>
+                                    <!--end::Input-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_birth_day" placeholder="일" readonly>
+                                    <!--end::Input-->
+                                </div>
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-6">
+                                <!--begin::Label-->
+                                <label class="form-label">주소</label>
+                                <!--end::Label-->
+                                <div>
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-lg form-control-solid-bg mb-3" id="md_address" placeholder="주소" readonly>
+                                    <!--end::Input-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_address_detail" placeholder="상세주소" readonly>
+                                    <!--end::Input-->
+                                </div>
+                            </div>
+                            <!--end::Input group-->
+
+                        </div>
+                        <!--end::Card header-->
+                    </div>
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
+
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_apply_status_cancel" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">취소 승인 처리</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-10 px-lg-10">
+                    <!--begin::form-->
+                    <form id="modal_form" method="post" onsubmit="return false;">
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">취소 승인 대상 목록</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <span class="customer_list"></span>
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                    </form>
+                    <!--end::form-->
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::Col-->
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <!--begin::Col-->
+                        <div>
+                            <!--begin::Cancel-->
+                            <a class="btn btn-danger" data-bs-dismiss="modal">취소</a>
+                            <!--end::Cancel-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="ms-10">
+                            <!--begin::File upload-->
+                            <a onclick="f_apply_cancel_btn()" class="btn btn-primary">승인</a>
+                            <!--end::File upload-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
+
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_apply_status_change" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">신청 상태 변경</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-10 px-lg-10">
+                    <!--begin::Input group-->
+                    <div>
+                        * <strong>수강확정</strong> : 현재 <strong class="text-danger">결제완료</strong> 상태인 경우에만 적용<br>
+                        * <strong>수강완료</strong> : 현재 <strong class="text-danger">수강확정</strong> 상태인 경우에만 적용<br>
+                    </div>
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::form-->
+                    <form id="modal_form2" method="post" onsubmit="return false;">
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">신청 상태 변경 대상 목록</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <span class="customer_list"></span>
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">변경할 신청 상태</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <!--begin::Select2-->
+                                <select id="md_status_gbn" class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-allow-clear="true"
+                                        data-placeholder="- 신청 상태 -">
+                                    <option></option>
+                                    <option value="" disabled>- 신청 상태 -</option>
+                                    <option value="수강확정">수강확정</option>
+                                    <option value="수강완료">수강완료</option>
+                                </select>
+                                <!--end::Select2-->
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                    </form>
+                    <!--end::form-->
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::Col-->
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <!--begin::Col-->
+                        <div>
+                            <!--begin::Cancel-->
+                            <a class="btn btn-danger" data-bs-dismiss="modal">취소</a>
+                            <!--end::Cancel-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="ms-10">
+                            <!--begin::File upload-->
+                            <a onclick="f_apply_change_btn()" class="btn btn-primary">변경</a>
+                            <!--end::File upload-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
+
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_apply_edu_change" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">신청 교육 변경</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-10 px-lg-10">
+                    <!--begin::Input group-->
+                    <div class="lh-lg">
+                        <c:set var="now" value="<%=new java.util.Date()%>"/>
+                        <fmt:formatDate var="fmNow" value="${now}" pattern="yyyy.MM.dd"/>
+                        * 오늘 날짜 기준 ( ${fmNow} ) 으로 <br/>
+                        1. <strong class="text-danger">접수일정 or 교육일정에 해당되거나 교육 활성화 상태( 마감 X, 삭제 X )인 경우</strong><br/>
+                        2. <strong class="text-danger">동일 교육 내 차시 변경의 경우</strong><br/>
+                        에만 변경 가능합니다.<br/><br/>
+                        * <strong>교육 변경 대상 목록</strong> : <strong>교육생명 / 현재 결제 상태</strong> ( 현재 결제 상태가 <strong class="text-danger">취소신청/취소완료인 경우 교육 변경 불가</strong> )<br/>
+                        * <strong>변경할 교육</strong> : <strong>과정분류 / 교육명 / 차시 / 교육시작일정 / 교육종료일정</strong> 순<br/>
+                    </div>
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::form-->
+                    <form id="modal_form3" method="post" onsubmit="return false;">
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">교육 변경 대상 목록</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-10 d-flex align-items-center">
+                                <span class="target_list"></span>
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">변경할 교육</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-10 d-flex align-items-center">
+                                <!--begin::Select2-->
+                                <select id="md_edu" class="form-select form-select-solid" data-control="select2"
+                                        data-hide-search="true" data-allow-clear="true"
+                                        data-placeholder="- 교육 -">
+                                    <option></option>
+                                    <option value="" disabled>- 교육 -</option>
+                                </select>
+                                <!--end::Select2-->
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                    </form>
+                    <!--end::form-->
+                    <!--begin::Menu separator-->
+                    <div class="separator my-6"></div>
+                    <!--end::Menu separator-->
+                    <!--begin::Col-->
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <!--begin::Col-->
+                        <div>
+                            <!--begin::Cancel-->
+                            <a class="btn btn-danger" data-bs-dismiss="modal">취소</a>
+                            <!--end::Cancel-->
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="ms-10">
+                            <!--begin::File upload-->
+                            <a onclick="f_customer_electro_train_change_btn()" class="btn btn-primary">변경</a>
+                            <!--end::File upload-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
+
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up">
@@ -2172,7 +2520,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
-    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
@@ -2182,8 +2529,56 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/mng/popup.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/mng/electro.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            // 차시 검색조건 Set
+            $("#condition_time").children('option:not(:gt(1))').remove();
+
+            let json = {
+                gbn: '레저선박 해양전자장비 교육'
+            }
+            $.ajax({
+                url: '/train/selectNextTime.do',
+                method: 'post',
+                data: JSON.stringify(json),
+                contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+            })
+            .done(function (data, status){
+                let results = data;
+                if(nvl(results,'') !== ''){
+                    $.each(results , function(i){
+                        $('#condition_time').append($('<option>', {
+                            value: results[i].nextTime,
+                            text : results[i].nextTime + '차'
+                        }));
+                    })
+
+                    $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
+
+                }
+
+            }).always(function() {
+                let nextTime = '${nextTime}';
+                if(nvl(nextTime,'') !== ''){
+                    $('#condition_time').val(nextTime).trigger('change');
+                }
+            });
+
+        });
+
+        document.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                f_customer_electro_search();
+            }
+        });
+    </script>
+
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
