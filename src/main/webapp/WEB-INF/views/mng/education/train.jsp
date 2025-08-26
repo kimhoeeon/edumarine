@@ -425,6 +425,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/electro.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">레저선박 해양전자장비 교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -1352,6 +1362,18 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/electro.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">레저선박 해양전자장비 교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -1969,6 +1991,7 @@ if (document.documentElement) {
                                                     <option value="선외기/선내기 직무역량 강화과정">선외기/선내기 직무역량 강화과정</option>
                                                     <option value="선내기 팸투어">선내기 팸투어</option>
                                                     <option value="선외기 팸투어">선외기 팸투어</option>
+                                                    <option value="레저선박 해양전자장비 교육">레저선박 해양전자장비 교육</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>

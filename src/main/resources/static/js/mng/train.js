@@ -427,7 +427,7 @@ function f_education_train_form_data_setting() {
     form.gbnDepth = $('#gbnDepth').val();
 
     // 차시
-    form.nextTime = nvl($('#nextTime').val(),'0');
+    form.nextTime = nvl($('#nextTime').val(),'1');
 
     // 카테고리
     let category = '전체';
@@ -458,6 +458,9 @@ function f_education_train_form_data_setting() {
             case '선내기 팸투어':
             case '선외기 팸투어':
                 category = '팸투어';
+                break;
+            case '레저선박 해양전자장비 교육':
+                category = '협업';
                 break;
             default:
                 break;
@@ -637,6 +640,9 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             break;
         case '선외기 팸투어':
             link = '/mng/customer/famtourout.do';
+            break;
+        case '레저선박 해양전자장비 교육':
+            link = '/mng/customer/electro.do';
             break;
         default:
             break;

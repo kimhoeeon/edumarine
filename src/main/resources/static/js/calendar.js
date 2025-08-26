@@ -148,6 +148,10 @@ function f_train_calendar_select(category){
                         className = 'edu21';
                         link = '/apply/eduApply21.do';
                         break;
+                    case '레저선박 해양전자장비 교육':
+                        className = 'edu22';
+                        link = '/apply/eduApply22.do';
+                        break;
                     default:
                         break;
                 }

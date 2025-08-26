@@ -385,4 +385,16 @@ public interface EduMarineMapper {
     Integer updateFamtourout(FamtouroutDTO famtouroutDTO);
 
     Integer updateFamtouroutPayStatus(FamtouroutDTO famtouroutDTO);
+
+    Integer selectElectroPreCheck(ElectroDTO electroDTO);
+
+    ElectroDTO selectElectroSingle(String seq);
+
+    String getElectroSeq();
+
+    Integer insertElectro(ElectroDTO electroDTO);
+
+    Integer updateElectro(ElectroDTO electroDTO);
+
+    Integer updateElectroPayStatus(ElectroDTO electroDTO);
 }

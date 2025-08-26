@@ -488,4 +488,14 @@ public interface EduMarineMngService {
     FamtouroutDTO processSelectFamtouroutSingle(String seq);
 
     List<FamtouroutDetailDTO> processSelectExcelFamtouroutDetailList();
+
+    List<ElectroDTO> processSelectElectroList(SearchDTO searchDTO);
+
+    ResponseDTO processUpdateElectroApplyStatus(List<ElectroDTO> electroList);
+
+    ResponseDTO processUpdateElectroApplyStatusChange(List<ElectroDTO> electroList);
+
+    ElectroDTO processSelectElectroSingle(String seq);
+
+    List<ElectroDetailDTO> processSelectExcelElectroDetailList();
 }

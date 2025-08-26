@@ -417,6 +417,16 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/customer/electro.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">레저선박 해양전자장비 교육</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
                                                                 </div>
                                                                 <!--end:Col-->
                                                             </div>
@@ -1344,6 +1354,18 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/customer/electro.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">레저선박 해양전자장비 교육</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -1879,10 +1901,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육과정명</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">교육과정명</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <div class="input-group">
                                                         <input type="text" id="gbn" name="gbn" value="${info.gbn}" class="form-control form-control-solid-bg" placeholder="교육과정명" readonly/>
                                                         <select id="gbn_select" class="form-select form-control-solid-bg ms-4" <c:if test="${info.gbn ne null}">disabled</c:if> >
@@ -1906,6 +1928,7 @@ if (document.documentElement) {
                                                             <option value="선외기/선내기 직무역량 강화과정" <c:if test="${info.gbn eq '선외기/선내기 직무역량 강화과정'}">selected</c:if> >선외기/선내기 직무역량 강화과정</option>
                                                             <option value="선내기 팸투어" <c:if test="${info.gbn eq '선내기 팸투어'}">selected</c:if> >선내기 팸투어</option>
                                                             <option value="선외기 팸투어" <c:if test="${info.gbn eq '선외기 팸투어'}">selected</c:if> >선외기 팸투어</option>
+                                                            <option value="레저선박 해양전자장비 교육" <c:if test="${info.gbn eq '레저선박 해양전자장비 교육'}">selected</c:if> >레저선박 해양전자장비 교육</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1915,10 +1938,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6 d-none">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">세부교육명</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">세부교육명</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <div class="input-group">
                                                         <input type="text" id="gbnDepth" name="gbnDepth" value="${info.gbnDepth}" class="form-control form-control-solid-bg" placeholder="세부교육명" readonly/>
                                                         <select id="gbn_depth_select" class="form-select form-control-solid-bg ms-4" <c:if test="${info.gbnDepth ne null}">disabled</c:if> >
@@ -1935,10 +1958,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">차시</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">차시</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input class="form-control form-control-solid onlyNum" id="nextTime" name="nextTime" maxlength="2" placeholder="차시" value="${info.nextTime}" <c:if test="${info ne null}">readonly</c:if>/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1947,10 +1970,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">접수기간 (시작)</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">접수기간 (시작)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input class="form-control form-control-solid" id="applyStartDttm" name="applyStartDttm" placeholder="접수시작일" value="${info.applyStartDttm}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1959,10 +1982,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">접수기간 (종료)</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">접수기간 (종료)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input class="form-control form-control-solid" id="applyEndDttm" name="applyEndDttm" placeholder="접수종료일" value="${info.applyEndDttm}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1971,10 +1994,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육일정 (시작)</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">교육일정 (시작)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input class="form-control form-control-solid" id="trainStartDttm" name="trainStartDttm" placeholder="교육시작일" value="${info.trainStartDttm}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1983,10 +2006,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육일정 (종료)</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">교육일정 (종료)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input class="form-control form-control-solid" id="trainEndDttm" name="trainEndDttm" placeholder="교육종료일" value="${info.trainEndDttm}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -1995,10 +2018,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">교육비</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">교육비</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="paySum" name="paySum" class="form-control form-control-lg form-control-solid-bg onlyNum" placeholder="교육비" value="${info.paySum}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2007,10 +2030,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">총 교육인원</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">총 교육인원</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="trainCnt" name="trainCnt" class="form-control form-control-lg form-control-solid-bg onlyNum" placeholder="교육인원" value="${info.trainCnt}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2019,10 +2042,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">교육신청인원 (최초 등록시 '0', 수정불가항목)</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">교육신청인원<br>(최초 등록시 '0', 수정불가항목)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="trainApplyCnt" name="trainApplyCnt" class="form-control form-control-lg form-control-solid-bg onlyNum" placeholder="교육신청인원"
                                                            value="${info.trainApplyCnt eq null ? 0 : info.trainApplyCnt}" disabled/>
                                                 </div>
@@ -2032,10 +2055,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">비고</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">비고</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <textarea id="trainNote" name="trainNote" class="form-control form-control-solid-bg resize-none h-200px" placeholder="비고">${info.trainNote}</textarea>
                                                 </div>
                                                 <!--end::Col-->
@@ -2044,10 +2067,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">홈페이지 노출 여부</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">홈페이지 노출 여부</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex align-items-center">
+                                                <div class="col-lg-10 d-flex align-items-center">
                                                     <label class="me-5">
                                                         <input type="radio" name="exposureYn" value="Y" class="form-check-input form-control-solid-bg"
                                                                <c:if test="${info.exposureYn eq 'Y'}">checked</c:if>/> 노출
@@ -2063,10 +2086,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">연간 일정표 등록 여부</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">연간 일정표 등록 여부</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex align-items-center">
+                                                <div class="col-lg-10 d-flex align-items-center">
                                                     <label class="me-5">
                                                         <input type="radio" name="scheduleExposureYn" value="Y" class="form-check-input form-control-solid-bg"
                                                                <c:if test="${info.scheduleExposureYn eq 'Y'}">checked</c:if>/> 등록
@@ -2082,18 +2105,18 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">교육 상태</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">교육 상태</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex align-items-center">
+                                                <div class="col-lg-10 d-flex align-items-center">
                                                     <input type="hidden" id="preClosingYn" value="${info.closingYn}">
                                                     <label class="me-5">
                                                         <input type="radio" name="closingYn" value="N" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.closingYn eq 'N'}">checked</c:if>/> 신청오픈
+                                                               <c:if test="${info.closingYn eq 'N' or info.scheduleExposureYn eq null}">checked</c:if>/> 신청오픈
                                                     </label>
                                                     <label>
                                                         <input type="radio" name="closingYn" value="Y" class="form-check-input form-control-solid-bg"
-                                                               <c:if test="${info.closingYn eq 'Y' or info.scheduleExposureYn eq null}">checked</c:if>/> 조기마감
+                                                               <c:if test="${info.closingYn eq 'Y'}">checked</c:if>/> 조기마감
                                                     </label>
                                                 </div>
                                                 <!--end::Col-->

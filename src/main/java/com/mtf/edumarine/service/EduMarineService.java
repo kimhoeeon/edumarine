@@ -312,6 +312,14 @@ public interface EduMarineService {
     ResponseDTO processUpdateFamtourout(FamtouroutDTO famtouroutDTO);
 
     ResponseDTO processUpdateFamtouroutPayStatus(FamtouroutDTO famtouroutDTO);
-    
-    
+
+    Integer processSelectElectroPreCheck(ElectroDTO electroDTO);
+
+    ElectroDTO processSelectElectroSingle(String seq);
+
+    ResponseDTO processInsertElectro(ElectroDTO electroDTO);
+
+    ResponseDTO processUpdateElectro(ElectroDTO electroDTO);
+
+    ResponseDTO processUpdateElectroPayStatus(ElectroDTO electroDTO);
 }

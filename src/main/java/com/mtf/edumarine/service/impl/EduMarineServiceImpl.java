@@ -689,6 +689,13 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public Integer processSelectElectroPreCheck(ElectroDTO electroDTO) {
+        System.out.println("EduMarineServiceImpl > processSelectElectroPreCheck");
+        return eduMarineMapper.selectElectroPreCheck(electroDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public Integer processSelectInboarderPreCheck(InboarderDTO inboarderDTO) {
         System.out.println("EduMarineServiceImpl > processSelectInboarderPreCheck");
         return eduMarineMapper.selectInboarderPreCheck(inboarderDTO);
@@ -1661,6 +1668,32 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateElectroPayStatus(ElectroDTO electroDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateElectroPayStatus : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateElectroPayStatus(electroDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail] Seq : " + electroDTO.getSeq();
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateElectroPayStatus : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<EduApplyInfoDTO> processSelectEduApplyInfoList(String memberSeq) {
         System.out.println("EduMarineServiceImpl > processSelectEduApplyInfoList");
         return eduMarineMapper.selectEduApplyInfoList(memberSeq);
@@ -2566,6 +2599,82 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateFamtourout : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ElectroDTO processSelectElectroSingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectElectroSingle");
+        return eduMarineMapper.selectElectroSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertElectro(ElectroDTO electroDTO) {
+        System.out.println("EduMarineServiceImpl > processInsertElectro");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(electroDTO.getId() != null){
+
+                TrainDTO trainDTO = eduMarineMapper.selectTrainSingle(electroDTO.getTrainSeq());
+
+                if(Objects.equals(trainDTO.getTrainCnt(), trainDTO.getTrainApplyCnt())){
+                    resultCode = "99";
+                    resultMessage = "수강 정원이 초과하여 신청이 불가합니다.";
+                }else{
+                    String getSeq = eduMarineMapper.getElectroSeq();
+                    electroDTO.setSeq(getSeq);
+
+                    result = eduMarineMapper.insertElectro(electroDTO);
+
+                    responseDTO.setCustomValue(getSeq);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Insert Fail]";
+                    }
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertElectro ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateElectro(ElectroDTO electroDTO) {
+        System.out.println("EduMarineServiceImpl > processUpdateElectro : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = eduMarineMapper.updateElectro(electroDTO);
+
+            responseDTO.setCustomValue(electroDTO.getSeq());
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[ERROR] processUpdateElectro : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
         }
 
