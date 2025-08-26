@@ -7070,7 +7070,7 @@ function f_main_apply_eduApply22_submit(trainSeq){
     let birthDay = $('#birth-day').val();
     let address = $('#address').val();
     let addressDetail = $('#addressDetail').val();*/
-    let choiceDateSizeArr = $('input[type=radio][name=choiceDate]:checked');
+    /*let choiceDateSizeArr = $('input[type=radio][name=choiceDate]:checked');*/
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
     /*if(nvl(nameEn,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '영문 이름을 입력해 주세요.', ''); return false; }
@@ -7079,7 +7079,7 @@ function f_main_apply_eduApply22_submit(trainSeq){
     if(nvl(birthDay,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '생년월일-일을 선택해 주세요.', ''); return false; }
     if(nvl(address,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '주소를 입력해 주세요.', ''); return false; }
     if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[ 신청 정보 ]', '상세 주소를 입력해 주세요.', ''); return false; }*/
-    if(choiceDateSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '날짜 선택 항목을 선택해 주세요.', ''); return false; }
+    /*if(choiceDateSizeArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '날짜 선택 항목을 선택해 주세요.', ''); return false; }*/
     if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
@@ -7104,7 +7104,7 @@ function f_main_apply_eduApply22_submit(trainSeq){
 
     Swal.fire({
         title: '[ 신청 정보 ]',
-        html: '입력된 정보로 교육을 신청하시겠습니까?<br>신청하기 버튼 클릭 시 결제화면으로 이동합니다.',
+        html: '입력된 정보로 교육을 신청하시겠습니까?',
         icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -7212,10 +7212,10 @@ function f_main_apply_eduApply22_modify_submit(el, boarderSeq){
         return;
     }
 
-    let choiceDateArr = $('input[type=radio][name=choiceDate]:checked');
+    /*let choiceDateArr = $('input[type=radio][name=choiceDate]:checked');*/
     let participationPathArr = $('input[type=radio][name=participationPath]:checked');
 
-    if(choiceDateArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '날짜 선택 항목을 선택해 주세요.', ''); return false; }
+    /*if(choiceDateArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '날짜 선택 항목을 선택해 주세요.', ''); return false; }*/
     if(participationPathArr.length === 0){ showMessage('', 'error', '[ 신청 정보 ]', '참여 경로 항목을 선택해 주세요.', ''); return false; }
 
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
