@@ -278,7 +278,7 @@
                         <!-- //form box -->
 
                         <!-- form box -->
-                        <div class="form_box">
+                        <%--<div class="form_box">
                             <div class="form_tit">
                                 <div class="big">신청정보</div>
                             </div>
@@ -312,7 +312,7 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div>
+                        </div>--%>
                         <!-- //form box -->
 
                     </form>

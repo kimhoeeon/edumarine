@@ -264,7 +264,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <%--<li>
                                     <div class="gubun">
                                         <p>추천인</p>
                                     </div>
@@ -291,7 +291,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </li>
+                                </li>--%>
                             </ul>
                         </div>
                         <!-- //form box -->

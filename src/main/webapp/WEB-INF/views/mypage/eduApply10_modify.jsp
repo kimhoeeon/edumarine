@@ -236,7 +236,7 @@
                         <!-- //form box -->
 
                         <!-- form box -->
-                        <div class="form_box">
+                        <%--<div class="form_box">
                             <div class="form_tit">
                                 <div class="big">신청정보</div>
                             </div>
@@ -270,7 +270,7 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div>
+                        </div>--%>
                         <!-- //form box -->
 
                     </form>
@@ -419,9 +419,9 @@
         $('#birth-month option').prop('disabled',true);
         $('#birth-day option').prop('disabled',true);
 
-        $('#rc-birth-year').val('${info.rcBirthYear}');
+        /*$('#rc-birth-year').val('${info.rcBirthYear}');
         $('#rc-birth-month').val('${info.rcBirthMonth}');
-        $('#rc-birth-day').val('${info.rcBirthDay}');
+        $('#rc-birth-day').val('${info.rcBirthDay}');*/
 
         let modYn = '${modYn}';
         if(nvl(modYn,'') !== ''){

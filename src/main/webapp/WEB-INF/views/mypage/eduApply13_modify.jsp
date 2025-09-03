@@ -270,14 +270,14 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <%--<li>
                                     <div class="gubun"><p>추천인</p></div>
                                     <div class="naeyong">
                                         <div class="input">
                                             <input type="text" id="recommendPerson" name="recommendPerson" value="${info.recommendPerson}" placeholder="추천인명 입력">
                                         </div>
                                     </div>
-                                </li>
+                                </li>--%>
                             </ul>
                         </div>
                         <!-- //form box -->

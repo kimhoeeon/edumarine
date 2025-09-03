@@ -288,7 +288,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <%--<li>
                                     <div class="gubun">
                                         <p>추천인</p>
                                     </div>
@@ -315,7 +315,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </li>
+                                </li>--%>
                             </ul>
                         </div>
                         <!-- //form box -->
@@ -466,9 +466,9 @@
         $('#birth-month option').prop('disabled',true);
         $('#birth-day option').prop('disabled',true);
 
-        $('#rc-birth-year').val('${info.rcBirthYear}');
+        /*$('#rc-birth-year').val('${info.rcBirthYear}');
         $('#rc-birth-month').val('${info.rcBirthMonth}');
-        $('#rc-birth-day').val('${info.rcBirthDay}');
+        $('#rc-birth-day').val('${info.rcBirthDay}');*/
 
         let trainUnderstand = '${info.trainUnderstand}';
         if(trainUnderstand === '4'){
