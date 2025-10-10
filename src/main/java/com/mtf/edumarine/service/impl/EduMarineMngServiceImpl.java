@@ -2198,6 +2198,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultCode = CommConstants.RESULT_CODE_FAIL;
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
+                            }else{
+                                Integer result = eduMarineMngMapper.updateBoarderApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -2523,6 +2530,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateFrpApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -2856,6 +2870,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateBasicApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -3189,6 +3210,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateEmergencyApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -3522,6 +3550,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateGeneratorApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -3855,6 +3890,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateCompetencyApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -4509,6 +4551,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                // 결제 안한 취소 신청건 취소승인처리
+                                Integer result = eduMarineMngMapper.updateOutboarderApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -4939,6 +4989,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateInboarderApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -5274,6 +5331,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateSailyachtApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -5607,6 +5671,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateHighhorsepowerApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -5940,6 +6011,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateHighSelfApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -6273,6 +6351,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateHighSpecialApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -6606,6 +6691,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateSterndriveApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
@@ -6939,6 +7031,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultMessage = "[등록된 교육 정보가 없습니다.] Train Not Exist";
                                 }
 
+                            }else{
+                                Integer result = eduMarineMngMapper.updateSternSpecialApplyStatus(info);
+                                if(result == 0){
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
+                                    break;
+                                }
                             }
                         }else{
 
