@@ -617,39 +617,35 @@ function requestMakeMailFormat(data){
 
     let note = data.note;
 
-    let cpEmail;
     if(nvl(note,'') === '개발사') {
-        cpEmail = 'jove0904@kwateromc.co.kr';
+        receiverArr.push({email: 'jove0904@kwateromc.co.kr'});
     }else{
         // kyj@meetingfan.com
         // khe@meetingfan.com
         // cmn@meetingfan.com
         let subject = data.subject;
-        let gbn = subject.substring(subject.indexOf('(')+1, subject.indexOf(')'));
+        let startIndex = subject.indexOf('('); // 여는 괄호 '('의 위치를 찾음
+        let endIndex = subject.indexOf(')'); // 닫는 괄호 ')'의 위치를 찾음
+        let gbn = subject.substring(startIndex + 1, endIndex).trim();
         switch (gbn) {
             case '유지보수':
             case '단순 문의':
             case '기타':
-                cpEmail = 'cmn@meetingfan.com';
+                receiverArr.push({email: 'yks@meetingfan.com'});
+                receiverArr.push({email: 'kyj@meetingfan.com'});
                 break;
             case '기능 추가 문의':
             case '뉴스레터':
-                cpEmail = 'kyj@meetingfan.com';
+                receiverArr.push({email: 'kyj@meetingfan.com'});
                 break;
             case '오류':
-                cpEmail = 'khe@meetingfan.com';
+                receiverArr.push({email: 'khe@meetingfan.com'});
                 break;
             default:
-                cpEmail = 'kyj@meetingfan.com';
+                receiverArr.push({email: 'kyj@meetingfan.com'});
                 break;
         }
     }
-
-    let receiverObj = {
-        email: cpEmail //받는이 메일주소,
-    }
-    
-    receiverArr.push(receiverObj);
 
     returnJsonObj = {
         subject: data.subject, //제목
