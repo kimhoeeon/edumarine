@@ -120,30 +120,47 @@ $(function(){
     $(document).on('change', '.sms_send_tr_all_check', function () {
         $('#sms_phone_train_list').html('');
         if($(this).is(':checked')){
-            $('.select_cnt').text($('.sms_send_tr_check').length);
-            $('.sms_send_tr_check').each(function(){
-                let input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'sendPhone';
-                input.value = $(this).val();
-                $('#sms_phone_train_list').append(input);
+            let dataTbl = $('#sms_send_form_train_table').DataTable();
+            let checkCnt = 0;
+            dataTbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                let node = this.node();
+                let $check = $(node).find('.sms_send_tr_check');
+                if($check.is(':checked')){
+                    let data = this.data();
+                    // data.phone (phone 컬럼명 확인 필요)
+                    let phone = data.phone; // data.phone이 아닐 경우 data 객체 확인 후 수정
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'sendPhone';
+                    input.value = phone;
+                    $('#sms_phone_train_list').append(input);
+                    checkCnt++;
+                }
             });
+            $('.select_cnt').text(checkCnt);
         }else{
             $('.select_cnt').text('0');
         }
-    })
+    });
 
     $(document).on('change', '.sms_send_tr_check', function () {
         let selectCnt = 0;
         $('#sms_phone_train_list').html('');
-        $('.sms_send_tr_check').each(function(){
-            if($(this).is(':checked')){
-                selectCnt++;
 
+        let dataTbl = $('#sms_send_form_train_table').DataTable();
+        dataTbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            let node = this.node();
+            let $check = $(node).find('.sms_send_tr_check');
+
+            if($check.is(':checked')){
+                selectCnt++;
+                let data = this.data();
+                // data.phone (phone 컬럼명 확인 필요)
+                let phone = data.phone; // data.phone이 아닐 경우 data 객체 확인 후 수정
                 let input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'sendPhone';
-                input.value = $(this).val();
+                input.value = phone;
                 $('#sms_phone_train_list').append(input);
             }
         });
@@ -155,47 +172,70 @@ $(function(){
             $('.sms_send_tr_all_check').prop('checked',false);
         }
         $('.select_cnt').text(selectCnt);
-    })
+    });
 
     $(document).on('change', '.sms_send_ex_all_check', function () {
         $('#sms_phone_excel_list').html('');
         if($(this).is(':checked')){
-            $('.select_cnt').text($('.sms_send_ex_check').length);
-            $('.sms_send_ex_check').each(function(){
-                let input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'sendPhone';
-                input.value = $(this).val();
-                $('#sms_phone_excel_list').append(input);
+            let dataTbl = $('#sms_send_form_excel_table').DataTable();
+            let checkCnt = 0;
+            // dataTable의 모든 행을 순회
+            dataTbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                let node = this.node();
+                // [수정] 비활성화되지 않은 체크박스만 대상으로 함
+                let $check = $(node).find('.sms_send_ex_check:enabled');
+
+                if($check.is(':checked')){ // '전체선택'으로 인해 체크된 상태
+                    let data = this.data();
+                    if(data && data.phone){ // 'phone_send'에 유효한 값이 있는지 확인
+                        let input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'sendPhone';
+                        input.value = data.phone; // data 객체에서 'phone_send' 값 사용
+                        $('#sms_phone_excel_list').append(input);
+                        checkCnt++;
+                    }
+                }
             });
+            $('.select_cnt').text(checkCnt);
         }else{
             $('.select_cnt').text('0');
         }
-    })
+    });
 
     $(document).on('change', '.sms_send_ex_check', function () {
         let selectCnt = 0;
         $('#sms_phone_excel_list').html('');
-        $('.sms_send_ex_check').each(function(){
-            if($(this).is(':checked')){
-                selectCnt++;
 
-                let input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'sendPhone';
-                input.value = $(this).val();
-                $('#sms_phone_excel_list').append(input);
+        let dataTbl = $('#sms_send_form_excel_table').DataTable();
+        // dataTable의 모든 행을 순회하며 체크된 항목 찾기
+        dataTbl.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            let node = this.node();
+            // [수정] 비활성화되지 않은 체크박스만 대상으로 함
+            let $check = $(node).find('.sms_send_ex_check:enabled');
+
+            if($check.is(':checked')){
+                selectCnt++;
+                let data = this.data(); // 현재 행의 데이터 객체
+                if(data && data.phone){ // 'phone_send'에 유효한 값이 있는지 확인
+                    let input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'sendPhone';
+                    input.value = data.phone; // data 객체에서 'phone_send' 값 사용
+                    $('#sms_phone_excel_list').append(input);
+                }
             }
         });
 
-        let checkboxCnt = $('.sms_send_ex_check').length;
-        if(selectCnt === checkboxCnt){
+        // [수정] 전체 체크박스 개수는 비활성화된 것을 제외하고 계산
+        let checkboxCnt = $('.sms_send_ex_check:enabled').length;
+        if(selectCnt === checkboxCnt && checkboxCnt > 0){
             $('.sms_send_ex_all_check').prop('checked',true);
         }else{
             $('.sms_send_ex_all_check').prop('checked',false);
         }
         $('.select_cnt').text(selectCnt);
-    })
+    });
 
     let toolTipTxt = '';
     toolTipTxt += '교육명 : %eduName%';
@@ -225,7 +265,7 @@ $(function(){
         }
 
     };
-    $('#replaceTooltip').popover(options);
+    $('.replaceTooltip').popover(options);
 
 });
 
@@ -379,7 +419,132 @@ function f_smsMng_sms_send(gbn){
             }
 
             if(validCheck) {
-                let senderPhoneList = '';
+
+                // [수정] gbn === 'excel' 인 경우, 서버에서 처리하도록 로직 변경
+                if(gbn === 'excel') {
+                    let senderPhoneList = [];
+                    // 숨겨진 input에서 전화번호 목록을 배열로 가져옴
+                    $('#sms_phone_excel_list').find('input[type=hidden]').each(function() {
+                        senderPhoneList.push($(this).val());
+                    });
+
+                    let contentVal = $('#sms_template_excel_content').val();
+                    let templateSeq = $('.sms_template_list option:selected').val();
+
+                    // 발송 버튼 비활성화 (중복 클릭 방지)
+                    let sendButton = $(event.target); // 확인 필요. 이 이벤트가 아닐 수 있음.
+                    sendButton.prop('disabled', true);
+
+                    Swal.fire({
+                        title: 'SMS 발송 요청 중...',
+                        text: '대량 발송 작업이 서버에 등록 중입니다. 잠시만 기다려주세요.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // [신규] 서버 일괄 처리 API 호출
+                    $.ajax({
+                        url: '/mng/smsMng/sms/sendBulk.do', // [주의] 신규로 만들어야 하는 서버 API 주소
+                        type: 'POST',
+                        contentType: 'application/json', // JSON으로 전송
+                        data: JSON.stringify({
+                            phoneList: senderPhoneList, // 전화번호 리스트
+                            content: contentVal,          // 문자 내용
+                            templateSeq: templateSeq,     // 템플릿 번호
+                            sender: '1811-7891'           // 하드코딩된 발신번호 (서버에서 처리하는 것이 더 좋음)
+                        }),
+                        success: function(resData) {
+                            if (resData.result_code === 1 || resData.resultCode === "0") { // 서버 응답에 따라 성공 조건 확인
+                                Swal.fire({
+                                    title: '[SMS 발송 요청 완료]',
+                                    html: '서버에 발송 작업이 등록되었습니다.<br>발송결과는 SMS 발송 관리 페이지에서 확인하실 수 있습니다.',
+                                    icon: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: '확인'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/mng/smsMng/sms.do';
+                                    }
+                                });
+                            } else {
+                                Swal.fire(
+                                    '발송 요청 실패',
+                                    '서버에 발송 작업을 등록하지 못했습니다: ' + resData.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire(
+                                '네트워크 오류',
+                                '서버와 통신 중 오류가 발생했습니다: ' + error,
+                                'error'
+                            );
+                        },
+                        complete: function() {
+                            sendButton.prop('disabled', false); // 발송 버튼 활성화
+                        }
+                    });
+
+                } else {
+                    // gbn이 'train' 또는 'member'인 경우 (기존 로직 유지 - 단, 이 경우도 건수가 많다면 서버 처리 방식 권장)
+                    let senderPhoneList = '';
+                    let contentVal = '';
+                    if(gbn === 'train') {
+                        senderPhoneList = $('#sms_phone_train_list').find('input[type=hidden]');
+                        contentVal = $('#sms_template_train_content').val();
+                    }else if(gbn === 'member') {
+                        senderPhoneList = $('.senderPhoneList').find('input[type=text]');
+                        contentVal = $('#sms_template_member_content').val();
+                    }
+
+                    for (let i = 0; i < senderPhoneList.length; i++) {
+                        let phone = senderPhoneList.eq(i).val();
+                        let content = contentVal;
+
+                        let jsonObj = {
+                            sender: '1811-7891', //해양레저인력양성센터
+                            phone: phone,
+                            content: content
+                        }
+
+                        let sendResult = '성공';
+                        let resData = ajaxConnect('/sms/send.do', 'post', jsonObj);
+                        if (resData.result_code !== 1) {
+                            sendResult = '실패' + ' [' + resData.message +']';
+                        }
+
+                        let jsonObj2 = {
+                            smsGroup: getCurrentDate().substring(0, getCurrentDate().length-2),
+                            phone: phone,
+                            sender: '관리자',
+                            senderPhone: '1811-7891', //해양레저인력양성센터
+                            content: content,
+                            sendResult: sendResult,
+                            templateSeq: $('.sms_template_list option:selected').val(),
+                        }
+
+                        let resData2 = ajaxConnect('/mng/smsMng/sms/insert.do', 'post', jsonObj2);
+
+                        if((i+1) === senderPhoneList.length){
+                            Swal.fire({
+                                title: '[SMS 발송완료]',
+                                html: '발송결과는 SMS 관리>SMS 발송 관리 페이지에서 확인하실 수 있습니다.',
+                                icon: 'info',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: '확인'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/mng/smsMng/sms.do';
+                                }
+                            });
+                        }
+                    } // end for
+                } // end else (gbn !== 'excel')
+
+                /*let senderPhoneList = '';
                 let contentVal = '';
                 if(gbn === 'train') {
                     senderPhoneList = $('#sms_phone_train_list').find('input[type=hidden]');
@@ -433,7 +598,7 @@ function f_smsMng_sms_send(gbn){
                             }
                         });
                     }
-                }
+                }*/
             }
 
         }
@@ -691,22 +856,17 @@ function getByte(str){
     return resultSize;
 }
 
-function makeExcelJsonFormat(data){
-    let parseData = JSON.parse(JSON.stringify(data));
-
-    return {
-        rownum: replaceText(parseData[0]), //연번
-        name: replaceText(parseData[1]), //이름
-        phone: replaceText(parseData[2]), //연락처
-        grade: replaceText(parseData[3]), //등급
-        trainName: replaceText(parseData[4]) //교육명
-    };
-}
-
 function excelUpload(){
     /* 테이블 데이터 지우기 */
     let dataTbl = $('#sms_send_form_excel_table').DataTable();
     dataTbl.clear();
+
+    // [신규] 기존에 생성된 필터 select box 제거 (중복 생성 방지)
+    let existingFilters = $('#sms_send_form_excel_table').prev('div.col-lg-12.d-flex');
+    if (existingFilters.length > 0) {
+        existingFilters.remove();
+    }
+
     dataTbl.draw(false);
 
     let input = document.querySelector('#excel_file');
@@ -715,51 +875,97 @@ function excelUpload(){
         let fdata = reader.result;
         let read_buffer = XLSX.read(fdata, {type : 'binary'});
         read_buffer.SheetNames.forEach(function(sheetName) {
-            let rowdata =XLSX.utils.sheet_to_json(read_buffer.Sheets[sheetName],{defval:''}); // Excel 입력 데이터
-            //console.log('excel all : ' + JSON.stringify(rowdata));
-            //console.log(rowdata[100]==null); //true
 
-            if(rowdata.length > 2){
-                for(let i=2; i<rowdata.length; i++){
+            let sheet = read_buffer.Sheets[sheetName];
+            let range = XLSX.utils.decode_range(sheet['!ref']);
 
-                    let dataArr = [];
+            // [수정] 3번째 행(인덱스 2)을 헤더로, 4번째 행(인덱스 3)을 데이터 시작으로 설정
+            range.s.r = 2; // 0-indexed start row (Header)
 
-                    JSON.parse(JSON.stringify(rowdata[i]), (key, value) => {
-                        dataArr.push(value);
-                    });
+            let new_range_str = XLSX.utils.encode_range(range);
 
-                    let dataRow = makeExcelJsonFormat(dataArr);
-                    dataTbl.row.add(dataRow).draw();
+            let rowdata = XLSX.utils.sheet_to_json(sheet, {
+                defval:'',
+                range: new_range_str // 3번째 행부터 시작
+            });
+
+            let validRowCount = 0;
+            let invalidRowCount = 0;
+
+            if(rowdata.length > 0){
+                for(let i=0; i<rowdata.length; i++){
+                    let row = rowdata[i];
+
+                    let rawPhone = String(row['연락처'] || '');
+                    let name = String(row['이름'] || '');
+
+                    // [신규] 유효성 검사 및 포맷팅 로직
+                    let isValid = isValidPhoneNumber(rawPhone);
+                    let displayPhone = '';  // 테이블에 표시될 값
+                    let sendablePhone = null; // 실제 발송에 사용될 값 (유효할 때만)
+
+                    if (isValid) {
+                        // 유효한 경우: 하이픈 포맷 적용
+                        displayPhone = formatPhoneNumber(rawPhone);
+                        // 발송용 데이터는 하이픈 제거
+                        sendablePhone = displayPhone.replace(/-/g, '');
+                        validRowCount++;
+                    } else {
+                        // 유효하지 않은 경우: 오류 메시지 표시
+                        // 텍스트가 비어있으면(공란) 오류로 표시하지 않고 그냥 비워둠
+                        if (rawPhone.trim() !== '') {
+                            displayPhone = `<span class="text-danger" data-bs-toggle="tooltip" title="유효하지 않은 번호">[오류] ${rawPhone}</span>`;
+                            invalidRowCount++;
+                        } else {
+                            displayPhone = ''; // 공란은 그냥 비워둠
+                        }
+                        sendablePhone = null; // 발송 불가
+                    }
+
+                    let dataRow = {
+                        rownum: String(row['연번'] || (i + 1)),
+                        name: name,
+                        phone: displayPhone, // [수정] '연락처' 컬럼에 표시될 값
+                        grade: String(row['등급'] || ''),
+                        trainName: String(row['교육명'] || ''),
+                        phone_send: sendablePhone // [신규] 발송 시 사용할 숨겨진 데이터
+                    };
+
+                    let addedRow = dataTbl.row.add(dataRow);
+
+                    // [신규] 유효하지 않은 번호(오류 또는 공란)는 체크박스 비활성화
+                    if (!isValid) {
+                        let rowNode = addedRow.node();
+                        $(rowNode).find('input.sms_send_ex_check').prop('disabled', true);
+                    }
+                } // end for
+
+                dataTbl.draw(); // 데이터 추가 후 테이블 다시 그리기
+
+                if(invalidRowCount > 0) {
+                    alert(`총 ${rowdata.length}건의 데이터 중 ${invalidRowCount}건의 유효하지 않은 연락처 정보를 확인했습니다. 해당 항목은 발송 대상에서 제외됩니다.`);
                 }
 
+                // ... (필터 생성 로직 - 원본 코드 유지) ...
                 let div = document.createElement('div');
                 div.classList.add('col-lg-12');
                 div.classList.add('d-flex');
                 div.classList.add('align-items-center');
                 dataTbl.columns().every(function (e) {
+                    // 등급: 4, 교육명: 5
                     if(e === 4 || e === 5){
                         let column = this;
-
-                        // Create select element
                         let select = document.createElement('select');
                         if( e === 4 ){
                             select.id = 'select_grade';
                             select.classList.add('form-select');
                             select.classList.add('form-select-solid');
                             select.classList.add('me-3');
-                            /*select.setAttribute('data-control','select2');
-                            select.setAttribute('data-hide-search','true');
-                            select.setAttribute('data-allow-clear','true');
-                            select.setAttribute('data-placeholder','- 등급 -');*/
                             select.add(new Option('등급','',true, true));
                         }else if( e === 5 ){
                             select.id = 'select_train';
                             select.classList.add('form-select');
                             select.classList.add('form-select-solid');
-                            /*select.setAttribute('data-control','select2');
-                            select.setAttribute('data-hide-search','true');
-                            select.setAttribute('data-allow-clear','true');
-                            select.setAttribute('data-placeholder','- 교육명 -');*/
                             select.add(new Option('교육명','',true, true));
                         }
 
@@ -767,38 +973,29 @@ function excelUpload(){
                         $('#sms_send_form_excel_table').before(div);
 
                         if( e === 4 ){
-                            //document.getElementById('select_grade').options[0].disabled = true;
-                            // Apply listener for user change in value
-
                             $('#select_grade').on('change', function () {
                                 let val = DataTable.util.escapeRegex(this.value);
-                                console.log(val);
                                 dataTbl.columns(4).search(val).draw();
                             });
                         }else if( e === 5 ){
-                            //document.getElementById('select_train').options[0].disabled = true;
                             $('#select_train').on('change', function () {
                                 let val = DataTable.util.escapeRegex(this.value);
-                                console.log(val);
                                 dataTbl.columns(5).search(val).draw();
                             });
                         }
 
-                        // Add list of options
                         column.data().unique().sort().each(function (d, j) {
-                            /*if(j===0){
-                                select.add(new Option());
-                            }*/
                             select.add(new Option(d));
                         });
                     }
                 });
 
             }else{
-                alert('첨부된 엑셀파일에 데이터가 없습니다.');
+                alert('첨부된 엑셀파일에 헤더 행(3행)을 제외한 데이터가 없습니다.');
             }
         });
         /* 조회 카운트 입력 */
+        // [수정] 유효한 건수(validRowCount)가 아닌, 테이블에 표시된 총 건수
         $('span.search_cnt:visible').text(dataTbl.data().length);
 
         /* modal close fn */
@@ -810,11 +1007,16 @@ function excelUpload(){
             let itemText = $(item).text();
             let itemText_trim = itemText.replaceAll(' ','');
             if(itemText_trim !== '' && !itemText.match('Actions')){
+                // [수정] 오류 SPAN이 HTML로 들어가므로, text()가 아닌 html()로 title 생성
+                let titleText = $(item).html();
                 $(item).attr('data-bs-toggle', 'tooltip');
                 $(item).attr('data-bs-trigger', 'hover');
                 $(item).attr('data-bs-custom-class', 'tooltip-inverse');
                 $(item).attr('data-bs-placement', 'top');
-                $(item).attr('title',itemText);
+                $(item).attr('title', titleText);
+
+                // [신규] 오류 메시지 SPAN에 개별 툴팁 적용
+                $(item).find('[data-bs-toggle="tooltip"]').tooltip();
             }
             cnt++;
         })
@@ -842,7 +1044,9 @@ function f_modal_close(target_modal_id){
     modal_el.setAttribute('aria-hidden','true');
 
     let modal_backdrop_el = document.querySelector('.modal-backdrop');
-    modal_backdrop_el.remove();
+    if (modal_backdrop_el) {
+        modal_backdrop_el.remove();
+    }
 
     /* modal close */
     modalClose('excel');
@@ -884,8 +1088,38 @@ function f_sms_form_init(gbn){
         let dataTbl2 = $('#sms_send_form_excel_table').DataTable();
         dataTbl2.clear();
         dataTbl2.draw(false);
+
+        // 엑셀 테이블 상단 필터 제거
+        let existingFilters = $('#sms_send_form_excel_table').prev('div.col-lg-12.d-flex');
+        if (existingFilters.length > 0) {
+            existingFilters.remove();
+        }
+
     }else if(gbn === 'train'){
         $('#sms_phone_train_list').html('');
     }
 
+}
+
+// [신규] 헬퍼 함수 - 유효한 한국 휴대폰 번호인지 (하이픈 무관)
+function isValidPhoneNumber(phoneStr) {
+    if (!phoneStr) return false;
+    // 모든 공백 및 하이픈 제거
+    let cleanPhone = String(phoneStr).replace(/[-\s]/g, '');
+    // 정규식: 010, 011, 016, 017, 018, 019로 시작하고 10자리 또는 11자리
+    return /^(010|01[16-9])\d{7,8}$/.test(cleanPhone);
+}
+
+// [신규] 헬퍼 함수 - 유효한 번호를 하이픈 포맷으로 변경
+function formatPhoneNumber(phoneStr) {
+    if (!phoneStr) return "";
+    let cleanPhone = String(phoneStr).replace(/\D/g, ''); // 숫자 외 모두 제거
+
+    if (cleanPhone.length === 10) {
+        return cleanPhone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    } else if (cleanPhone.length === 11) {
+        return cleanPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    } else {
+        return phoneStr; // 포맷팅 실패 시 원본 반환
+    }
 }

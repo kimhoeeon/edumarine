@@ -2093,7 +2093,7 @@ if (document.documentElement) {
                             <label class="col-lg-2 col-form-label fw-semibold fs-6">문자유형 : <span id="smsType">단문 (SMS)<%--장문 (LMS)--%></span></label>
                             <!--end::Label-->
                             <%-- 치환문자 안내 --%>
-                            <button type="button" id="replaceTooltip" class="btn btn-secondary" data-toggle="popover" title="<strong>치환문자 안내<strong>">
+                            <button type="button" class="btn btn-secondary replaceTooltip" data-toggle="popover" title="<strong>치환문자 안내<strong>">
                                 치환문자 안내
                             </button>
                             <%-- 치환문자 안내 --%>

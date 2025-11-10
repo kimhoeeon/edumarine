@@ -615,7 +615,7 @@
                                 </li>
                             </ul>
                             <div class="info_text">
-                                <div class="gubun">주요 취업처</div>
+                                <div class="gubun">주요 취업자</div>
                                 <div class="naeyong">해양레저 엔진 제조 / 정비 / 판매 및 선체 정비 관련 기업, 교육기관, 해양레저 산업체 등</div>
                             </div>
                         </div>

@@ -2360,7 +2360,7 @@ public class EduMarineController {
         System.out.println("EduMarineController > job_state01");
         ModelAndView mv = new ModelAndView();
 
-        String gbn = "창업처";
+        String gbn = "창업자";
         List<EmploymentDTO> employmentList = eduMarineService.processSelectEmploymentList(gbn);
         mv.addObject("employmentList", employmentList);
         mv.setViewName("/job/state01");
@@ -2372,7 +2372,7 @@ public class EduMarineController {
         System.out.println("EduMarineController > job_state02");
         ModelAndView mv = new ModelAndView();
 
-        String gbn = "취업처";
+        String gbn = "취업자";
         List<EmploymentDTO> employmentList = eduMarineService.processSelectEmploymentList(gbn);
         mv.addObject("employmentList", employmentList);
         mv.setViewName("/job/state02");
