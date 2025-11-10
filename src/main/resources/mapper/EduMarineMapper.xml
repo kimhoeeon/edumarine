@@ -598,10 +598,10 @@
                        WHERE del_yn = 'N'
                        AND gbn = #{gbn}
                        ) LISTA
-                <if test='gbn == "창업처"'>
+                <if test='gbn == "창업자"'>
                 ORDER BY LISTA.employ_year asc , LISTA.employ_name desc
                 </if>
-                <if test='gbn == "취업처"'>
+                <if test='gbn == "취업자"'>
                 ORDER BY LISTA.employ_name desc , LISTA.init_regi_dttm desc
                 </if>
                 ) LISTB

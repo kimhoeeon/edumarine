@@ -498,4 +498,5 @@ public interface EduMarineMngService {
     ElectroDTO processSelectElectroSingle(String seq);
 
     List<ElectroDetailDTO> processSelectExcelElectroDetailList();
+
 }

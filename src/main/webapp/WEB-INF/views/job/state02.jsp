@@ -145,7 +145,7 @@
                     <!-- table_wrap -->
                     <div class="table_wrap">
                         <div class="sub_box_tit">
-                            <div class="big">주요 취업처 현황</div>
+                            <div class="big">주요 취업자 현황</div>
                         </div>
                         <div class="table_top">
                             <div class="left">총 ${employmentList.size()}개소</div>

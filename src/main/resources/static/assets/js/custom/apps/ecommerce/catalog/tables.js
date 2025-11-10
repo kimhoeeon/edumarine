@@ -6607,7 +6607,7 @@ let DTSmsMngSms = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],

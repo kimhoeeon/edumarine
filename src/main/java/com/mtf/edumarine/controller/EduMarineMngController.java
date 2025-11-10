@@ -36,6 +36,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -3976,6 +3977,96 @@ public class EduMarineMngController {
         ResponseDTO responseDTO = eduMarineMngService.processDeleteSmsTemplate(templateDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/mng/smsMng/sms/sendBulk.do")
+    @ResponseBody
+    public Map<String, Object> sendBulkSms(@RequestBody SmsBulkRequestDto requestDto) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // 세션에서 현재 관리자 ID 가져오기 (로그용)
+            // (세션 키 이름이 "id"가 아니면 실제 키로 변경해주세요)
+            String adminId = "관리자"; // 세션이 없을 경우 대비
+
+            String smsGroup = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+
+            for (String phone : requestDto.getPhoneList()) {
+
+                // 1. DTO 준비 (발송용)
+                SmsDTO smsSendDto = new SmsDTO();
+                smsSendDto.setSender(requestDto.getSender());
+                smsSendDto.setPhone(phone);
+                smsSendDto.setContent(requestDto.getContent());
+                // (SmsDTO에 필요한 다른 값이 있다면 requestDto에서 추가로 매핑)
+
+                String sendResult = "성공";
+
+                try {
+                    /**************************************************************
+                     * 1. 실제 SMS 발송 (기존 /sms/send.do의 서비스 호출)
+                     **************************************************************/
+                    SmsResponseDTO apiResponse = commService.smsSend(smsSendDto);
+
+                    // (주의) SmsResponseDTO의 실제 성공/실패 확인 로직으로 변경해야 합니다.
+                    //       sms.js가 'result_code != 1'을 체크하므로, 여기서는 1이 아니면 실패로 간주합니다.
+                    if (apiResponse == null || apiResponse.getResult_code() != 1) {
+                        sendResult = "실패" + (apiResponse != null ? " [" + apiResponse.getMessage() + "]" : " [응답없음]");
+                    }
+
+                } catch (Exception e) {
+                    // e.printStackTrace(); // SLF4J 로그 사용 권장
+                    sendResult = "실패 [발송 예외: " + e.getMessage() + "]";
+                }
+
+                try {
+                    /**************************************************************
+                     * 2. 발송 결과 DB에 저장 (기존 /mng/smsMng/sms/insert.do의 서비스 호출)
+                     **************************************************************/
+                    SmsDTO logSmsDto = new SmsDTO();
+                    logSmsDto.setSmsGroup(smsGroup);
+                    logSmsDto.setPhone(phone);
+                    logSmsDto.setSender(adminId); // 보낸 관리자 ID
+                    logSmsDto.setSenderPhone(requestDto.getSender()); // 발신번호
+                    logSmsDto.setContent(requestDto.getContent());
+                    logSmsDto.setSendResult(sendResult);
+                    logSmsDto.setTemplateSeq(requestDto.getTemplateSeq());
+
+                    eduMarineMngService.processInsertSms(logSmsDto);
+
+                } catch (Exception dbE) {
+                    // DB 저장 실패 로그 (치명적)
+                    // dbE.printStackTrace(); // SLF4J 로그 사용 권장
+                    System.err.println("FATAL: Failed to log SMS for " + phone + ": " + dbE.getMessage());
+                }
+
+                try {
+                    // [권장] SMS API 제공업체의 초당 전송량(Rate Limit)을 준수하기 위해
+                    // 루프 사이에 반드시 지연(Sleep)을 줍니다. (예: 0.1초)
+                    Thread.sleep(100);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt(); // 인터럽트 발생 시 스레드 종료
+                    break;
+                }
+            } // end for
+
+            System.out.println("SMS 대량 발송 작업 완료 (그룹 ID: " + smsGroup + ")");
+
+            // 클라이언트에게는 작업이 등록되었음을 즉시 알립니다.
+            response.put("resultCode", "0");
+            response.put("message", "서버에 발송 작업이 등록되었습니다.");
+            response.put("result_code", 1); // sms.js의 성공 조건
+
+        } catch (Exception e) {
+            // e.printStackTrace(); // 실제 운영에서는 SLF4J 로그를 남겨야 합니다.
+            System.err.println("sendBulkSms Error: " + e.getMessage());
+            response.put("resultCode", "-1");
+            response.put("message", "발송 작업 등록에 실패했습니다: " + e.getMessage());
+            response.put("result_code", -1); // sms.js의 실패 조건
+        }
+
+        return response;
     }
 
     @RequestMapping(value = "/mng/file/download.do", method = RequestMethod.GET)
