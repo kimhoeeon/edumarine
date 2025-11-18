@@ -127,6 +127,126 @@ function searchPosts(pageNum, categoryValue) {
             let trainApplyCnt = results[i].trainApplyCnt;
             let closingYn = results[i].closingYn;
 
+            let thumbnailImage = '/img/sample_img.jpg';
+            let applyPath = '';
+
+            // 2. data.applicationSystemType 값으로 1차 분기
+            let applicationSystemType = results[i].applicationSystemType;
+            if ( applicationSystemType === 'UNIFIED') {
+
+                // [신규 UNIFIED 로직]
+                // 1. 통합 신청 페이지 URL로 설정
+                applyPath = '/apply/eduApplyUnified.do';
+
+                // 2. 썸네일 (신규 교육용 기본 썸네일, 필요시 경로 수정)
+                // thumbnailImage = '/img/thumbnail_new_course.jpg'; // (새 기본 썸네일)
+                // (위에서 /img/sample_img.jpg 로 이미 설정되어 있으므로, 여기를 비워두면 기본 썸네일이 적용됩니다.)
+
+            } else {
+                // [기존 LEGACY 로직]
+                switch (gbn){
+                    case '상시신청':
+                        thumbnailImage = '/img/thumbnail_always.jpg';
+                        applyPath = '/apply/eduApply01.do';
+                        break;
+                    case '해상엔진 테크니션 (선내기/선외기)':
+                        thumbnailImage = '/img/thumbnail_engine.jpg';
+                        applyPath = '/apply/eduApply02.do';
+                        break;
+                    case 'FRP 레저보트 선체 정비 테크니션':
+                        thumbnailImage = '/img/thumbnail_frp.png';
+                        /*applyPath = '/apply/eduApply03.do';*/
+                        applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                        break;
+                    case '해상엔진 자가정비 (선외기)':
+                        thumbnailImage = '/img/thumbnail_outboarder.jpg';
+                        applyPath = '/apply/eduApply05.do';
+                        break;
+                    case '해상엔진 자가정비 (선내기)':
+                        thumbnailImage = '/img/thumbnail_inboarder.jpg';
+                        applyPath = '/apply/eduApply04.do';
+                        break;
+                    case '해상엔진 자가정비 (세일요트)':
+                        thumbnailImage = '/img/thumbnail_sale.jpg';
+                        applyPath = '/apply/eduApply06.do';
+                        break;
+                    case '고마력 선외기 정비 중급 테크니션':
+                        thumbnailImage = '/img/thumbnail_highhorsepower_re.jpg';
+                        applyPath = '/apply/eduApply07.do';
+                        break;
+                    case '자가정비 심화과정 (고마력 선외기)':
+                        thumbnailImage = '/img/thumbnail_highself_re.jpg';
+                        applyPath = '/apply/eduApply09.do';
+                        break;
+                    case '고마력 선외기 정비 중급 테크니션 (특별반)':
+                        thumbnailImage = '/img/thumbnail_highspecial_re.jpg';
+                        applyPath = '/apply/eduApply10.do';
+                        break;
+                    case '스턴드라이브 정비 전문가과정':
+                        thumbnailImage = '/img/thumbnail_sterndrive_re.jpg';
+                        applyPath = '/apply/eduApply08.do';
+                        break;
+                    case '스턴드라이브 정비 전문가과정 (특별반)':
+                        thumbnailImage = '/img/thumbnail_sternspecial.png';
+                        applyPath = '/apply/eduApply11.do';
+                        break;
+                    case '마리나 선박 선외기 정비사 실무과정':
+                        thumbnailImage = '/img/thumbnail_marina_out.jpg';
+                        applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                        break;
+                    case '마리나 선박 선내기 정비사 실무과정':
+                        thumbnailImage = '/img/thumbnail_marina_in.jpg';
+                        applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                        break;
+                    case '선외기 기초정비교육':
+                        thumbnailImage = '/img/thumbnail_outboarder_basic.png';
+                        applyPath = '/apply/eduApply12.do';
+                        break;
+                    case '선내기 기초정비교육':
+                        thumbnailImage = '/img/thumbnail_inboarder_basic.png';
+                        applyPath = '/apply/eduApply13.do';
+                        break;
+                    case '세일요트 기초정비교육':
+                        thumbnailImage = '/img/thumbnail_sailyacht_basic.png';
+                        applyPath = '/apply/eduApply14.do';
+                        break;
+                    case '선외기 응급조치교육':
+                        thumbnailImage = '/img/thumbnail_outboarder_emergency.png';
+                        applyPath = '/apply/eduApply15.do';
+                        break;
+                    case '선내기 응급조치교육':
+                        thumbnailImage = '/img/thumbnail_inboarder_emergency.png';
+                        applyPath = '/apply/eduApply16.do';
+                        break;
+                    case '세일요트 응급조치교육':
+                        thumbnailImage = '/img/thumbnail_sailyacht_emergency.png';
+                        applyPath = '/apply/eduApply17.do';
+                        break;
+                    case '발전기 정비 교육':
+                        thumbnailImage = '/img/thumbnail_generator.png';
+                        applyPath = '/apply/eduApply18.do';
+                        break;
+                    case '선외기/선내기 직무역량 강화과정':
+                        thumbnailImage = '/img/thumbnail_competency.png';
+                        applyPath = '/apply/eduApply19.do';
+                        break;
+                    case '선내기 팸투어':
+                        thumbnailImage = '/img/thumbnail_famtourin.png';
+                        applyPath = '/apply/eduApply20.do';
+                        break;
+                    case '선외기 팸투어':
+                        thumbnailImage = '/img/thumbnail_famtourout.png';
+                        applyPath = '/apply/eduApply21.do';
+                        break;
+                    case '레저선박 해양전자장비 교육':
+                        thumbnailImage = '/img/thumbnail_electro.png';
+                        applyPath = '/apply/eduApply22.do';
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             // 마감여부체크
             let trainBtnText = '교육신청';
             if(closingYn === 'N'){
@@ -156,112 +276,8 @@ function searchPosts(pageNum, categoryValue) {
             trainStartDttm = trainStartDttm.toString().substring(2);
             trainEndDttm = trainEndDttm.toString().substring(2);
 
-            let thumbnailImage = '/img/sample_img.jpg';
-            let applyPath = '';
-
             str += '<li>';
                 str += '<div class="thumb">';
-                    switch (gbn){
-                        case '상시신청':
-                            thumbnailImage = '/img/thumbnail_always.jpg';
-                            applyPath = '/apply/eduApply01.do';
-                            break;
-                        case '해상엔진 테크니션 (선내기/선외기)':
-                            thumbnailImage = '/img/thumbnail_engine.jpg';
-                            applyPath = '/apply/eduApply02.do';
-                            break;
-                        case 'FRP 레저보트 선체 정비 테크니션':
-                            thumbnailImage = '/img/thumbnail_frp.png';
-                            /*applyPath = '/apply/eduApply03.do';*/
-                            applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
-                            break;
-                        case '해상엔진 자가정비 (선외기)':
-                            thumbnailImage = '/img/thumbnail_outboarder.jpg';
-                            applyPath = '/apply/eduApply05.do';
-                            break;
-                        case '해상엔진 자가정비 (선내기)':
-                            thumbnailImage = '/img/thumbnail_inboarder.jpg';
-                            applyPath = '/apply/eduApply04.do';
-                            break;
-                        case '해상엔진 자가정비 (세일요트)':
-                            thumbnailImage = '/img/thumbnail_sale.jpg';
-                            applyPath = '/apply/eduApply06.do';
-                            break;
-                        case '고마력 선외기 정비 중급 테크니션':
-                            thumbnailImage = '/img/thumbnail_highhorsepower_re.jpg';
-                            applyPath = '/apply/eduApply07.do';
-                            break;
-                        case '자가정비 심화과정 (고마력 선외기)':
-                            thumbnailImage = '/img/thumbnail_highself_re.jpg';
-                            applyPath = '/apply/eduApply09.do';
-                            break;
-                        case '고마력 선외기 정비 중급 테크니션 (특별반)':
-                            thumbnailImage = '/img/thumbnail_highspecial_re.jpg';
-                            applyPath = '/apply/eduApply10.do';
-                            break;
-                        case '스턴드라이브 정비 전문가과정':
-                            thumbnailImage = '/img/thumbnail_sterndrive_re.jpg';
-                            applyPath = '/apply/eduApply08.do';
-                            break;
-                        case '스턴드라이브 정비 전문가과정 (특별반)':
-                            thumbnailImage = '/img/thumbnail_sternspecial.png';
-                            applyPath = '/apply/eduApply11.do';
-                            break;
-                        case '마리나 선박 선외기 정비사 실무과정':
-                            thumbnailImage = '/img/thumbnail_marina_out.jpg';
-                            applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
-                            break;
-                        case '마리나 선박 선내기 정비사 실무과정':
-                            thumbnailImage = '/img/thumbnail_marina_in.jpg';
-                            applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
-                            break;
-                        case '선외기 기초정비교육':
-                            thumbnailImage = '/img/thumbnail_outboarder_basic.png';
-                            applyPath = '/apply/eduApply12.do';
-                            break;
-                        case '선내기 기초정비교육':
-                            thumbnailImage = '/img/thumbnail_inboarder_basic.png';
-                            applyPath = '/apply/eduApply13.do';
-                            break;
-                        case '세일요트 기초정비교육':
-                            thumbnailImage = '/img/thumbnail_sailyacht_basic.png';
-                            applyPath = '/apply/eduApply14.do';
-                            break;
-                        case '선외기 응급조치교육':
-                            thumbnailImage = '/img/thumbnail_outboarder_emergency.png';
-                            applyPath = '/apply/eduApply15.do';
-                            break;
-                        case '선내기 응급조치교육':
-                            thumbnailImage = '/img/thumbnail_inboarder_emergency.png';
-                            applyPath = '/apply/eduApply16.do';
-                            break;
-                        case '세일요트 응급조치교육':
-                            thumbnailImage = '/img/thumbnail_sailyacht_emergency.png';
-                            applyPath = '/apply/eduApply17.do';
-                            break;
-                        case '발전기 정비 교육':
-                            thumbnailImage = '/img/thumbnail_generator.png';
-                            applyPath = '/apply/eduApply18.do';
-                            break;
-                        case '선외기/선내기 직무역량 강화과정':
-                            thumbnailImage = '/img/thumbnail_competency.png';
-                            applyPath = '/apply/eduApply19.do';
-                            break;
-                        case '선내기 팸투어':
-                            thumbnailImage = '/img/thumbnail_famtourin.png';
-                            applyPath = '/apply/eduApply20.do';
-                            break;
-                        case '선외기 팸투어':
-                            thumbnailImage = '/img/thumbnail_famtourout.png';
-                            applyPath = '/apply/eduApply21.do';
-                            break;
-                        case '레저선박 해양전자장비 교육':
-                            thumbnailImage = '/img/thumbnail_electro.png';
-                            applyPath = '/apply/eduApply22.do';
-                            break;
-                        default:
-                            break;
-                    }
                     str += '<img src="' + thumbnailImage + '">';
                 str += '</div>';
                 str += '<div class="info">';
@@ -332,11 +348,11 @@ function searchPosts(pageNum, categoryValue) {
                     str += '<div class="btn">';
                         if(applyPath.includes('yachtmnr')){
                             str += '<a href="' + applyPath + '" target="_blank">';
-                            str += trainBtnText;
+                                str += trainBtnText;
                             str += '</a>';
                         }else{
                             str += '<a href="javascript:void(0);" onclick="f_apply_page_move(' + '\'' + seq + '\'' + ',' + '\'' + applyPath + '\'' + ')">';
-                            str += trainBtnText;
+                                str += trainBtnText;
                             str += '</a>';
                         }
                     str += '</div>';

@@ -322,4 +322,18 @@ public interface EduMarineService {
     ResponseDTO processUpdateElectro(ElectroDTO electroDTO);
 
     ResponseDTO processUpdateElectroPayStatus(ElectroDTO electroDTO);
+
+    /**
+     * [UNIFIED] 신규 통합 교육 신청서 제출
+     * @param dto 통합 신청 DTO
+     * @return ResponseDTO (customValue에 app_seq 반환)
+     */
+    ResponseDTO processInsertUnifiedApplication(ApplicationUnifiedDTO dto);
+
+    /**
+     * [UNIFIED] 신규 통합 교육 신청서 상태 업데이트 (결제/취소 공용)
+     * @param dto 통합 신청 DTO (seq, applyStatus, cancelReason 등)
+     * @return ResponseDTO
+     */
+    ResponseDTO processUpdateUnifiedApplicationPayStatus(ApplicationUnifiedDTO dto);
 }

@@ -3,6 +3,7 @@ package com.mtf.edumarine.service.impl;
 import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.mapper.EduMarineMapper;
+import com.mtf.edumarine.mapper.UnifiedMapper;
 import com.mtf.edumarine.service.EduMarineService;
 import com.mtf.edumarine.util.StringUtil;
 import lombok.Setter;
@@ -32,9 +33,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Setter(onMethod_ = {@Autowired})
     private EduMarineMapper eduMarineMapper;
 
-    /*public EduMarineServiceImpl(SqlSession ss) {
-        this.sqlSession = ss;
-    }*/
+    private final UnifiedMapper unifiedMapper;
+
+    public EduMarineServiceImpl(EduMarineMapper km, UnifiedMapper unifiedMapper) {
+        this.eduMarineMapper = km;
+        this.unifiedMapper = unifiedMapper; // [신규 추가]
+    }
 
     @Override
     public void logoutCheck(HttpSession session) {
@@ -3334,6 +3338,69 @@ public class EduMarineServiceImpl implements EduMarineService {
             e.printStackTrace();
         }
         return hex;
+    }
+
+    /**
+     * [UNIFIED] 신규 통합 교육 신청서 제출
+     */
+    @Override
+    public ResponseDTO processInsertUnifiedApplication(ApplicationUnifiedDTO dto) {
+        ResponseDTO response = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            // (필요시) 중복 신청 체크
+            // Integer count = unifiedMapper.selectUnifiedApplicationPreCheck(dto);
+            // if (count > 0) { ... }
+
+            // 1. 신규 통합 PK 채번
+            String seq = unifiedMapper.getUnifiedAppSeq();
+            dto.setSeq(seq);
+
+            // 2. 기본 상태 설정
+            dto.setApplyStatus("신청완료");
+
+            // 3. 통합 테이블에 INSERT
+            int result = unifiedMapper.insertUnifiedApplication(dto);
+            if (result > 0) {
+                response.setCustomValue(seq); // 성공 시 seq를 결제 연동을 위해 반환
+            } else {
+                throw new Exception("Insert Unified Application failed.");
+            }
+
+        } catch (Exception e) {
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[신청서 제출 오류] " + e.getMessage();
+        }
+
+        response.setResultCode(resultCode);
+        response.setResultMessage(resultMessage);
+        return response;
+    }
+
+    /**
+     * [UNIFIED] 신규 통합 교육 신청서 상태 업데이트 (결제/취소 공용)
+     */
+    @Override
+    public ResponseDTO processUpdateUnifiedApplicationPayStatus(ApplicationUnifiedDTO dto) {
+        ResponseDTO response = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            int result = unifiedMapper.updateUnifiedApplicationPayStatus(dto);
+            if (result == 0) {
+                throw new Exception("Update Unified Application Status failed. (Seq: " + dto.getSeq() + ")");
+            }
+        } catch (Exception e) {
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[신청서 상태 업데이트 오류] " + e.getMessage();
+        }
+
+        response.setResultCode(resultCode);
+        response.setResultMessage(resultMessage);
+        return response;
     }
 
 }
