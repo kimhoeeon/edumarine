@@ -195,6 +195,7 @@
              , gbn
              , gbn_depth
              , category
+             , application_system_type
              , train_start_dttm
              , train_end_dttm
              , apply_start_dttm
@@ -2150,6 +2151,22 @@
                      FROM electro el
                      WHERE el.member_seq = #{memberSeq}
                        AND el.apply_status NOT LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT
+                         CONCAT(t.gbn, ' ', IFNULL(t.gbn_depth,'')) AS trainName
+                          , u.train_seq
+                          , u.apply_status AS payStatus
+                          , u.seq
+                          , u.final_regi_dttm
+                          , (SELECT p.pay_method from payment p where p.member_seq = u.member_seq and p.table_seq = u.seq and p.train_seq = u.train_seq) as payMethod
+                          , t.train_start_dttm AS trainStartDttm
+                          , t.train_end_dttm AS trainEndDttm
+                     FROM application_unified u
+                     JOIN train t
+                     ON u.train_seq = t.seq
+                     WHERE u.member_seq = #{memberSeq}
+                       AND t.application_system_type = 'UNIFIED'
+                       AND u.apply_status NOT LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
@@ -2359,11 +2376,124 @@
                      FROM electro el
                      WHERE el.member_seq = #{memberSeq}
                        AND el.apply_status LIKE CONCAT('%','취소','%')
+                     UNION ALL
+                     SELECT
+                         CONCAT(t.gbn, ' ', IFNULL(t.gbn_depth,'')) AS trainName
+                          , u.train_seq
+                          , u.apply_status AS payStatus
+                          , u.seq
+                          , u.final_regi_dttm
+                          , t.train_start_dttm AS trainStartDttm
+                          , t.train_end_dttm AS trainEndDttm
+                     FROM application_unified u
+                     JOIN train t
+                     ON u.train_seq = t.seq
+                     WHERE u.member_seq = #{memberSeq}
+                       AND t.application_system_type = 'UNIFIED'
+                       AND u.apply_status LIKE CONCAT('%','취소','%')
 	              ) LISTA
               ORDER BY LISTA.final_regi_dttm ASC
              ) LISTB
         ORDER BY LISTB.rownum DESC
     </select>
+
+    <select id="getUnifiedAppSeq" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.getUnifiedAppSeq */
+        SELECT CONCAT('AU', LPAD(nextval('unified_app_seq'), '7', '0')) FROM DUAL
+    </select>
+
+    <insert id="insertUnifiedApplication" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.insertUnifiedApplication */
+        INSERT INTO application_unified
+        ( seq, train_seq, member_seq, apply_status
+
+        , region, participation_path, first_application_field, second_application_field, third_application_field
+        , desired_education_time, major, experience_yn, recommend_person
+
+        , top_clothes_size, bottom_clothes_size, shoes_size, grade_gbn, school_name
+        , military_gbn, military_reason, disabled_gbn, job_support_gbn, tech_edu_gbn
+        , tech_edu_name, apply_reason, tech_reason, activity_reason, plan_reason
+        , etc_reason, know_path, know_path_reason
+
+        , clothes_size
+
+        , rc_birth_year, rc_birth_month, rc_birth_day
+
+        , train_understand, train_understand_etc
+
+        , boarder_gbn
+
+        , apply_day
+        , choice_date
+
+        , cancel_dttm, cancel_reason, refund_bank_code, refund_bank_name
+        , refund_bank_customer_name, refund_bank_number
+
+        , del_yn, note, init_regi_pic
+        , init_regi_dttm, final_regi_pic, final_regi_dttm
+        )
+        VALUES
+            ( #{seq}, #{trainSeq}, #{memberSeq}, #{applyStatus}
+
+            , #{region}, #{participationPath}, #{firstApplicationField}, #{secondApplicationField}, #{thirdApplicationField}
+            , #{desiredEducationTime}, #{major}, #{experienceYn}, #{recommendPerson}
+
+            , #{topClothesSize}, #{bottomClothesSize}, #{shoesSize}, #{gradeGbn}, #{schoolName}
+            , #{militaryGbn}, #{militaryReason}, #{disabledGbn}, #{jobSupportGbn}, #{techEduGbn}
+            , #{techEduName}, <![CDATA[#{applyReason}]]>, <![CDATA[#{techReason}]]>, <![CDATA[#{activityReason}]]>, <![CDATA[#{planReason}]]>
+            , <![CDATA[#{etcReason}]]>, #{knowPath}, #{knowPathReason}
+
+            , #{clothesSize}
+
+            , #{rcBirthYear}, #{rcBirthMonth}, #{rcBirthDay}
+
+            , #{trainUnderstand}, #{trainUnderstandEtc}
+
+            , #{boarderGbn}
+
+            , #{applyDay}
+            , #{choiceDate}
+
+            , NULL, NULL, NULL, NULL
+            , NULL, NULL
+
+            , 'N', #{note}, 'UNIFIED_APP'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'UNIFIED_APP'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updateUnifiedApplicationPayStatus" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.updateUnifiedApplicationPayStatus */
+        UPDATE application_unified
+        <set>
+            <if test="applyStatus != null and applyStatus != ''">
+                apply_status = #{applyStatus},
+            </if>
+            <if test="cancelReason != null and cancelReason != ''">
+                cancel_reason = <![CDATA[#{cancelReason}]]>,
+                cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T'),
+            </if>
+            <if test="refundBankCode != null and refundBankCode != ''">
+                refund_bank_code = #{refundBankCode},
+            </if>
+            <if test="refundBankName != null and refundBankName != ''">
+                refund_bank_name = #{refundBankName},
+            </if>
+            <if test="refundBankCustomerName != null and refundBankCustomerName != ''">
+                refund_bank_customer_name = #{refundBankCustomerName},
+            </if>
+            <if test="refundBankNumber != null and refundBankNumber != ''">
+                refund_bank_number = #{refundBankNumber},
+            </if>
+            <if test="clothesSize != null and clothesSize != ''">
+                clothes_size = #{clothesSize},
+            </if>
+            final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </set>
+        WHERE seq = #{seq}
+    </update>
 
     <select id="selectRegularSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.RegularDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectRegularSingle */

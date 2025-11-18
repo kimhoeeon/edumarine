@@ -1887,6 +1887,7 @@ if (document.documentElement) {
                                     <form id="dataForm" method="post" onsubmit="return false;">
                                         <%-- SEQ 값--%>
                                         <input type="hidden" id="userSeq" name="seq" value="${info.seq}">
+                                        <input type="hidden" id="applicationSystemType" name="applicationSystemType" value="${info.applicationSystemType}" />
                                         <!--begin::Card header-->
                                         <div class="card-header border-0">
                                             <!--begin::Card title-->
@@ -1898,6 +1899,19 @@ if (document.documentElement) {
                                         <!--end::Card header-->
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
+
+                                            <c:if test="${info.applicationSystemType == 'UNIFIED'}">
+                                                <div class="mb-10">
+                                                    <label class="required form-label">신청서 양식</label>
+                                                    <select class="form-select" name="formType" data-control="select2" data-placeholder="신청서 양식을 선택하세요">
+                                                        <option></option>
+                                                        <option value="BASIC_FORM" <c:if test="${info.formType == 'BASIC_FORM'}">selected</c:if>>기본형 (의류사이즈, 참여경로)</option>
+                                                        <option value="PRO_FORM" <c:if test="${info.formType == 'PRO_FORM'}">selected</c:if>>전문가형 (기본형 + 학력/경력/자격증)</option>
+                                                        <option value="FAMTOUR_FORM" <c:if test="${info.formType == 'FAMTOUR_FORM'}">selected</c:if>>팸투어형 (신청일 선택)</option>
+                                                    </select>
+                                                </div>
+                                            </c:if>
+
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->

@@ -3784,6 +3784,7 @@
              , train_note
              , exposure_yn
              , schedule_exposure_yn
+             , application_system_type
              , closing_yn
              , del_yn
              , note
@@ -3804,18 +3805,20 @@
     <update id="updateTrain" parameterType="com.mtf.edumarine.dto.TrainDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrain */
         UPDATE train
-        SET train_start_dttm = <![CDATA[#{trainStartDttm}]]>
-          , train_end_dttm = <![CDATA[#{trainEndDttm}]]>
-          , apply_start_dttm = <![CDATA[#{applyStartDttm}]]>
-          , apply_end_dttm = <![CDATA[#{applyEndDttm}]]>
-          , pay_sum = #{paySum}
-          , train_cnt = #{trainCnt}
-          , train_note = <![CDATA[#{trainNote}]]>
-          , exposure_yn = #{exposureYn}
-          , schedule_exposure_yn = #{scheduleExposureYn}
-          , closing_yn = #{closingYn}
-          , note = #{note}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        SET train_start_dttm        = <![CDATA[#{trainStartDttm}]]>
+          , train_end_dttm          = <![CDATA[#{trainEndDttm}]]>
+          , apply_start_dttm        = <![CDATA[#{applyStartDttm}]]>
+          , apply_end_dttm          = <![CDATA[#{applyEndDttm}]]>
+          , pay_sum                 = #{paySum}
+          , train_cnt               = #{trainCnt}
+          , train_note              = <![CDATA[#{trainNote}]]>
+          , exposure_yn             = #{exposureYn}
+          , schedule_exposure_yn    = #{scheduleExposureYn}
+          , application_system_type = #{applicationSystemType}
+          , form_type               = #{formType}
+          , closing_yn              = #{closingYn}
+          , note                    = #{note}
+          , final_regi_dttm         = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -3852,37 +3855,38 @@
         , exposure_yn
         , schedule_exposure_yn
         , closing_yn
+        , application_system_type
+        , form_type
         , del_yn
         , note
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{gbn}
-            , #{gbnDepth}
-            , #{category}
-            , <![CDATA[#{trainStartDttm}]]>
-            , <![CDATA[#{trainEndDttm}]]>
-            , <![CDATA[#{applyStartDttm}]]>
-            , <![CDATA[#{applyEndDttm}]]>
-            , #{paySum}
-            , #{trainCnt}
-            , 0
-            , #{nextTime}
-            , <![CDATA[#{trainNote}]]>
-            , #{exposureYn}
-            , #{scheduleExposureYn}
-            , 'N'
-            , 'N'
-            , #{note}
-            , 'TRAIN'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'TRAIN'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{gbn}
+               , #{gbnDepth}
+               , #{category}
+               , <![CDATA[#{trainStartDttm}]]>
+               , <![CDATA[#{trainEndDttm}]]>
+               , <![CDATA[#{applyStartDttm}]]>
+               , <![CDATA[#{applyEndDttm}]]>
+               , #{paySum}
+               , #{trainCnt}
+               , 0
+               , #{nextTime}
+               , <![CDATA[#{trainNote}]]>
+               , #{exposureYn}
+               , #{scheduleExposureYn}
+               , 'N'
+               , #{applicationSystemType}
+               , #{formType}
+               , 'N'
+               , #{note}
+               , 'TRAIN'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'TRAIN'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="selectPaymentList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">

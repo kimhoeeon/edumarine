@@ -3107,11 +3107,20 @@ public class EduMarineMngController {
         System.out.println("EduMarineMngController > mng_education_train_detail");
         ModelAndView mv = new ModelAndView();
 
-        if(seq != null && !"".equals(seq)){
+        if (seq != null && !seq.isEmpty()) {
             TrainDTO trainDTO = new TrainDTO();
             trainDTO.setSeq(seq);
             TrainDTO info = eduMarineMngService.processSelectTrainSingle(trainDTO);
             mv.addObject("info", info);
+        } else {
+            // --- [신규 추가] ---
+            // 신규 교육 생성 시 기본값 설정
+            TrainDTO newTrain = new TrainDTO();
+            newTrain.setApplicationSystemType("UNIFIED"); // 스위치를 '신규'로
+            newTrain.setExposureYn("Y");
+            newTrain.setScheduleExposureYn("Y");
+            mv.addObject("info", newTrain);
+            // --- [여기까지] ---
         }
 
         mv.setViewName("/mng/education/train/detail");

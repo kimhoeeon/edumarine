@@ -2136,6 +2136,25 @@ public class EduMarineController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/apply/eduApplyUnified.do", method = RequestMethod.GET)
+    public ModelAndView apply_eduApplyUnified(String seq, HttpSession session) {
+        System.out.println("EduMarineController > apply_eduApplyUnified (신규 통합 신청)");
+        ModelAndView mv = new ModelAndView();
+
+        if(session.getAttribute("id") != null){
+            String id = session.getAttribute("id").toString();
+            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+            mv.addObject("info", info); // 회원정보
+
+            TrainDTO trainInfo = eduMarineService.processSelectTrainSingle(seq);
+            mv.addObject("trainInfo", trainInfo); // 교육정보 (form_type 포함)
+            mv.addObject("seq", seq);
+        }
+
+        mv.setViewName("/apply/eduApplyUnified"); // 새로 만들 JSP
+        return mv;
+    }
     
     @RequestMapping(value = "/apply/faq.do", method = RequestMethod.GET)
     public ModelAndView apply_faq() {

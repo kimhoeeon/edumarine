@@ -27,6 +27,8 @@ public class TrainDTO extends AbstractPagingRequestVo {
     String exposureYn; //홈페이지 노출여부
     String scheduleExposureYn; // 연간일정표 등록여부
     String closingYn; //마감여부
+    String applicationSystemType; // application_system_type
+    String formType;              // form_type
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자
