@@ -7846,6 +7846,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public String processGetFileId() {
+        System.out.println("EduMarineMngServiceImpl > processGetFileId");
+        return eduMarineMngMapper.getFileId();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<DownloadDTO> processSelectDownloadList(SearchDTO searchDTO) {
         System.out.println("EduMarineMngServiceImpl > processSelectDownloadList");
         return eduMarineMngMapper.selectDownloadList(searchDTO);

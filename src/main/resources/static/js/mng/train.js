@@ -80,6 +80,26 @@ $(function () {
         });
     }
 
+    $('#thumbFileObj').on('change', function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+
+        // 1. 확장자 체크
+        if(!file.type.match('image.*')) {
+            Swal.fire('경고', '이미지 파일만 등록 가능합니다.', 'warning');
+            $(this).val(''); // 초기화
+            return;
+        }
+
+        // 2. 미리보기 출력 (FileReader)
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#thumbPreview').attr('src', e.target.result);
+            $('#thumbPreview').css({'object-fit': 'cover', 'background': 'transparent'});
+        }
+        reader.readAsDataURL(file);
+    });
+
 });
 
 function f_education_train_search() {
@@ -251,169 +271,131 @@ function f_education_train_remove(seq) {
 }
 
 function f_education_train_save(seq) {
-    //console.log(id + '변경내용저장 클릭');
+
+    /* 1. 유효성 검사 */
+    if (!f_education_train_valid()) {
+        return;
+    }
+
+    /* 2. 썸네일 파일 검증 (용량/확장자 등 추가 가능) */
+    var fileInput = $('#thumbFileObj')[0];
+    if (fileInput && fileInput.files.length > 0) {
+        var file = fileInput.files[0];
+        var fileSize = file.size;
+        var maxSize = 10 * 1024 * 1024; // 10MB
+        if(fileSize > maxSize){
+            Swal.fire('파일 용량 초과', '이미지 파일은 10MB 이하로 업로드해주세요.', 'warning');
+            return;
+        }
+    }
+
     Swal.fire({
-        title: '입력된 정보를 저장하시겠습니까?',
-        icon: 'info',
+        title: '저장',
+        text: "입력된 정보를 저장하시겠습니까?",
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '변경내용저장',
+        confirmButtonText: '저장',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'
-    }).then(async (result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
+            // 파일이 있으면 업로드 -> 저장, 없으면 바로 저장
+            if (fileInput && fileInput.files.length > 0) {
+                fn_upload_and_save(seq, fileInput.files[0]);
+            } else {
+                fn_actual_save_process(seq);
+            }
+        }
+    });
 
-            /* form valid check */
-            let validCheck = f_education_train_valid();
+}
 
-            if (validCheck) {
+// [신규] 파일 업로드 후 저장 처리
+function fn_upload_and_save(seq, file) {
+    var formData = new FormData();
+    formData.append("thumbFile", file);
 
-                /* form data setting */
-                let resData = f_education_train_form_data_setting();
+    $.ajax({
+        url: '/mng/education/train/uploadThumb.do',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(res) {
+            if (res.resultCode === "0") {
+                // 업로드 성공 시 파일 ID 바인딩
+                $('#thumbFileId').val(res.customValue);
+                // 실제 저장 로직 호출
+                fn_actual_save_process(seq);
+            } else {
+                Swal.fire('오류', '이미지 업로드 실패: ' + res.resultMessage, 'error');
+            }
+        },
+        error: function() {
+            Swal.fire('오류', '서버 통신 오류 (파일 업로드)', 'error');
+        }
+    });
+}
 
-                let processFlag = true;
+// [신규] 실제 DB 저장/수정 처리 함수 (기존 로직 분리)
+function fn_actual_save_process(seq) {
+    /* form data setting (thumbFileId가 포함됨) */
+    let resData = f_education_train_form_data_setting();
 
-                // 교육 조기마감 Alert
-                let preClosingYn = $('#preClosingYn').val();
-                if (preClosingYn === 'N' && resData.closingYn === 'Y') {
-                    Swal.fire({
-                        title: '교육 정보 변경',
-                        html: '교육 조기마감 시, 교육을 신청하였으나 결제하지 않은 모든 신청자의 결제가 불가하게 되며,<br>이들의 신청 내역이 취소됩니다.<br>그래도 조기 마감하시겠습니까?',
-                        icon: 'warning',
-                        allowOutsideClick: false,
-                        showCancelButton: true,
-                        confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '변경',
-                        cancelButtonColor: '#A1A5B7',
-                        cancelButtonText: '취소'
-                    }).then(async (result) => {
-                        if (result.isConfirmed) {
-                            processFlag = true;
-                        } else {
-                            processFlag = false;
-                        }
-                    });
-                }
+    // 교육 조기마감 Alert 로직
+    let preClosingYn = $('#preClosingYn').val();
+    if (preClosingYn === 'N' && resData.closingYn === 'Y') {
+        Swal.fire({
+            title: '교육 정보 변경',
+            html: '교육 조기마감 시, 교육을 신청하였으나 결제하지 않은 모든 신청자의 결제가 불가하게 되며,<br>이들의 신청 내역이 취소됩니다.<br>그래도 조기 마감하시겠습니까?',
+            icon: 'warning',
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonColor: '#00a8ff',
+            confirmButtonText: '변경',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fn_ajax_save(seq, resData);
+            }
+        });
+    } else {
+        fn_ajax_save(seq, resData);
+    }
+}
 
-                if (processFlag) {
+// [신규] AJAX 호출 함수 (중복 제거)
+function fn_ajax_save(seq, resData) {
+    let url = (nvl(seq, '') === '') ? '/mng/education/train/insert.do' : '/mng/education/train/update.do';
 
-                    /* Modify */
-                    if (nvl(seq, '') !== '') {
-                        $.ajax({
-                            url: '/mng/education/train/update.do',
-                            method: 'POST',
-                            async: false,
-                            data: JSON.stringify(resData),
-                            dataType: 'json',
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (data) {
-                                if (data.resultCode === "0") {
-                                    Swal.fire({
-                                        title: '교육 정보 변경',
-                                        text: "교육 정보가 변경되었습니다.",
-                                        icon: 'info',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: '확인'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            f_education_train_modify_init_set(seq); // 재조회
-                                        }
-                                    });
-                                } else {
-                                    showMessage('', 'error', '에러 발생', '교육 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
-                                }
-                            },
-                            error: function (xhr, status) {
-                                alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                            }
-                        })//ajax
-                    } else { /* Insert */
-                        $.ajax({
-                            url: '/mng/education/train/insert.do',
-                            method: 'POST',
-                            async: false,
-                            data: JSON.stringify(resData),
-                            dataType: 'json',
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (data) {
-                                if (data.resultCode === "0") {
-
-                                    let gbn = $('#gbn').val();
-                                    let gbnDepth = $('#gbnDepth').val();
-                                    let keyword = '';
-                                    switch (gbn){
-                                        case '해상엔진 자가정비 (선외기)':
-                                        case '선외기 팸투어':
-                                            keyword = '선외기';
-                                            break;
-                                        case '해상엔진 자가정비 (선내기)':
-                                        case '선내기 팸투어':
-                                            keyword = '선내기';
-                                            break;
-                                        case '마리나 선박 선외기 정비사 실무과정':
-                                        case '마리나 선박 선내기 정비사 실무과정':
-                                            keyword = '마리나선박';
-                                            break;
-                                        case '고마력 선외기 정비 중급 테크니션':
-                                        case '자가정비 심화과정 (고마력 선외기)':
-                                        case '고마력 선외기 정비 중급 테크니션 (특별반)':
-                                            keyword = '고마력';
-                                            break;
-                                        case '스턴드라이브 정비 전문가과정':
-                                        case '스턴드라이브 정비 전문가과정 (특별반)':
-                                            keyword = '스턴드라이브';
-                                            break;
-                                        case '기초정비교육':
-                                            if(gbnDepth === '선외기'){
-                                                keyword = '선외기';
-                                            }else if(gbnDepth === '선내기'){
-                                                keyword = '선내기';
-                                            }
-                                            break;
-                                        case '응급조치교육':
-                                            if(gbnDepth === '선외기'){
-                                                keyword = '선외기';
-                                            }else if(gbnDepth === '선내기'){
-                                                keyword = '선내기';
-                                            }
-                                            break;
-                                        default:
-                                            break;
-                                    }
-
-                                    /*if(keyword !== ''){
-                                        let keywordJson = { keyword : keyword };
-                                        f_sms_notify_sending('8', keywordJson); // 8 키워드알림 템플릿
-                                    }*/
-
-                                    Swal.fire({
-                                        title: '교육 정보 등록',
-                                        text: "교육 정보가 등록되었습니다.",
-                                        icon: 'info',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: '확인'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = '/mng/education/train.do'; // 목록으로 이동
-                                        }
-                                    });
-                                } else {
-                                    showMessage('', 'error', '에러 발생', '교육 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
-                                }
-                            },
-                            error: function (xhr, status) {
-                                alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                            }
-                        })//ajax
-                    }// id check
-
-                }
-
-            }//validCheck
-
-        }//result.isConfirmed
-    })
-
+    $.ajax({
+        url: url,
+        method: 'POST',
+        data: JSON.stringify(resData),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            if (data.resultCode === "0") {
+                Swal.fire({
+                    title: '저장 완료',
+                    text: '정상적으로 저장되었습니다.',
+                    icon: 'success',
+                    confirmButtonColor: '#00a8ff'
+                }).then(() => {
+                    // 목록으로 이동 또는 새로고침
+                    if(nvl(seq, '') === '') window.location.href = '/mng/education/train.do';
+                    else f_education_train_modify_init_set(seq);
+                });
+            } else {
+                showMessage('', 'error', '에러', data.resultMessage, '');
+            }
+        },
+        error: function (xhr) {
+            alert('오류 발생: ' + xhr.status);
+        }
+    });
 }
 
 function f_education_train_form_data_setting() {

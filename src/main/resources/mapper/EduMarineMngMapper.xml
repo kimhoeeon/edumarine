@@ -3769,31 +3769,37 @@
 
     <select id="selectTrainSingle" parameterType="com.mtf.edumarine.dto.TrainDTO" resultType="com.mtf.edumarine.dto.TrainDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectTrainSingle */
-        SELECT seq
-             , gbn
-             , gbn_depth
-             , category
-             , train_start_dttm
-             , train_end_dttm
-             , apply_start_dttm
-             , apply_end_dttm
-             , pay_sum
-             , train_cnt
-             , train_apply_cnt
-             , next_time
-             , train_note
-             , exposure_yn
-             , schedule_exposure_yn
-             , application_system_type
-             , closing_yn
-             , del_yn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
-        FROM train
-        WHERE seq = #{seq}
+        SELECT t.seq
+             , t.gbn
+             , t.gbn_depth
+             , t.category
+             , t.train_start_dttm
+             , t.train_end_dttm
+             , t.apply_start_dttm
+             , t.apply_end_dttm
+             , t.pay_sum
+             , t.train_cnt
+             , t.train_apply_cnt
+             , t.next_time
+             , t.train_note
+             , t.exposure_yn
+             , t.schedule_exposure_yn
+             , t.application_system_type
+             , t.form_type
+             , t.closing_yn
+             , t.del_yn
+             , t.note
+             , t.init_regi_pic
+             , t.init_regi_dttm
+             , t.final_regi_pic
+             , t.final_regi_dttm
+             , t.thumb_file_id
+             , f.file_name AS thumbFileName
+             , f.full_path AS thumbFilePath
+        FROM train t
+        LEFT JOIN file f
+            ON t.thumb_file_id = f.id
+        WHERE t.seq = #{seq}
     </select>
 
     <delete id="deleteTrain" parameterType="com.mtf.edumarine.dto.TrainDTO">
@@ -3816,6 +3822,7 @@
           , schedule_exposure_yn    = #{scheduleExposureYn}
           , application_system_type = #{applicationSystemType}
           , form_type               = #{formType}
+          , thumb_file_id           = #{thumbFileId}
           , closing_yn              = #{closingYn}
           , note                    = #{note}
           , final_regi_dttm         = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -3857,6 +3864,7 @@
         , closing_yn
         , application_system_type
         , form_type
+        , thumb_file_id
         , del_yn
         , note
         , init_regi_pic
@@ -3881,6 +3889,7 @@
                , 'N'
                , #{applicationSystemType}
                , #{formType}
+               , #{thumbFileId}
                , 'N'
                , #{note}
                , 'TRAIN'
