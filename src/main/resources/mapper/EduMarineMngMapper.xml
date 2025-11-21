@@ -3798,7 +3798,7 @@
              , f.full_path AS thumbFilePath
         FROM train t
         LEFT JOIN file f
-            ON t.thumb_file_id = f.id
+            ON t.thumb_file_id = f.user_id
         WHERE t.seq = #{seq}
     </select>
 

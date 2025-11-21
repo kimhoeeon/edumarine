@@ -7228,8 +7228,11 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         Integer result = 0;
         try {
 
-            String getSeq = eduMarineMngMapper.getTrainSeq();
-            trainDTO.setSeq(getSeq);
+            String getSeq = trainDTO.getSeq();
+            if(getSeq == null || getSeq.isEmpty()){
+                getSeq = eduMarineMngMapper.getTrainSeq();
+                trainDTO.setSeq(getSeq);
+            }
 
             result = eduMarineMngMapper.insertTrain(trainDTO);
 
@@ -7842,6 +7845,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         // 페이징 없이 전체 조회 (엑셀용)
         searchDTO.setIsPaging("N");
         return unifiedMapper.selectUnifiedApplicationList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public String processGetTrainSeq() {
+        System.out.println("EduMarineMngServiceImpl > processGetTrainSeq");
+        return eduMarineMngMapper.getTrainSeq();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

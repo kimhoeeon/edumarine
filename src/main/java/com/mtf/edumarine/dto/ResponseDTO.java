@@ -11,4 +11,5 @@ public class ResponseDTO {
     String resultCode;
     String resultMessage;
     String customValue;
+    String customValue2;
 }

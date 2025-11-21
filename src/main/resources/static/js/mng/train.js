@@ -84,18 +84,19 @@ $(function () {
         var file = e.target.files[0];
         if (!file) return;
 
-        // 1. 확장자 체크
-        if(!file.type.match('image.*')) {
+        // 1. 이미지 파일 검증
+        if (!file.type.match('image.*')) {
             Swal.fire('경고', '이미지 파일만 등록 가능합니다.', 'warning');
             $(this).val(''); // 초기화
+            $('#thumbPreview').attr('src', '/assets/media/svg/files/blank-image.svg');
             return;
         }
 
-        // 2. 미리보기 출력 (FileReader)
+        // 2. FileReader로 미리보기 출력
         var reader = new FileReader();
         reader.onload = function(e) {
             $('#thumbPreview').attr('src', e.target.result);
-            $('#thumbPreview').css({'object-fit': 'cover', 'background': 'transparent'});
+            $('#thumbPreview').css({'object-fit': 'cover'});
         }
         reader.readAsDataURL(file);
     });
@@ -271,23 +272,8 @@ function f_education_train_remove(seq) {
 }
 
 function f_education_train_save(seq) {
-
-    /* 1. 유효성 검사 */
-    if (!f_education_train_valid()) {
-        return;
-    }
-
-    /* 2. 썸네일 파일 검증 (용량/확장자 등 추가 가능) */
-    var fileInput = $('#thumbFileObj')[0];
-    if (fileInput && fileInput.files.length > 0) {
-        var file = fileInput.files[0];
-        var fileSize = file.size;
-        var maxSize = 10 * 1024 * 1024; // 10MB
-        if(fileSize > maxSize){
-            Swal.fire('파일 용량 초과', '이미지 파일은 10MB 이하로 업로드해주세요.', 'warning');
-            return;
-        }
-    }
+    // 1. 유효성 검사
+    if (!f_education_train_valid()) return;
 
     Swal.fire({
         title: '저장',
@@ -296,44 +282,51 @@ function f_education_train_save(seq) {
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
         confirmButtonText: '저장',
-        cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'
     }).then((result) => {
         if (result.isConfirmed) {
-            // 파일이 있으면 업로드 -> 저장, 없으면 바로 저장
+            var fileInput = $('#thumbFileObj')[0];
+
+            // 2. 썸네일 파일이 있는 경우: 업로드 먼저 수행
             if (fileInput && fileInput.files.length > 0) {
-                fn_upload_and_save(seq, fileInput.files[0]);
+                var formData = new FormData();
+                formData.append("thumbFile", fileInput.files[0]);
+                formData.append("seq", seq); // 현재 seq 전달 (신규면 빈값)
+
+                $.ajax({
+                    url: '/mng/education/train/uploadThumb.do',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(res) {
+                        if (res.resultCode === "0") {
+                            // 업로드 성공!
+                            // 1) 파일 ID 바인딩
+                            $('#thumbFileId').val(res.customValue);
+
+                            // 2) 신규 등록이었다면, 미리 발급받은 교육 ID(seq)를 폼에 바인딩
+                            //    (이래야 insertTrain 호출 시 이 ID를 사용하여 저장함)
+                            if (nvl(seq, '') === '' && res.customValue2) {
+                                $('input[name=seq]').val(res.customValue2); // hidden input seq 값 변경
+                                seq = res.customValue2; // 로직 내 변수도 업데이트
+                            }
+
+                            // 3. 실제 교육 정보 저장 요청
+                            fn_actual_save_process(seq);
+
+                        } else {
+                            Swal.fire('오류', '이미지 업로드 실패: ' + res.resultMessage, 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('오류', '서버 통신 오류 (파일 업로드)', 'error');
+                    }
+                });
             } else {
+                // 파일 없으면 바로 저장
                 fn_actual_save_process(seq);
             }
-        }
-    });
-
-}
-
-// [신규] 파일 업로드 후 저장 처리
-function fn_upload_and_save(seq, file) {
-    var formData = new FormData();
-    formData.append("thumbFile", file);
-
-    $.ajax({
-        url: '/mng/education/train/uploadThumb.do',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(res) {
-            if (res.resultCode === "0") {
-                // 업로드 성공 시 파일 ID 바인딩
-                $('#thumbFileId').val(res.customValue);
-                // 실제 저장 로직 호출
-                fn_actual_save_process(seq);
-            } else {
-                Swal.fire('오류', '이미지 업로드 실패: ' + res.resultMessage, 'error');
-            }
-        },
-        error: function() {
-            Swal.fire('오류', '서버 통신 오류 (파일 업로드)', 'error');
         }
     });
 }
@@ -343,7 +336,16 @@ function fn_actual_save_process(seq) {
     /* form data setting (thumbFileId가 포함됨) */
     let resData = f_education_train_form_data_setting();
 
+    // seq가 변경되었을 수 있으므로 다시 확인 (신규 등록 시)
+    let currentSeq = $('input[name=seq]').val();
+
+    // 신규 등록인데 seq가 있다면(파일 업로드로 생성됨), resData에도 반영
+    if(currentSeq) resData.seq = currentSeq;
+
     // 교육 조기마감 Alert 로직
+    let url = (nvl(seq, '') === '') ? '/mng/education/train/insert.do' : '/mng/education/train/update.do';
+
+    // 조기마감 체크 등 기존 로직...
     let preClosingYn = $('#preClosingYn').val();
     if (preClosingYn === 'N' && resData.closingYn === 'Y') {
         Swal.fire({
@@ -356,44 +358,30 @@ function fn_actual_save_process(seq) {
             confirmButtonText: '변경',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                fn_ajax_save(seq, resData);
-            }
+        }).then((res) => {
+            if(res.isConfirmed) sendData(url, resData);
         });
     } else {
-        fn_ajax_save(seq, resData);
+        sendData(url, resData);
     }
 }
 
 // [신규] AJAX 호출 함수 (중복 제거)
-function fn_ajax_save(seq, resData) {
-    let url = (nvl(seq, '') === '') ? '/mng/education/train/insert.do' : '/mng/education/train/update.do';
-
+function sendData(url, data) {
     $.ajax({
         url: url,
         method: 'POST',
-        data: JSON.stringify(resData),
+        data: JSON.stringify(data),
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
-        success: function (data) {
-            if (data.resultCode === "0") {
-                Swal.fire({
-                    title: '저장 완료',
-                    text: '정상적으로 저장되었습니다.',
-                    icon: 'success',
-                    confirmButtonColor: '#00a8ff'
-                }).then(() => {
-                    // 목록으로 이동 또는 새로고침
-                    if(nvl(seq, '') === '') window.location.href = '/mng/education/train.do';
-                    else f_education_train_modify_init_set(seq);
+        success: function (res) {
+            if (res.resultCode === "0") {
+                Swal.fire('성공', '저장되었습니다.', 'success').then(() => {
+                    location.href = '/mng/education/train.do';
                 });
             } else {
-                showMessage('', 'error', '에러', data.resultMessage, '');
+                Swal.fire('실패', res.resultMessage, 'error');
             }
-        },
-        error: function (xhr) {
-            alert('오류 발생: ' + xhr.status);
         }
     });
 }

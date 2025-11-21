@@ -509,4 +509,6 @@ public interface EduMarineMngService {
     List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO);
 
     String processGetFileId();
+
+    String processGetTrainSeq();
 }

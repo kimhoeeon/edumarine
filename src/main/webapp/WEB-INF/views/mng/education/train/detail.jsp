@@ -429,28 +429,28 @@ if (document.documentElement) {
                                                     <label class="col-lg-2 col-form-label fw-semibold fs-6">썸네일 이미지</label>
                                                     <div class="col-lg-10">
                                                         <div class="d-flex align-items-center">
-                                                            <div class="me-5 position-relative">
-                                                                <div class="symbol symbol-150px symbol-2by3"> <c:choose>
-                                                                    <c:when test="${not empty info.thumbFileId}">
-                                                                        <img id="thumbPreview" src="/file/download.do?fileName=${info.thumbFileName}&path=${info.thumbFilePath}"
-                                                                             alt="썸네일 미리보기" class="rounded" style="object-fit: cover; width: 200px; height: 133px; border: 1px solid #eee;">
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <img id="thumbPreview" src="/assets/media/svg/files/blank-image.svg"
-                                                                             alt="이미지 없음" class="rounded" style="width: 200px; height: 133px; object-fit: contain; border: 1px solid #eee; background: #f5f8fa;">
-                                                                    </c:otherwise>
-                                                                </c:choose>
+                                                            <div class="me-5">
+                                                                <div class="symbol symbol-100px symbol-2by3">
+                                                                    <c:choose>
+                                                                        <c:when test="${not empty info.thumbFileId}">
+                                                                            <img id="thumbPreview" src="/file/download.do?fileName=${info.thumbFileName}&path=${info.thumbFilePath}"
+                                                                                 alt="썸네일" style="width: 150px; height: 100px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <img id="thumbPreview" src="/assets/media/svg/files/blank-image.svg"
+                                                                                 alt="없음" style="width: 150px; height: 100px; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; background: #f5f8fa;">
+                                                                        </c:otherwise>
+                                                                    </c:choose>
                                                                 </div>
                                                             </div>
 
                                                             <div class="flex-grow-1">
                                                                 <div class="input-group">
-                                                                    <input type="file" class="form-control" id="thumbFileObj" name="thumbFileObj" accept=".png, .jpg, .jpeg" />
+                                                                    <input type="file" class="form-control" id="thumbFileObj" accept="image/*" />
                                                                     <input type="hidden" id="thumbFileId" name="thumbFileId" value="${info.thumbFileId}"/>
                                                                 </div>
                                                                 <div class="form-text text-muted mt-2">
-                                                                    ※ 권장 사이즈: <strong>1920 x 1080px</strong> (비율 3:2)<br>
-                                                                    ※ 지원 파일: jpg, jpeg, png (최대 5MB)
+                                                                    ※ 권장 사이즈: <strong>1920 x 1080px</strong> (비율 3:2) / jpg, png 파일
                                                                 </div>
                                                             </div>
                                                         </div>
