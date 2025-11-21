@@ -3250,14 +3250,21 @@ public class EduMarineMngController {
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_education_train_uploadThumb(
             @RequestParam("thumbFile") MultipartFile thumbFile,
+            @RequestParam(value = "seq", required = false) String seq, // 현재 교육 SEQ (없으면 신규)
             HttpSession session) {
 
         ResponseDTO response = new ResponseDTO();
         try {
             if (thumbFile != null && !thumbFile.isEmpty()) {
-                // 1. 파일 정보 생성 및 물리적 저장 (CommService 등 활용 권장)
-                // 예시 로직입니다. 실제 프로젝트의 FileUtils나 Service를 사용하세요.
-                String path = "/usr/local/tomcat/webapps/upload/train/thumb/"; // 실제 경로 확인 필요
+                // 1. 교육 ID(seq) 결정 (파일의 Owner ID)
+                String trainSeq = seq;
+                if (trainSeq == null || trainSeq.isEmpty()) {
+                    // 신규 등록인 경우: DB 시퀀스에서 새 ID를 미리 발급받음
+                    trainSeq = eduMarineMngService.processGetTrainSeq();
+                }
+
+                // 2. 파일 물리 저장
+                String path = "/usr/local/tomcat/webapps/upload/train/thumb/"; // 서버 경로
                 File folder = new File(path);
                 if (!folder.exists()) folder.mkdirs();
 
@@ -3267,11 +3274,11 @@ public class EduMarineMngController {
                 File dest = new File(path + saveName);
                 thumbFile.transferTo(dest);
 
-                // 2. DB 저장 (FileDTO 생성)
+                // 3. DB 저장 (userId에 trainSeq 저장)
                 FileDTO fileDTO = new FileDTO();
-                fileDTO.setId(eduMarineMngService.processGetFileId()); // ID 채번
-                fileDTO.setUserId((String)session.getAttribute("id"));
-                fileDTO.setFullFilePath(path); // or Web Path
+                fileDTO.setId(eduMarineMngService.processGetFileId());
+                fileDTO.setUserId(trainSeq); // ★ 핵심: 미리 발급받은 교육 ID 사용
+                fileDTO.setFullFilePath(path);
                 fileDTO.setFullPath(path + saveName);
                 fileDTO.setFolderPath(path);
                 fileDTO.setFullFileName(saveName);
@@ -3280,11 +3287,11 @@ public class EduMarineMngController {
                 fileDTO.setFileYn("Y");
                 fileDTO.setNote("TRAIN_THUMB");
 
-                // 3. Service 호출하여 DB Insert
                 eduMarineMngService.processInsertFileInfo(fileDTO);
 
                 response.setResultCode("0");
-                response.setCustomValue(fileDTO.getId()); // 파일 ID 반환
+                response.setCustomValue(fileDTO.getId());  // 파일 ID 반환
+                response.setCustomValue2(trainSeq);        // 교육 ID 반환 (신규일 경우 중요)
             } else {
                 response.setResultCode("-1");
                 response.setResultMessage("파일이 없습니다.");
