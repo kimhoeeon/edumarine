@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.mapper.EduMarineMngMapper;
+import com.mtf.edumarine.mapper.UnifiedMapper;
 import com.mtf.edumarine.service.EduMarineMngService;
 import com.mtf.edumarine.util.AES128;
 import com.mtf.edumarine.util.SHA512;
@@ -52,6 +53,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Setter(onMethod_ = {@Autowired})
     private EduMarineMngMapper eduMarineMngMapper;
+
+    @Autowired
+    private UnifiedMapper unifiedMapper;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
@@ -7815,6 +7819,29 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                 break;
         }
         return responseList;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<ApplicationUnifiedDTO> processSelectUnifiedApplicationList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectUnifiedApplicationList");
+        return unifiedMapper.selectUnifiedApplicationList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ApplicationUnifiedDTO processSelectUnifiedApplicationSingle(String seq) {
+        System.out.println("EduMarineMngServiceImpl > processSelectUnifiedApplicationSingle");
+        return unifiedMapper.selectUnifiedApplicationSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO) {
+        System.out.println("EduMarineMngServiceImpl > processSelectExcelUnifiedApplicationList");
+        // 페이징 없이 전체 조회 (엑셀용)
+        searchDTO.setIsPaging("N");
+        return unifiedMapper.selectUnifiedApplicationList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

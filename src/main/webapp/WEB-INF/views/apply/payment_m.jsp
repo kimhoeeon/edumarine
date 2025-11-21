@@ -410,7 +410,44 @@
     <script type="text/javascript">
         $(function(){
             function on_pay() {
+                // 1. 폼 객체 가져오기 (name="mobileweb")
                 let myForm = document.mobileweb;
+
+                // 2. P_NOTI 동적 구성
+                var trainSeq = "${payInfo.trainSeq}";
+                var tableSeq = "${payInfo.tableSeq}";
+                var goodName = "${payInfo.goodname}";
+                var systemType = "${payInfo.applicationSystemType}";
+
+                var pNotiValue = "";
+
+                if (systemType === 'UNIFIED') {
+                    // [신규] 파이프(|) 구분자 사용 (Controller 파싱 로직과 일치)
+                    // 형식: 교육PK | 신청PK | 시스템타입 | 상품명
+                    pNotiValue = trainSeq + "|" + tableSeq + "|" + systemType + "|" + goodName;
+                } else {
+                    // [기존] 콤마(,) 구분자 사용 (기존 로직 유지)
+                    pNotiValue = trainSeq + "," + tableSeq + "," + goodName;
+                }
+
+                // 3. 폼 Hidden Input 값 업데이트 (P_NOTI)
+                if(myForm.P_NOTI) {
+                    myForm.P_NOTI.value = pNotiValue;
+                } else {
+                    // 혹시 input이 없다면 동적으로 생성 (안전장치)
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'P_NOTI',
+                        value: pNotiValue
+                    }).appendTo(myForm);
+                }
+
+                // (참고) P_MERCHANT_DATA가 필요하다면 여기서 추가 설정 가능
+                // if (systemType === 'UNIFIED') {
+                //     $('<input>').attr({ type: 'hidden', name: 'P_MERCHANT_DATA', value: tableSeq + ",UNIFIED" }).appendTo(myForm);
+                // }
+
+                // 4. 결제 요청 페이지로 전송
                 myForm.action = "https://mobile.inicis.com/smart/payment/";
                 myForm.target = "_self";
                 myForm.submit();

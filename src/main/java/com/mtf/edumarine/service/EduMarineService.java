@@ -336,4 +336,8 @@ public interface EduMarineService {
      * @return ResponseDTO
      */
     ResponseDTO processUpdateUnifiedApplicationPayStatus(ApplicationUnifiedDTO dto);
+
+    ApplicationUnifiedDTO processSelectUnifiedApplicationSingle(String seq);
+
+    ResponseDTO processUpdateUnifiedApplication(ApplicationUnifiedDTO dto);
 }

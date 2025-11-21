@@ -499,4 +499,13 @@ public interface EduMarineMngService {
 
     List<ElectroDetailDTO> processSelectExcelElectroDetailList();
 
+    /** 통합 신청 목록 조회 (페이징) */
+    List<ApplicationUnifiedDTO> processSelectUnifiedApplicationList(SearchDTO searchDTO);
+
+    /** 통합 신청 상세 조회 */
+    ApplicationUnifiedDTO processSelectUnifiedApplicationSingle(String seq);
+
+    /** 통합 신청 엑셀용 전체 목록 조회 */
+    List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO);
+
 }
