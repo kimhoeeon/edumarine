@@ -99,4 +99,100 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="selectUnifiedApplicationList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedApplicationList */
+        SELECT u.seq
+             , u.train_seq
+             , u.member_seq
+             , u.apply_status
+             , u.init_regi_dttm
+             , u.cancel_dttm
+             , m.name AS memberName
+             , m.phone AS memberPhone
+             , m.email AS memberEmail
+             , t.gbn AS trainName
+             , t.gbn_depth AS trainDepth
+        FROM application_unified u
+        JOIN member m ON u.member_seq = m.seq
+        JOIN train t ON u.train_seq = t.seq
+        WHERE 1=1
+        <if test="searchText != null and searchText != ''">
+            <choose>
+                <when test="condition == 'NAME'">
+                    AND m.name LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="condition == 'PHONE'">
+                    AND m.phone LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <otherwise>
+                    AND (m.name LIKE CONCAT('%', #{searchText}, '%') OR m.phone LIKE CONCAT('%', #{searchText}, '%'))
+                </otherwise>
+            </choose>
+        </if>
+        <if test="trainSeq != null and trainSeq != ''">
+            AND u.train_seq = #{trainSeq}
+        </if>
+        ORDER BY u.init_regi_dttm DESC
+        <if test="isPaging == 'Y'">
+            LIMIT #{startRow}, #{endRow}
+        </if>
+    </select>
+
+    <select id="selectUnifiedApplicationCount" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="int">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedApplicationCount */
+        SELECT COUNT(*)
+        FROM application_unified u
+        JOIN member m ON u.member_seq = m.seq
+        WHERE 1=1
+        <if test="searchText != null and searchText != ''">
+            <choose>
+                <when test="condition == 'NAME'">
+                    AND m.name LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test="condition == 'PHONE'">
+                    AND m.phone LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectUnifiedApplicationSingle" parameterType="String" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedApplicationSingle */
+        SELECT u.*
+             , m.name AS memberName
+             , m.id AS memberId
+             , t.gbn AS trainName
+        FROM application_unified u
+                 JOIN member m ON u.member_seq = m.seq
+                 JOIN train t ON u.train_seq = t.seq
+        WHERE u.seq = #{seq}
+    </select>
+
+    <update id="updateUnifiedApplication" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.updateUnifiedApplication */
+        UPDATE application_unified
+        SET
+            participation_path = #{participationPath}
+          , recommend_person = #{recommendPerson}
+          , clothes_size = #{clothesSize}
+          , boarder_gbn = #{boarderGbn}
+          , top_clothes_size = #{topClothesSize}
+          , bottom_clothes_size = #{bottomClothesSize}
+          , shoes_size = #{shoesSize}
+          , grade_gbn = #{gradeGbn}
+          , school_name = #{schoolName}
+          , major = #{major}
+          , military_gbn = #{militaryGbn}
+          , military_reason = #{militaryReason}
+          , disabled_gbn = #{disabledGbn}
+          , job_support_gbn = #{jobSupportGbn}
+          , apply_reason = <![CDATA[#{applyReason}]]>
+          , tech_reason = <![CDATA[#{techReason}]]>
+          , activity_reason = <![CDATA[#{activityReason}]]>
+          , plan_reason = <![CDATA[#{planReason}]]>
+          , etc_reason = <![CDATA[#{etcReason}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
 </mapper>

@@ -15,6 +15,8 @@ public class ApplicationUnifiedDTO {
     private String trainSeq;
     private String memberSeq;
     private String applyStatus;
+    private String memberName;
+    private String trainName;
 
     // 1. RegularDTO 컬럼
     private String region;

@@ -35,4 +35,6 @@ public class InistdpayRequestDTO {
     private String payMethod;
 
     private String continueYn;
+
+    private String applicationSystemType;
 }

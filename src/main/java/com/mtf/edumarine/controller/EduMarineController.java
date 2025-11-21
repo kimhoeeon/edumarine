@@ -3038,6 +3038,110 @@ public class EduMarineController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    // -----------------------------------------------------------------------
+    // [신규] 마이페이지 - 통합 신청 관리 (상세 / 수정 / 취소)
+    // -----------------------------------------------------------------------
+
+    // 1. 상세 페이지 이동
+    @RequestMapping(value = "/mypage/eduApplyUnified_detail.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApplyUnified_detail(String seq) {
+        ModelAndView mv = new ModelAndView();
+
+        // 신청 정보 조회 (Service에 해당 메서드가 있다고 가정. 없다면 추가 필요)
+        // ApplicationUnifiedDTO info = eduMarineService.processSelectUnifiedApplicationSingle(seq);
+        // ※ 주의: Service에 processSelectUnifiedApplicationSingle가 없다면 MngService 로직을 참고하여 추가해주세요.
+        // 여기서는 임시로 eduMarineMngService와 동일한 로직을 사용한다고 가정합니다.
+
+        // (실제로는 EduMarineService에 UnifiedMapper.selectUnifiedApplicationSingle 호출 메서드를 만들어야 함)
+        // 아래는 예시 코드입니다. Service에 메서드를 추가한 후 주석을 해제하세요.
+        ApplicationUnifiedDTO info = eduMarineService.processSelectUnifiedApplicationSingle(seq);
+
+        if(info != null){
+            mv.addObject("info", info);
+
+            // 교육 정보 (Form Type 확인용)
+            TrainDTO trainInfo = eduMarineService.processSelectTrainSingle(info.getTrainSeq());
+            mv.addObject("trainInfo", trainInfo);
+
+            // 회원 정보
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+
+            // 결제 정보
+            PaymentDTO payReq = new PaymentDTO();
+            payReq.setTableSeq(info.getSeq());
+            // payReq.setMemberSeq(info.getMemberSeq());
+            // (필요시 processSelectTrainPaymentInfo 같은 메서드로 결제 정보 조회)
+        }
+
+        mv.setViewName("eduApplyUnified_modify");
+        return mv;
+    }
+
+    // 2. 수정 페이지 이동
+    @RequestMapping(value = "/mypage/eduApplyUnified_modify.do", method = RequestMethod.GET)
+    public ModelAndView mypage_eduApplyUnified_modify(String seq, HttpSession session) {
+        ModelAndView mv = new ModelAndView();
+
+        // 1. 로그인 세션 체크 (필수)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
+        // 2. 통합 신청 정보 조회
+        ApplicationUnifiedDTO info = eduMarineService.processSelectUnifiedApplicationSingle(seq);
+
+        if (info != null) {
+            mv.addObject("info", info);
+
+            // 3. 교육 과정 정보 조회 (Form Type 확인용: BASIC_FORM / PRO_FORM 등)
+            TrainDTO trainInfo = eduMarineService.processSelectTrainSingle(info.getTrainSeq());
+            mv.addObject("trainInfo", trainInfo);
+
+            // 4. 회원 정보 조회 (기본정보 표시용)
+            MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
+            mv.addObject("memberInfo", memberInfo);
+
+            // 5. 수정 가능 여부 체크 (결제완료/신청완료 상태만 수정 가능하도록)
+            // 마감 여부(closingYn)나 교육 시작일 체크 로직이 필요하다면 Service에서 처리 후 modYn 반환
+            String modYn = "Y";
+            if (!"신청완료".equals(info.getApplyStatus()) && !"결제완료".equals(info.getApplyStatus()) && !"입금대기".equals(info.getApplyStatus())) {
+                modYn = "N"; // 이미 수강확정되거나 취소된 경우 수정 불가 처리
+            }
+            mv.addObject("modYn", modYn);
+
+            // 6. (PRO_FORM용) 경력/자격증/파일 리스트 조회
+            if ("PRO_FORM".equals(trainInfo.getFormType())) {
+                // Repeater 데이터 조회 (Service 내부에 구현 필요)
+                // mv.addObject("careerList", eduMarineService.selectCareerList(seq));
+                // mv.addObject("licenseList", eduMarineService.selectLicenseList(seq));
+                // mv.addObject("bodyPhotoFile", ...);
+            }
+        }
+
+        mv.setViewName("/mypage/eduApplyUnified_modify");
+        return mv;
+    }
+
+    // 3. 정보 수정 실행 (POST)
+    @RequestMapping(value = "/mypage/eduApplyUnified/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApplyUnified_update(@RequestBody ApplicationUnifiedDTO dto) {
+        ResponseDTO response = eduMarineService.processUpdateUnifiedApplication(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 4. 신청 취소 실행 (POST)
+    @RequestMapping(value = "/mypage/eduApplyUnified/cancel.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_eduApplyUnified_cancel(@RequestBody ApplicationUnifiedDTO dto) {
+        // 취소 사유 등을 담아 상태를 '취소신청'으로 변경
+        dto.setApplyStatus("취소신청");
+        ResponseDTO response = eduMarineService.processUpdateUnifiedApplicationPayStatus(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     //***************************************************************************
     // edumarine Folder
     //***************************************************************************
@@ -3790,6 +3894,10 @@ public class EduMarineController {
         if(deviceGbn.equals("PC")) {
             Map<String, String> resultMap = new HashMap<String, String>();
             String merchantData = "";
+
+            String tableSeq = "";
+            String systemType = "LEGACY";
+
             try {
 
                 //#############################
@@ -3831,6 +3939,19 @@ public class EduMarineController {
                     String authUrl = paramMap.get("authUrl");
                     String netCancel = paramMap.get("netCancelUrl");
                     merchantData = paramMap.get("merchantData");
+
+                    // merchantData 형식: "AU000001,UNIFIED" 또는 "F00001"
+                    if (merchantData != null) {
+                        if (merchantData.contains(",")) {
+                            String[] md = merchantData.split(",");
+                            tableSeq = md[0];
+                            if (md.length > 1) {
+                                systemType = md[1];
+                            }
+                        } else {
+                            tableSeq = merchantData;
+                        }
+                    }
 
                     //#####################
                     // 2.signature 생성
@@ -3927,7 +4048,7 @@ public class EduMarineController {
                 paymentDTO.setMemberSeq(memberSeq);
                 paymentDTO.setMemberName(inistdpayResponseDTO.getBuyerName());
                 paymentDTO.setMemberPhone(inistdpayResponseDTO.getBuyerTel());
-                paymentDTO.setTableSeq(merchantData);
+                paymentDTO.setTableSeq(tableSeq);
                 paymentDTO.setTrainSeq(trainSeq);
                 paymentDTO.setTrainName(gbnArr[1]);
                 paymentDTO.setBuyerName(inistdpayResponseDTO.getBuyerName());
@@ -4005,115 +4126,46 @@ public class EduMarineController {
                             commService.smsSendNotifySending(smsSendReq);
                         }
 
-                        // 상시신청
-                        // 해상엔진 테크니션 (선내기/선외기)
-                        // FRP 레저보트 선체 정비 테크니션
-                        // 해상엔진 자가정비 (선외기)
-                        // 해상엔진 자가정비 (선내기)
-                        // 해상엔진 자가정비 (세일요트)
-                        // 고마력 선외기 정비 중급 테크니션
-                        // 스턴드라이브 정비 전문가과정
-                        // 선외기 기초정비교육
-                        // 선내기 기초정비교육
-                        // 세일요트 기초정비교육
-                        // 선외기 응급조치교육
-                        // 선내기 응급조치교육
-                        // 세일요트 응급조치교육
-                        // 발전기 정비 교육
-                        // 선외기/선내기 직무역량 강화과정
-                        if (paymentDTO.getTrainName().contains("상시")) {
+                        // --- ▼▼▼ [신규 추가] 시스템 타입 분기 (PC) ▼▼▼ ---
+                        if ("UNIFIED".equals(systemType)) {
 
-                            // regular table
-                            RegularDTO regularDTO = new RegularDTO();
-                            regularDTO.setSeq(paymentDTO.getTableSeq());
-                            regularDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
+                            // [신규 UNIFIED 로직]
+                            ApplicationUnifiedDTO unifiedDTO = new ApplicationUnifiedDTO();
+                            unifiedDTO.setSeq(tableSeq);
+                            unifiedDTO.setApplyStatus(paymentDTO.getPayStatus());
+
+                            ResponseDTO result = eduMarineService.processUpdateUnifiedApplicationPayStatus(unifiedDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    eduMarineService.processUpdateTrainApplyCnt(trainSeq);
                                 }
                             }
 
-                        } else if (paymentDTO.getTrainName().contains("(선내기/")) {
+                        } else {
+                            // 상시신청
+                            // 해상엔진 테크니션 (선내기/선외기)
+                            // FRP 레저보트 선체 정비 테크니션
+                            // 해상엔진 자가정비 (선외기)
+                            // 해상엔진 자가정비 (선내기)
+                            // 해상엔진 자가정비 (세일요트)
+                            // 고마력 선외기 정비 중급 테크니션
+                            // 스턴드라이브 정비 전문가과정
+                            // 선외기 기초정비교육
+                            // 선내기 기초정비교육
+                            // 세일요트 기초정비교육
+                            // 선외기 응급조치교육
+                            // 선내기 응급조치교육
+                            // 세일요트 응급조치교육
+                            // 발전기 정비 교육
+                            // 선외기/선내기 직무역량 강화과정
+                            if (paymentDTO.getTrainName().contains("상시")) {
 
-                            // boarder table
-                            BoarderDTO boarderDTO = new BoarderDTO();
-                            boarderDTO.setSeq(paymentDTO.getTableSeq());
-                            boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("FRP")) {
-
-                            // frp table
-                            FrpDTO frpDTO = new FrpDTO();
-                            frpDTO.setSeq(paymentDTO.getTableSeq());
-                            frpDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("(선외기)")) {
-
-                            // outboarder table
-                            OutboarderDTO outboarderDTO = new OutboarderDTO();
-                            outboarderDTO.setSeq(paymentDTO.getTableSeq());
-                            outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("(선내기)")) {
-
-                            // inboarder table
-                            InboarderDTO inboarderDTO = new InboarderDTO();
-                            inboarderDTO.setSeq(paymentDTO.getTableSeq());
-                            inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
-
-                            // sailyacht table
-                            SailyachtDTO sailyachtDTO = new SailyachtDTO();
-                            sailyachtDTO.setSeq(paymentDTO.getTableSeq());
-                            sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션")) {
-
-                            if (paymentDTO.getTrainName().contains("(특별반)")) {
-
-                                // highspecial table
-                                HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
-                                highSpecialDTO.setSeq(paymentDTO.getTableSeq());
-                                highSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
+                                // regular table
+                                RegularDTO regularDTO = new RegularDTO();
+                                regularDTO.setSeq(tableSeq);
+                                regularDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -4121,44 +4173,13 @@ public class EduMarineController {
                                     }
                                 }
 
-                            }else{
+                            } else if (paymentDTO.getTrainName().contains("(선내기/")) {
 
-                                // highhorsepower table
-                                HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
-                                highHorsePowerDTO.setSeq(paymentDTO.getTableSeq());
-                                highHorsePowerDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
-
-                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                    }
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("자가정비 심화과정 (고마력 선외기)")) {
-
-                            // highself table
-                            HighSelfDTO highSelfDTO = new HighSelfDTO();
-                            highSelfDTO.setSeq(paymentDTO.getTableSeq());
-                            highSelfDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("스턴드라이브")) {
-
-                            if (paymentDTO.getTrainName().contains("(특별반)")) {
-
-                                // sternspecial table
-                                SternSpecialDTO sternSpecialDTO = new SternSpecialDTO();
-                                sternSpecialDTO.setSeq(paymentDTO.getTableSeq());
-                                sternSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
+                                // boarder table
+                                BoarderDTO boarderDTO = new BoarderDTO();
+                                boarderDTO.setSeq(tableSeq);
+                                boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -4166,13 +4187,188 @@ public class EduMarineController {
                                     }
                                 }
 
-                            }else{
+                            } else if (paymentDTO.getTrainName().contains("FRP")) {
 
-                                // Sterndrive table
-                                SterndriveDTO sterndriveDTO = new SterndriveDTO();
-                                sterndriveDTO.setSeq(paymentDTO.getTableSeq());
-                                sterndriveDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
+                                // frp table
+                                FrpDTO frpDTO = new FrpDTO();
+                                frpDTO.setSeq(tableSeq);
+                                frpDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("(선외기)")) {
+
+                                // outboarder table
+                                OutboarderDTO outboarderDTO = new OutboarderDTO();
+                                outboarderDTO.setSeq(tableSeq);
+                                outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("(선내기)")) {
+
+                                // inboarder table
+                                InboarderDTO inboarderDTO = new InboarderDTO();
+                                inboarderDTO.setSeq(tableSeq);
+                                inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
+
+                                // sailyacht table
+                                SailyachtDTO sailyachtDTO = new SailyachtDTO();
+                                sailyachtDTO.setSeq(tableSeq);
+                                sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션")) {
+
+                                if (paymentDTO.getTrainName().contains("(특별반)")) {
+
+                                    // highspecial table
+                                    HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
+                                    highSpecialDTO.setSeq(tableSeq);
+                                    highSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+
+                                } else {
+
+                                    // highhorsepower table
+                                    HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
+                                    highHorsePowerDTO.setSeq(tableSeq);
+                                    highHorsePowerDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("자가정비 심화과정 (고마력 선외기)")) {
+
+                                // highself table
+                                HighSelfDTO highSelfDTO = new HighSelfDTO();
+                                highSelfDTO.setSeq(tableSeq);
+                                highSelfDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("스턴드라이브")) {
+
+                                if (paymentDTO.getTrainName().contains("(특별반)")) {
+
+                                    // sternspecial table
+                                    SternSpecialDTO sternSpecialDTO = new SternSpecialDTO();
+                                    sternSpecialDTO.setSeq(tableSeq);
+                                    sternSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+
+                                } else {
+
+                                    // Sterndrive table
+                                    SterndriveDTO sterndriveDTO = new SterndriveDTO();
+                                    sterndriveDTO.setSeq(tableSeq);
+                                    sterndriveDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("기초정비교육")) {
+
+                                // Basic table
+                                BasicDTO basicDTO = new BasicDTO();
+                                basicDTO.setSeq(tableSeq);
+                                basicDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("응급조치교육")) {
+
+                                // Basic table
+                                EmergencyDTO emergencyDTO = new EmergencyDTO();
+                                emergencyDTO.setSeq(tableSeq);
+                                emergencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("발전기")) {
+
+                                // Generator table
+                                GeneratorDTO generatorDTO = new GeneratorDTO();
+                                generatorDTO.setSeq(tableSeq);
+                                generatorDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("직무역량")) {
+
+                                // Competency table
+                                CompetencyDTO competencyDTO = new CompetencyDTO();
+                                competencyDTO.setSeq(tableSeq);
+                                competencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -4181,63 +4377,6 @@ public class EduMarineController {
                                 }
 
                             }
-
-                        } else if (paymentDTO.getTrainName().contains("기초정비교육")) {
-
-                            // Basic table
-                            BasicDTO basicDTO = new BasicDTO();
-                            basicDTO.setSeq(paymentDTO.getTableSeq());
-                            basicDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("응급조치교육")) {
-
-                            // Basic table
-                            EmergencyDTO emergencyDTO = new EmergencyDTO();
-                            emergencyDTO.setSeq(paymentDTO.getTableSeq());
-                            emergencyDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("발전기")) {
-
-                            // Generator table
-                            GeneratorDTO generatorDTO = new GeneratorDTO();
-                            generatorDTO.setSeq(paymentDTO.getTableSeq());
-                            generatorDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("직무역량")) {
-
-                            // Competency table
-                            CompetencyDTO competencyDTO = new CompetencyDTO();
-                            competencyDTO.setSeq(paymentDTO.getTableSeq());
-                            competencyDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
                         }
                     }
                 }
@@ -4335,11 +4474,40 @@ public class EduMarineController {
             if ("00".equals(inistdpayResponseDTO.getP_STATUS())) {
                 // 결제내역 테이블 Insert process
 
-                String[] P_NOTI_ARR = inistdpayResponseDTO.getP_NOTI().split(","); //T0000030,O0000261,해상엔진 자가정비 (선외기)
-                String goodName = "[" + P_NOTI_ARR[0] + "]" + P_NOTI_ARR[2]; // [T0000030]해상엔진 자가정비 (선외기)
-                String trainSeq = P_NOTI_ARR[0]; // T0000030
-                String tableSeq = P_NOTI_ARR[1]; // O0000261
-                String trainName = P_NOTI_ARR[2]; // 해상엔진 자가정비 (선외기)
+                // --- [신규 추가] P_NOTI 파싱 (Mobile) ---
+                // P_NOTI 형식: trainSeq|tableSeq|systemType|goodName
+                // (주의: 파이프로 분리)
+                String[] P_NOTI_ARR = inistdpayResponseDTO.getP_NOTI().split("\\|");
+
+                // 파싱 전 안전장치 (Legacy 포맷 대비)
+                // Legacy 포맷은 콤마 분리였음: T0000030,O0000261,해상엔진...
+                // Unified 포맷: T0000030|AU000001|UNIFIED|해상엔진...
+
+                String trainSeq = "";
+                String tableSeq = "";
+                String systemType = "LEGACY";
+                String trainName = "";
+                String goodName = "";
+
+                if (inistdpayResponseDTO.getP_NOTI().contains("|")) {
+                    // Unified Logic (or Updated Legacy)
+                    if(P_NOTI_ARR.length >= 4) {
+                        trainSeq = P_NOTI_ARR[0];
+                        tableSeq = P_NOTI_ARR[1];
+                        systemType = P_NOTI_ARR[2];
+                        trainName = P_NOTI_ARR[3];
+                        goodName = "[" + trainSeq + "]" + trainName;
+                    }
+                } else {
+                    // Legacy Logic Fallback (Original format with comma)
+                    String[] legacyArr = inistdpayResponseDTO.getP_NOTI().split(",");
+                    if(legacyArr.length >= 3) {
+                        trainSeq = legacyArr[0];
+                        tableSeq = legacyArr[1];
+                        trainName = legacyArr[2];
+                        goodName = "[" + trainSeq + "]" + trainName;
+                    }
+                }
 
                 PaymentDTO paymentDTO = new PaymentDTO();
                 paymentDTO.setMemberSeq(memberSeq);
@@ -4373,7 +4541,7 @@ public class EduMarineController {
                 paymentDTO.setVactDate(inistdpayResponseDTO.getP_VACT_DATE());
                 paymentDTO.setVactTime(inistdpayResponseDTO.getP_VACT_TIME());
                 paymentDTO.setVactName(inistdpayResponseDTO.getP_VACT_NAME());
-//                paymentDTO.setVactInputName(inistdpayResponseDTO.getVACT_InputName());
+                //paymentDTO.setVactInputName(inistdpayResponseDTO.getVACT_InputName());
                 paymentDTO.setVactBankCode(inistdpayResponseDTO.getP_VACT_BANK_CODE());
                 paymentDTO.setVactBankName(inistdpayResponseDTO.getP_FN_NM());
                 paymentDTO.setVactNum(inistdpayResponseDTO.getP_VACT_NUM());
@@ -4408,115 +4576,46 @@ public class EduMarineController {
                             commService.smsSendNotifySending(smsSendReq);
                         }
 
-                        // 상시신청
-                        // 해상엔진 테크니션 (선내기/선외기)
-                        // FRP 레저보트 선체 정비 테크니션
-                        // 해상엔진 자가정비 (선외기)
-                        // 해상엔진 자가정비 (선내기)
-                        // 해상엔진 자가정비 (세일요트)
-                        // 고마력 선외기 정비 중급 테크니션
-                        // 스턴드라이브 정비 전문가과정
-                        // 선외기 기초정비교육
-                        // 선내기 기초정비교육
-                        // 세일요트 기초정비교육
-                        // 선외기 응급조치교육
-                        // 선내기 응급조치교육
-                        // 세일요트 응급조치교육
-                        // 발전기 정비 교육
-                        // 선외기/선내기 직무역량 강화과정
-                        if (paymentDTO.getTrainName().contains("상시")) {
+                        // --- ▼▼▼ [신규 추가] 시스템 타입 분기 (MOBILE) ▼▼▼ ---
+                        if ("UNIFIED".equals(systemType)) {
 
-                            // regular table
-                            RegularDTO regularDTO = new RegularDTO();
-                            regularDTO.setSeq(paymentDTO.getTableSeq());
-                            regularDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
+                            // [신규 UNIFIED 로직]
+                            ApplicationUnifiedDTO unifiedDTO = new ApplicationUnifiedDTO();
+                            unifiedDTO.setSeq(tableSeq);
+                            unifiedDTO.setApplyStatus(paymentDTO.getPayStatus());
+
+                            ResponseDTO result = eduMarineService.processUpdateUnifiedApplicationPayStatus(unifiedDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    eduMarineService.processUpdateTrainApplyCnt(trainSeq);
                                 }
                             }
 
-                        } else if (paymentDTO.getTrainName().contains("(선내기/")) {
+                        } else {
+                            // 상시신청
+                            // 해상엔진 테크니션 (선내기/선외기)
+                            // FRP 레저보트 선체 정비 테크니션
+                            // 해상엔진 자가정비 (선외기)
+                            // 해상엔진 자가정비 (선내기)
+                            // 해상엔진 자가정비 (세일요트)
+                            // 고마력 선외기 정비 중급 테크니션
+                            // 스턴드라이브 정비 전문가과정
+                            // 선외기 기초정비교육
+                            // 선내기 기초정비교육
+                            // 세일요트 기초정비교육
+                            // 선외기 응급조치교육
+                            // 선내기 응급조치교육
+                            // 세일요트 응급조치교육
+                            // 발전기 정비 교육
+                            // 선외기/선내기 직무역량 강화과정
+                            if (paymentDTO.getTrainName().contains("상시")) {
 
-                            // boarder table
-                            BoarderDTO boarderDTO = new BoarderDTO();
-                            boarderDTO.setSeq(paymentDTO.getTableSeq());
-                            boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("FRP")) {
-
-                            // frp table
-                            FrpDTO frpDTO = new FrpDTO();
-                            frpDTO.setSeq(paymentDTO.getTableSeq());
-                            frpDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("(선외기)")) {
-
-                            // outboarder table
-                            OutboarderDTO outboarderDTO = new OutboarderDTO();
-                            outboarderDTO.setSeq(paymentDTO.getTableSeq());
-                            outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("(선내기)")) {
-
-                            // inboarder table
-                            InboarderDTO inboarderDTO = new InboarderDTO();
-                            inboarderDTO.setSeq(paymentDTO.getTableSeq());
-                            inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
-
-                            // sailyacht table
-                            SailyachtDTO sailyachtDTO = new SailyachtDTO();
-                            sailyachtDTO.setSeq(paymentDTO.getTableSeq());
-                            sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션")) {
-
-                            if (paymentDTO.getTrainName().contains("(특별반)")) {
-
-                                // highspecial table
-                                HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
-                                highSpecialDTO.setSeq(paymentDTO.getTableSeq());
-                                highSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
+                                // regular table
+                                RegularDTO regularDTO = new RegularDTO();
+                                regularDTO.setSeq(tableSeq);
+                                regularDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -4524,13 +4623,203 @@ public class EduMarineController {
                                     }
                                 }
 
-                            }else{
+                            } else if (paymentDTO.getTrainName().contains("(선내기/")) {
 
-                                // highhorsepower table
-                                HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
-                                highHorsePowerDTO.setSeq(paymentDTO.getTableSeq());
-                                highHorsePowerDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+                                // boarder table
+                                BoarderDTO boarderDTO = new BoarderDTO();
+                                boarderDTO.setSeq(tableSeq);
+                                boarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("FRP")) {
+
+                                // frp table
+                                FrpDTO frpDTO = new FrpDTO();
+                                frpDTO.setSeq(tableSeq);
+                                frpDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("(선외기)")) {
+
+                                // outboarder table
+                                OutboarderDTO outboarderDTO = new OutboarderDTO();
+                                outboarderDTO.setSeq(tableSeq);
+                                outboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("(선내기)")) {
+
+                                // inboarder table
+                                InboarderDTO inboarderDTO = new InboarderDTO();
+                                inboarderDTO.setSeq(tableSeq);
+                                inboarderDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("(세일요트)")) {
+
+                                // sailyacht table
+                                SailyachtDTO sailyachtDTO = new SailyachtDTO();
+                                sailyachtDTO.setSeq(tableSeq);
+                                sailyachtDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("고마력 선외기 정비 중급 테크니션")) {
+
+                                if (paymentDTO.getTrainName().contains("(특별반)")) {
+
+                                    // highspecial table
+                                    HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
+                                    highSpecialDTO.setSeq(tableSeq);
+                                    highSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+
+                                } else {
+
+                                    // highhorsepower table
+                                    HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
+                                    highHorsePowerDTO.setSeq(tableSeq);
+                                    highHorsePowerDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("자가정비 심화과정 (고마력 선외기)")) {
+
+                                // highself table
+                                HighSelfDTO highSelfDTO = new HighSelfDTO();
+                                highSelfDTO.setSeq(tableSeq);
+                                highSelfDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("스턴드라이브")) {
+
+                                if (paymentDTO.getTrainName().contains("(특별반)")) {
+
+                                    // sternspecial table
+                                    SternSpecialDTO sternSpecialDTO = new SternSpecialDTO();
+                                    sternSpecialDTO.setSeq(tableSeq);
+                                    sternSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+
+                                } else {
+
+                                    // Sterndrive table
+                                    SterndriveDTO sterndriveDTO = new SterndriveDTO();
+                                    sterndriveDTO.setSeq(tableSeq);
+                                    sterndriveDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                    ResponseDTO result = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                            Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                        }
+                                    }
+
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("기초정비교육")) {
+
+                                // Basic table
+                                BasicDTO basicDTO = new BasicDTO();
+                                basicDTO.setSeq(tableSeq);
+                                basicDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("응급조치교육")) {
+
+                                // Basic table
+                                EmergencyDTO emergencyDTO = new EmergencyDTO();
+                                emergencyDTO.setSeq(tableSeq);
+                                emergencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("발전기")) {
+
+                                // Generator table
+                                GeneratorDTO generatorDTO = new GeneratorDTO();
+                                generatorDTO.setSeq(tableSeq);
+                                generatorDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (paymentDTO.getTrainName().contains("직무역량")) {
+
+                                // Competency table
+                                CompetencyDTO competencyDTO = new CompetencyDTO();
+                                competencyDTO.setSeq(tableSeq);
+                                competencyDTO.setApplyStatus(paymentDTO.getPayStatus());
+                                ResponseDTO result = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     if ("결제완료".equals(paymentDTO.getPayStatus())) {
@@ -4539,109 +4828,6 @@ public class EduMarineController {
                                 }
 
                             }
-
-                        }else if (paymentDTO.getTrainName().contains("자가정비 심화과정 (고마력 선외기)")) {
-
-                            // highself table
-                            HighSelfDTO highSelfDTO = new HighSelfDTO();
-                            highSelfDTO.setSeq(paymentDTO.getTableSeq());
-                            highSelfDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("스턴드라이브")) {
-
-                            if (paymentDTO.getTrainName().contains("(특별반)")) {
-
-                                // sternspecial table
-                                SternSpecialDTO sternSpecialDTO = new SternSpecialDTO();
-                                sternSpecialDTO.setSeq(paymentDTO.getTableSeq());
-                                sternSpecialDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
-
-                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                    }
-                                }
-
-                            }else{
-
-                                // Sterndrive table
-                                SterndriveDTO sterndriveDTO = new SterndriveDTO();
-                                sterndriveDTO.setSeq(paymentDTO.getTableSeq());
-                                sterndriveDTO.setApplyStatus(paymentDTO.getPayStatus());
-                                ResponseDTO result = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
-
-                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                    }
-                                }
-
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("기초정비교육")) {
-
-                            // Basic table
-                            BasicDTO basicDTO = new BasicDTO();
-                            basicDTO.setSeq(paymentDTO.getTableSeq());
-                            basicDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("응급조치교육")) {
-
-                            // Basic table
-                            EmergencyDTO emergencyDTO = new EmergencyDTO();
-                            emergencyDTO.setSeq(paymentDTO.getTableSeq());
-                            emergencyDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("발전기")) {
-
-                            // Generator table
-                            GeneratorDTO generatorDTO = new GeneratorDTO();
-                            generatorDTO.setSeq(paymentDTO.getTableSeq());
-                            generatorDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (paymentDTO.getTrainName().contains("직무역량")) {
-
-                            // Competency table
-                            CompetencyDTO competencyDTO = new CompetencyDTO();
-                            competencyDTO.setSeq(paymentDTO.getTableSeq());
-                            competencyDTO.setApplyStatus(paymentDTO.getPayStatus());
-                            ResponseDTO result = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
                         }
                     }
                 }
@@ -4912,222 +5098,251 @@ public class EduMarineController {
                     paymentDTO.setTotPrice(amt_input);
                     paymentDTO.setPayStatus("결제완료");
                     Integer updResult = eduMarineService.processUpdatePaymentVbankNoti(paymentDTO);
-                    if(updResult > 0){
+
+                    if(updResult > 0) {
                         PaymentDTO payInfo = eduMarineService.processSelectPaymentVbankInfo(paymentDTO);
 
-                        String tableSeq = payInfo.getTableSeq();
+                        // --- ▼▼▼ [신규 추가] merchantData 파싱 ▼▼▼ ---
+                        // payInfo.tableSeq에는 "AU000001,UNIFIED" 또는 "F000001"이 들어있음
+                        String merchantData = payInfo.getTableSeq();
+                        String tableSeq = merchantData;
+                        String systemType = "LEGACY"; // 기본값
+
+                        if (merchantData != null && merchantData.contains(",")) {
+                            String[] md = merchantData.split(",");
+                            tableSeq = md[0];
+                            systemType = md[1];
+                        }
+                        // --- ▲▲▲ [신규 추가] merchantData 파싱 ▲▲▲ ---
+
                         String trainSeq = payInfo.getTrainSeq();
                         String trainName = payInfo.getTrainName();
                         String applyStatus = "결제완료";
 
-                        if (trainName.contains("상시")) {
+                        // --- ▼▼▼ [신규 추가] 시스템 타입 분기 ▼▼▼ ---
+                        if ("UNIFIED".equals(systemType)) {
 
-                            // regular table
-                            RegularDTO regularDTO = new RegularDTO();
-                            regularDTO.setSeq(tableSeq);
-                            regularDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
+                            // [신규 로직]
+                            ApplicationUnifiedDTO unifiedDTO = new ApplicationUnifiedDTO();
+                            unifiedDTO.setSeq(tableSeq);
+                            unifiedDTO.setApplyStatus(applyStatus);
 
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                            }else{
-                                successFlag = false;
-                            }
-
-                        } else if (trainName.contains("(선내기/")) {
-
-                            // boarder table
-                            BoarderDTO boarderDTO = new BoarderDTO();
-                            boarderDTO.setSeq(tableSeq);
-                            boarderDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
+                            ResponseDTO result = eduMarineService.processUpdateUnifiedApplicationPayStatus(unifiedDTO);
 
                             if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                 Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                            }else{
+                            } else {
                                 successFlag = false;
                             }
 
-                        } else if (trainName.contains("FRP")) {
+                        } else {
 
-                            // frp table
-                            FrpDTO frpDTO = new FrpDTO();
-                            frpDTO.setSeq(tableSeq);
-                            frpDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
+                            if (trainName.contains("상시")) {
 
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                            }else{
-                                successFlag = false;
-                            }
-
-                        } else if (trainName.contains("(선외기)")) {
-
-                            // outboarder table
-                            OutboarderDTO outboarderDTO = new OutboarderDTO();
-                            outboarderDTO.setSeq(tableSeq);
-                            outboarderDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                            }else{
-                                successFlag = false;
-                            }
-
-                        } else if (trainName.contains("(선내기)")) {
-
-                            // inboarder table
-                            InboarderDTO inboarderDTO = new InboarderDTO();
-                            inboarderDTO.setSeq(tableSeq);
-                            inboarderDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                            }else{
-                                successFlag = false;
-                            }
-
-                        } else if (trainName.contains("(세일요트)")) {
-
-                            // sailyacht table
-                            SailyachtDTO sailyachtDTO = new SailyachtDTO();
-                            sailyachtDTO.setSeq(tableSeq);
-                            sailyachtDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                            }else{
-                                successFlag = false;
-                            }
-
-                        } else if (trainName.contains("고마력 선외기 정비 중급 테크니션")) {
-
-                            if (trainName.contains("(특별반)")) {
-
-                                // highspecial table
-                                HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
-                                highSpecialDTO.setSeq(tableSeq);
-                                highSpecialDTO.setApplyStatus(applyStatus);
-                                ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
+                                // regular table
+                                RegularDTO regularDTO = new RegularDTO();
+                                regularDTO.setSeq(tableSeq);
+                                regularDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateRegularPayStatus(regularDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }else{
+                                } else {
                                     successFlag = false;
                                 }
 
-                            }else{
+                            } else if (trainName.contains("(선내기/")) {
 
-                                // highhorsepower table
-                                HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
-                                highHorsePowerDTO.setSeq(tableSeq);
-                                highHorsePowerDTO.setApplyStatus(applyStatus);
-                                ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+                                // boarder table
+                                BoarderDTO boarderDTO = new BoarderDTO();
+                                boarderDTO.setSeq(tableSeq);
+                                boarderDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }else{
+                                } else {
                                     successFlag = false;
                                 }
 
-                            }
+                            } else if (trainName.contains("FRP")) {
 
-                        }else if (trainName.contains("자가정비 심화과정 (고마력 선외기)")) {
-
-                            // highself table
-                            HighSelfDTO highSelfDTO = new HighSelfDTO();
-                            highSelfDTO.setSeq(tableSeq);
-                            highSelfDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                            }else{
-                                successFlag = false;
-                            }
-
-                        } else if (trainName.contains("스턴드라이브")) {
-
-                            if (trainName.contains("(특별반)")) {
-
-                                // sternspecial table
-                                SternSpecialDTO sternSpecialDTO = new SternSpecialDTO();
-                                sternSpecialDTO.setSeq(tableSeq);
-                                sternSpecialDTO.setApplyStatus(applyStatus);
-                                ResponseDTO result = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
+                                // frp table
+                                FrpDTO frpDTO = new FrpDTO();
+                                frpDTO.setSeq(tableSeq);
+                                frpDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateFrpPayStatus(frpDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }else{
+                                } else {
                                     successFlag = false;
                                 }
 
-                            }else{
+                            } else if (trainName.contains("(선외기)")) {
 
-                                // Sterndrive table
-                                SterndriveDTO sterndriveDTO = new SterndriveDTO();
-                                sterndriveDTO.setSeq(tableSeq);
-                                sterndriveDTO.setApplyStatus(applyStatus);
-                                ResponseDTO result = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
+                                // outboarder table
+                                OutboarderDTO outboarderDTO = new OutboarderDTO();
+                                outboarderDTO.setSeq(tableSeq);
+                                outboarderDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
 
                                 if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }else{
+                                } else {
                                     successFlag = false;
                                 }
 
-                            }
+                            } else if (trainName.contains("(선내기)")) {
 
-                        } else if (trainName.contains("기초정비교육")) {
+                                // inboarder table
+                                InboarderDTO inboarderDTO = new InboarderDTO();
+                                inboarderDTO.setSeq(tableSeq);
+                                inboarderDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
 
-                            // basic table
-                            BasicDTO basicDTO = new BasicDTO();
-                            basicDTO.setSeq(tableSeq);
-                            basicDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
                                     Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                } else {
+                                    successFlag = false;
+                                }
+
+                            } else if (trainName.contains("(세일요트)")) {
+
+                                // sailyacht table
+                                SailyachtDTO sailyachtDTO = new SailyachtDTO();
+                                sailyachtDTO.setSeq(tableSeq);
+                                sailyachtDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                } else {
+                                    successFlag = false;
+                                }
+
+                            } else if (trainName.contains("고마력 선외기 정비 중급 테크니션")) {
+
+                                if (trainName.contains("(특별반)")) {
+
+                                    // highspecial table
+                                    HighSpecialDTO highSpecialDTO = new HighSpecialDTO();
+                                    highSpecialDTO.setSeq(tableSeq);
+                                    highSpecialDTO.setApplyStatus(applyStatus);
+                                    ResponseDTO result = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    } else {
+                                        successFlag = false;
+                                    }
+
+                                } else {
+
+                                    // highhorsepower table
+                                    HighHorsePowerDTO highHorsePowerDTO = new HighHorsePowerDTO();
+                                    highHorsePowerDTO.setSeq(tableSeq);
+                                    highHorsePowerDTO.setApplyStatus(applyStatus);
+                                    ResponseDTO result = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    } else {
+                                        successFlag = false;
+                                    }
+
+                                }
+
+                            } else if (trainName.contains("자가정비 심화과정 (고마력 선외기)")) {
+
+                                // highself table
+                                HighSelfDTO highSelfDTO = new HighSelfDTO();
+                                highSelfDTO.setSeq(tableSeq);
+                                highSelfDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                } else {
+                                    successFlag = false;
+                                }
+
+                            } else if (trainName.contains("스턴드라이브")) {
+
+                                if (trainName.contains("(특별반)")) {
+
+                                    // sternspecial table
+                                    SternSpecialDTO sternSpecialDTO = new SternSpecialDTO();
+                                    sternSpecialDTO.setSeq(tableSeq);
+                                    sternSpecialDTO.setApplyStatus(applyStatus);
+                                    ResponseDTO result = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    } else {
+                                        successFlag = false;
+                                    }
+
+                                } else {
+
+                                    // Sterndrive table
+                                    SterndriveDTO sterndriveDTO = new SterndriveDTO();
+                                    sterndriveDTO.setSeq(tableSeq);
+                                    sterndriveDTO.setApplyStatus(applyStatus);
+                                    ResponseDTO result = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
+
+                                    if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    } else {
+                                        successFlag = false;
+                                    }
+
+                                }
+
+                            } else if (trainName.contains("기초정비교육")) {
+
+                                // basic table
+                                BasicDTO basicDTO = new BasicDTO();
+                                basicDTO.setSeq(tableSeq);
+                                basicDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateBasicPayStatus(basicDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (trainName.contains("응급조치교육")) {
+
+                                // basic table
+                                EmergencyDTO emergencyDTO = new EmergencyDTO();
+                                emergencyDTO.setSeq(tableSeq);
+                                emergencyDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
+                                }
+
+                            } else if (trainName.contains("발전기")) {
+
+                                // Generator table
+                                GeneratorDTO generatorDTO = new GeneratorDTO();
+                                generatorDTO.setSeq(tableSeq);
+                                generatorDTO.setApplyStatus(applyStatus);
+                                ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
+
+                                if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+                                    if ("결제완료".equals(paymentDTO.getPayStatus())) {
+                                        Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
+                                    }
                                 }
                             }
-
-                        } else if (trainName.contains("응급조치교육")) {
-
-                            // basic table
-                            EmergencyDTO emergencyDTO = new EmergencyDTO();
-                            emergencyDTO.setSeq(tableSeq);
-                            emergencyDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
-                        } else if (trainName.contains("발전기")) {
-
-                            // Generator table
-                            GeneratorDTO generatorDTO = new GeneratorDTO();
-                            generatorDTO.setSeq(tableSeq);
-                            generatorDTO.setApplyStatus(applyStatus);
-                            ResponseDTO result = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
-
-                            if (CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-                                if ("결제완료".equals(paymentDTO.getPayStatus())) {
-                                    Integer updTrain = eduMarineService.processUpdateTrainApplyCnt(trainSeq);
-                                }
-                            }
-
                         }
-
                     }
-
 
                     //***********************************************************************************
                     //

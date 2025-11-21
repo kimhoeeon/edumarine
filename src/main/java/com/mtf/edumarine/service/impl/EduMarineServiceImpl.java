@@ -103,6 +103,35 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ApplicationUnifiedDTO processSelectUnifiedApplicationSingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectUnifiedApplicationSingle");
+        return unifiedMapper.selectUnifiedApplicationSingle(seq);
+    }
+
+    @Override
+    public ResponseDTO processUpdateUnifiedApplication(ApplicationUnifiedDTO dto) {
+        ResponseDTO response = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            int result = unifiedMapper.updateUnifiedApplication(dto);
+            if (result == 0) {
+                throw new Exception("Update Failed. Seq: " + dto.getSeq());
+            }
+            // (필요 시) 경력/자격증 등 하위 테이블 업데이트 로직 추가 가능
+        } catch (Exception e) {
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[수정 오류] " + e.getMessage();
+        }
+
+        response.setResultCode(resultCode);
+        response.setResultMessage(resultMessage);
+        return response;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<TrainDTO> processSelectTrainList(TrainDTO trainDTO) {
         System.out.println("EduMarineServiceImpl > processSelectTrainList");
         return eduMarineMapper.selectTrainList(trainDTO);

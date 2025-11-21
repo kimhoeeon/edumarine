@@ -156,18 +156,18 @@
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
-<script src="/js/jquery-3.6.0.min.js"></script>
-<script src="/js/jquery-migrate-3.3.0.js"></script>
-<script src="/js/jquery.cookie.min.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/jquery-migrate-3.3.0.js"></script>
+    <script src="/js/jquery.cookie.min.js"></script>
 
-<script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="/js/swiper.js"></script>
-<script src="/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/swiper.js"></script>
+    <script src="/js/form.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <%-- 개발 --%>
     <!--테스트 JS--><%--<script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>--%>
@@ -176,7 +176,54 @@
     <!--운영 JS>--> <script language="javascript" type="text/javascript" src="https://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
     <script type="text/javascript">
         $(function(){
-            INIStdPay.pay('SendPayForm_id');
+            function on_pay() {
+
+                // 1. merchantData 동적 생성 (신규/기존 로직 분기)
+                var tableSeq = "${payInfo.tableSeq}";
+                var systemType = "${payInfo.applicationSystemType}";
+                var merchantData = tableSeq;
+
+                // 신규 통합 시스템('UNIFIED')인 경우에만 식별자 추가
+                if (systemType === 'UNIFIED') {
+                    merchantData = tableSeq + ",UNIFIED";
+                }
+
+                // (선택사항) 폼 내의 hidden input 값도 동기화 (일부 PG 설정에 따라 필요할 수 있음)
+                if (document.getElementById("SendPayForm_id").merchantData) {
+                    document.getElementById("SendPayForm_id").merchantData.value = merchantData;
+                }
+
+                // 2. 결제 요청
+                INIStdPay.pay('SendPayForm_id', {
+                    version: "1.0",
+                    gopaymethod: "Card:vbank",
+                    mid: "${payInfo.mid}",
+                    oid: "${payInfo.oid}",
+                    price: "${payInfo.price}",
+                    timestamp: "${payInfo.timestamp}",
+                    use_chkfake: "${payInfo.useChkfake}",
+                    signature: "${payInfo.signature}",
+                    verification: "${payInfo.verification}",
+                    mKey: "${payInfo.mkey}",
+                    currency: "WON",
+                    goodname: "${payInfo.goodname}",
+                    buyername: "${payInfo.buyername}",
+                    buyertel: "${payInfo.buyertel}",
+                    buyeremail: "${payInfo.buyeremail}",
+
+                    // ★★★ 수정된 merchantData 적용 ★★★
+                    merchantData: merchantData,
+
+                    returnUrl: "${payInfo.siteDomain}/mypage/eduApplyInfo.do",
+                    closeUrl: "",
+                    acceptmethod: "HPP(1):below1000:centerCd(Y):SKIN(#083274):vbank(${sysDate})"
+                });
+            }
+
+            // [수정] 페이지 로드 후 on_pay() 함수 자동 호출
+            $(document).ready(function () {
+                on_pay();
+            });
         })
     </script>
 </c:if>

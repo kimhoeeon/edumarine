@@ -3071,6 +3071,77 @@ public class EduMarineMngController {
         return mv;
     }
 
+    // ***************************************************************************
+    // [신규] Unified Application (통합 신청 관리)
+    // ***************************************************************************
+
+    // 1. 목록 페이지 이동
+    @RequestMapping(value = "/mng/customer/unified.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_unified() {
+        System.out.println("EduMarineMngController > mng_customer_unified");
+        ModelAndView mv = new ModelAndView();
+
+        // 필터링을 위한 교육과정 목록 조회 (옵션)
+        // TrainDTO trainDTO = new TrainDTO();
+        // trainDTO.setApplicationSystemType("UNIFIED");
+        // List<TrainDTO> trainList = eduMarineMngService.processSelectTrainList(trainDTO); // 기존 메서드 재사용 확인 필요
+        // mv.addObject("trainList", trainList);
+
+        mv.setViewName("/mng/customer/unified"); // JSP 파일명
+        return mv;
+    }
+
+    // 2. 목록 데이터 조회 (AJAX)
+    @RequestMapping(value = "/mng/customer/unified/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ApplicationUnifiedDTO>> mng_customer_unified_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("EduMarineMngController > mng_customer_unified_selectList");
+
+        List<ApplicationUnifiedDTO> responseList = eduMarineMngService.processSelectUnifiedApplicationList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    // 3. 엑셀 다운로드
+    @RequestMapping(value = "/mng/customer/unified/excel/download.do", method = RequestMethod.GET)
+    public void customer_unified_excel_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("EduMarineMngController > customer_unified_excel_download");
+        String fileName = req.getParameter("fileName");
+
+        // 검색 조건 파싱 (필요시 request parameter에서 SearchDTO로 매핑)
+        SearchDTO searchDTO = new SearchDTO();
+        // searchDTO.setSearchText(req.getParameter("searchText")); ...
+
+        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){
+            // ... (엑셀 생성 로직: 기존 customer_boarder_detail_excel_download 참고하여 구현) ...
+            // ... (ApplicationUnifiedDTO 필드에 맞춰 컬럼 구성) ...
+
+            // 간단 예시:
+            SXSSFSheet sheet = workbook.createSheet("UnifiedList");
+            SXSSFRow row = sheet.createRow(0);
+            row.createCell(0).setCellValue("성명");
+            row.createCell(1).setCellValue("교육과정");
+            row.createCell(2).setCellValue("상태");
+
+            List<ApplicationUnifiedDTO> list = eduMarineMngService.processSelectExcelUnifiedApplicationList(searchDTO);
+            int rowNum = 1;
+            for(ApplicationUnifiedDTO dto : list){
+                SXSSFRow r = sheet.createRow(rowNum++);
+                r.createCell(0).setCellValue(dto.getMemberName());
+                r.createCell(1).setCellValue(dto.getTrainName());
+                r.createCell(2).setCellValue(dto.getApplyStatus());
+                // ... 나머지 필드 ...
+            }
+
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            workbook.write(res.getOutputStream());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @RequestMapping(value = "/mng/education/train.do", method = RequestMethod.GET)
     public ModelAndView mng_education_train(String nextTime) {
         System.out.println("EduMarineMngController > mng_education_train");
@@ -3103,7 +3174,7 @@ public class EduMarineMngController {
     }
 
     @RequestMapping(value = "/mng/education/train/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_education_train_detail(String seq) {
+    public ModelAndView mng_education_train_detail(String seq, String type) {
         System.out.println("EduMarineMngController > mng_education_train_detail");
         ModelAndView mv = new ModelAndView();
 
@@ -3113,14 +3184,18 @@ public class EduMarineMngController {
             TrainDTO info = eduMarineMngService.processSelectTrainSingle(trainDTO);
             mv.addObject("info", info);
         } else {
-            // --- [신규 추가] ---
-            // 신규 교육 생성 시 기본값 설정
             TrainDTO newTrain = new TrainDTO();
-            newTrain.setApplicationSystemType("UNIFIED"); // 스위치를 '신규'로
+
+            // ★★★ [핵심 수정] 파라미터에 따라 시스템 타입 결정 ★★★
+            if ("UNIFIED".equals(type)) {
+                newTrain.setApplicationSystemType("UNIFIED"); // 신규 통합 방식
+            } else {
+                newTrain.setApplicationSystemType("LEGACY");  // 기존 방식 (기본값)
+            }
+
             newTrain.setExposureYn("Y");
             newTrain.setScheduleExposureYn("Y");
             mv.addObject("info", newTrain);
-            // --- [여기까지] ---
         }
 
         mv.setViewName("/mng/education/train/detail");
