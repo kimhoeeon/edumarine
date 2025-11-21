@@ -29,6 +29,9 @@ public class TrainDTO extends AbstractPagingRequestVo {
     String closingYn; //마감여부
     String applicationSystemType; // application_system_type
     String formType;              // form_type
+    String thumbFileId;   // 썸네일 파일 ID
+    String thumbFileName;   // 파일명 (file_name)
+    String thumbFilePath;   // 파일경로 (full_path)
     String delYn; //임시휴지통여부
     String note; //비고
     String initRegiPic; //최초 등록 담당자

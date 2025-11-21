@@ -404,10 +404,7 @@ if (document.documentElement) {
                                                 <label class="col-lg-2 col-form-label required fw-semibold fs-6">신청서 양식</label>
                                                 <div class="col-lg-10 fv-row">
                                                     <c:choose>
-                                                        <%--
-                                                            [CASE 1] 신규 통합 시스템 (UNIFIED)
-                                                            - 관리자가 '통합 등록' 버튼을 눌렀거나, 이미 UNIFIED로 생성된 교육일 경우
-                                                        --%>
+                                                        <%--신규 통합 시스템 (UNIFIED)--%>
                                                         <c:when test="${info.applicationSystemType == 'UNIFIED'}">
                                                             <select class="form-select form-select-solid" name="formType" data-control="select2" data-hide-search="true" data-placeholder="신청서 양식을 선택하세요">
                                                                 <option></option>
@@ -418,10 +415,7 @@ if (document.documentElement) {
                                                             <input type="hidden" name="applicationSystemType" value="UNIFIED"/>
                                                         </c:when>
 
-                                                        <%--
-                                                            [CASE 2] 기존 시스템 (LEGACY) - 기본값
-                                                            - '교육 등록' 버튼을 눌렀거나, 기존 교육일 경우
-                                                        --%>
+                                                        <%--기존 시스템 (LEGACY) - 기본값--%>
                                                         <c:otherwise>
                                                             <input type="text" class="form-control form-control-solid" value="기존 교육 양식 (LEGACY)" readonly />
                                                             <input type="hidden" name="applicationSystemType" value="LEGACY"/>
@@ -429,6 +423,40 @@ if (document.documentElement) {
                                                     </c:choose>
                                                 </div>
                                             </div>
+
+                                            <c:if test="${info.applicationSystemType == 'UNIFIED'}">
+                                                <div class="row mb-6">
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">썸네일 이미지</label>
+                                                    <div class="col-lg-10">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="me-5 position-relative">
+                                                                <div class="symbol symbol-150px symbol-2by3"> <c:choose>
+                                                                    <c:when test="${not empty info.thumbFileId}">
+                                                                        <img id="thumbPreview" src="/file/download.do?fileName=${info.thumbFileName}&path=${info.thumbFilePath}"
+                                                                             alt="썸네일 미리보기" class="rounded" style="object-fit: cover; width: 200px; height: 133px; border: 1px solid #eee;">
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <img id="thumbPreview" src="/assets/media/svg/files/blank-image.svg"
+                                                                             alt="이미지 없음" class="rounded" style="width: 200px; height: 133px; object-fit: contain; border: 1px solid #eee; background: #f5f8fa;">
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="flex-grow-1">
+                                                                <div class="input-group">
+                                                                    <input type="file" class="form-control" id="thumbFileObj" name="thumbFileObj" accept=".png, .jpg, .jpeg" />
+                                                                    <input type="hidden" id="thumbFileId" name="thumbFileId" value="${info.thumbFileId}"/>
+                                                                </div>
+                                                                <div class="form-text text-muted mt-2">
+                                                                    ※ 권장 사이즈: <strong>1920 x 1080px</strong> (비율 3:2)<br>
+                                                                    ※ 지원 파일: jpg, jpeg, png (최대 5MB)
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:if>
 
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
