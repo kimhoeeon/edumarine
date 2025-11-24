@@ -116,14 +116,14 @@ if (document.documentElement) {
 <!--end::Theme mode setup on page load-->
 
 <!--begin::login check-->
-<c:if test="${status ne 'logon'}">
+<c:if test="${sessionScope.get('status') ne 'logon'}">
     <script>
         alert("로그인해 주세요.");
         location.href = '/mng/index.do';
     </script>
 </c:if>
 
-<c:if test="${status eq 'logon'}">
+<c:if test="${sessionScope.get('status') eq 'logon'}">
 
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
