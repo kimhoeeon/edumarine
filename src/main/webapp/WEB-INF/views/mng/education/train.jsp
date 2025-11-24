@@ -118,14 +118,14 @@ if (document.documentElement) {
 <!--end::Theme mode setup on page load-->
 
 <!--begin::login check-->
-<c:if test="${status ne 'logon'}">
+<c:if test="${sessionScope.get('status') ne 'logon'}">
     <script>
         alert("로그인해 주세요.");
         location.href = '/mng/index.do';
     </script>
 </c:if>
 
-<c:if test="${status eq 'logon'}">
+<c:if test="${sessionScope.get('status') eq 'logon'}">
 
     <!--begin::Page loading(append to body)-->
     <div class="page-loader flex-column bg-dark bg-opacity-25">
@@ -519,9 +519,11 @@ if (document.documentElement) {
                                                 <a href="javascript:void(0);" onclick="f_education_train_modify_init_set('');" class="btn btn-primary ms-auto">교육 등록</a>
                                                 <!--end::등록-->
 
-                                                <a href="/mng/education/train/detail.do?type=UNIFIED" class="btn btn-success ms-2" style="opacity: 0.3; transform: scale(0.8);" title="신규 통합 교육 등록 (관리자용)">
-                                                    (신규) 통합 등록
-                                                </a>
+                                                <c:if test="${sessionScope.get('id') eq 'admin'}">
+                                                    <a href="/mng/education/train/detail.do?type=UNIFIED" class="btn btn-success ms-2" style="opacity: 0.3; transform: scale(0.8);" title="신규 통합 교육 등록 (관리자용)">
+                                                        (신규) 통합 등록
+                                                    </a>
+                                                </c:if>
 
                                             </div>
 

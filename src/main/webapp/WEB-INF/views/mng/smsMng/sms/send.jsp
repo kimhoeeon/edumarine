@@ -117,14 +117,14 @@ if (document.documentElement) {
 <!--end::Theme mode setup on page load-->
 
 <!--begin::login check-->
-<c:if test="${status ne 'logon'}">
+<c:if test="${sessionScope.get('status') ne 'logon'}">
     <script>
         alert("로그인해 주세요.");
         location.href = '/mng/index.do';
     </script>
 </c:if>
 
-<c:if test="${status eq 'logon'}">
+<c:if test="${sessionScope.get('status') eq 'logon'}">
 
     <!--begin::Page loading(append to body)-->
     <div class="page-loader flex-column bg-dark bg-opacity-25">

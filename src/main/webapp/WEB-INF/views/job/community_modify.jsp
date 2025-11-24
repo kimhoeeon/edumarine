@@ -102,14 +102,14 @@
 
 <body>
 
-<c:if test="${status ne 'logon'}">
+<c:if test="${sessionScope.get('status') ne 'logon'}">
     <script>
         alert("로그인해 주세요.");
         location.href = '/member/login.do';
     </script>
 </c:if>
 
-<c:if test="${status eq 'logon'}">
+<c:if test="${sessionScope.get('status') eq 'logon'}">
 
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
