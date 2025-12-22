@@ -169,7 +169,7 @@ button {
 .table_wrap .table_box td {border-bottom: 1px solid #ededed;}
 .table_wrap .table_box th,
 .table_wrap .table_box td {font-size: 1.4rem; text-align: center; vertical-align: middle; padding: 15px 7px;}
-
+.table_wrap .table-lh td{line-height: 1.6;}
 
 /* floating */
 .floating {position: fixed; bottom: 30px; right: 30px; z-index: 12; }
