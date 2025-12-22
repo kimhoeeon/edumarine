@@ -409,7 +409,7 @@ if (document.documentElement) {
                                                 </li>--%>
                                                 <li class="nav-item">
                                                     <a class="nav-link active" id="marina" data-toggle="tab" href="#kt_tab_pane_4_1">
-                                                        <span class="nav-text">마리나 선박 정비사 실무교육</span>
+                                                        <span class="nav-text">마리나선박 정비사 실무과정</span>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
@@ -419,7 +419,7 @@ if (document.documentElement) {
                                                 </li>
                                                 <li class="nav-item dropdown">
                                                     <a class="nav-link dropdown-toggle" id="boarder" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                                        <span class="nav-text">해상엔진 자가정비</span>
+                                                        <span class="nav-text">기초정비실습 과정</span>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                                         <a class="dropdown-item" id="outboarder" data-toggle="tab" href="#kt_tab_pane_4_3">선외기</a>
@@ -1279,7 +1279,7 @@ if (document.documentElement) {
                                             </div>
                                             <div class="tab-pane fade" id="kt_tab_pane_4_3" role="tabpanel" aria-labelledby="kt_tab_pane_4_3">
 
-                                                <!-- 선외기 자가정비과정 -->
+                                                <!-- 선외기 기초정비실습 과정 -->
                                                 <div class="guide_tp_01">
                                                     <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
                                                     <div class="table">
@@ -1288,7 +1288,7 @@ if (document.documentElement) {
                                                             <!-- 과정명 -->
                                                             <tr>
                                                                 <th class="gubun">구분</th>
-                                                                <th>선외기 자가정비과정</th>
+                                                                <th>선외기 기초정비실습 과정</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -1471,9 +1471,9 @@ if (document.documentElement) {
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <!-- //선외기 자가정비과정 -->
+                                                <!-- //선외기 기초정비실습 과정 -->
 
-                                                <!-- 선외기 자가정비과정 -->
+                                                <!-- 선외기 기초정비실습 과정 -->
                                                 <div class="guide_tp_02">
                                                     <ul>
                                                         <li id="edu_boarder_outboarder_apply_method">
@@ -1521,12 +1521,12 @@ if (document.documentElement) {
                                                     </div>
                                                 </div>
 
-                                                <!-- //선외기 자가정비과정 -->
+                                                <!-- //선외기 기초정비실습 과정 -->
 
                                             </div>
                                             <div class="tab-pane fade" id="kt_tab_pane_4_4" role="tabpanel" aria-labelledby="kt_tab_pane_4_4">
 
-                                                <!-- 선내기 자가정비과정 -->
+                                                <!-- 선내기 기초정비실습 과정 -->
                                                 <div class="guide_tp_01">
                                                     <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
                                                     <div class="table">
@@ -1535,7 +1535,7 @@ if (document.documentElement) {
                                                             <!-- 과정명 -->
                                                             <tr>
                                                                 <th class="gubun">구분</th>
-                                                                <th>선내기 자가정비과정</th>
+                                                                <th>선내기 기초정비실습 과정</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -1718,9 +1718,9 @@ if (document.documentElement) {
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <!-- //선내기 자가정비과정 -->
+                                                <!-- //선내기 기초정비실습 과정 -->
 
-                                                <!-- 선내기 자가정비과정 -->
+                                                <!-- 선내기 기초정비실습 과정 -->
                                                 <div class="guide_tp_02">
                                                     <ul>
                                                         <li id="edu_boarder_inboarder_apply_method">
@@ -1768,12 +1768,12 @@ if (document.documentElement) {
                                                     </div>
                                                 </div>
 
-                                                <!-- //선내기 자가정비과정 -->
+                                                <!-- //선내기 기초정비실습 과정 -->
 
                                             </div>
                                             <div class="tab-pane fade" id="kt_tab_pane_4_5" role="tabpanel" aria-labelledby="kt_tab_pane_4_5">
 
-                                                <!-- 세일요트 자가정비과정 -->
+                                                <!-- 세일요트 기초정비실습 과정 -->
                                                 <div class="guide_tp_01">
                                                     <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
                                                     <div class="table">
@@ -1782,7 +1782,7 @@ if (document.documentElement) {
                                                             <!-- 과정명 -->
                                                             <tr>
                                                                 <th class="gubun">구분</th>
-                                                                <th>세일요트 자가정비과정</th>
+                                                                <th>세일요트 기초정비실습 과정</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -1965,9 +1965,9 @@ if (document.documentElement) {
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <!-- //세일요트 자가정비과정 -->
+                                                <!-- //세일요트 기초정비실습 과정 -->
 
-                                                <!-- 세일요트 자가정비과정 -->
+                                                <!-- 세일요트 기초정비실습 과정 -->
                                                 <div class="guide_tp_02">
                                                     <ul>
                                                         <li id="edu_boarder_sailyacht_apply_method">
@@ -2015,7 +2015,7 @@ if (document.documentElement) {
                                                     </div>
                                                 </div>
 
-                                                <!-- //세일요트 자가정비과정 -->
+                                                <!-- //세일요트 기초정비실습 과정 -->
 
                                             </div>
                                             <div class="tab-pane fade" id="kt_tab_pane_4_6" role="tabpanel" aria-labelledby="kt_tab_pane_4_6">

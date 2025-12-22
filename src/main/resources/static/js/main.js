@@ -7328,9 +7328,9 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
         //상시신청
         //해상엔진 테크니션 (선내기/선외기)
         //FRP 레저보트 선체 정비 테크니션
-        //해상엔진 자가정비 (선내기)
-        //해상엔진 자가정비 (선외기)
-        //해상엔진 자가정비 (세일요트)
+        //선내기 기초정비실습 과정
+        //선외기 기초정비실습 과정
+        //세일요트 기초정비실습 과정
         //고마력 선외기 정비 중급 테크니션
         //자가정비 심화과정 (고마력 선외기)
         //고마력 선외기 정비 중급 테크니션 (특별반)
@@ -7359,13 +7359,13 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
             case 'FRP 레저보트 선체 정비 테크니션':
                 cancelUrl = '/apply/eduApply03/update/status.do';
                 break;
-            case '해상엔진 자가정비 (선내기)':
+            case '선내기 기초정비실습 과정':
                 cancelUrl = '/apply/eduApply04/update/status.do';
                 break;
-            case '해상엔진 자가정비 (선외기)':
+            case '선외기 기초정비실습 과정':
                 cancelUrl = '/apply/eduApply05/update/status.do';
                 break;
-            case '해상엔진 자가정비 (세일요트)':
+            case '세일요트 기초정비실습 과정':
                 cancelUrl = '/apply/eduApply06/update/status.do';
                 break;
             case '고마력 선외기 정비 중급 테크니션':
@@ -7493,13 +7493,13 @@ function f_edu_apply_modify_btn(trainStartDttm, trainName, seq){
             case 'FRP 레저보트 선체 정비 테크니션':
                 location = '/mypage/eduApply03_modify.do';
                 break;
-            case '해상엔진 자가정비 (선내기)':
+            case '선내기 기초정비실습 과정':
                 location = '/mypage/eduApply04_modify.do';
                 break;
-            case '해상엔진 자가정비 (선외기)':
+            case '선외기 기초정비실습 과정':
                 location = '/mypage/eduApply05_modify.do';
                 break;
-            case '해상엔진 자가정비 (세일요트)':
+            case '세일요트 기초정비실습 과정':
                 location = '/mypage/eduApply06_modify.do';
                 break;
             case '고마력 선외기 정비 중급 테크니션':

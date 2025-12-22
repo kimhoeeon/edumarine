@@ -446,9 +446,9 @@ if (document.documentElement) {
                                                         <option value="상시신청">상시신청</option>
                                                         <option value="해상엔진 테크니션 (선내기/선외기)">해상엔진 테크니션 (선내기/선외기)</option>
                                                         <option value="FRP 레저보트 선체 정비 테크니션">FRP 레저보트 선체 정비 테크니션</option>
-                                                        <option value="해상엔진 자가정비 (선외기)">해상엔진 자가정비 (선외기)</option>
-                                                        <option value="해상엔진 자가정비 (선내기)">해상엔진 자가정비 (선내기)</option>
-                                                        <option value="해상엔진 자가정비 (세일요트)">해상엔진 자가정비 (세일요트)</option>
+                                                        <option value="선외기 기초정비실습 과정">선외기 기초정비실습 과정</option>
+                                                        <option value="선내기 기초정비실습 과정">선내기 기초정비실습 과정</option>
+                                                        <option value="세일요트 기초정비실습 과정">세일요트 기초정비실습 과정</option>
                                                         <option value="고마력 선외기 정비 중급 테크니션">고마력 선외기 정비 중급 테크니션</option>
                                                         <option value="자가정비 심화과정 (고마력 선외기)">자가정비 심화과정 (고마력 선외기)</option>
                                                         <option value="고마력 선외기 정비 중급 테크니션 (특별반)">고마력 선외기 정비 중급 테크니션 (특별반)</option>

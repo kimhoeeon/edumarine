@@ -409,9 +409,9 @@ function f_education_train_form_data_setting() {
             case '마리나 선박 선내기 정비사 실무과정':
                 category = '정규과정';
                 break;
-            case '해상엔진 자가정비 (선외기)':
-            case '해상엔진 자가정비 (선내기)':
-            case '해상엔진 자가정비 (세일요트)':
+            case '선외기 기초정비실습 과정':
+            case '선내기 기초정비실습 과정':
+            case '세일요트 기초정비실습 과정':
             case '자가정비 심화과정 (고마력 선외기)':
             case '기초정비교육':
             case '응급조치교육':
@@ -569,13 +569,13 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
         case 'FRP 레저보트 선체 정비 테크니션':
             link = '/mng/customer/frp.do';
             break;
-        case '해상엔진 자가정비 (선외기)':
+        case '선외기 기초정비실습 과정':
             link = '/mng/customer/outboarder.do';
             break;
-        case '해상엔진 자가정비 (선내기)':
+        case '선내기 기초정비실습 과정':
             link = '/mng/customer/inboarder.do';
             break;
-        case '해상엔진 자가정비 (세일요트)':
+        case '세일요트 기초정비실습 과정':
             link = '/mng/customer/sailyacht.do';
             break;
         case '고마력 선외기 정비 중급 테크니션':

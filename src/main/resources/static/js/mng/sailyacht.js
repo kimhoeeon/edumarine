@@ -1,6 +1,6 @@
 /***
  * mng/customer/sailyacht
- * 회원/신청>신청자목록>해상엔진 자가정비(세일요트)
+ * 회원/신청>신청자목록>세일요트 기초정비실습 과정
  * */
 
 $(function(){
@@ -657,7 +657,7 @@ function f_customer_sailyacht_train_change_modal_set(seq, name, applyStatus, nex
         // 교육 Set
         $("#md_edu").children('option:not(:gt(1))').remove();
 
-        let jsonObj = { gbn : '해상엔진 자가정비 (세일요트)' };
+        let jsonObj = { gbn : '세일요트 기초정비실습 과정' };
         $.ajax({
             url: '/train/active.do',
             method: 'post',
@@ -727,7 +727,7 @@ function f_customer_sailyacht_train_change_btn(){
                     let jsonObj = {
                         seq: seq,
                         trainSeq: md_edu_val,
-                        trainName: md_edu_text.split(' / ')[1].trim() // 단기과정 / 해상엔진 자가정비 (선외기) / 3차 / 2024.08.24 / 2024.08.25
+                        trainName: md_edu_text.split(' / ')[1].trim() // 단기과정 / 선외기 기초정비실습 과정 / 3차 / 2024.08.24 / 2024.08.25
                     }
 
                     let resData = ajaxConnect('/mng/customer/train/change/update.do', 'post', jsonObj);

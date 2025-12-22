@@ -42,7 +42,7 @@
                     <p class="w100"><span class="gubun">Inboard Engine</span> 210, Arayuk-ro 152beon-gil, Gochon-eup, Gimpo-si, Gyeonggi-do, 10135</p>
                     <p><span class="gubun">Business Registration Number</span>484-86-01123</p>
                     <p><span class="gubun">Company Name</span>K-Water Operation Management Co., Ltd.</p>
-                    <p><span class="gubun">Representative</span>Dal-Sik Woo</p>
+                    <p><span class="gubun">Representative</span>Seok-gyu Seo</p>
                     <p><span class="gubun">Tel</span>+82-1811-7891</p>
                     <p><span class="gubun">Fax</span>+82-031-983-4396</p>
                     <p><span class="gubun">Email</span>edu@edumarine.org</p>

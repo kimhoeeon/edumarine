@@ -6680,17 +6680,17 @@
         FROM frp f
         WHERE f.seq = #{seq}
         UNION ALL
-        SELECT '해상엔진 자가정비 (선내기)' AS trainName
+        SELECT '선내기 기초정비실습 과정' AS trainName
              , i.train_seq
         FROM inboarder i
         WHERE i.seq = #{seq}
         UNION ALL
-        SELECT '해상엔진 자가정비 (선외기)' AS trainName
+        SELECT '선외기 기초정비실습 과정' AS trainName
              , o.train_seq
         FROM outboarder o
         WHERE o.seq = #{seq}
         UNION ALL
-        SELECT '해상엔진 자가정비 (세일요트)' AS trainName
+        SELECT '세일요트 기초정비실습 과정' AS trainName
              , s.train_seq
         FROM sailyacht s
         WHERE s.seq = #{seq}

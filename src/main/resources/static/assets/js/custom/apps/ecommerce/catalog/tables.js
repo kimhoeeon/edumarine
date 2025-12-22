@@ -7467,11 +7467,11 @@ KTUtil.onDOMContentLoaded(function () {
     DTCustomerBasic.init(); // /mng/customer/basic.do
     // 응급조치교육
     DTCustomerEmergency.init(); // /mng/customer/emergency.do
-    // 자가정비(선외기)
+    // 선외기_기초정비_실습과정
     DTCustomerOutboarder.init(); // /mng/customer/outboarder.do
-    // 자가정비(선내기)
+    // 선내기_기초정비_실습과정
     DTCustomerInboarder.init(); // /mng/customer/inboarder.do
-    // 자가정비(세일요트)
+    // 세일요트_기초정비_실습과정
     DTCustomerSailyacht.init(); // /mng/customer/sailyacht.do
     // 고마력 선외기 정비 중급 테크니션
     DTCustomerHighhorsepower.init(); // /mng/customer/highhorsepower.do

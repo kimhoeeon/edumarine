@@ -592,13 +592,13 @@ function getTargetMenu(tableId){
             targetMenu = '회원/신청_신청자목록_응급조치교육';
             break;
         case 'mng_customer_outboarder_table':
-            targetMenu = '회원/신청_신청자목록_자가정비(선외기)';
+            targetMenu = '회원/신청_신청자목록_선외기_기초정비_실습과정';
             break;
         case 'mng_customer_inboarder_table':
-            targetMenu = '회원/신청_신청자목록_자가정비(선내기)';
+            targetMenu = '회원/신청_신청자목록_선내기_기초정비_실습과정';
             break;
         case 'mng_customer_sailyacht_table':
-            targetMenu = '회원/신청_신청자목록_자가정비(세일요트)';
+            targetMenu = '회원/신청_신청자목록_세일요트_기초정비_실습과정';
             break;
         case 'mng_customer_highhorsepower_table':
             targetMenu = '회원/신청_신청자목록_고마력선외기정비교육과정';
@@ -682,9 +682,9 @@ function getTargetMenu(tableId){
     //mng_customer_frp_table // 회원/신청_신청자목록_FRP정비테크니션
     //mng_customer_basic_table // 회원/신청_신청자목록_기초정비교육
     //mng_customer_emergency_table // 회원/신청_신청자목록_응급조치교육
-    //mng_customer_outboarder_table // 회원/신청_신청자목록_자가정비(선외기)
-    //mng_customer_inboarder_table // 회원/신청_신청자목록_자가정비(선내기)
-    //mng_customer_sailyacht_table // 회원/신청_신청자목록_자가정비(세일요트)
+    //mng_customer_outboarder_table // 회원/신청_신청자목록_선외기_기초정비_실습과정
+    //mng_customer_inboarder_table // 회원/신청_신청자목록_선내기_기초정비_실습과정
+    //mng_customer_sailyacht_table // 회원/신청_신청자목록_세일요트_기초정비_실습과정
     //mng_customer_highhorsepower_table // 회원/신청_신청자목록_고마력선외기정비교육과정
     //mng_customer_sterndrive_table // 회원/신청_신청자목록_Sterndrive정비교육과정
 

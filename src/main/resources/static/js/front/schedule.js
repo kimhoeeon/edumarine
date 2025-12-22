@@ -158,15 +158,15 @@ function searchPosts(pageNum, categoryValue) {
                         /*applyPath = '/apply/eduApply03.do';*/
                         applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
                         break;
-                    case '해상엔진 자가정비 (선외기)':
+                    case '선외기 기초정비실습 과정':
                         thumbnailImage = '/img/thumbnail_outboarder.jpg';
                         applyPath = '/apply/eduApply05.do';
                         break;
-                    case '해상엔진 자가정비 (선내기)':
+                    case '선내기 기초정비실습 과정':
                         thumbnailImage = '/img/thumbnail_inboarder.jpg';
                         applyPath = '/apply/eduApply04.do';
                         break;
-                    case '해상엔진 자가정비 (세일요트)':
+                    case '세일요트 기초정비실습 과정':
                         thumbnailImage = '/img/thumbnail_sale.jpg';
                         applyPath = '/apply/eduApply06.do';
                         break;
@@ -190,11 +190,11 @@ function searchPosts(pageNum, categoryValue) {
                         thumbnailImage = '/img/thumbnail_sternspecial.png';
                         applyPath = '/apply/eduApply11.do';
                         break;
-                    case '마리나 선박 선외기 정비사 실무과정':
+                    case '마리나선박 선외기 정비사 실무과정':
                         thumbnailImage = '/img/thumbnail_marina_out.jpg';
                         applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
                         break;
-                    case '마리나 선박 선내기 정비사 실무과정':
+                    case '마리나선박 선내기 정비사 실무과정':
                         thumbnailImage = '/img/thumbnail_marina_in.jpg';
                         applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
                         break;

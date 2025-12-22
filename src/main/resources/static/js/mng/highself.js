@@ -573,7 +573,7 @@ function f_customer_highself_train_change_btn(){
                     let jsonObj = {
                         seq: seq,
                         trainSeq: md_edu_val,
-                        trainName: md_edu_text.split(' / ')[1].trim() // 단기과정 / 해상엔진 자가정비 (선외기) / 3차 / 2024.08.24 / 2024.08.25
+                        trainName: md_edu_text.split(' / ')[1].trim() // 단기과정 / 선외기 기초정비실습 과정 / 3차 / 2024.08.24 / 2024.08.25
                     }
 
                     let resData = ajaxConnect('/mng/customer/train/change/update.do', 'post', jsonObj);

@@ -50,7 +50,7 @@
                     </p>
                     <p class="text2">
                         <span class="gubun">대표자</span>
-                        우달식
+                        서석규
                     </p>
                     <p class="text2">
                         <span class="gubun">대표번호</span>

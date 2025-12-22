@@ -111,9 +111,9 @@
                 <div class="sub_top_nav">
                     <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span>
                     <span>교육 안내</span>
-                    <span>해상엔진 자가정비(세일요트)</span>
+                    <span>세일요트 기초정비실습 과정</span>
                 </div>
-                <h2 class="sub_top_title">해상엔진 자가정비(세일요트)</h2>
+                <h2 class="sub_top_title">세일요트 기초정비실습 과정</h2>
             </div>
         </div>
         <!-- //sub_top -->
@@ -125,19 +125,19 @@
                 <div class="title">교육안내</div>
                 <ul class="lnb">
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
-                    <%--<li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>--%>
-                    <li><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
-                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
-                    <li><a href="/guide/guide05.do">위탁교육</a></li>
-                    <%--<li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>
-                    <li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>--%>
-                    <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
-                    <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
-                    <li class="on"><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>
-                    <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
-                    <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
+                    <li><a href="/guide/guide03.do">마리나선박 정비사 실무과정</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
+                    <li><a href="/guide/guide06.do">선외기 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide07.do">선내기 기초정비실습 과정</a></li>
+                    <li class="on"><a href="/guide/guide08.do">세일요트 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide05.do">위탁교육</a></li>
+                    <%--<li><a href="/guide/guide02.do">해상엔진 테크니션 (선내기/선외기)</a></li>--%>
+                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
+                    <%--<li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>--%>
+                    <%--<li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>--%>
+                    <%--<li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>--%>
+                    <%--<li><a href="/guide/guide14.do">발전기 정비 교육</a></li>--%>
                 </ul>
             </div>
             <!-- //sidebar -->
@@ -149,7 +149,7 @@
                     <!-- guide_top -->
                     <div class="guide_top">
                         <div class="guide_top_tit">
-                            <div class="big">해상엔진 자가정비(세일요트)</div>
+                            <div class="big">세일요트 기초정비실습 과정</div>
                             <div class="eng">Marine Engine Self-Maintenance (Sale Yacht)</div>
                             <div class="text">
                                 선내기 엔진을 장착한 파워보트 등을 이용한 해양레저활동이 증가하고 있는 상황에서,<br>
@@ -191,7 +191,7 @@
                                     <thead>
                                     <tr>
                                         <th>구분</th>
-                                        <th>세일요트 자가정비과정</th>
+                                        <th>세일요트 기초정비실습 과정</th>
                                     </tr>
                                     </thead>
                                     <tbody>

@@ -1972,7 +1972,7 @@
                      WHERE f.member_seq = #{memberSeq}
                        AND f.apply_status NOT LIKE CONCAT('%','취소','%')
                      UNION ALL
-	                 SELECT '해상엔진 자가정비 (선내기)' AS trainName
+	                 SELECT '선내기 기초정비실습 과정' AS trainName
 	                      , i.train_seq
 	                      , i.apply_status AS payStatus
 	                      , i.seq
@@ -1984,7 +1984,7 @@
 	                 WHERE i.member_seq = #{memberSeq}
 	                 AND i.apply_status NOT LIKE CONCAT('%','취소','%')
                      UNION ALL
-                     SELECT '해상엔진 자가정비 (선외기)' AS trainName
+                     SELECT '선외기 기초정비실습 과정' AS trainName
                           , o.train_seq
                           , o.apply_status AS payStatus
                           , o.seq
@@ -1996,7 +1996,7 @@
                      WHERE o.member_seq = #{memberSeq}
                        AND o.apply_status NOT LIKE CONCAT('%','취소','%')
                      UNION ALL
-                     SELECT '해상엔진 자가정비 (세일요트)' AS trainName
+                     SELECT '세일요트 기초정비실습 과정' AS trainName
                           , s.train_seq
                           , s.apply_status AS payStatus
                           , s.seq
@@ -2212,7 +2212,7 @@
                      WHERE f.member_seq = #{memberSeq}
                        AND f.apply_status LIKE CONCAT('%','취소','%')
                      UNION ALL
-	                 SELECT '해상엔진 자가정비 (선내기)' AS trainName
+	                 SELECT '선내기 기초정비실습 과정' AS trainName
 	                      , i.train_seq
 	                      , i.apply_status AS payStatus
 	                      , i.seq
@@ -2223,7 +2223,7 @@
 	                 WHERE i.member_seq = #{memberSeq}
 	                 AND i.apply_status LIKE CONCAT('%','취소','%')
                      UNION ALL
-                     SELECT '해상엔진 자가정비 (선외기)' AS trainName
+                     SELECT '선외기 기초정비실습 과정' AS trainName
                           , o.train_seq
                           , o.apply_status AS payStatus
                           , o.seq
@@ -2234,7 +2234,7 @@
                      WHERE o.member_seq = #{memberSeq}
                        AND o.apply_status LIKE CONCAT('%','취소','%')
                      UNION ALL
-                     SELECT '해상엔진 자가정비 (세일요트)' AS trainName
+                     SELECT '세일요트 기초정비실습 과정' AS trainName
                           , s.train_seq
                           , s.apply_status AS payStatus
                           , s.seq

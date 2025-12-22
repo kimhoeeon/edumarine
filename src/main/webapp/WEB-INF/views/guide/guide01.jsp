@@ -124,19 +124,19 @@
                 <div class="title">교육안내</div>
                 <ul class="lnb">
                     <li class="on"><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
-                    <%--<li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>--%>
-                    <li><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
-                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
-                    <li><a href="/guide/guide05.do">위탁교육</a></li>
-                    <%--<li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>
-                    <li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>--%>
-                    <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
-                    <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
-                    <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>
-                    <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
-                    <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
+                    <li><a href="/guide/guide03.do">마리나선박 정비사 실무과정</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
+                    <li><a href="/guide/guide06.do">선외기 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide07.do">선내기 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide08.do">세일요트 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide05.do">위탁교육</a></li>
+                    <%--<li><a href="/guide/guide02.do">해상엔진 테크니션 (선내기/선외기)</a></li>--%>
+                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
+                    <%--<li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>--%>
+                    <%--<li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>--%>
+                    <%--<li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>--%>
+                    <%--<li><a href="/guide/guide14.do">발전기 정비 교육</a></li>--%>
                 </ul>
             </div>
             <!-- //sidebar -->
@@ -149,73 +149,98 @@
                     <div class="guide_plan">
                         <div class="box">
                             <div class="guide_tit_box">
-                                <div class="name">전체 교육일정</div>
+                                <div class="name">전체 교육과정 소개</div>
                             </div>
 
                             <div class="cont_list">
                                 <!-- 정규과정 -->
                                 <div class="table_wrap">
                                     <div class="table_tit">
-                                        <div class="big">[ 정규과정 ]</div>
+                                        <div class="big">[ 정규과정 ] <span style="margin-left: 1rem;">* 직업훈련과정</span></div>
                                         <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
                                     </div>
                                     <div class="table">
                                         <table>
+                                            <colgroup>
+                                                <col width="13%">
+                                                <col width="20%">
+                                                <col width="33%">
+                                                <col width="33%">
+                                            </colgroup>
                                             <thead>
-                                                <tr>
-                                                    <th>과정명</th>
-                                                    <th>교육기간</th>
-                                                    <th>모집기간</th>
-                                                </tr>
+                                            <tr>
+                                                <th colspan="2">과정명</th>
+                                                <th>교육일정</th>
+                                                <th>모집일정</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td rowspan="5" class="bg name">선외기 실무과정 (5회)</td>
-                                                    <td>1차: '25. 1. 13.(월) ~ 2. 18.(화)</td>
-                                                    <td>'25. 12. 16.(월) ~ 1. 3.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2차: '25. 5. 12.(월) ~ 6. 12.(목)</td>
-                                                    <td>'25. 4. 14.(월) ~ 5. 2.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3차: '25. 8. 4.(월) ~ 9. 3.(수)</td>
-                                                    <td>'25. 7. 7.(월) ~ 7. 25.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4차: '25. 10. 13(월) ~ 11. 11.(화)</td>
-                                                    <td>'25. 9. 8(월) ~ 9. 26.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5차: '25. 11. 24(월) ~ 12. 23.(화)</td>
-                                                    <td>'25. 10. 20(월) ~ 11. 14.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td rowspan="4" class="bg name">선내기 실무과정 (4회)</td>
-                                                    <td>1차: '25. 3. 10.(월) ~ 4. 8.(화)</td>
-                                                    <td>'25.  2. 10.(월) ~ 2. 28.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2차: '25. 6. 30.(월) ~ 7. 29.(화)</td>
-                                                    <td>'25. 6. 2.(월) ~ 6. 20.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3차: '25. 10. 16.(목) ~ 11. 14.(금)</td>
-                                                    <td>'25. 9. 15.(월) ~ 10. 2.(목)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4차: '25. 11. 24.(월) ~ 12. 23.(화)</td>
-                                                    <td>'25. 10. 20.(월) ~ 11. 14.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td rowspan="2" class="bg name">FRP선체 실무과정 (2회)</td>
-                                                    <td>1차: '25. 7. 21.(월) ~ 8. 1.(금)</td>
-                                                    <td>'25. 6. 23.(월) ~ 7. 11.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2차: '25. 8. 4.(월) ~ 8. 15.(금)</td>
-                                                    <td>'25. 7. 14.(월) ~ 7. 25.(금)</td>
-                                                </tr>
+                                            <tr>
+                                                <td rowspan="8" class="bg gubun">초급기술자</td>
+                                                <td rowspan="4" class="bg name">마리나선박 선외기 정비사 실무과정(4회)</td>
+                                                <td>1차 : 2. 2(월) ~ 3. 12(목)</td>
+                                                <td>1차 : 1. 5.(월) ~ 1. 23(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2차 : 5. 6(수) ~ 6. 8(월)</td>
+                                                <td>2차 : 4. 6.(월) ~ 4. 24(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3차 : 8. 10(월) ~ 9. 9(수)</td>
+                                                <td>3차 : 7. 13.(월) ~ 7. 31(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4차 : 11. 9(월) ~ 12. 8(화)</td>
+                                                <td>4차 : 10. 12(월) ~ 10. 30(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="3" class="bg name">마리나선박 선내기 정비사 실무과정(3회)</td>
+                                                <td>1차 : 3. 25(수) ~ 4. 23(목)</td>
+                                                <td>1차 : 2. 23.(월) ~ 3. 13(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2차 : 6. 22(월) ~ 7. 21(화)</td>
+                                                <td>2차 : 5. 25.(월) ~ 6. 12(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3차 : 9. 28(월) ~ 10. 29(목)</td>
+                                                <td>3차 : 8. 24.(월) ~ 9. 15(화)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">마리나선박 FRP선체 정비사 실무과정(2회)</td>
+                                                <td colspan="2">일정 미정 (추후 재공지)</td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="8" class="bg gubun">중급기술자</td>
+                                                <td rowspan="4" class="bg name">고마력 선외기 정비 중급 테크니션(4회)</td>
+                                                <td>1차 : 3. 13(금) ~ 3. 23(월)</td>
+                                                <td>1차 : 1. 2(금) ~ 3.  6(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2차 : 6.  9(화) ~ 6. 17(수)</td>
+                                                <td>2차 : 1. 2(금) ~ 6.  5(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3차 : 9. 10(목) ~ 9. 18(금)</td>
+                                                <td>3차 : 1. 2(금) ~ 9.  4(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4차 : 12. 9(수) ~ 12. 17(목)</td>
+                                                <td>4차 : 1. 2(금) ~ 12. 4(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="3" class="bg name">스턴드라이브 정비 전문가 과정(3회)</td>
+                                                <td>1차 : 4. 24(금) ~ 4. 29(수)</td>
+                                                <td>1차 : 1. 2(금) ~ 4. 17(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2차 : 7. 22(수) ~ 7. 27(월)</td>
+                                                <td>2차 : 1. 2(금) ~ 7. 17(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3차 : 10. 30(금) ~ 11. 4(수)</td>
+                                                <td>3차 : 1. 2(금) ~ 10.23(금)</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -230,43 +255,43 @@
                                     <div class="table">
                                         <table>
                                             <thead>
-                                                <tr>
-                                                    <th>과정명</th>
-                                                    <th>교육기간</th>
-                                                    <th>모집기간</th>
-                                                </tr>
+                                            <tr>
+                                                <th>과정명</th>
+                                                <th>교육일정</th>
+                                                <th>모집일정</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td rowspan="4" class="bg name">고마력 선외기<br>Level 1 과정_7일</td>
-                                                    <td>특별반1차: '25. 2. 19.(수) ~ 2. 27.(금)</td>
-                                                    <td>'25. 1. 2.(목) ~ 2. 12.(수)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>특별반2차: '25. 6. 13.(금) ~ 6. 20.(금) (6/14 토요일 포함, 7일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 6. 5.(목)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>특별반3차: '25. 9. 4.(목) ~ 9. 12.(금)</td>
-                                                    <td>'25. 1. 2.(목) ~ 8. 28.(목)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>특별반4차: '25. 11. 12.(수) ~ 11. 18.(토,일 포함)</td>
-                                                    <td>'25. 1. 2.(목) ~ 11. 5.(목)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td rowspan="3" class="bg name">스턴드라이브 선외기<br>Level 1 과정_4일</td>
-                                                    <td>특별반1차: '25. 4. 9.(수) ~ 4. 12.(금)</td>
-                                                    <td>'25. 1. 2.(목) ~ 4. 2.(수)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>특별반2차: '25. 7. 30.(수) ~ 8. 2.(토)</td>
-                                                    <td>'25. 1. 2.(목) ~ 7. 23.(수)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>특별반3차: '25. 11. 17.(월) ~ 11. 20.(목)</td>
-                                                    <td>'25. 1. 2.(목) ~ 11. 13.(목)</td>
-                                                </tr>
+                                            <tr>
+                                                <td rowspan="4" class="bg name">고마력 선외기<br>Level 1 과정_7일</td>
+                                                <td>특별반1차: '25. 2. 19.(수) ~ 2. 27.(금)</td>
+                                                <td>'25. 1. 2.(목) ~ 2. 12.(수)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>특별반2차: '25. 6. 13.(금) ~ 6. 20.(금) (6/14 토요일 포함, 7일)</td>
+                                                <td>'25. 1. 2.(목) ~ 6. 5.(목)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>특별반3차: '25. 9. 4.(목) ~ 9. 12.(금)</td>
+                                                <td>'25. 1. 2.(목) ~ 8. 28.(목)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>특별반4차: '25. 11. 12.(수) ~ 11. 18.(토,일 포함)</td>
+                                                <td>'25. 1. 2.(목) ~ 11. 5.(목)</td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="3" class="bg name">스턴드라이브 선외기<br>Level 1 과정_4일</td>
+                                                <td>특별반1차: '25. 4. 9.(수) ~ 4. 12.(금)</td>
+                                                <td>'25. 1. 2.(목) ~ 4. 2.(수)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>특별반2차: '25. 7. 30.(수) ~ 8. 2.(토)</td>
+                                                <td>'25. 1. 2.(목) ~ 7. 23.(수)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>특별반3차: '25. 11. 17.(월) ~ 11. 20.(목)</td>
+                                                <td>'25. 1. 2.(목) ~ 11. 13.(목)</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -275,76 +300,63 @@
                                 <!-- 단기과정 -->
                                 <div class="table_wrap">
                                     <div class="table_tit">
-                                        <div class="big">[ 단기과정 ]</div>
+                                        <div class="big">[ 단기과정 ] <span style="margin-left: 1rem;">* 역량강화과정</span></div>
                                         <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
                                     </div>
                                     <div class="table">
                                         <table>
+                                            <colgroup>
+                                                <col width="13%">
+                                                <col width="20%">
+                                                <col width="33%">
+                                                <col width="33%">
+                                            </colgroup>
                                             <thead>
-                                                <tr>
-                                                    <th colspan="2">과정명</th>
-                                                    <th>유지관리과정</th>
-                                                    <th>모집기간</th>
-                                                </tr>
+                                            <tr>
+                                                <th colspan="2">과정명</th>
+                                                <th>교육일정</th>
+                                                <th>모집일정</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="bg gubun" rowspan="11">해상엔진 자가정비과정</td>
-                                                    <td class="bg name" rowspan="5">선외기</td>
-                                                    <td>1차: '25. 3. 8.(토) ~ 3. 9.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 2. 28.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2차: '25. 4. 26.(토) ~  4. 27.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 4. 18.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3차: '25. 6. 28.(토) ~ 6. 29.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 6. 20.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4차: '25. 8. 30.(토) ~ 8. 31.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 8. 22.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5차: '25. 10. 18.(토) ~ 10. 19.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 10. 10.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bg name" rowspan="3">선내기</td>
-                                                    <td>1차: '25. 4. 19.(토) ~ 4. 20.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 4. 11.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2차: '25. 8. 9.(토) ~ 8. 10.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 8. 1.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3차: '25. 9. 27.(토) ~ 9. 28.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 9. 19.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bg name" rowspan="3">세일요트</td>
-                                                    <td>1차: '25. 4. 12.(토) ~ 4. 13.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 4. 4.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2차: '25. 6. 21.(토) ~ 6. 22.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 6. 13.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3차: '25. 9. 20.(토) ~ 9. 21.(일)</td>
-                                                    <td>'25. 1. 2.(목) ~ 9. 12.(금)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bg gubun" rowspan="2" colspan="2">[심화] 발전기 정비 교육_3일</td>
-                                                    <td>1차: '25. 5. 14.(수) ~ 5. 16.(금)</td>
-                                                    <td>'25. 1. 2.(목) ~ 4. 30.(수)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2차: '25. 9. 22.(월) ~ 9. 24.(수)</td>
-                                                    <td>'25. 1. 2.(목) ~ 9. 12.(금)</td>
-                                                </tr>
+                                            <tr>
+                                                <td class="bg gubun" rowspan="7">기초정비 교육과정</td>
+                                                <td class="bg name" rowspan="4">선외기 기초정비실습 과정(4회)</td>
+                                                <td>1차 : 3. 14(토) ~ 3. 15(일)</td>
+                                                <td>1차 : 1. 2(금) ~ 3. 6(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2차 : 6. 20(토) ~ 6. 21(일)</td>
+                                                <td>2차 : 1. 2(금) ~ 6. 12(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3차 : 9. 19(토) ~ 9. 20(일)</td>
+                                                <td>3차 : 11. 2(금) ~ 9. 11(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4차 : 11. 14(토) ~ 11. 15(일)</td>
+                                                <td>4차 : 1. 2(금) ~ 11. 6(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name" rowspan="2">선내기 기초정비실습 과정(2회)</td>
+                                                <td>1차 : 6. 27(토) ~ 6. 28 (일)</td>
+                                                <td>1차 : 1. 2(금) ~ 6. 19(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2차 : 10. 3(토) ~ 10. 4 (일)</td>
+                                                <td>2차 : 1. 2(금) ~ 9. 23(수)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg name">세일요트 기초정비실습 과정(1회)</td>
+                                                <td>1차 : 8. 1(토) ~ 8. 2(일)</td>
+                                                <td>1차 : 1. 2(금) ~ 7. 24(금)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg gubun">위탁교육 과정</td>
+                                                <td class="bg name">위탁교육 과정</td>
+                                                <td>3월 ~ 12월</td>
+                                                <td>단체교육 희망 시 원하는 교육 맞춤 설계 및 일정조율 가능</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -361,79 +373,79 @@
                         <div class="box">
                             <div class="guide_tit_box">
                                 <div class="num">01</div>
-                                <div class="name">정규 과정</div>
+                                <div class="name">정규 과정 <span style="margin-left: 1rem;">* 직업훈련과정</span></div>
                             </div>
                             <div class="cont_list">
                                 <!-- 일반 -->
                                 <div class="table_wrap">
                                     <div class="table_tit">
-                                        <div class="big">[ 일반 ]</div>
+                                        <div class="big">[초급기술자]</div>
                                         <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
                                     </div>
                                     <div class="table">
                                         <table>
                                             <thead>
-                                                <tr>
-                                                    <th class="first"><div class="item">교육명</div></th>
-                                                    <th><div class="item">마리나선박 선외기 정비사</div></th>
-                                                    <th><div class="item">마리나선박 선내기 정비사</div></th>
-                                                    <th><div class="item">마리나선박 FRP선체 정비사</div></th>
-                                                </tr>
+                                            <tr>
+                                                <th class="first"><div class="item">과정명</div></th>
+                                                <th><div class="item">마리나선박 선외기 정비사</div></th>
+                                                <th><div class="item">마리나선박 선내기 정비사</div></th>
+                                                <th><div class="item">마리나선박 FRP선체 정비사</div></th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육대상</div></td>
-                                                    <td colspan="3">
-                                                        <div class="item">자격증 취득 희망자 중 해양수산부 마리나업전문인력양성기관의 이론 교육과정 수료자</div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육목적</div></td>
-                                                    <td colspan="2">
-                                                        <div class="item list">
-                                                            <p>해상엔진 정비능력 습득</p>
-                                                            <p>기술서적 등 사용능력 습득</p>
-                                                            <p>수료 후 마리나선박 정비사 자격증 검정시험 응시자격 부여</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>FRP 선체 정비능력 습득</p>
-                                                            <p>기술서적 등 사용능력 습득</p>
-                                                            <p>수료 후 마리나선박 정비사 자격증 검정시험 응시자격 부여</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육내용</div></td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>해상엔진 이해</p>
-                                                            <p>선외기 시스템 이해</p>
-                                                            <p>2행정 선외기 실습</p>
-                                                            <p>4행정 선외기 실습</p>
-                                                            <p>선외기 설치</p>
-                                                            <p>선외기 서비스 및 유지관리</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>해상엔진 이해</p>
-                                                            <p>디젤엔진 시스템</p>
-                                                            <p>선내기 정비 실습</p>
-                                                            <p>선내기 서비스 및 유지관리</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>FRP 선체의 이해</p>
-                                                            <p>선체 관리 및 정비</p>
-                                                            <p>FRP 적층 등 작업 기초습</p>
-                                                            <p>선체 손상에 대한 수리 작업 기초</p>
-                                                            <p>도장</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육대상</div></td>
+                                                <td colspan="3">
+                                                    <div class="item">자격증 취득 희망자 중 해양수산부 마리나업전문인력양성기관의 이론 교육과정 수료자</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육목적</div></td>
+                                                <td colspan="2">
+                                                    <div class="item list">
+                                                        <p>해상엔진 정비능력 습득</p>
+                                                        <p>기술서적 등 사용능력 습득</p>
+                                                        <p>수료 후 마리나선박 정비사 자격증 검정시험 응시자격 부여</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>FRP 선체 정비능력 습득</p>
+                                                        <p>기술서적 등 사용능력 습득</p>
+                                                        <p>수료 후 마리나선박 정비사 자격증 검정시험 응시자격 부여</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육내용</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 이해</p>
+                                                        <p>선외기 시스템 이해</p>
+                                                        <p>2행정 선외기 실습</p>
+                                                        <p>4행정 선외기 실습</p>
+                                                        <p>선외기 설치</p>
+                                                        <p>선외기 서비스 및 유지관리</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 이해</p>
+                                                        <p>디젤엔진 시스템</p>
+                                                        <p>선내기 정비 실습</p>
+                                                        <p>선내기 서비스 및 유지관리</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>FRP 선체의 이해</p>
+                                                        <p>선체 관리 및 정비</p>
+                                                        <p>FRP 적층 등 작업 기초습</p>
+                                                        <p>선체 손상에 대한 수리 작업 기초</p>
+                                                        <p>도장</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -443,62 +455,62 @@
                                 <!-- 심화 -->
                                 <div class="table_wrap">
                                     <div class="table_tit">
-                                        <div class="big">[ 심화 ]</div>
+                                        <div class="big">[중급기술자]</div>
                                         <div class="mobile_cmnt">표를 좌우로 움직여 확인해 주세요.</div>
                                     </div>
                                     <div class="table">
                                         <table>
                                             <thead>
-                                                <tr>
-                                                    <th class="first"><div class="item">교육명</div></th>
-                                                    <th><div class="item">고마력 선외기 정비 중급 테크니션</div></th>
-                                                    <th><div class="item">스턴드라이브 정비 전문가 과정</div></th>
-                                                </tr>
+                                            <tr>
+                                                <th class="first"><div class="item">과정명</div></th>
+                                                <th><div class="item">고마력 선외기 정비 중급 테크니션</div></th>
+                                                <th><div class="item">스턴드라이브 정비 전문가 과정</div></th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육대상</div></td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>해상엔진 테크니션 교육과정 수료생</p>
-                                                            <p>마리나선박 정비사 선외기/선내기 실무과정 수료생</p>
-                                                            <p>엔진관련 경력이 있으신 분</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>해상엔진 테크니션 교육과정 수료생</p>
-                                                            <p>마리나선박 정비사 선외기/선내기 실무과정 수료생</p>
-                                                            <p>엔진관련 경력이 있으신 분</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육목적</div></td>
-                                                    <td>
-                                                        <div class="item">선외기 중급 테크니션 양성</div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item">스턴드라이브 전문인력 양성</div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육내용</div></td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>고마력 선외기 시스템에 대한 이해</p>
-                                                            <p>고마력 선외기 분해 및 조립 실습</p>
-                                                            <p>고마력 선외기 유지관리 및 고장진단에 대한 이해</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>스턴드라이브의 이해</p>
-                                                            <p>스턴드라이브의 정비 및 점검 방법</p>
-                                                            <p>스턴드라이브의 고장 및 조치사항</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육대상</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 테크니션 교육과정 수료생</p>
+                                                        <p>마리나선박 정비사 선외기/선내기 실무과정 수료생</p>
+                                                        <p>엔진관련 경력이 있으신 분</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>해상엔진 테크니션 교육과정 수료생</p>
+                                                        <p>마리나선박 정비사 선외기/선내기 실무과정 수료생</p>
+                                                        <p>엔진관련 경력이 있으신 분</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육목적</div></td>
+                                                <td>
+                                                    <div class="item">선외기 중급 테크니션 양성</div>
+                                                </td>
+                                                <td>
+                                                    <div class="item">스턴드라이브 전문인력 양성</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육내용</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>고마력 선외기 시스템에 대한 이해</p>
+                                                        <p>고마력 선외기 분해 및 조립 실습</p>
+                                                        <p>고마력 선외기 유지관리 및 고장진단에 대한 이해</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>스턴드라이브의 이해</p>
+                                                        <p>스턴드라이브의 정비 및 점검 방법</p>
+                                                        <p>스턴드라이브의 고장 및 조치사항</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -512,7 +524,7 @@
                         <div class="box">
                             <div class="guide_tit_box">
                                 <div class="num">02</div>
-                                <div class="name">단기 과정</div>
+                                <div class="name">단기 과정 <span style="margin-left: 1rem;">* 역량강화과정</span></div>
                             </div>
                             <div class="cont_list">
                                 <div class="table_wrap">
@@ -522,67 +534,78 @@
                                     <div class="table">
                                         <table>
                                             <thead>
-                                                <tr>
-                                                    <th class="first"><div class="item">교육명</div></th>
-                                                    <th><div class="item">해상엔진 응급조치교육</div></th>
-                                                    <th><div class="item">해상엔진 기초정비교육</div></th>
-                                                    <th><div class="item">자가정비 심화과정</div></th>
-                                                    <th><div class="item">위탁교육</div></th>
-                                                </tr>
+                                            <tr>
+                                                <th class="first"><div class="item">과정명</div></th>
+                                                <th><div class="item">선외기 기초정비 실습</div></th>
+                                                <th><div class="item">선내기 기초정비 실습</div></th>
+                                                <th><div class="item">세일요트 기초정비 실습</div></th>
+                                                <th><div class="item">위탁교육</div></th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육대상</div></td>
-                                                    <td colspan="3">
-                                                        <div class="item list">
-                                                            <p>보트 및 요트 소유하신 분, 조종면허 소지하신 분 또는 취득 예정이신 분 등</p>
-                                                            <p>해상엔진 교육을 희망하는 일반인</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item">교육 희망하는 기관 및 단체</div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육목적</div></td>
-                                                    <td><div class="item">엔진 고장 등 발생시 대처능력 향상</div></td>
-                                                    <td><div class="item">엔진 기본 유지관리 능력 향상</div></td>
-                                                    <td><div class="item">고마력 선외기 유지관리능력 및 응급상황 발생시</div></td>
-                                                    <td><div class="item">해상엔진에 대한 이해 및 점검 교육을 통한 업무능력 향상</div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="first"><div class="item">교육내용</div></td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>선외기/선내기/세일엔진 시스템 이해</p>
-                                                            <p>엔진 고장 사례별 고장 원인 분석방법</p>
-                                                            <p>고장 사례별 기본적인 대처방법</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>선외기/선내기/세일엔진 기초이론 이해</p>
-                                                            <p>선외기/선내기/세일엔진 부속시스템별 유지관리 실습</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>고마력 선외기 시스템이해</p>
-                                                            <p>부속시스템별 유지관리 실습</p>
-                                                            <p>엔진 고장 사례별 고장원인 분석방법</p>
-                                                            <p>고장 사례별 기본적인 대처 방법</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="item list">
-                                                            <p>교육기관 Needs에 맞는 맞춤 교육</p>
-                                                            <p>해상엔진 이론교육</p>
-                                                            <p>해상엔진 유지관리</p>
-                                                            <p>해상엔진 점검 및 진단 기초</p>
-                                                            <p>해상엔진 초급 정비</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육대상</div></td>
+                                                <td colspan="3">
+                                                    <div class="item list">
+                                                        <p>보트 및 요트 소유하신 분, 조종면허 소지하신 분 또는 취득 예정이신 분 등</p>
+                                                        <p>해상엔진 교육을 희망하는 일반인</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item">교육 희망하는 기관 및 단체</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육목적</div></td>
+                                                <td colspan="3">
+                                                    <div class="item list">
+                                                        <p>엔진 기본 유지관리 능력 향상</p>
+                                                        <p>엔진 고장 등 발생 시 대처능력 향상</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item">해상엔진에 대한 이해 및 점검 교육을 통한 업무능력 향상</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first"><div class="item">교육내용</div></td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>선외기 유지관리스케줄</p>
+                                                        <p>선외기 부속 시스템 이해 및 각 자가정비항목 실습</p>
+                                                        <p>선외기 운항 시 점검사항</p>
+                                                        <p>고장 발생 시 점검 및 조치 방법</p>
+                                                        <p>동절기 엔진관리 방법</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>디젤엔진 유지관리스케줄</p>
+                                                        <p>디젤엔진 부속 시스템 이해 및 각 자가정비항목 실습</p>
+                                                        <p>디젤엔진 운항 시 점검사항</p>
+                                                        <p>고장 발생 시 점검 및 조치 방법</p>
+                                                        <p>동절기 엔진관리 방법</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>세일요트엔진 유지관리스케줄</p>
+                                                        <p>세일요트엔진 부속 시스템 이해 및 각 자가정비항목 실습</p>
+                                                        <p>세일요트엔진 운항 시 점검사항</p>
+                                                        <p>고장 발생 시 점검 및 조치 방법</p>
+                                                        <p>동절기 엔진관리 방법</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="item list">
+                                                        <p>교육기관 Needs에 맞는 맞춤 교육</p>
+                                                        <p>해상엔진 이론교육</p>
+                                                        <p>해상엔진 유지관리</p>
+                                                        <p>해상엔진 점검 및 진단 기초</p>
+                                                        <p>해상엔진 초급 정비</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>

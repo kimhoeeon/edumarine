@@ -7,7 +7,7 @@ $(function () {
 
     //전체교육일정
     
-    //마리나 선박 정비사 실무교육
+    //마리나선박 정비사 실무과정
     //교육내용
     $('#edu_marina_outboarder_contents,' +
         '#edu_marina_inboarder_contents,' +
