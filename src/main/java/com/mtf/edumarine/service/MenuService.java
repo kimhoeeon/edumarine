@@ -28,9 +28,9 @@ public class MenuService {
         applicantChildren.add(new MenuItem("FRP 정비 테크니션", "/mng/customer/frp.do", null, 0));
         applicantChildren.add(new MenuItem("기초정비교육", "/mng/customer/basic.do", null, 0));
         applicantChildren.add(new MenuItem("응급조치교육", "/mng/customer/emergency.do", null, 0));
-        applicantChildren.add(new MenuItem("자가정비 (선외기)", "/mng/customer/outboarder.do", null, 0));
-        applicantChildren.add(new MenuItem("자가정비 (선내기)", "/mng/customer/inboarder.do", null, 0));
-        applicantChildren.add(new MenuItem("자가정비 (세일요트)", "/mng/customer/sailyacht.do", null, 0));
+        applicantChildren.add(new MenuItem("선외기 기초정비실습 과정", "/mng/customer/outboarder.do", null, 0));
+        applicantChildren.add(new MenuItem("선내기 기초정비실습 과정", "/mng/customer/inboarder.do", null, 0));
+        applicantChildren.add(new MenuItem("세일요트 기초정비실습 과정", "/mng/customer/sailyacht.do", null, 0));
         applicantChildren.add(new MenuItem("고마력 선외기 정비", "/mng/customer/highhorsepower.do", null, 0));
         applicantChildren.add(new MenuItem("자가정비 심화과정 (고마력)", "/mng/customer/highself.do", null, 0));
         applicantChildren.add(new MenuItem("고마력 선외기 정비 (특별반)", "/mng/customer/highspecial.do", null, 0));

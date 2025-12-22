@@ -110,9 +110,9 @@
                 <div class="sub_top_nav">
                     <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span>
                     <span>교육 안내</span>
-                    <span>마리나 선박 정비사 실무교육</span>
+                    <span>마리나선박 정비사 실무과정</span>
                 </div>
-                <h2 class="sub_top_title">마리나 선박 정비사 실무교육</h2>
+                <h2 class="sub_top_title">마리나선박 정비사 실무과정</h2>
             </div>
         </div>
         <!-- //sub_top -->
@@ -124,19 +124,19 @@
                 <div class="title">교육안내</div>
                 <ul class="lnb">
                     <li><a href="/guide/guide01.do">전체 교육과정 소개</a></li>
-                    <%--<li><a href="/guide/guide02.do">해상엔진 테크니션</a></li>--%>
-                    <li class="on"><a href="/guide/guide03.do">마리나 선박 정비사 실무교육</a></li>
-                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
-                    <li><a href="/guide/guide05.do">위탁교육</a></li>
-                    <%--<li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>
-                    <li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>--%>
-                    <li><a href="/guide/guide06.do">해상엔진 자가정비(선외기)</a></li>
-                    <li><a href="/guide/guide07.do">해상엔진 자가정비(선내기)</a></li>
-                    <li><a href="/guide/guide08.do">해상엔진 자가정비(세일요트)</a></li>
-                    <li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>
-                    <li><a href="/guide/guide14.do">발전기 정비 교육</a></li>
+                    <li class="on"><a href="/guide/guide03.do">마리나선박 정비사 실무과정</a></li>
                     <li><a href="/guide/guide09.do">고마력 선외기 정비 중급 테크니션</a></li>
                     <li><a href="/guide/guide10.do">스턴드라이브 정비 전문가과정</a></li>
+                    <li><a href="/guide/guide06.do">선외기 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide07.do">선내기 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide08.do">세일요트 기초정비실습 과정</a></li>
+                    <li><a href="/guide/guide05.do">위탁교육</a></li>
+                    <%--<li><a href="/guide/guide02.do">해상엔진 테크니션 (선내기/선외기)</a></li>--%>
+                    <%--<li><a href="/guide/guide04.do">FRP 레저보트 선체 정비 테크니션</a></li>--%>
+                    <%--<li><a href="/guide/guide11.do">자가정비 심화과정 (고마력 선외기)</a></li>--%>
+                    <%--<li><a href="/guide/guide12.do">해상엔진 기초정비교육</a></li>--%>
+                    <%--<li><a href="/guide/guide13.do">해상엔진 응급조치교육</a></li>--%>
+                    <%--<li><a href="/guide/guide14.do">발전기 정비 교육</a></li>--%>
                 </ul>
             </div>
             <!-- //sidebar -->
@@ -148,7 +148,7 @@
                     <!-- guide_top -->
                     <div class="guide_top">
                         <div class="guide_top_tit">
-                            <div class="big">마리나선박 정비사 실기교육</div>
+                            <div class="big">마리나선박 정비사 실무과정</div>
                             <div class="eng">Marina Ship Mechanic Practical Training</div>
                             <div class="text">
                                 마리나 선박과 관련된 선외기 및 선내기, 선체 정비관련 현장 실무 기술자를 양성하기 위하여 마리나 선박 정비사 실무과정을 개설합니다.<br>
@@ -216,9 +216,9 @@
                                     <thead>
                                         <tr>
                                             <th>구분</th>
-                                            <th>선외기 정비사 실무교육</th>
-                                            <th>선내기 정비사 실무교육</th>
-                                            <th>FRP 선체 정비사 실무교육</th>
+                                            <th>선외기 정비사 실무과정</th>
+                                            <th>선내기 정비사 실무과정</th>
+                                            <th>FRP 선체 정비사 실무과정</th>
                                         </tr>
                                     </thead>
                                     <tbody>

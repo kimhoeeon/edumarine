@@ -304,7 +304,7 @@
                     <div class="form_btn_box">
                         <input type="hidden" name="chg_changeYn" value="${info.changeYn}">
                         <input type="hidden" name="chg_seq" value="${info.seq}">
-                        <input type="hidden" name="chg_trainName" value="해상엔진 자가정비 (선외기)">
+                        <input type="hidden" name="chg_trainName" value="선외기 기초정비실습 과정">
                         <input type="hidden" name="chg_payMethod" value="${info.payMethod}">
                         <input type="hidden" name="chg_applyStatus" value="${info.applyStatus}">
                         <a href="javascript:void(0);" value="${info.seq}" class="btnSt03 form_apply_cancel_edu_btn">신청취소</a>
@@ -346,7 +346,7 @@
                             <div class="popup_box popup_form">
                                 <div class="box_1">
                                     <div class="tit_box">교육 취소</div>
-                                    <div class="text_box">[ 해상엔진 자가정비 (선외기) ]을 신청하셨습니다.<br>정말로 취소하시겠습니까?</div>
+                                    <div class="text_box">[ 선외기 기초정비실습 과정 ]을 신청하셨습니다.<br>정말로 취소하시겠습니까?</div>
                                     <div class="cmnt_box"><span style="color: #C00000">취소 사유를 10자 이상 입력해 주세요!</span></div>
                                     <div class="input_box"><input type="text" placeholder="취소 사유 10자 이상 입력" class="cancel_edu_reason">
                                     </div>

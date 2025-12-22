@@ -13,19 +13,19 @@ today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초
 /*let events = {
     "2023-11-01": [
         { text: "[장기]해상엔진테크니션(선외기 및 선내기 통합)", className: "edu01", link: "/apply/eduApply01.do"},
-        { text: "[단기]해상엔진 자가정비(선외기)", className: "edu03" }
+        { text: "[단기]선외기 기초정비실습 과정", className: "edu03" }
     ],
     "2023-11-02": [
         { text: "[장기]FRP 레저보트 선체 정비 테크니션", className: "edu02" }
     ],
     "2023-11-03": [
-        { text: "[단기]해상엔진 자가정비(선외기)", className: "edu03" }
+        { text: "[단기]선외기 기초정비실습 과정", className: "edu03" }
     ],
     "2023-11-04": [
-        { text: "[단기]해상엔진 자가정비(선내기)", className: "edu04", link: "/apply/eduApply04.do" }
+        { text: "[단기]선내기 기초정비실습 과정", className: "edu04", link: "/apply/eduApply04.do" }
     ],
     "2023-11-05": [
-        { text: "[단기]해상엔진 자가정비(세일요트)", className: "edu05" }
+        { text: "[단기]세일요트 기초정비실습 과정", className: "edu05" }
     ]
 };*/
 
@@ -76,15 +76,15 @@ function f_train_calendar_select(category){
                         className = 'edu02';
                         link = '/apply/eduApply03.do';
                         break;
-                    case '해상엔진 자가정비 (선외기)':
+                    case '선외기 기초정비실습 과정':
                         className = 'edu03';
                         link = '/apply/eduApply05.do';
                         break;
-                    case '해상엔진 자가정비 (선내기)':
+                    case '선내기 기초정비실습 과정':
                         className = 'edu04';
                         link = '/apply/eduApply04.do';
                         break;
-                    case '해상엔진 자가정비 (세일요트)':
+                    case '세일요트 기초정비실습 과정':
                         className = 'edu05';
                         link = '/apply/eduApply06.do';
                         break;

@@ -242,9 +242,9 @@
                                                 <option value="">교육 선택</option>
                                                 <option value="해상엔진 테크니션 (선내기/선외기)">해상엔진 테크니션 (선내기/선외기)</option>
                                                 <option value="FRP 레저보트 선체 정비 테크니션">FRP 레저보트 선체 정비 테크니션</option>
-                                                <option value="해상엔진 자가정비 (선외기)">해상엔진 자가정비 (선외기)</option>
-                                                <option value="해상엔진 자가정비 (선내기)">해상엔진 자가정비 (선내기)</option>
-                                                <option value="해상엔진 자가정비 (세일요트)">해상엔진 자가정비 (세일요트)</option>
+                                                <option value="선외기 기초정비실습 과정">선외기 기초정비실습 과정</option>
+                                                <option value="선내기 기초정비실습 과정">선내기 기초정비실습 과정</option>
+                                                <option value="세일요트 기초정비실습 과정">세일요트 기초정비실습 과정</option>
                                             </select>
                                         </div>
                                     </div>
@@ -259,9 +259,9 @@
                                                 <option value="">교육 선택</option>
                                                 <option value="해상엔진 테크니션 (선내기/선외기)">해상엔진 테크니션 (선내기/선외기)</option>
                                                 <option value="FRP 레저보트 선체 정비 테크니션">FRP 레저보트 선체 정비 테크니션</option>
-                                                <option value="해상엔진 자가정비 (선외기)">해상엔진 자가정비 (선외기)</option>
-                                                <option value="해상엔진 자가정비 (선내기)">해상엔진 자가정비 (선내기)</option>
-                                                <option value="해상엔진 자가정비 (세일요트)">해상엔진 자가정비 (세일요트)</option>
+                                                <option value="선외기 기초정비실습 과정">선외기 기초정비실습 과정</option>
+                                                <option value="선내기 기초정비실습 과정">선내기 기초정비실습 과정</option>
+                                                <option value="세일요트 기초정비실습 과정">세일요트 기초정비실습 과정</option>
                                             </select>
                                         </div>
                                     </div>
@@ -276,9 +276,9 @@
                                                 <option value="">교육 선택</option>
                                                 <option value="해상엔진 테크니션 (선내기/선외기)">해상엔진 테크니션 (선내기/선외기)</option>
                                                 <option value="FRP 레저보트 선체 정비 테크니션">FRP 레저보트 선체 정비 테크니션</option>
-                                                <option value="해상엔진 자가정비 (선외기)">해상엔진 자가정비 (선외기)</option>
-                                                <option value="해상엔진 자가정비 (선내기)">해상엔진 자가정비 (선내기)</option>
-                                                <option value="해상엔진 자가정비 (세일요트)">해상엔진 자가정비 (세일요트)</option>
+                                                <option value="선외기 기초정비실습 과정">선외기 기초정비실습 과정</option>
+                                                <option value="선내기 기초정비실습 과정">선내기 기초정비실습 과정</option>
+                                                <option value="세일요트 기초정비실습 과정">세일요트 기초정비실습 과정</option>
                                             </select>
                                         </div>
                                     </div>

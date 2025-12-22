@@ -7773,13 +7773,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             case "FRP 레저보트 선체 정비 테크니션":
                 responseList = eduMarineMngMapper.selectSmsSendFrpList();
                 break;
-            case "해상엔진 자가정비 (선외기)":
+            case "선외기 기초정비실습 과정":
                 responseList = eduMarineMngMapper.selectSmsSendOutboarderList();
                 break;
-            case "해상엔진 자가정비 (선내기)":
+            case "선내기 기초정비실습 과정":
                 responseList = eduMarineMngMapper.selectSmsSendInboarderList();
                 break;
-            case "해상엔진 자가정비 (세일요트)":
+            case "세일요트 기초정비실습 과정":
                 responseList = eduMarineMngMapper.selectSmsSendSailyachtList();
                 break;
             case "고마력 선외기 정비 중급 테크니션":
@@ -8869,19 +8869,19 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 frpDTO.setTrainSeq(newTrainSeq);
                                 updTableResult = eduMarineMngMapper.updateFrpTrainSeq(frpDTO);
                                 break;
-                            case "해상엔진 자가정비 (선외기)":
+                            case "선외기 기초정비실습 과정":
                                 OutboarderDTO outboarderDTO = new OutboarderDTO();
                                 outboarderDTO.setSeq(tableSeq);
                                 outboarderDTO.setTrainSeq(newTrainSeq);
                                 updTableResult = eduMarineMngMapper.updateOutboarderTrainSeq(outboarderDTO);
                                 break;
-                            case "해상엔진 자가정비 (선내기)":
+                            case "선내기 기초정비실습 과정":
                                 InboarderDTO inboarderDTO = new InboarderDTO();
                                 inboarderDTO.setSeq(tableSeq);
                                 inboarderDTO.setTrainSeq(newTrainSeq);
                                 updTableResult = eduMarineMngMapper.updateInboarderTrainSeq(inboarderDTO);
                                 break;
-                            case "해상엔진 자가정비 (세일요트)":
+                            case "세일요트 기초정비실습 과정":
                                 SailyachtDTO sailyachtDTO = new SailyachtDTO();
                                 sailyachtDTO.setSeq(tableSeq);
                                 sailyachtDTO.setTrainSeq(newTrainSeq);

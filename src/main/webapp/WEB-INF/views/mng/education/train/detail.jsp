@@ -438,7 +438,7 @@ if (document.documentElement) {
                                                                         </c:when>
                                                                         <c:otherwise>
                                                                             <img id="thumbPreview" src="/assets/media/svg/files/blank-image.svg"
-                                                                                 alt="없음" style="width: 150px; height: 100px; object-fit: contain; border: 1px solid #ddd; border-radius: 4px; background: #f5f8fa;">
+                                                                                 alt="없음" style="width: 150px; height: 100px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px; background: #f5f8fa;">
                                                                         </c:otherwise>
                                                                     </c:choose>
                                                                 </div>
@@ -450,7 +450,7 @@ if (document.documentElement) {
                                                                     <input type="hidden" id="thumbFileId" name="thumbFileId" value="${info.thumbFileId}"/>
                                                                 </div>
                                                                 <div class="form-text text-muted mt-2">
-                                                                    ※ 권장 사이즈: <strong>1920 x 1080px</strong> (비율 3:2) / jpg, png 파일
+                                                                    ※ 권장 사이즈: <strong>1920 x 1080px</strong> (비율 16:9) / jpg, png 파일
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -472,9 +472,9 @@ if (document.documentElement) {
                                                             <option value="상시신청" <c:if test="${info.gbn eq '상시신청'}">selected</c:if> >상시신청</option>
                                                             <%--<option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.gbn eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>--%>
                                                             <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.gbn eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                            <option value="해상엔진 자가정비 (선외기)" <c:if test="${info.gbn eq '해상엔진 자가정비 (선외기)'}">selected</c:if> >해상엔진 자가정비 (선외기)</option>
-                                                            <option value="해상엔진 자가정비 (선내기)" <c:if test="${info.gbn eq '해상엔진 자가정비 (선내기)'}">selected</c:if> >해상엔진 자가정비 (선내기)</option>
-                                                            <option value="해상엔진 자가정비 (세일요트)" <c:if test="${info.gbn eq '해상엔진 자가정비 (세일요트)'}">selected</c:if> >해상엔진 자가정비 (세일요트)</option>
+                                                            <option value="선외기 기초정비실습 과정" <c:if test="${info.gbn eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
+                                                            <option value="선내기 기초정비실습 과정" <c:if test="${info.gbn eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
+                                                            <option value="세일요트 기초정비실습 과정" <c:if test="${info.gbn eq '세일요트 기초정비실습 과정'}">selected</c:if> >세일요트 기초정비실습 과정</option>
                                                             <option value="마리나 선박 선외기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선외기 정비사 실무과정'}">selected</c:if> >마리나 선박 선외기 정비사 실무과정</option>
                                                             <option value="마리나 선박 선내기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선내기 정비사 실무과정'}">selected</c:if> >마리나 선박 선내기 정비사 실무과정</option>
                                                             <option value="고마력 선외기 정비 중급 테크니션" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션'}">selected</c:if> >고마력 선외기 정비 중급 테크니션</option>

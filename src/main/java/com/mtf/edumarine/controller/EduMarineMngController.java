@@ -188,9 +188,9 @@ public class EduMarineMngController {
         labels.add("상시신청");
         labels.add("해상엔진 테크니션 (선내기/선외기)");
         labels.add("FRP 레저보트 선체 정비 테크니션");
-        labels.add("해상엔진 자가정비 (선외기)");
-        labels.add("해상엔진 자가정비 (선내기)");
-        labels.add("해상엔진 자가정비 (세일요트)");
+        labels.add("선외기 기초정비실습 과정");
+        labels.add("선내기 기초정비실습 과정");
+        labels.add("세일요트 기초정비실습 과정");
         labels.add("고마력 선외기 정비 중급 테크니션");
         labels.add("자가정비 심화과정 (고마력 선외기)");
         labels.add("고마력 선외기 정비 중급 테크니션 (특별반)");
@@ -3186,7 +3186,7 @@ public class EduMarineMngController {
         } else {
             TrainDTO newTrain = new TrainDTO();
 
-            // ★★★ [핵심 수정] 파라미터에 따라 시스템 타입 결정 ★★★
+            // ★★★ 파라미터에 따라 시스템 타입 결정 ★★★
             if ("UNIFIED".equals(type)) {
                 newTrain.setApplicationSystemType("UNIFIED"); // 신규 통합 방식
             } else {
