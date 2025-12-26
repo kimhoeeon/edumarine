@@ -150,7 +150,7 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">세일요트 기초정비실습 과정</div>
-                            <div class="eng">Marine Engine Self-Maintenance (Sale Yacht)</div>
+                            <div class="eng">Sail Yacht Basic Maintenance</div>
                             <div class="text">
                                 선내기 엔진을 장착한 파워보트 등을 이용한 해양레저활동이 증가하고 있는 상황에서,<br>
                                 해양레저활동 참가자들이 안전하게 해양레저활동을 즐길 수 있도록, 선내기 엔진에 대한 자가정비 및 유지보수, 응급조치요령 등의 교육을 실시하오니<br>

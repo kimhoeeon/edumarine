@@ -182,8 +182,9 @@
     .recruit_cp_top .info_box .list li.w50 {width: 100%;}
     .recruit_info_list li.w50 {width: 100%;}
 
-
-
+    .guide_plan .table_wrap .table-lh table{min-width: 800px;}
+    .guide_plan .table_wrap .table.table-lh{overflow: scroll}
+    .guide_plan .table_tit .mobile_cmnt.mobile_cmnt_tb{display: block;}
 }
 
 @media (max-width: 768px){

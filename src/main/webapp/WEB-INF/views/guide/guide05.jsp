@@ -149,7 +149,7 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">위탁교육</div>
-                            <div class="eng">Commissioned education</div>
+                            <div class="eng">Commissioned Training</div>
                             <div class="text">
                                 선외기 및 선내기, FRP 선체 등과 업무상 관련이 있는 관공서 및 회사, 단체 등의 요구에 부합하는 맞춤교육을 설계하여 진행하고 있습니다.<br>
                                 선외기 및 선내기, FRP 선체 등과 관련된 안전한 관리 및 운영, 직원들의 업무능력 향상을 위한 교육을 원하시는 관공서 및 회사, 단체 등의 많은 신청 바랍니다.
