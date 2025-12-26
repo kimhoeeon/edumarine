@@ -149,7 +149,7 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">스턴드라이브 정비 전문가과정</div>
-                            <div class="eng">Sterndrive Maintenance</div>
+                            <div class="eng">Sterndrive Maintenance Specialist</div>
                             <div class="text">
                                 선,내외기 드라이브(스턴드라이브)에 대한 이해도를 높이고 기본정비와 기술정비 및 문제해결을 원활하게 수행할 수 있는<br/>
                                 중급 테크니션 양성교육 과정을 개설하니 많은 지원 바랍니다.

@@ -149,7 +149,7 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">고마력 선외기 정비 중급 테크니션</div>
-                            <div class="eng">Maintenance Of High Horsepower (Outboard Aircraft)</div>
+                            <div class="eng">High-Power Outboard Maintenance (Intermediate)</div>
                             <div class="text">
                                 고마력 선외기에 대한 정비 및 고장진단 등을 원활하게 수행할 수 있는 선외기 중급테크니션을 양성하고자<br/>
                                 본 교육과정을 개설하니 많은 지원 바랍니다.

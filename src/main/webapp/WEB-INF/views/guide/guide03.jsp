@@ -149,7 +149,7 @@
                     <div class="guide_top">
                         <div class="guide_top_tit">
                             <div class="big">마리나선박 정비사 실무과정</div>
-                            <div class="eng">Marina Ship Mechanic Practical Training</div>
+                            <div class="eng">Marina Ship Maintenance Technician (Practical Course)</div>
                             <div class="text">
                                 마리나 선박과 관련된 선외기 및 선내기, 선체 정비관련 현장 실무 기술자를 양성하기 위하여 마리나 선박 정비사 실무과정을 개설합니다.<br>
                                 마리나항만법에 의한 국가자격증인 마리나선박정비사(선외기, 선내기, FRP선체) 자격증 취득을 희망하시는 분들과 해양레저산업 분야 기술자가 되어 취업 및 창업을 희망하시는 분들의 많은 지원 바랍니다.

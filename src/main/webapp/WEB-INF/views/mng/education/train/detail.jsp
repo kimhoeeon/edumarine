@@ -402,7 +402,7 @@ if (document.documentElement) {
 
                                             <div class="row mb-6">
                                                 <label class="col-lg-2 col-form-label required fw-semibold fs-6">신청서 양식</label>
-                                                <div class="col-lg-10 fv-row">
+                                                <div class="col-lg-10">
                                                     <c:choose>
                                                         <%--신규 통합 시스템 (UNIFIED)--%>
                                                         <c:when test="${info.applicationSystemType == 'UNIFIED'}">
@@ -465,12 +465,12 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div class="input-group">
-                                                        <input type="text" id="gbn" name="gbn" value="${info.gbn}" class="form-control form-control-solid-bg" placeholder="교육과정명" readonly/>
-                                                        <select id="gbn_select" class="form-select form-control-solid-bg ms-4" <c:if test="${info.gbn ne null}">disabled</c:if> >
+
+                                                    <div class="d-flex align-items-center">
+                                                        <select id="gbn_select" class="form-select form-select-solid me-2" <c:if test="${info.gbn ne null}">disabled</c:if> >
                                                             <option selected>- 교육과정명 선택 -</option>
+                                                            <option value="direct">직접입력</option>
                                                             <option value="상시신청" <c:if test="${info.gbn eq '상시신청'}">selected</c:if> >상시신청</option>
-                                                            <%--<option value="해상엔진 테크니션 (선내기/선외기)" <c:if test="${info.gbn eq '해상엔진 테크니션 (선내기/선외기)'}">selected</c:if> >해상엔진 테크니션 (선내기/선외기)</option>--%>
                                                             <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.gbn eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
                                                             <option value="선외기 기초정비실습 과정" <c:if test="${info.gbn eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
                                                             <option value="선내기 기초정비실습 과정" <c:if test="${info.gbn eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
@@ -490,6 +490,8 @@ if (document.documentElement) {
                                                             <option value="선외기 팸투어" <c:if test="${info.gbn eq '선외기 팸투어'}">selected</c:if> >선외기 팸투어</option>
                                                             <option value="레저선박 해양전자장비 교육" <c:if test="${info.gbn eq '레저선박 해양전자장비 교육'}">selected</c:if> >레저선박 해양전자장비 교육</option>
                                                         </select>
+                                                        <input type="text" name="gbn" id="gbn" class="form-control form-control-solid"
+                                                               value="${info.gbn}" readonly placeholder="직접입력 선택 시 작성 가능"/>
                                                     </div>
                                                 </div>
                                                 <!--end::Col-->
@@ -502,14 +504,14 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div class="input-group">
-                                                        <input type="text" id="gbnDepth" name="gbnDepth" value="${info.gbnDepth}" class="form-control form-control-solid-bg" placeholder="세부교육명" readonly/>
-                                                        <select id="gbn_depth_select" class="form-select form-control-solid-bg ms-4" <c:if test="${info.gbnDepth ne null}">disabled</c:if> >
+                                                    <div class="d-flex align-items-center">
+                                                        <select id="gbn_depth_select" class="form-select form-select-solid me-2" <c:if test="${info.gbnDepth ne null}">disabled</c:if> >
                                                             <option value="" selected>- 세부교육명 선택 -</option>
                                                             <option value="선외기" <c:if test="${info.gbnDepth eq '선외기'}">selected</c:if> >선외기</option>
                                                             <option value="선내기" <c:if test="${info.gbnDepth eq '선내기'}">selected</c:if> >선내기</option>
                                                             <option value="세일요트" <c:if test="${info.gbnDepth eq '세일요트'}">selected</c:if> >세일요트</option>
                                                         </select>
+                                                        <input type="text" id="gbnDepth" name="gbnDepth" value="${info.gbnDepth}" class="form-control form-control-solid" placeholder="세부교육명" readonly/>
                                                     </div>
                                                 </div>
                                                 <!--end::Col-->

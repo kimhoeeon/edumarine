@@ -10,17 +10,21 @@ $(function () {
         let selectedOption = $(this).val();
         let gbn = $('#gbn');
 
-        if (nvl(selectedOption,'') !== '') {
-            gbn.prop('disabled', true).val(selectedOption);
+        if (selectedOption === 'direct') {
+            // [CASE 1] 직접입력 선택 시: 입력창 초기화 및 활성화
+            gbn.val('').prop('readonly', false).focus();
+        } else if (nvl(selectedOption, '') !== '') {
+            // [CASE 2] 기존 과정명 선택 시: 값 입력 및 비활성화(readonly)
+            gbn.val(selectedOption).prop('readonly', true);
         } else {
-            gbn.prop('disabled', true).val('');
+            // [CASE 3] 선택 안함
+            gbn.val('').prop('readonly', true);
         }
 
         let gbnDepth = $('#gbnDepth');
         if(gbn.val() === '기초정비교육' || gbn.val() === '응급조치교육'){
-            //show
             gbnDepth.parent().parent().parent().removeClass('d-none');
-            $('#gbnDepth').prop('disabled', true);
+            //$('#gbnDepth').prop('disabled', true);
         }else{
             gbnDepth.parent().parent().parent().addClass('d-none');
             $('#gbnDepth').val('');
