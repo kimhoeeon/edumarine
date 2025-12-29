@@ -279,6 +279,9 @@ function f_education_train_save(seq) {
     // 1. 유효성 검사
     if (!f_education_train_valid()) return;
 
+    // ★ 핵심: 초기 진입 시 신규 등록(빈값)이었는지 여부를 저장
+    let isNewRegistration = (nvl(seq, '') === '');
+
     Swal.fire({
         title: '저장',
         text: "입력된 정보를 저장하시겠습니까?",
@@ -311,13 +314,14 @@ function f_education_train_save(seq) {
 
                             // 2) 신규 등록이었다면, 미리 발급받은 교육 ID(seq)를 폼에 바인딩
                             //    (이래야 insertTrain 호출 시 이 ID를 사용하여 저장함)
-                            if (nvl(seq, '') === '' && res.customValue2) {
-                                $('input[name=seq]').val(res.customValue2); // hidden input seq 값 변경
-                                seq = res.customValue2; // 로직 내 변수도 업데이트
+                            if (isNewRegistration && res.customValue2) {
+                                $('input[name=seq]').val(res.customValue2);
+                                // 주의: 여기서 seq 변수를 업데이트하지만, '신규 등록'이라는 사실(isNewRegistration)은 변하지 않음
+                                seq = res.customValue2;
                             }
 
                             // 3. 실제 교육 정보 저장 요청
-                            fn_actual_save_process(seq);
+                            fn_actual_save_process(seq, isNewRegistration);
 
                         } else {
                             Swal.fire('오류', '이미지 업로드 실패: ' + res.resultMessage, 'error');
@@ -329,25 +333,34 @@ function f_education_train_save(seq) {
                 });
             } else {
                 // 파일 없으면 바로 저장
-                fn_actual_save_process(seq);
+                fn_actual_save_process(seq, isNewRegistration);
             }
         }
     });
 }
 
 // [신규] 실제 DB 저장/수정 처리 함수 (기존 로직 분리)
-function fn_actual_save_process(seq) {
+function fn_actual_save_process(seq, isInsertFlag) {
     /* form data setting (thumbFileId가 포함됨) */
     let resData = f_education_train_form_data_setting();
-
-    // seq가 변경되었을 수 있으므로 다시 확인 (신규 등록 시)
-    let currentSeq = $('input[name=seq]').val();
+    resData.gbn = $('#gbn').val();
 
     // 신규 등록인데 seq가 있다면(파일 업로드로 생성됨), resData에도 반영
-    if(currentSeq) resData.seq = currentSeq;
+    let currentSeq = $('input[name=seq]').val();
+    if(currentSeq) {
+        resData.seq = currentSeq;
+        seq = currentSeq; // 변수도 동기화
+    }
 
-    // 교육 조기마감 Alert 로직
-    let url = (nvl(seq, '') === '') ? '/mng/education/train/insert.do' : '/mng/education/train/update.do';
+    // ★ URL 결정 로직 변경
+    // 기존: seq가 있으면 무조건 Update (오류 원인)
+    // 수정: isInsertFlag가 true면(최초 버튼 클릭 시 빈값이었으면) 무조건 Insert 수행
+    let url = '';
+    if (isInsertFlag === true) {
+        url = '/mng/education/train/insert.do';
+    } else {
+        url = (nvl(seq, '') === '') ? '/mng/education/train/insert.do' : '/mng/education/train/update.do';
+    }
 
     // 조기마감 체크 등 기존 로직...
     let preClosingYn = $('#preClosingYn').val();

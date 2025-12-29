@@ -138,6 +138,9 @@
              , exposure_yn
              , schedule_exposure_yn
              , closing_yn
+             , application_system_type
+             , form_type
+             , thumb_file_id
              , del_yn
              , note
              , init_regi_pic
@@ -173,6 +176,9 @@
              , schedule_exposure_yn
              , closing_yn
              , del_yn
+             , application_system_type
+             , form_type
+             , thumb_file_id
              , note
              , init_regi_pic
              , init_regi_dttm
@@ -208,6 +214,9 @@
              , exposure_yn
              , schedule_exposure_yn
              , closing_yn
+        , application_system_type
+        , form_type
+        , thumb_file_id
              , ( SELECT COUNT(*)
                  FROM train
                  WHERE del_yn = 'N'

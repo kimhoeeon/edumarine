@@ -3249,58 +3249,85 @@ public class EduMarineMngController {
     @RequestMapping(value = "/mng/education/train/uploadThumb.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_education_train_uploadThumb(
-            @RequestParam("thumbFile") MultipartFile thumbFile,
-            @RequestParam(value = "seq", required = false) String seq, // 현재 교육 SEQ (없으면 신규)
+            HttpServletRequest request, // MultipartFile 대신 HttpServletRequest 사용
             HttpSession session) {
 
         ResponseDTO response = new ResponseDTO();
+
+        // 1. 업로드 설정
+        String savePath = "/usr/local/tomcat/webapps/upload/train/thumb/"; // 실제 서버 경로
+        int sizeLimit = 50 * 1024 * 1024; // 50MB 제한
+        String encoding = "UTF-8";
+
+        // 폴더 생성
+        File dir = new File(savePath);
+        if (!dir.exists()) dir.mkdirs();
+
         try {
-            if (thumbFile != null && !thumbFile.isEmpty()) {
-                // 1. 교육 ID(seq) 결정 (파일의 Owner ID)
-                String trainSeq = seq;
-                if (trainSeq == null || trainSeq.isEmpty()) {
-                    // 신규 등록인 경우: DB 시퀀스에서 새 ID를 미리 발급받음
-                    trainSeq = eduMarineMngService.processGetTrainSeq();
+            // 2. 파일 업로드 수행 (cos.jar 핵심 로직)
+            // 이 시점에 파일이 서버에 저장됩니다.
+            MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, encoding, new DefaultFileRenamePolicy());
+
+            // 3. 파라미터 수신 (request가 아닌 multi 객체에서 꺼내야 함)
+            String seq = multi.getParameter("seq");
+
+            // 4. 업로드된 파일 정보 확인
+            Enumeration files = multi.getFileNames();
+            if (files.hasMoreElements()) {
+                String paramName = (String) files.nextElement();
+                String filesystemName = multi.getFilesystemName(paramName); // 저장된 파일명
+                String originalFileName = multi.getOriginalFileName(paramName); // 원본 파일명
+
+                if (filesystemName != null) {
+                    // 5. 교육 ID(seq) 결정
+                    String trainSeq = seq;
+                    if (trainSeq == null || trainSeq.isEmpty()) {
+                        trainSeq = eduMarineMngService.processGetTrainSeq(); // 신규 채번
+                    }
+
+                    // 6. DB 저장을 위한 FileDTO 생성
+                    // (UUID를 파일명에 붙이는 로직은 DefaultFileRenamePolicy 때문에
+                    //  이미 중복처리가 되었으므로, 필요시 파일명 변경 로직을 추가하거나 그대로 사용)
+
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(eduMarineMngService.processGetFileId());
+                    fileDTO.setUserId(trainSeq); // 교육 ID 매핑
+
+                    // 경로 설정
+                    fileDTO.setFullFilePath(savePath);
+                    fileDTO.setFullPath(savePath + filesystemName);
+                    fileDTO.setFolderPath(savePath);
+                    fileDTO.setFullFileName(filesystemName);
+
+                    // UUID 생성 (논리적 관리용)
+                    String uuid = UUID.randomUUID().toString();
+                    fileDTO.setUuid(uuid);
+                    fileDTO.setFileName(originalFileName);
+                    fileDTO.setFileYn("Y");
+                    fileDTO.setNote("TRAIN_THUMB");
+
+                    // 7. DB Insert
+                    eduMarineMngService.processInsertFileInfo(fileDTO);
+
+                    // 8. 결과 반환
+                    response.setResultCode("0");
+                    response.setCustomValue(fileDTO.getId());  // 파일 ID
+                    response.setCustomValue2(trainSeq);        // 교육 ID
+                } else {
+                    response.setResultCode("-1");
+                    response.setResultMessage("파일이 저장되지 않았습니다.");
                 }
-
-                // 2. 파일 물리 저장
-                String path = "/usr/local/tomcat/webapps/upload/train/thumb/"; // 서버 경로
-                File folder = new File(path);
-                if (!folder.exists()) folder.mkdirs();
-
-                String originalName = thumbFile.getOriginalFilename();
-                String uuid = UUID.randomUUID().toString();
-                String saveName = uuid + "_" + originalName;
-                File dest = new File(path + saveName);
-                thumbFile.transferTo(dest);
-
-                // 3. DB 저장 (userId에 trainSeq 저장)
-                FileDTO fileDTO = new FileDTO();
-                fileDTO.setId(eduMarineMngService.processGetFileId());
-                fileDTO.setUserId(trainSeq); // ★ 핵심: 미리 발급받은 교육 ID 사용
-                fileDTO.setFullFilePath(path);
-                fileDTO.setFullPath(path + saveName);
-                fileDTO.setFolderPath(path);
-                fileDTO.setFullFileName(saveName);
-                fileDTO.setUuid(uuid);
-                fileDTO.setFileName(originalName);
-                fileDTO.setFileYn("Y");
-                fileDTO.setNote("TRAIN_THUMB");
-
-                eduMarineMngService.processInsertFileInfo(fileDTO);
-
-                response.setResultCode("0");
-                response.setCustomValue(fileDTO.getId());  // 파일 ID 반환
-                response.setCustomValue2(trainSeq);        // 교육 ID 반환 (신규일 경우 중요)
             } else {
                 response.setResultCode("-1");
-                response.setResultMessage("파일이 없습니다.");
+                response.setResultMessage("업로드된 파일이 없습니다.");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             response.setResultCode("-1");
-            response.setResultMessage("업로드 중 오류 발생: " + e.getMessage());
+            response.setResultMessage("업로드 중 오류: " + e.getMessage());
         }
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
