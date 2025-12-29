@@ -120,72 +120,68 @@
     </form>
 
     <!-- container -->
-    <div id="container" class="sub_page apply_page">
-        <div class="sub_top_wrap">
-            <div class="sub_top_bg" style="background-image:url(/static/img/bg_sub_top_02.jpg)">
-                <div class="sub_top_title_wrap">
-                    <div class="sub_top_title">
-                        <h2>교육신청</h2>
-                    </div>
+    <div id="container">
+
+
+        <!-- sub_top -->
+        <div class="sub_top sub_top_edu">
+            <div class="inner">
+                <div class="sub_top_nav">
+                    <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span><span>교육신청</span><span>레저선박 해양전자장비 교육</span>
                 </div>
-                <div class="sub_nav_wrap">
-                    <div class="sub_nav">
-                        <ul>
-                            <li><a href="/">HOME</a></li>
-                            <li><a href="/apply/schedule.do">교육신청</a></li>
-                            <li><a href="/apply/schedule.do">교육일정</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <h2 class="sub_top_title">${trainInfo.gbn}</h2>
             </div>
         </div>
-        <div class="sub_content_wrap">
-            <div class="sub_content">
-                <div class="apply_wrap">
-                    <div class="title_wrap">
-                        <div class="title">
-                            <h3>[${trainInfo.gbn} ${trainInfo.gbnDepth}] 교육 신청</h3>
-                        </div>
-                    </div>
+        <!-- //sub_top -->
+
+        <!-- content_wrap -->
+        <div id="content_wrap">
+
+            <!-- content -->
+            <div id="content" class="sub_apply">
+                <div class="join_wrap form_wrap">
 
                     <form id="applyForm" name="applyForm" method="post">
                         <input type="hidden" name="trainSeq" value="${seq}" />
                         <input type="hidden" name="memberSeq" value="${info.seq}" />
 
+                        <!-- form box -->
                         <div class="form_box">
-                            <div class="form_title">
-                                <h4>신청자 정보</h4>
+                            <div class="form_tit">
+                                <div class="big">기본정보</div>
+                                    <%--<div class="small">(선착순 모집) 15명까지 개별연락드립니다.</div>--%>
+                                <div class="small">이름, 연락처, 주소 등 기본정보는 <span style="font-weight: bold;">'마이페이지>회원정보'</span> 에서 수정 가능합니다.</div>
                             </div>
-                            <div class="form_content">
-                                <dl>
-                                    <dt>아이디</dt>
-                                    <dd>${info.id}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>성명(국문)</dt>
-                                    <dd>${info.name}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>성명(영문)</dt>
-                                    <dd>${info.nameEn}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>연락처</dt>
-                                    <dd>${info.phone}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>이메일</dt>
-                                    <dd>${info.email}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>생년월일</dt>
-                                    <dd>${info.birthYear}-${info.birthMonth}-${info.birthDay} (${info.sex})</dd>
-                                </dl>
-                                <dl class="address">
-                                    <dt>주소</dt>
-                                    <dd>${info.address} ${info.addressDetail}</dd>
-                                </dl>
-                            </div>
+                            <ul class="form_list">
+                                <li>
+                                    <div class="gubun req"><p>아이디</p></div>
+                                    <div class="naeyong">${info.id}</div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>성명(국문)</p></div>
+                                    <div class="naeyong">${info.name}</div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>성명(영문)</p></div>
+                                    <div class="naeyong">${info.nameEn}</div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>연락처</p></div>
+                                    <div class="naeyong">${info.phone}</div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>이메일</p></div>
+                                    <div class="naeyong">${info.email}</div>
+                                </li>
+                                <li>
+                                    <div class="gubun req"><p>생년월일</p></div>
+                                    <div class="naeyong">${info.birthYear}-${info.birthMonth}-${info.birthDay} (${info.sex})</div>
+                                </li>
+                                <li class="address">
+                                    <div class="gubun req"><p>주소</p></div>
+                                    <div class="naeyong">${info.address} ${info.addressDetail}</div>
+                                </li>
+                            </ul>
                         </div>
 
                         <c:choose>
@@ -207,36 +203,41 @@
                                 </div>
                             </c:otherwise>
                         </c:choose>
-                        <div class="form_box">
-                            <div class="form_title">
-                                <h4>개인정보 수집 및 이용 동의</h4>
-                            </div>
-                            <div class="form_content">
-                                <div class="agree_box">
-                                    <div class="text_box">
-                                        <p>
-                                            (재)경기해양레저인력양성센터는 「개인정보 보호법」 제15조(개인정보의 수집·이용), 제17조(개인정보의 제공), 제22조(동의를 받는 방법), 제24조(고유식별정보의 처리 제한)에 따라 귀하의 개인정보를 다음과 같이 수집·이용·제공하고자 합니다.
-                                        </p>
-                                        <p>
-                                            1. 개인정보의 수집·이용 목적 : 교육 신청자 관리 및 교육 운영<br>
-                                            2. 수집·이용하려는 개인정보의 항목 : 성명(국/영문), 연락처, 이메일, 생년월일, 성별, 주소, 기타 교육 신청 시 작성한 항목<br>
-                                            3. 개인정보의 보유 및 이용 기간 : 수집·이용 동의일로부터 1년 또는 정보주체의 삭제 요청 시까지<br>
-                                            4. 개인정보 수집 동의에 거부하실 수 있으며, 동의하지 않으실 경우 교육 신청이 제한될 수 있습니다.
-                                        </p>
+
+                        <div class="form_btn_box">
+                            <a href="/apply/eduApplyUnified.do?seq=${seq}" class="btnSt03">초기화</a>
+                            <a href="javascript:void(0);" onclick="fn_apply_submit();" class="btnSt01">교육 신청하기</a>
+                        </div>
+
+                        <!-- form_notice -->
+                        <div class="form_notice_box">
+                            <div class="tit_box">교육비 환불 규정</div>
+                            <div class="text_box">
+                                <div class="box">
+                                    <div class="tit">교육신청자 최소 인원 미달로 폐강시 100% 환불</div>
+                                    <div class="cont">
+                                        <div class="text1">교육 환불 규정(정상가 기준)</div>
+                                        <div class="text2">- 교육 개설 10 일 전 100%</div>
+                                        <div class="text2">- 교육 개설 5 일 전 50%</div>
+                                        <div class="text2">- 교육 개설 4 일전 ~ 교육당일 환불 및 취소 불가</div>
                                     </div>
-                                    <div class="check_box">
-                                        <input type="radio" id="agreeY" name="agree" value="Y" checked="checked">
-                                        <label for="agreeY">동의함</label>
-                                        <input type="radio" id="agreeN" name="agree" value="N">
-                                        <label for="agreeN">동의하지 않음</label>
+                                </div>
+                                <div class="box">
+                                    <div class="cont">
+                                        <div class="text1 bold">
+                                            위 환불 규정에 의거하여, 해당 교육일 기준 환불수수료를 공제한 교육비가 반환됩니다.<br>
+                                            (신용카드 결제 시, 카드 취소 처리 및 계좌 입금 시, 납부 계좌로 환불)
+                                        </div>
+                                        <div class="text1 bold">
+                                            해당 교육일 기준 환불 소요기간 : 14일~20일<br>
+                                            * 소비자 보호원 학원법 환불 규정적용
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- //form_notice -->
 
-                        <div class="btn_wrap">
-                            <a href="javascript:void(0);" onclick="fn_apply_submit();" class="btn_apply">교육 신청하기</a>
-                        </div>
                     </form>
                 </div>
             </div>

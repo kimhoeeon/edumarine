@@ -387,7 +387,6 @@ if (document.documentElement) {
                                     <form id="dataForm" method="post" onsubmit="return false;">
                                         <%-- SEQ 값--%>
                                         <input type="hidden" id="userSeq" name="seq" value="${info.seq}">
-                                        <input type="hidden" id="applicationSystemType" name="applicationSystemType" value="${info.applicationSystemType}" />
                                         <!--begin::Card header-->
                                         <div class="card-header border-0">
                                             <!--begin::Card title-->
