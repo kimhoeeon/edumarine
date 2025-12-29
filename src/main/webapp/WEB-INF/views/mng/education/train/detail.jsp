@@ -474,8 +474,8 @@ if (document.documentElement) {
                                                             <option value="선외기 기초정비실습 과정" <c:if test="${info.gbn eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
                                                             <option value="선내기 기초정비실습 과정" <c:if test="${info.gbn eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
                                                             <option value="세일요트 기초정비실습 과정" <c:if test="${info.gbn eq '세일요트 기초정비실습 과정'}">selected</c:if> >세일요트 기초정비실습 과정</option>
-                                                            <option value="마리나 선박 선외기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선외기 정비사 실무과정'}">selected</c:if> >마리나 선박 선외기 정비사 실무과정</option>
-                                                            <option value="마리나 선박 선내기 정비사 실무과정" <c:if test="${info.gbn eq '마리나 선박 선내기 정비사 실무과정'}">selected</c:if> >마리나 선박 선내기 정비사 실무과정</option>
+                                                            <option value="마리나선박 선외기 정비사 실무과정" <c:if test="${info.gbn eq '마리나선박 선외기 정비사 실무과정'}">selected</c:if> >마리나선박 선외기 정비사 실무과정</option>
+                                                            <option value="마리나선박 선내기 정비사 실무과정" <c:if test="${info.gbn eq '마리나선박 선내기 정비사 실무과정'}">selected</c:if> >마리나선박 선내기 정비사 실무과정</option>
                                                             <option value="고마력 선외기 정비 중급 테크니션" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션'}">selected</c:if> >고마력 선외기 정비 중급 테크니션</option>
                                                             <option value="자가정비 심화과정 (고마력 선외기)" <c:if test="${info.gbn eq '자가정비 심화과정 (고마력 선외기)'}">selected</c:if> >자가정비 심화과정 (고마력 선외기)</option>
                                                             <option value="고마력 선외기 정비 중급 테크니션 (특별반)" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션 (특별반)'}">selected</c:if> >고마력 선외기 정비 중급 테크니션 (특별반)</option>

@@ -140,8 +140,8 @@
                         <ul class="sked_search_wrap">
                             <li>
                                 <div class="gubun">교육연도</div>
-                                <c:set var="now" value="<%=new java.util.Date()%>"/>
-                                <div class="input"><input type="text" id="trainYear" value="<fmt:formatDate value="${now}" pattern="yyyy" />" readonly></div>
+                                <%--<c:set var="now" value="<%=new java.util.Date()%>"/>--%>
+                                <div class="input"><input type="text" id="trainYear" value="2026<%--<fmt:formatDate value="${now}" pattern="yyyy" />--%>" readonly></div>
                             </li>
                             <li>
                                 <div class="gubun">과정</div>

@@ -477,7 +477,8 @@ if (document.documentElement) {
                                                         data-placeholder="- 연도 -" onchange="f_customer_electro_search()">
                                                     <option></option>
                                                     <option value="" disabled>- 연도 -</option>
-                                                    <option value="2025" selected>2025</option>
+                                                    <option value="2026" selected>2026</option>
+                                                    <option value="2025">2025</option>
                                                     <option value="2024">2024</option>
                                                 </select>
                                                 <!--end::Select2-->
