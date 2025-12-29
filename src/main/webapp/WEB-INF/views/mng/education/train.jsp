@@ -409,8 +409,8 @@ if (document.documentElement) {
                                                         data-allow-clear="true" data-hide-search="true">
                                                     <option></option>
                                                     <option disabled>- 검색조건 -</option>
-                                                    <option value="" selected>전체</option>
-                                                    <option value="NAME">교육과정명</option>
+                                                    <option value="">전체</option>
+                                                    <option value="NAME" selected>교육과정명</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
