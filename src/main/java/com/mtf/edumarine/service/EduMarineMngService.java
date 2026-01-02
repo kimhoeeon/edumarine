@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The interface GoingSool service.
@@ -503,7 +504,7 @@ public interface EduMarineMngService {
     List<ApplicationUnifiedDTO> processSelectUnifiedApplicationList(SearchDTO searchDTO);
 
     /** 통합 신청 상세 조회 */
-    ApplicationUnifiedDTO processSelectUnifiedApplicationSingle(String seq);
+    ApplicationUnifiedDTO processSelectApplicationUnifiedSingle(String seq);
 
     /** 통합 신청 엑셀용 전체 목록 조회 */
     List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO);
@@ -511,4 +512,12 @@ public interface EduMarineMngService {
     String processGetFileId();
 
     String processGetTrainSeq();
+
+    List<ApplicationUnifiedDTO> processSelectUnifiedList(SearchDTO searchDTO);
+
+    int processSelectUnifiedListCnt(Map<String, Object> paramMap);
+
+    ResponseDTO processUpdateUnifiedApplyStatus(List<ApplicationUnifiedDTO> unifiedList);
+
+    ResponseDTO processUpdateUnifiedApplyStatusChange(List<ApplicationUnifiedDTO> unifiedList);
 }

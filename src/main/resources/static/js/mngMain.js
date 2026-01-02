@@ -355,6 +355,29 @@ function replaceText(value){
     return value;
 }
 
+function _ajax_(method, url, data, successCallback) {
+    $.ajax({
+        type: method,
+        url: url,
+        data: JSON.stringify(data), // 객체를 JSON 문자열로 변환
+        dataType: "json",
+        contentType: "application/json; charset=utf-8", // Controller @RequestBody 대응
+        success: function (response) {
+            if (successCallback) {
+                successCallback(response);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Ajax Error:", error);
+            if (typeof Swal !== 'undefined') {
+                Swal.fire('오류', '서버 통신 중 오류가 발생했습니다.', 'error');
+            } else {
+                alert('서버 통신 중 오류가 발생했습니다.');
+            }
+        }
+    });
+}
+
 // 엑셀업로드
 function showMessage(selector, icon, title, msg, confirmButtonColor) {
     if (typeof icon == "undefined" || title == null) icon = 'info';

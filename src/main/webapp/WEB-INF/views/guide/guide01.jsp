@@ -99,6 +99,11 @@
 
 <body>
 
+    <script>
+        alert('업데이트 예정입니다.');
+        window.location.href = '/';
+    </script>
+
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <!-- container -->
@@ -143,7 +148,7 @@
 
             <!-- content -->
             <div id="content" class="sub_guide">
-                <div class="guide_wrap">
+                <%--<div class="guide_wrap">
 
                     <!-- guide_all -->
                     <div class="guide_plan">
@@ -838,7 +843,7 @@
                     </div>
                     <!-- //guide_all_inquiry -->
 
-                </div>
+                </div>--%>
             </div>
             <!-- //content -->
 

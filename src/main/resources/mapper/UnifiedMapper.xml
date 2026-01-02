@@ -116,12 +116,12 @@
         JOIN member m ON u.member_seq = m.seq
         JOIN train t ON u.train_seq = t.seq
         WHERE 1=1
-        <if test="searchText != null and searchText != ''">
+        <if test='searchText != null and searchText != ""'>
             <choose>
-                <when test="condition == 'NAME'">
+                <when test='condition == "NAME"'>
                     AND m.name LIKE CONCAT('%', #{searchText}, '%')
                 </when>
-                <when test="condition == 'PHONE'">
+                <when test='condition == "PHONE"'>
                     AND m.phone LIKE CONCAT('%', #{searchText}, '%')
                 </when>
                 <otherwise>
@@ -129,11 +129,8 @@
                 </otherwise>
             </choose>
         </if>
-        <if test="trainSeq != null and trainSeq != ''">
-            AND u.train_seq = #{trainSeq}
-        </if>
         ORDER BY u.init_regi_dttm DESC
-        <if test="isPaging == 'Y'">
+        <if test='isPaging == "Y"'>
             LIMIT #{startRow}, #{endRow}
         </if>
     </select>
@@ -144,14 +141,94 @@
         FROM application_unified u
         JOIN member m ON u.member_seq = m.seq
         WHERE 1=1
-        <if test="searchText != null and searchText != ''">
+        <if test='searchText != null and searchText != ""'>
             <choose>
-                <when test="condition == 'NAME'">
+                <when test='condition == "NAME"'>
                     AND m.name LIKE CONCAT('%', #{searchText}, '%')
                 </when>
-                <when test="condition == 'PHONE'">
+                <when test='condition == "PHONE"'>
                     AND m.phone LIKE CONCAT('%', #{searchText}, '%')
                 </when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectUnifiedList" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedList */
+        SELECT au.seq
+             , au.member_seq
+             , au.train_seq
+             , t.gbn
+             , m.grade
+             , m.id
+             , m.name as nameKo
+             , m.name_en as nameEn
+             , m.phone
+             , m.email
+             , au.apply_status
+             , au.cancel_dttm
+             , au.cancel_reason
+             , au.del_yn
+             , au.note
+             , au.init_regi_pic
+             , DATE_FORMAT(au.init_regi_dttm, '%Y-%m-%d %T') as initRegiDttm
+             , au.final_regi_pic
+             , au.final_regi_dttm
+             , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = au.seq) as payMethod
+             , (SELECT p.cancel_gbn from payment p where p.member_seq = m.seq and p.table_seq = au.seq) as cancelGbn
+             , t.next_time
+             , t.train_start_dttm
+        FROM application_unified au
+        LEFT JOIN member m
+        ON au.member_seq = m.seq
+        LEFT JOIN train t
+        ON au.train_seq = t.seq
+        WHERE 1=1
+        AND au.del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "NAME"'>
+                AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "PHONE"'>
+                AND m.phone LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "TRAIN"'>
+                AND t.gbn LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND au.apply_status = #{applyStatus}
+        </if>
+        <if test='time != null'>
+            AND t.next_time = #{time}
+        </if>
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY m.grade IS NULL, au.init_regi_dttm DESC
+    </select>
+
+    <select id="selectUnifiedListCnt" parameterType="java.util.HashMap" resultType="int">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedListCnt */
+        SELECT COUNT(*)
+        FROM application_unified A
+        WHERE A.del_yn = 'N'
+
+        <if test='status != null and status != ""'>
+            AND A.apply_status = #{status}
+        </if>
+
+        <if test='searchText != null and searchText != ""'>
+            <choose>
+                <when test='condition == "name"'>
+                    AND A.name LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <when test='condition == "phone"'>
+                    AND A.phone LIKE CONCAT('%', #{searchText}, '%')
+                </when>
+                <otherwise>
+                    AND (A.name LIKE CONCAT('%', #{searchText}, '%') OR A.phone LIKE CONCAT('%', #{searchText}, '%'))
+                </otherwise>
             </choose>
         </if>
     </select>
@@ -163,10 +240,87 @@
              , m.id AS memberId
              , t.gbn AS trainName
         FROM application_unified u
-                 JOIN member m ON u.member_seq = m.seq
-                 JOIN train t ON u.train_seq = t.seq
+         JOIN member m ON u.member_seq = m.seq
+         JOIN train t ON u.train_seq = t.seq
         WHERE u.seq = #{seq}
     </select>
+
+    <select id="selectApplicationUnifiedSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectApplicationUnifiedSingle */
+        SELECT u.seq
+             , u.train_seq
+             , u.member_seq
+             , u.apply_status
+             , u.region
+             , u.participation_path
+             , u.first_application_field
+             , u.second_application_field
+             , u.third_application_field
+             , u.desired_education_time
+             , u.experience_yn
+             , u.recommend_person
+             , u.top_clothes_size
+             , u.bottom_clothes_size
+             , u.shoes_size
+             , u.grade_gbn
+             , u.school_name
+             , u.major
+             , u.military_gbn
+             , u.military_reason
+             , u.disabled_gbn
+             , u.job_support_gbn
+             , u.tech_edu_gbn
+             , u.tech_edu_name
+             , u.apply_reason
+             , u.tech_reason
+             , u.activity_reason
+             , u.plan_reason
+             , u.etc_reason
+             , u.know_path
+             , u.know_path_reason
+             , u.clothes_size
+             , u.rc_birth_year
+             , u.rc_birth_month
+             , u.rc_birth_day
+             , u.train_understand
+             , u.train_understand_etc
+             , u.boarder_gbn
+             , u.apply_day
+             , u.choice_date
+             , u.cancel_dttm
+             , u.cancel_reason
+             , u.refund_bank_code
+             , u.refund_bank_name
+             , u.refund_bank_customer_name
+             , u.refund_bank_number
+             , u.del_yn
+             , u.note
+             , u.init_regi_pic
+             , u.init_regi_dttm
+             , u.final_regi_pic
+             , u.final_regi_dttm
+             , m.name AS memberName
+             , m.id AS memberId
+             , t.gbn AS trainName
+        FROM application_unified u
+        JOIN member m ON u.member_seq = m.seq
+        JOIN train t ON u.train_seq = t.seq
+        WHERE u.seq = #{seq}
+    </select>
+
+    <update id="updateUnifiedApplyStatus" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateUnifiedApplyStatus */
+        UPDATE application_unified
+        SET apply_status = #{applyStatus}
+        <if test='applyStatus eq "취소신청"'>
+            , cancel_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        </if>
+        <if test='cancelReason != null and cancelReason != ""'>
+            , cancel_reason = #{cancelReason}
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
 
     <update id="updateUnifiedApplication" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
         /* com.mtf.edumarine.mapper.UnifiedMapper.updateUnifiedApplication */

@@ -179,7 +179,7 @@
                                 </li>
                                 <li class="address">
                                     <div class="gubun req"><p>주소</p></div>
-                                    <div class="naeyong">${info.address} ${info.addressDetail}</div>
+                                    <div class="naeyong">${info.address}, ${info.addressDetail}</div>
                                 </li>
                             </ul>
                         </div>
@@ -205,7 +205,7 @@
                         </c:choose>
 
                         <div class="form_btn_box">
-                            <a href="/apply/eduApplyUnified.do?seq=${seq}" class="btnSt03">초기화</a>
+                            <a href="<c:url value="/apply/eduApplyUnified.do?seq=${seq}"/>" class="btnSt03">초기화</a>
                             <a href="javascript:void(0);" onclick="fn_apply_submit();" class="btnSt01">교육 신청하기</a>
                         </div>
 
@@ -267,18 +267,28 @@
 
         // 신청서 제출 (신규 통합 API 호출)
         function fn_apply_submit() {
-            if (!$("input[name='agree']:checked").val() || $("input[name='agree']:checked").val() === 'N') {
-                alert("개인정보 수집 및 이용에 동의하셔야 신청이 가능합니다.");
-                return false;
-            }
 
             // (필요시 폼 타입별 유효성 검사 추가)
-            // var formType = "<%--${trainInfo.formType}--%>";
-            // if (formType === 'BASIC_FORM') { ... }
+            var formType = "${trainInfo.formType}";
+            if (formType === 'BASIC_FORM' || formType === 'PRO_FORM') {
+                // 작업복 사이즈
+                let clothesSize = $('#clothesSize').val();
+                if(nvl(clothesSize,'') === ''){
+                    showMessage('', 'error', '[ 교육 신청 ]', '작업복 사이즈(남여공용) 항목을<br>선택해 주세요.', '');
+                    return;
+                }
+
+                // 참여경로
+                let participationPath = $('#participationPath').val();
+                if(nvl(participationPath,'') === ''){
+                    showMessage('', 'error', '[ 교육 신청 ]', '참여경로 항목을<br>선택해 주세요.', '');
+                    return;
+                }
+            }
 
             Swal.fire({
                 title: '[ 교육 신청 ]',
-                html: '교육을 신청하시겠습니까?',
+                html: '교육을 신청하시겠습니까?<br>신청하기 클릭 시 결제화면으로 이동합니다.',
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#00a8ff',
@@ -322,6 +332,7 @@
 
             $("#payForm").submit();
         }
+
     </script>
 </c:if>
 </body>

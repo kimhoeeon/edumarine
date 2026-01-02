@@ -3794,11 +3794,11 @@
              , t.final_regi_pic
              , t.final_regi_dttm
              , t.thumb_file_id
-             , f.file_name AS thumbFileName
-             , f.full_path AS thumbFilePath
+             , f.full_file_name AS thumbFileName
+             , f.folder_path AS thumbFilePath
         FROM train t
         LEFT JOIN file f
-            ON t.thumb_file_id = f.user_id
+        ON t.thumb_file_id = f.id
         WHERE t.seq = #{seq}
     </select>
 

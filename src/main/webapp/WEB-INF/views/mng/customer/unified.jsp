@@ -374,6 +374,14 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
+                                        <li class="breadcrumb-item text-muted">신청자 목록</li>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <li class="breadcrumb-item">
+                                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                                        </li>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
                                         <li class="breadcrumb-item text-muted">통합 교육 신청 목록</li>
                                         <!--end::Item-->
                                     </ul>
@@ -381,16 +389,16 @@ if (document.documentElement) {
                                 </div>
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
-                                <div class="d-flex align-items-center gap-2 gap-lg-3">
+                                <%--<div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <button type="button" onclick="f_excel_download('unified')" class="btn btn-success btn-active-light-success">
                                         <i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
                                         Export as Excel
                                     </button>
-                                </div>
+                                </div>--%>
                                 <!--end::Actions-->
 
                                 <!--begin::Hide default export buttons-->
-                                <div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>
+                                <%--<div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>--%>
                                 <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
@@ -400,48 +408,135 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <div id="kt_app_content_container" class="app-container container-full">
                                 <div class="card card-flush">
-                                    <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                                        <div class="card-title">
-                                            <div class="d-flex align-items-center position-relative my-1">
-                                                <select id="search_box" class="form-select form-select-solid w-150px me-3">
-                                                    <option value="">전체</option>
+                                    <div class="card-header align-items-center py-5 gap-2">
+                                        <div class="card-title w-100">
+                                            <div class="w-100 mw-150px">
+                                                <!--begin::Select2-->
+                                                <select id="search_box" class="form-select form-select-solid" data-control="select2"
+                                                        aria-label="- 검색조건 -" data-placeholder="- 검색조건 -"
+                                                        data-allow-clear="true" data-hide-search="true">
+                                                    <option></option>
+                                                    <option disabled>- 검색조건 -</option>
+                                                    <option value="" selected>전체</option>
                                                     <option value="NAME">이름</option>
                                                     <option value="PHONE">연락처</option>
                                                     <option value="TRAIN">교육명</option>
                                                 </select>
-                                                <input type="text" id="search_text" class="form-control form-control-solid w-250px" placeholder="검색어 입력" />
+                                                <!--end::Select2-->
                                             </div>
+                                            <div class="d-flex align-items-center position-relative my-1 ml15 mr15">
+                                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="검색어 입력"/>
+                                            </div>
+                                            <!--begin:Action-->
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" onclick="f_customer_unified_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_customer_unified_search_condition_init()" class="btn btn-secondary me-5">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화</button>
+                                            </div>
+                                            <!--end:Action-->
                                         </div>
-                                        <div class="card-toolbar">
-                                            <div class="w-100 mw-150px me-3">
-                                                <select id="condition_status" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="신청 상태">
+                                        <div class="card-toolbar flex-row-fluid gap-5">
+                                            <%--begin::신청상태--%>
+                                            <div class="w-100 mw-175px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_year" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 연도 -" onchange="f_customer_unified_search()">
                                                     <option></option>
-                                                    <option value="">전체</option>
-                                                    <option value="신청완료">신청완료</option>
+                                                    <option value="" disabled>- 연도 -</option>
+                                                    <option value="2026" selected>2026</option>
+                                                    <option value="2025">2025</option>
+                                                    <option value="2024">2024</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::신청상태--%>
+                                            <div class="w-100 mw-150px">
+                                                <select id="condition_apply_status" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 신청상태 -" onchange="f_customer_unified_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 신청상태 -</option>
+                                                    <option value="결제대기">결제대기</option>
                                                     <option value="결제완료">결제완료</option>
                                                     <option value="수강확정">수강확정</option>
+                                                    <option value="수강완료">수강완료</option>
+                                                    <option value="환급대기">환급대기</option>
+                                                    <option value="환급완료">환급완료</option>
                                                     <option value="취소신청">취소신청</option>
                                                     <option value="취소완료">취소완료</option>
-                                                    <option value="환불완료">환불완료</option>
                                                 </select>
                                             </div>
-                                            <button type="button" onclick="f_unified_search()" class="btn btn-primary">검색</button>
+
+                                            <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
+
+                                                <!--begin::버튼-->
+                                                <button type="button" id="apply_status_change_btn" class="btn btn-info" data-bs-target="#kt_modal_apply_status_change">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i> 신청 상태 변경</button>
+                                                <!--end::버튼-->
+
+                                                <!--begin::버튼-->
+                                                <button type="button" id="apply_status_cancel_btn" class="btn btn-danger" data-bs-target="#kt_modal_apply_status_cancel">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i> 취소 승인</button>
+                                                <!--end::버튼-->
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card-body pt-0">
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_datatable_unified">
+                                        <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_customer_unified_table">
                                             <thead>
-                                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                                                <th class="text-center w-50px">No</th>
-                                                <th class="text-center min-w-150px">교육과정명</th>
-                                                <th class="text-center min-w-100px">신청자</th>
-                                                <th class="text-center min-w-100px">연락처</th>
-                                                <th class="text-center min-w-100px">신청일시</th>
-                                                <th class="text-center min-w-100px">상태</th>
-                                                <th class="text-center min-w-100px">기능</th>
-                                            </tr>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th class="w-10px pe-2">
+                                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                            <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                                                   data-kt-check-target="#mng_customer_unified_table .form-check-input" value="1"/>
+                                                        </div>
+                                                    </th>
+                                                    <th class="text-center min-w-50px">번호</th>
+                                                    <th>seq</th>
+                                                    <th class="text-center min-w-50px">연도</th>
+                                                    <th class="text-center min-w-100px">교육명</th>
+                                                    <th class="text-center min-w-50px">차시</th>
+                                                    <th class="text-center min-w-75px">신청상태</th>
+                                                    <th class="text-center min-w-75px">등급</th>
+                                                    <th class="text-center min-w-75px">아이디</th>
+                                                    <th class="text-center min-w-75px">이름</th>
+                                                    <th class="text-center min-w-125px">연락처</th>
+                                                    <th class="text-center min-w-125px">등록일시</th>
+                                                    <th class="text-center min-w-75px">기능</th>
+                                                </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -473,177 +568,6 @@ if (document.documentElement) {
         <!--end::Page-->
     </div>
     <!--end::App-->
-
-    <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="kt_modal_modify_history" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">신청내역 상세보기</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <div class="card card-flush py-4">
-
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">이름</label>
-                                <!--end::Label-->
-                                <div class="d-flex">
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg me-2" id="md_name_ko" placeholder="이름(국문)" readonly>
-                                    <!--end::Input-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_name_en" placeholder="이름(영문)" readonly>
-                                    <!--end::Input-->
-                                </div>
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">연락처</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_phone" placeholder="연락처" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">이메일</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_email" placeholder="이메일" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">생년월일</label>
-                                <!--end::Label-->
-                                <div class="d-flex">
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg me-3" id="md_birth_year" placeholder="년도" readonly>
-                                    <!--end::Input-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg me-3" id="md_birth_month" placeholder="월" readonly>
-                                    <!--end::Input-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_birth_day" placeholder="일" readonly>
-                                    <!--end::Input-->
-                                </div>
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">주소</label>
-                                <!--end::Label-->
-                                <div>
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg mb-3" id="md_address" placeholder="주소" readonly>
-                                    <!--end::Input-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_address_detail" placeholder="상세주소" readonly>
-                                    <!--end::Input-->
-                                </div>
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">작업복 사이즈</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex align-items-center">
-                                    <label class="me-5">
-                                        <input type="radio" name="md_clothes_size" value="S" class="form-check-input form-control-solid-bg" disabled/> S (90)
-                                    </label>
-                                    <label class="me-5">
-                                        <input type="radio" name="md_clothes_size" value="M" class="form-check-input form-control-solid-bg" disabled/> M (95)
-                                    </label>
-                                    <label class="me-5">
-                                        <input type="radio" name="md_clothes_size" value="L" class="form-check-input form-control-solid-bg" disabled/> L (100)
-                                    </label>
-                                    <label class="me-5">
-                                        <input type="radio" name="md_clothes_size" value="XL" class="form-check-input form-control-solid-bg" disabled/> XL (105)
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="md_clothes_size" value="기타" class="form-check-input form-control-solid-bg" disabled/> 기타
-                                    </label>
-                                </div>
-                                <!--end::Col-->
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-6">
-                                <!--begin::Label-->
-                                <label class="form-label">참여 경로</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex align-items-center">
-                                    <label class="me-5">
-                                        <input type="radio" name="md_participation_path" value="인터넷" class="form-check-input form-control-solid-bg" disabled/> 인터넷
-                                    </label>
-                                    <label class="me-5">
-                                        <input type="radio" name="md_participation_path" value="홈페이지" class="form-check-input form-control-solid-bg" disabled/> 홈페이지
-                                    </label>
-                                    <label class="me-5">
-                                        <input type="radio" name="md_participation_path" value="홍보물" class="form-check-input form-control-solid-bg" disabled/> 홍보물
-                                    </label>
-                                    <label class="me-5">
-                                        <input type="radio" name="md_participation_path" value="지인추천" class="form-check-input form-control-solid-bg" disabled/> 지인추천
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="md_participation_path" value="기타" class="form-check-input form-control-solid-bg" disabled/> 기타
-                                    </label>
-                                </div>
-                                <!--end::Col-->
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                        </div>
-                        <!--end::Card header-->
-                    </div>
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 수정이력-->
 
     <!--begin::Modal - 수정이력-->
     <div class="modal fade" id="kt_modal_apply_status_cancel" tabindex="-1" aria-hidden="true">
@@ -976,50 +900,6 @@ if (document.documentElement) {
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/smsNoti.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/mng/unified.js?ver=<%=System.currentTimeMillis()%>"></script>
-
-    <script>
-
-        $(document).ready(function(){
-
-            // 차시 검색조건 Set
-            $("#condition_time").children('option:not(:gt(1))').remove();
-
-            let json = {
-                gbn: '해상엔진 테크니션 (선내기/선외기)'
-            }
-            $.ajax({
-                url: '/train/selectNextTime.do',
-                method: 'post',
-                data: JSON.stringify(json),
-                contentType: 'application/json; charset=utf-8' //server charset 확인 필요
-            })
-            .done(function (data, status){
-                let results = data;
-                if(nvl(results,'') !== ''){
-                    $.each(results , function(i){
-                        $('#condition_time').append($('<option>', {
-                            value: results[i].nextTime,
-                            text : results[i].nextTime + '차'
-                        }));
-                    })
-
-                    $('#condition_time').val('').select2({minimumResultsForSearch: Infinity});
-                }
-            }).always(function() {
-                let nextTime = '${nextTime}';
-                if(nvl(nextTime,'') !== ''){
-                    $('#condition_time').val(nextTime).trigger('change');
-                }
-            });
-
-        });
-
-        document.addEventListener("keyup", function(event) {
-            if (event.key === 'Enter') {
-                f_customer_boarder_search();
-            }
-        });
-    </script>
 
     <!--end::Custom Javascript-->
 

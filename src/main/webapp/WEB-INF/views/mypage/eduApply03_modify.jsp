@@ -896,7 +896,7 @@
                         <div class="popup_inner popup_form">
                             <div class="popup_box popup_form">
                                 <div class="box_1">
-                                    <div class="tit_box">교육 취소</div>
+                                    <div class="tit_box">교육 신청 취소</div>
                                     <div class="text_box">[ FRP 레저보트 선체 정비 테크니션 ]을 신청하셨습니다.<br>정말로 취소하시겠습니까?</div>
                                     <div class="cmnt_box"><span style="color: #C00000">취소 사유를 10자 이상 입력해 주세요!</span></div>
                                     <div class="input_box"><input type="text" placeholder="취소 사유 10자 이상 입력" class="cancel_edu_reason">

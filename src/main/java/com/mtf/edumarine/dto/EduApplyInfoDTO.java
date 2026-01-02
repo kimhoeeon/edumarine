@@ -18,4 +18,5 @@ public class EduApplyInfoDTO {
     String trainStartDttm;
     String trainEndDttm;
     String changeYn;
+    String trainGbn;
 }

@@ -3091,17 +3091,64 @@ public class EduMarineMngController {
         return mv;
     }
 
-    // 2. 목록 데이터 조회 (AJAX)
     @RequestMapping(value = "/mng/customer/unified/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ApplicationUnifiedDTO>> mng_customer_unified_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("EduMarineMngController > mng_customer_unified_selectList");
 
-        List<ApplicationUnifiedDTO> responseList = eduMarineMngService.processSelectUnifiedApplicationList(searchDTO);
+        List<ApplicationUnifiedDTO> responseList = eduMarineMngService.processSelectUnifiedList(searchDTO);
 
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/customer/unified/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_customer_unified_detail(String seq) {
+        System.out.println("EduMarineMngController > mng_customer_unified_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !seq.isEmpty()){
+            ApplicationUnifiedDTO info = eduMarineMngService.processSelectApplicationUnifiedSingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null){
+                MemberDTO reqMemberDTO = new MemberDTO();
+                reqMemberDTO.setSeq(info.getMemberSeq());
+                MemberDTO memberInfo = eduMarineMngService.processSelectMemberSingle(reqMemberDTO);
+                mv.addObject("memberInfo", memberInfo);
+
+                /* 결제 정보 */
+                PaymentDTO paymentRequestDTO = new PaymentDTO();
+                paymentRequestDTO.setMemberSeq(info.getMemberSeq());
+                paymentRequestDTO.setTrainSeq(info.getTrainSeq());
+                paymentRequestDTO.setTableSeq(info.getSeq());
+                PaymentDTO paymentInfo = eduMarineMngService.processSelectTrainPaymentInfo(paymentRequestDTO);
+                mv.addObject("paymentInfo", paymentInfo);
+            }
+        }
+
+        mv.setViewName("/mng/customer/unified/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/customer/unified/status/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_unified_status_update(@RequestBody List<ApplicationUnifiedDTO> unifiedList) {
+        System.out.println("EduMarineMngController > mng_customer_unified_status_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateUnifiedApplyStatus(unifiedList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/customer/unified/status/change/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_customer_unified_status_change_update(@RequestBody List<ApplicationUnifiedDTO> unifiedList) {
+        System.out.println("EduMarineMngController > mng_customer_unified_status_change_update");
+
+        ResponseDTO responseDTO = eduMarineMngService.processUpdateUnifiedApplyStatusChange(unifiedList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+    
     // 3. 엑셀 다운로드
     @RequestMapping(value = "/mng/customer/unified/excel/download.do", method = RequestMethod.GET)
     public void customer_unified_excel_download(HttpServletRequest req, HttpServletResponse res) {
@@ -3296,7 +3343,7 @@ public class EduMarineMngController {
                     // 경로 설정
                     fileDTO.setFullFilePath(savePath);
                     fileDTO.setFullPath(savePath + filesystemName);
-                    fileDTO.setFolderPath(savePath);
+                    fileDTO.setFolderPath(savePath.replaceAll("/usr/local/tomcat/webapps/upload",""));
                     fileDTO.setFullFileName(filesystemName);
 
                     // UUID 생성 (논리적 관리용)

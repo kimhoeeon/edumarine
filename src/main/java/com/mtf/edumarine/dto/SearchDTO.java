@@ -32,4 +32,8 @@ public class SearchDTO extends AbstractPagingRequestVo {
     String boarderGbn;
     String gbnDepth;
     String isPaging;
+    String trainSeq;
+    String status;
+    String startRow;
+    String endRow;
 }
