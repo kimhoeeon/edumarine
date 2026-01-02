@@ -397,4 +397,5 @@ public interface EduMarineMapper {
     Integer updateElectro(ElectroDTO electroDTO);
 
     Integer updateElectroPayStatus(ElectroDTO electroDTO);
+
 }

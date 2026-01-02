@@ -1322,6 +1322,29 @@ function f_main_apply_payment_mobile(el){
     paymentForm.submit();
 }
 
+function _ajax_(method, url, data, successCallback) {
+    $.ajax({
+        type: method,
+        url: url,
+        data: JSON.stringify(data), // 객체를 JSON 문자열로 변환
+        dataType: "json",
+        contentType: "application/json; charset=utf-8", // Controller @RequestBody 대응
+        success: function (response) {
+            if (successCallback) {
+                successCallback(response);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Ajax Error:", error);
+            if (typeof Swal !== 'undefined') {
+                Swal.fire('오류', '서버 통신 중 오류가 발생했습니다.', 'error');
+            } else {
+                alert('서버 통신 중 오류가 발생했습니다.');
+            }
+        }
+    });
+}
+
 function f_main_apply_eduApply01_submit(trainSeq){
     /*let birthYear = $('#birth-year').val();
     let birthMonth = $('#birth-month').val();
@@ -7483,75 +7506,80 @@ function f_edu_apply_modify_btn(trainStartDttm, trainName, seq){
     }else{
         let location = '/';
 
-        switch (trainName) {
-            case '상시신청':
-                location = '/mypage/eduApply01_modify.do';
-                break;
-            case '해상엔진 테크니션 (선내기/선외기)':
-                location = '/mypage/eduApply02_modify.do';
-                break;
-            case 'FRP 레저보트 선체 정비 테크니션':
-                location = '/mypage/eduApply03_modify.do';
-                break;
-            case '선내기 기초정비실습 과정':
-                location = '/mypage/eduApply04_modify.do';
-                break;
-            case '선외기 기초정비실습 과정':
-                location = '/mypage/eduApply05_modify.do';
-                break;
-            case '세일요트 기초정비실습 과정':
-                location = '/mypage/eduApply06_modify.do';
-                break;
-            case '고마력 선외기 정비 중급 테크니션':
-                location = '/mypage/eduApply07_modify.do';
-                break;
-            case '자가정비 심화과정 (고마력 선외기)':
-                location = '/mypage/eduApply09_modify.do';
-                break;
-            case '고마력 선외기 정비 중급 테크니션 (특별반)':
-                location = '/mypage/eduApply10_modify.do';
-                break;
-            case '스턴드라이브 정비 전문가과정':
-                location = '/mypage/eduApply08_modify.do';
-                break;
-            case '스턴드라이브 정비 전문가과정 (특별반)':
-                location = '/mypage/eduApply11_modify.do';
-                break;
-            case '선외기 기초정비교육':
-                location = '/mypage/eduApply12_modify.do';
-                break;
-            case '선내기 기초정비교육':
-                location = '/mypage/eduApply13_modify.do';
-                break;
-            case '세일요트 기초정비교육':
-                location = '/mypage/eduApply14_modify.do';
-                break;
-            case '선외기 응급조치교육':
-                location = '/mypage/eduApply15_modify.do';
-                break;
-            case '선내기 응급조치교육':
-                location = '/mypage/eduApply16_modify.do';
-                break;
-            case '세일요트 응급조치교육':
-                location = '/mypage/eduApply17_modify.do';
-                break;
-            case '발전기 정비 교육':
-                location = '/mypage/eduApply18_modify.do';
-                break;
-            case '선외기/선내기 직무역량 강화과정':
-                location = '/mypage/eduApply19_modify.do';
-                break;
-            case '선내기 팸투어':
-                location = '/mypage/eduApply20_modify.do';
-                break;
-            case '선외기 팸투어':
-                location = '/mypage/eduApply21_modify.do';
-                break;
-            case '레저선박 해양전자장비 교육':
-                location = '/mypage/eduApply22_modify.do';
-                break;
-            default:
-                break;
+        let applicationSystemType = resData.applicationSystemType;
+        if(applicationSystemType === 'LEGACY'){
+            switch (trainName) {
+                case '상시신청':
+                    location = '/mypage/eduApply01_modify.do';
+                    break;
+                case '해상엔진 테크니션 (선내기/선외기)':
+                    location = '/mypage/eduApply02_modify.do';
+                    break;
+                case 'FRP 레저보트 선체 정비 테크니션':
+                    location = '/mypage/eduApply03_modify.do';
+                    break;
+                case '선내기 기초정비실습 과정':
+                    location = '/mypage/eduApply04_modify.do';
+                    break;
+                case '선외기 기초정비실습 과정':
+                    location = '/mypage/eduApply05_modify.do';
+                    break;
+                case '세일요트 기초정비실습 과정':
+                    location = '/mypage/eduApply06_modify.do';
+                    break;
+                case '고마력 선외기 정비 중급 테크니션':
+                    location = '/mypage/eduApply07_modify.do';
+                    break;
+                case '자가정비 심화과정 (고마력 선외기)':
+                    location = '/mypage/eduApply09_modify.do';
+                    break;
+                case '고마력 선외기 정비 중급 테크니션 (특별반)':
+                    location = '/mypage/eduApply10_modify.do';
+                    break;
+                case '스턴드라이브 정비 전문가과정':
+                    location = '/mypage/eduApply08_modify.do';
+                    break;
+                case '스턴드라이브 정비 전문가과정 (특별반)':
+                    location = '/mypage/eduApply11_modify.do';
+                    break;
+                case '선외기 기초정비교육':
+                    location = '/mypage/eduApply12_modify.do';
+                    break;
+                case '선내기 기초정비교육':
+                    location = '/mypage/eduApply13_modify.do';
+                    break;
+                case '세일요트 기초정비교육':
+                    location = '/mypage/eduApply14_modify.do';
+                    break;
+                case '선외기 응급조치교육':
+                    location = '/mypage/eduApply15_modify.do';
+                    break;
+                case '선내기 응급조치교육':
+                    location = '/mypage/eduApply16_modify.do';
+                    break;
+                case '세일요트 응급조치교육':
+                    location = '/mypage/eduApply17_modify.do';
+                    break;
+                case '발전기 정비 교육':
+                    location = '/mypage/eduApply18_modify.do';
+                    break;
+                case '선외기/선내기 직무역량 강화과정':
+                    location = '/mypage/eduApply19_modify.do';
+                    break;
+                case '선내기 팸투어':
+                    location = '/mypage/eduApply20_modify.do';
+                    break;
+                case '선외기 팸투어':
+                    location = '/mypage/eduApply21_modify.do';
+                    break;
+                case '레저선박 해양전자장비 교육':
+                    location = '/mypage/eduApply22_modify.do';
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            location = '/mypage/eduApplyUnified_modify.do';
         }
 
         if(location.includes('/mypage/')){

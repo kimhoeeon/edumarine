@@ -103,9 +103,9 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ApplicationUnifiedDTO processSelectUnifiedApplicationSingle(String seq) {
-        System.out.println("EduMarineServiceImpl > processSelectUnifiedApplicationSingle");
-        return unifiedMapper.selectUnifiedApplicationSingle(seq);
+    public ApplicationUnifiedDTO processSelectApplicationUnifiedSingle(String seq) {
+        System.out.println("EduMarineServiceImpl > processSelectApplicationUnifiedSingle");
+        return unifiedMapper.selectApplicationUnifiedSingle(seq);
     }
 
     @Override
@@ -3421,6 +3421,12 @@ public class EduMarineServiceImpl implements EduMarineService {
             int result = unifiedMapper.updateUnifiedApplicationPayStatus(dto);
             if (result == 0) {
                 throw new Exception("Update Unified Application Status failed. (Seq: " + dto.getSeq() + ")");
+            }else{
+                PaymentDTO paymentDTO = eduMarineMapper.selectPaymentTableSeq(dto.getSeq());
+                if(paymentDTO != null){
+                    paymentDTO.setPayStatus(dto.getApplyStatus());
+                    eduMarineMapper.updatePayment(paymentDTO);
+                }
             }
         } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;

@@ -16,7 +16,33 @@ public class ApplicationUnifiedDTO {
     private String memberSeq;
     private String applyStatus;
     private String memberName;
+    private String memberPhone;
+    private String memberEmail;
     private String trainName;
+    private String gbn;
+    private String gbnDepth;
+    private String cancelGbn;
+    private String preApplyStatus;
+
+    String memberStatus;
+    String grade;
+    String id;
+    String nameKo; //이름
+    String nameEn; //이름
+    String phone; //연락처
+    String email; //이메일
+    String birthYear; //출생년도
+    String birthMonth; //출생월
+    String birthDay; //출생일
+    String sex;
+    String payYn; //결제여부
+    Integer paySum; //결제금액
+
+    String payMethod;
+    String changeYn;
+    String nextTime;
+
+    String trainStartDttm;
 
     // 1. RegularDTO 컬럼
     private String region;
@@ -79,7 +105,7 @@ public class ApplicationUnifiedDTO {
     private String applyDay;
 
     // 환불/취소 공통 컬럼
-    private LocalDateTime cancelDttm;
+    private String cancelDttm;
     private String cancelReason;
     private String refundBankCode;
     private String refundBankName;
@@ -90,7 +116,10 @@ public class ApplicationUnifiedDTO {
     private String delYn;
     private String note;
     private String initRegiPic;
-    private LocalDateTime initRegiDttm;
+    private String initRegiDttm;
     private String finalRegiPic;
-    private LocalDateTime finalRegiDttm;
+    private String finalRegiDttm;
+
+    private int rownum;
+
 }

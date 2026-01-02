@@ -2142,19 +2142,81 @@ public class EduMarineController {
         System.out.println("EduMarineController > apply_eduApplyUnified (신규 통합 신청)");
         ModelAndView mv = new ModelAndView();
 
-        if(session.getAttribute("id") != null){
-            String id = session.getAttribute("id").toString();
-            MemberDTO info = eduMarineService.processSelectMemberSingle(id);
-            mv.addObject("info", info); // 회원정보
+        // 1. 세션에서 ID 확인
+        Object sessionId = session.getAttribute("id");
 
-            TrainDTO trainInfo = eduMarineService.processSelectTrainSingle(seq);
-            mv.addObject("trainInfo", trainInfo); // 교육정보 (form_type 포함)
-            mv.addObject("seq", seq);
+        // [CASE 1] 로그인을 안 한 경우
+        if (sessionId == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
         }
 
-        mv.setViewName("/apply/eduApplyUnified"); // 새로 만들 JSP
+        // 2. DB에서 회원 정보 조회
+        String id = sessionId.toString();
+        MemberDTO info = eduMarineService.processSelectMemberSingle(id);
+
+        // [CASE 2] 세션 ID는 있지만, DB에 회원 정보가 없는 경우 (정보 불일치/삭제됨)
+        if (info == null) {
+            System.out.println("세션 ID[" + id + "]에 해당하는 회원 정보가 없습니다. 강제 로그아웃 처리.");
+            session.invalidate(); // ★ 핵심: 세션 정보 삭제
+            mv.setViewName("redirect:/member/login.do"); // 로그인 페이지로 이동
+            return mv;
+        }
+
+        try {
+            // 회원 신청 정보 조회
+            ApplicationUnifiedDTO appInfo = eduMarineService.processSelectApplicationUnifiedSingle(info.getSeq());
+            mv.addObject("appInfo", appInfo);
+
+            // 교육 과정 정보 조회
+            if (seq != null && !seq.isEmpty()) {
+                TrainDTO trainInfo = eduMarineService.processSelectTrainSingle(seq);
+                mv.addObject("trainInfo", trainInfo);
+                mv.addObject("seq", seq);
+            }
+
+            mv.addObject("info", info);
+            mv.setViewName("/apply/eduApplyUnified"); // 이동할 JSP 페이지
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return mv;
     }
+
+    /**
+     * [신규] 통합 교육 신청서 저장
+     */
+    @RequestMapping(value = "/apply/eduApplyUnified/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> apply_eduApplyUnified_insert(
+            @RequestBody ApplicationUnifiedDTO dto,
+            HttpServletRequest request,
+            HttpSession session) {
+
+        ResponseDTO response = new ResponseDTO();
+        try {
+            // 세션 정보 바인딩
+            String memberSeq = (String) session.getAttribute("seq");
+            if (memberSeq != null && !memberSeq.isEmpty()) dto.setMemberSeq(memberSeq);
+
+            // 서비스 호출
+            eduMarineService.processInsertUnifiedApplication(dto);
+
+            response.setResultCode("0");
+            response.setResultMessage("저장되었습니다.");
+            response.setCustomValue(dto.getSeq()); // 생성된 신청 번호 반환
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setResultCode("-1");
+            response.setResultMessage("오류 발생: " + e.getMessage());
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
     
     @RequestMapping(value = "/apply/faq.do", method = RequestMethod.GET)
     public ModelAndView apply_faq() {
@@ -3048,13 +3110,13 @@ public class EduMarineController {
         ModelAndView mv = new ModelAndView();
 
         // 신청 정보 조회 (Service에 해당 메서드가 있다고 가정. 없다면 추가 필요)
-        // ApplicationUnifiedDTO info = eduMarineService.processSelectUnifiedApplicationSingle(seq);
-        // ※ 주의: Service에 processSelectUnifiedApplicationSingle가 없다면 MngService 로직을 참고하여 추가해주세요.
+        // ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(seq);
+        // ※ 주의: Service에 processSelectApplicationUnifiedSingle가 없다면 MngService 로직을 참고하여 추가해주세요.
         // 여기서는 임시로 eduMarineMngService와 동일한 로직을 사용한다고 가정합니다.
 
         // (실제로는 EduMarineService에 UnifiedMapper.selectUnifiedApplicationSingle 호출 메서드를 만들어야 함)
         // 아래는 예시 코드입니다. Service에 메서드를 추가한 후 주석을 해제하세요.
-        ApplicationUnifiedDTO info = eduMarineService.processSelectUnifiedApplicationSingle(seq);
+        ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(seq);
 
         if(info != null){
             mv.addObject("info", info);
@@ -3074,13 +3136,13 @@ public class EduMarineController {
             // (필요시 processSelectTrainPaymentInfo 같은 메서드로 결제 정보 조회)
         }
 
-        mv.setViewName("eduApplyUnified_modify");
+        mv.setViewName("/mypage/eduApplyUnified_modify");
         return mv;
     }
 
     // 2. 수정 페이지 이동
     @RequestMapping(value = "/mypage/eduApplyUnified_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApplyUnified_modify(String seq, HttpSession session) {
+    public ModelAndView mypage_eduApplyUnified_modify(String seq, String modYn, HttpSession session) {
         ModelAndView mv = new ModelAndView();
 
         // 1. 로그인 세션 체크 (필수)
@@ -3090,7 +3152,7 @@ public class EduMarineController {
         }
 
         // 2. 통합 신청 정보 조회
-        ApplicationUnifiedDTO info = eduMarineService.processSelectUnifiedApplicationSingle(seq);
+        ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(seq);
 
         if (info != null) {
             mv.addObject("info", info);
@@ -3105,9 +3167,12 @@ public class EduMarineController {
 
             // 5. 수정 가능 여부 체크 (결제완료/신청완료 상태만 수정 가능하도록)
             // 마감 여부(closingYn)나 교육 시작일 체크 로직이 필요하다면 Service에서 처리 후 modYn 반환
-            String modYn = "Y";
+            /*String modYn = "Y";
             if (!"신청완료".equals(info.getApplyStatus()) && !"결제완료".equals(info.getApplyStatus()) && !"입금대기".equals(info.getApplyStatus())) {
                 modYn = "N"; // 이미 수강확정되거나 취소된 경우 수정 불가 처리
+            }*/
+            if(modYn == null || modYn.isEmpty()){
+                modYn = "Y";
             }
             mv.addObject("modYn", modYn);
 

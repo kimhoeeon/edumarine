@@ -140,14 +140,15 @@
 
                         <div class="form_box">
                             <div class="form_tit">
-                                <div class="big">신청자 정보</div>
+                                <div class="big">기본정보</div>
+                                <div class="small">이름, 연락처, 주소 등 기본정보는 <span style="font-weight: bold;">'마이페이지>회원정보'</span> 에서 수정 가능합니다.</div>
                             </div>
                             <ul class="form_list">
                                 <li>
                                     <div class="gubun">성명/아이디</div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" value="${memberInfo.name} (${memberInfo.id})" class="w100" readonly>
+                                            ${memberInfo.name} (${memberInfo.id})
                                         </div>
                                     </div>
                                 </li>
@@ -155,7 +156,7 @@
                                     <div class="gubun">연락처</div>
                                     <div class="naeyong">
                                         <div class="input">
-                                            <input type="text" value="${memberInfo.phone}" class="w50" readonly>
+                                            ${memberInfo.phone}
                                         </div>
                                     </div>
                                 </li>
@@ -180,32 +181,20 @@
 
                             <ul class="form_list">
 
-                                <c:if test="${trainInfo.formType == 'BASIC_FORM' or trainInfo.formType == 'PRO_FORM'}">
+                                <c:if test="${trainInfo.formType == 'BASIC_FORM'}">
                                     <li>
-                                        <div class="gubun req"><p>의류 사이즈</p></div>
+                                        <div class="gubun req"><p>작업복 사이즈(남여공용)</p></div>
                                         <div class="naeyong">
                                             <div class="input">
-                                                <c:choose>
-                                                    <c:when test="${trainInfo.formType == 'PRO_FORM'}">
-                                                        <select name="topClothesSize" class="w30" title="상의">
-                                                            <option value="">상의 선택</option>
-                                                            <c:forEach var="size" items="${fn:split('90(S),95(M),100(L),105(XL),110(2XL)', ',')}">
-                                                                <option value="${size}" ${info.topClothesSize eq size ? 'selected' : ''}>${size}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                        <input type="text" name="bottomClothesSize" value="${info.bottomClothesSize}" class="w30 ml5" placeholder="하의(예:30)">
-                                                        <input type="text" name="shoesSize" value="${info.shoesSize}" class="w30 ml5" placeholder="신발(mm)">
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <select name="clothesSize" class="w50" title="작업복">
-                                                            <option value="">선택</option>
-                                                            <c:forEach var="size" items="${fn:split('90(S),95(M),100(L),105(XL),110(2XL),115(3XL),120(4XL)', ',')}">
-                                                                <option value="${size}" ${info.clothesSize eq size ? 'selected' : ''}>${size}</option>
-                                                            </c:forEach>
-                                                            <option value="기타" ${info.clothesSize eq '기타' ? 'selected' : ''}>기타</option>
-                                                        </select>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                <select name="clothesSize" id="clothesSize" title="작업복 사이즈(남여공용)">
+                                                    <option value="">선택</option>
+                                                    <option value="S" <c:if test="${info.clothesSize eq 'S'}">selected</c:if> >S(90)</option>
+                                                    <option value="M" <c:if test="${info.clothesSize eq 'M'}">selected</c:if> >M(95)</option>
+                                                    <option value="L" <c:if test="${info.clothesSize eq 'L'}">selected</c:if> >L(100)</option>
+                                                    <option value="XL" <c:if test="${info.clothesSize eq 'XL'}">selected</c:if> >XL(105)</option>
+                                                    <option value="2XL" <c:if test="${info.clothesSize eq '2XL'}">selected</c:if> >2XL(110)</option>
+                                                    <option value="기타" <c:if test="${info.clothesSize eq '기타'}">selected</c:if> >기타</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </li>
@@ -213,164 +202,58 @@
                                         <div class="gubun req"><p>참여경로</p></div>
                                         <div class="naeyong">
                                             <div class="input">
-                                                <label><input type="radio" name="participationPath" value="인터넷" ${info.participationPath eq '인터넷' ? 'checked' : ''}>인터넷</label>
-                                                <label><input type="radio" name="participationPath" value="홈페이지" ${info.participationPath eq '홈페이지' ? 'checked' : ''}>홈페이지</label>
-                                                <label><input type="radio" name="participationPath" value="홍보물" ${info.participationPath eq '홍보물' ? 'checked' : ''}>홍보물</label>
-                                                <label><input type="radio" name="participationPath" value="지인추천" ${info.participationPath eq '지인추천' ? 'checked' : ''}>지인추천</label>
-                                                <label><input type="radio" name="participationPath" value="기타" ${info.participationPath eq '기타' ? 'checked' : ''}>기타</label>
+                                                <select name="participationPath" id="participationPath" title="참여경로">
+                                                    <option value="">선택</option>
+                                                    <option value="인터넷" <c:if test="${info.participationPath eq '인터넷'}">selected</c:if> >인터넷</option>
+                                                    <option value="홈페이지" <c:if test="${info.participationPath eq '홈페이지'}">selected</c:if> >홈페이지</option>
+                                                    <option value="홍보물" <c:if test="${info.participationPath eq '홍보물'}">selected</c:if> >홍보물</option>
+                                                    <option value="지인추천" <c:if test="${info.participationPath eq '지인추천'}">selected</c:if> >지인추천</option>
+                                                    <option value="기타" <c:if test="${info.participationPath eq '기타'}">selected</c:if> >기타</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="gubun"><p>추천인</p></div>
-                                        <div class="naeyong">
-                                            <div class="input">
-                                                <input type="text" name="recommendPerson" value="${info.recommendPerson}" class="w100" placeholder="추천인 입력">
-                                            </div>
-                                        </div>
-                                    </li>
-                                </c:if>
-
-                                <c:if test="${trainInfo.formType == 'BASIC_FORM'}">
-                                    <c:if test="${not empty info.boarderGbn}">
-                                        <li>
-                                            <div class="gubun req"><p>교육구분</p></div>
-                                            <div class="naeyong">
-                                                <div class="input">
-                                                    <label><input type="radio" name="boarderGbn" value="선외기" <c:if test="${info.boarderGbn eq '선외기'}">checked</c:if>>선외기</label>
-                                                    <label><input type="radio" name="boarderGbn" value="선내기" <c:if test="${info.boarderGbn eq '선내기'}">checked</c:if>>선내기</label>
-                                                    <label><input type="radio" name="boarderGbn" value="세일요트" <c:if test="${info.boarderGbn eq '세일요트'}">checked</c:if>>세일요트</label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </c:if>
-
-                                    <c:if test="${not empty info.trainUnderstand}">
-                                        <li>
-                                            <div class="gubun"><p>교육이해</p></div>
-                                            <div class="naeyong">
-                                                <div class="input" style="display:block;">
-                                                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="trainUnderstand" value="1" class="chk_understand"> 해상엔진테크니션양성과정 및 마리나선박선외기/선내기정비사 실무과정 수료생</label>
-                                                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="trainUnderstand" value="2" class="chk_understand"> 선외기 정비 분야에 경력이 있으신 분</label>
-                                                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="trainUnderstand" value="3" class="chk_understand"> 경력이 없으나 선외기 정비 기술 습득을 원하시는 분</label>
-                                                    <label style="display:block; margin-bottom:5px;">
-                                                        <input type="checkbox" name="trainUnderstand" value="4" class="chk_understand checkbox_etc"> 기타
-                                                        <input type="text" name="trainUnderstandEtc" value="${info.trainUnderstandEtc}" class="w50 ml5" placeholder="직접 입력" disabled>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </c:if>
-
-                                    <c:if test="${not empty info.choiceDate}">
-                                        <li>
-                                            <div class="gubun req"><p>교육일자</p></div>
-                                            <div class="naeyong">
-                                                <div class="input">
-                                                    <label><input type="radio" name="choiceDate" value="1" <c:if test="${info.choiceDate eq '1'}">checked</c:if>> 1차</label>
-                                                    <label><input type="radio" name="choiceDate" value="2" <c:if test="${info.choiceDate eq '2'}">checked</c:if>> 2차</label>
-                                                    <label><input type="radio" name="choiceDate" value="3" <c:if test="${info.choiceDate eq '3'}">checked</c:if>> 3차</label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </c:if>
                                 </c:if>
 
                                 <c:if test="${trainInfo.formType == 'PRO_FORM'}">
                                     <li>
-                                        <div class="gubun"><p>최종학력</p></div>
+                                        <div class="gubun req"><p>작업복 사이즈(남여공용)</p></div>
                                         <div class="naeyong">
                                             <div class="input">
-                                                <select name="gradeGbn" class="w30">
-                                                    <option value="고등학교" ${info.gradeGbn eq '고등학교' ? 'selected' : ''}>고등학교</option>
-                                                    <option value="대학교" ${info.gradeGbn eq '대학교' ? 'selected' : ''}>대학교</option>
-                                                    <option value="대학원" ${info.gradeGbn eq '대학원' ? 'selected' : ''}>대학원</option>
+                                                <select name="clothesSize" id="clothesSize" title="작업복 사이즈(남여공용)">
+                                                    <option value="">선택</option>
+                                                    <option value="S" <c:if test="${info.clothesSize eq 'S'}">selected</c:if> >S(90)</option>
+                                                    <option value="M" <c:if test="${info.clothesSize eq 'M'}">selected</c:if> >M(95)</option>
+                                                    <option value="L" <c:if test="${info.clothesSize eq 'L'}">selected</c:if> >L(100)</option>
+                                                    <option value="XL" <c:if test="${info.clothesSize eq 'XL'}">selected</c:if> >XL(105)</option>
+                                                    <option value="2XL" <c:if test="${info.clothesSize eq '2XL'}">selected</c:if> >2XL(110)</option>
+                                                    <option value="기타" <c:if test="${info.clothesSize eq '기타'}">selected</c:if> >기타</option>
                                                 </select>
-                                                <input type="text" name="schoolName" value="${info.schoolName}" class="w30 ml5" placeholder="학교명">
-                                                <input type="text" name="major" value="${info.major}" class="w30 ml5" placeholder="전공">
                                             </div>
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="gubun"><p>경력사항</p></div>
-                                        <div class="naeyong">
-                                            <c:forEach var="career" items="${careerList}" varStatus="status">
-                                                <div class="input formCareerBox" style="margin-bottom:10px;">
-                                                    <input type="hidden" name="careerList[${status.index}].seq" value="${career.seq}">
-                                                    <input type="text" name="careerList[${status.index}].careerPlace" value="${career.careerPlace}" class="w20" placeholder="근무처">
-                                                    <input type="text" name="careerList[${status.index}].careerDate" value="${career.careerDate}" class="w20 ml5" placeholder="기간">
-                                                    <input type="text" name="careerList[${status.index}].careerPosition" value="${career.careerPosition}" class="w20 ml5" placeholder="직위">
-                                                    <input type="text" name="careerList[${status.index}].careerTask" value="${career.careerTask}" class="w20 ml5" placeholder="업무">
-                                                    <button type="button" class="btn_del ml5" onclick="fn_delete_child(this, 'career', '${career.seq}');">X</button>
-                                                </div>
-                                            </c:forEach>
-                                            <div class="input">
-                                                <a href="javascript:void(0);" class="btnSt03 formAddBtn" data-type="career">+ 경력 추가</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="gubun"><p>자격면허</p></div>
-                                        <div class="naeyong">
-                                            <c:forEach var="license" items="${licenseList}" varStatus="status">
-                                                <div class="input formLicenseBox" style="margin-bottom:10px;">
-                                                    <input type="hidden" name="licenseList[${status.index}].seq" value="${license.seq}">
-                                                    <input type="text" name="licenseList[${status.index}].licenseName" value="${license.licenseName}" class="w30" placeholder="자격명">
-                                                    <input type="text" name="licenseList[${status.index}].licenseDate" value="${license.licenseDate}" class="w30 ml5" placeholder="취득일">
-                                                    <input type="text" name="licenseList[${status.index}].licenseOrg" value="${license.licenseOrg}" class="w30 ml5" placeholder="발행기관">
-                                                    <button type="button" class="btn_del ml5" onclick="fn_delete_child(this, 'license', '${license.seq}');">X</button>
-                                                </div>
-                                            </c:forEach>
-                                            <div class="input">
-                                                <a href="javascript:void(0);" class="btnSt03 formAddBtn" data-type="license">+ 자격증 추가</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="gubun"><p>지원동기</p></div>
+                                        <div class="gubun req"><p>참여경로</p></div>
                                         <div class="naeyong">
                                             <div class="input">
-                                                <textarea name="applyReason" class="w100" style="height:100px;">${info.applyReason}</textarea>
+                                                <select name="participationPath" id="participationPath" title="참여경로">
+                                                    <option value="">선택</option>
+                                                    <option value="인터넷" <c:if test="${info.participationPath eq '인터넷'}">selected</c:if> >인터넷</option>
+                                                    <option value="홈페이지" <c:if test="${info.participationPath eq '홈페이지'}">selected</c:if> >홈페이지</option>
+                                                    <option value="홍보물" <c:if test="${info.participationPath eq '홍보물'}">selected</c:if> >홍보물</option>
+                                                    <option value="지인추천" <c:if test="${info.participationPath eq '지인추천'}">selected</c:if> >지인추천</option>
+                                                    <option value="기타" <c:if test="${info.participationPath eq '기타'}">selected</c:if> >기타</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="gubun"><p>첨부파일</p></div>
-                                        <div class="naeyong">
-                                            <div class="file_box">
-                                                <span class="tit">증명사진</span>
-                                                <c:if test="${not empty bodyPhotoFile}">
-                                                    <div class="saved_file">
-                                                        <a href="/file/download.do?fileName=${bodyPhotoFile.fileName}&path=${bodyPhotoFile.filePath}">${bodyPhotoFile.originalFileName}</a>
-                                                        <button type="button" class="file_remove_btn" onclick="fn_file_delete(this, '${bodyPhotoFile.id}');">X</button>
-                                                    </div>
-                                                </c:if>
-                                                <input type="file" name="bodyPhoto" class="file_input">
-                                            </div>
-                                            <div class="file_list_box mt10">
-                                                <span class="tit">자격증 사본</span>
-                                                <c:forEach var="file" items="${careerLicenseFileList}">
-                                                    <div class="saved_file">
-                                                        <a href="/file/download.do?fileName=${file.fileName}&path=${file.filePath}">${file.originalFileName}</a>
-                                                        <button type="button" class="file_remove_btn" onclick="fn_file_delete(this, '${file.id}');">X</button>
-                                                    </div>
-                                                </c:forEach>
-                                                <div class="input mt5">
-                                                    <input type="file" name="careerLicense" class="file_input">
-                                                    <a href="javascript:void(0);" class="btnSt03 formAddBtn" data-type="file">+ 파일추가</a>
-                                                </div>
-                                            </div>
+                                        <div class="gubun">
+                                            <p>추천인</p>
                                         </div>
-                                    </li>
-                                </c:if>
-
-                                <c:if test="${trainInfo.formType == 'FAMTOUR_FORM'}">
-                                    <li>
-                                        <div class="gubun req"><p>신청일자</p></div>
                                         <div class="naeyong">
                                             <div class="input">
-                                                <label><input type="radio" name="applyDay" value="1" <c:if test="${info.applyDay eq '1'}">checked</c:if>> 1일차</label>
-                                                <label><input type="radio" name="applyDay" value="2" <c:if test="${info.applyDay eq '2'}">checked</c:if>> 2일차</label>
+                                                <input type="text" id="recommendPerson" name="recommendPerson" value="${info.recommendPerson}" placeholder="추천인명 입력">
                                             </div>
                                         </div>
                                     </li>
@@ -424,92 +307,70 @@
 
                     <!-- popupCancelEdu -->
                     <div class="popup" id="popupCancelEdu">
-                        <div class="popup_inner">
-                            <div class="popup_box" style="max-width:600px;">
-                                <div class="popup_tit">교육 신청 취소</div>
-                                <div class="popup_cont">
-                                    <p class="info_txt" style="margin-bottom:20px; color:#666; font-size:1.4rem;">
-                                        취소 사유와 환불 받으실 계좌 정보를 입력해 주세요.<br>
-                                        (신용카드 결제의 경우, 부분 취소 또는 승인 취소로 진행될 수 있습니다.)
-                                    </p>
-
-                                    <div class="form_box">
-                                        <div class="form_tit">
-                                            <div class="big">취소 사유</div>
+                        <div class="popup_inner popup_form">
+                            <div class="popup_box popup_form">
+                                <div class="box_1">
+                                    <div class="tit_box">교육 신청 취소</div>
+                                    <div class="cmnt_box">
+                                        <span style="color: #C00000">취소 사유를 10자 이상 입력해 주세요!</span>
+                                    </div>
+                                    <div class="input_box">
+                                        <input type="text" id="cancelReason" name="cancelReason" placeholder="취소 사유 10자 이상 입력">
+                                    </div>
+                                    <div class="refund_account_box">
+                                        <div class="input_box" style="text-align: left;">
+                                            <select id="cancel_edu_bank_select">
+                                                <option value="" selected disabled>환불계좌은행</option>
+                                                <option value="04">KB국민</option>
+                                                <option value="03">IBK기업</option>
+                                                <option value="11">NH농협</option>
+                                                <option value="88">신한</option>
+                                                <option value="53">씨티</option>
+                                                <option value="23">SC제일</option>
+                                                <option value="20">우리</option>
+                                                <option value="71">우체국</option>
+                                                <option value="45">새마을금고</option>
+                                                <option value="48">신협</option>
+                                                <option value="81">하나</option>
+                                                <option value="50">저축</option>
+                                                <option value="90">카카오뱅크</option>
+                                                <option value="89">케이뱅크</option>
+                                                <option value="92">토스뱅크</option>
+                                                <option value="39">경남</option>
+                                                <option value="34">광주</option>
+                                                <option value="31">대구</option>
+                                                <option value="32">부산</option>
+                                                <option value="07">수협</option>
+                                                <option value="37">전북</option>
+                                                <option value="35">제주</option>
+                                            </select>
                                         </div>
-                                        <ul class="form_list">
-                                            <li>
-                                                <div class="naeyong" style="width:100%;">
-                                                    <div class="input">
-                                                        <textarea id="cancelReason" class="w100" style="height:100px;" placeholder="취소 사유를 상세히 입력해주세요."></textarea>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <div class="input_box">
+                                            <input type="text" id="cancel_edu_bank_customer_name" placeholder="환불계좌 예금주명 입력">
+                                        </div>
+                                        <div class="input_box">
+                                            <input type="text" id="cancel_edu_bank_number" class="onlyNum" placeholder="환불계좌번호 입력">
+                                        </div>
                                     </div>
 
-                                    <div class="form_box">
-                                        <div class="form_tit">
-                                            <div class="big">환불 계좌 정보</div>
-                                        </div>
-                                        <ul class="form_list">
-                                            <li>
-                                                <div class="gubun req"><p>은행명</p></div>
-                                                <div class="naeyong">
-                                                    <div class="input">
-                                                        <select id="refundBankCode" class="w100">
-                                                            <option value="">선택하세요</option>
-                                                            <option value="004">KB국민은행</option>
-                                                            <option value="088">신한은행</option>
-                                                            <option value="020">우리은행</option>
-                                                            <option value="081">하나은행</option>
-                                                            <option value="003">기업은행</option>
-                                                            <option value="011">농협</option>
-                                                            <option value="090">카카오뱅크</option>
-                                                            <option value="089">케이뱅크</option>
-                                                            <option value="023">SC제일은행</option>
-                                                            <option value="039">경남은행</option>
-                                                            <option value="034">광주은행</option>
-                                                            <option value="031">대구은행</option>
-                                                            <option value="032">부산은행</option>
-                                                            <option value="002">산업은행</option>
-                                                            <option value="045">새마을금고</option>
-                                                            <option value="007">수협</option>
-                                                            <option value="048">신협</option>
-                                                            <option value="005">외환은행</option>
-                                                            <option value="071">우체국</option>
-                                                            <option value="037">전북은행</option>
-                                                            <option value="035">제주은행</option>
-                                                            <option value="027">한국씨티은행</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="gubun req"><p>계좌번호</p></div>
-                                                <div class="naeyong">
-                                                    <div class="input">
-                                                        <input type="text" id="refundBankNumber" class="w100 onlyNum" placeholder="- 없이 숫자만 입력">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="gubun req"><p>예금주</p></div>
-                                                <div class="naeyong">
-                                                    <div class="input">
-                                                        <input type="text" id="refundBankCustomerName" class="w100" placeholder="예금주명 입력">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="btn_wrap mt30">
-                                        <a href="javascript:void(0);" class="btnSt03 close_btn">닫기</a>
+                                    <div class="btn_box">
+                                        <a href="javascript:void(0);" class="btnSt03 close_btn" onclick="fn_popup_close();">닫기</a>
                                         <a href="javascript:void(0);" onclick="fn_cancel_submit();" class="btnSt01">신청취소</a>
                                     </div>
                                 </div>
-                                <a href="javascript:void(0);" class="close_btn btn_close"><img src="/img/close_w.png" alt="닫기"></a>
+
+                                <div class="box_2">
+                                    <div class="text_box">
+                                        취소 신청이 접수되었습니다.<br>
+                                        담당자 승인 후 2주 이내<br>
+                                        교육비 환불 기준에 따라 취소됩니다.<br>
+                                        취소 확정 여부는 추후 마이페이지를 통해<br>
+                                        확인하실 수 있습니다.
+                                    </div>
+                                    <div class="btn_box">
+                                        <a href="javascript:void(0);" class="btnSt04 btn_confirm" onclick="location.href='/mypage/eduApplyInfo.do'">확인</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -592,15 +453,16 @@
                 cancelButtonText: '취소'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var form = $('#modifyForm')[0];
-                    var formData = new FormData(form);
+
+                    let formData = JSON.parse(JSON.stringify($('#modifyForm').serializeObject()));
 
                     $.ajax({
                         url: "/mypage/eduApplyUnified/update.do",
                         type: "POST",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
+                        data: JSON.stringify(formData),
+                        async: false,
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
                         success: function(res) {
                             if (res.resultCode === "0") {
                                 Swal.fire('성공', '수정되었습니다.', 'success').then(() => {
@@ -618,29 +480,81 @@
             });
         }
 
-        // [취소하기] - 팝업 오픈
+        // [추가] 커스텀 셀렉트 박스 값 동기화 (form.js 보완)
+        // .option_item 클릭 시 숨겨진 select 박스의 값을 변경해줘야 fn_cancel_submit()에서 값을 읽을 수 있음
+        $(document).on('click', '.select_box .option_item', function() {
+            var code = $(this).data('value'); // data-value 값 가져오기
+
+            // 클릭된 옵션이 속한 박스 내부의 hidden input 찾아서 값 설정
+            $(this).closest('.select_box').find('input[type=hidden]').val(code);
+        });
+
+        // 팝업 닫기 버튼 이벤트 바인딩 (필요 시)
+        $('.close_btn').on('click', function() {
+            $('#popupCancelEdu').removeClass('on');
+            $('body').removeClass('lock_scroll');
+        });
+
+        /* [팝업 열기 & 초기화] */
         function fn_cancel_confirm() {
+            // 1. 입력값 초기화
             $('#cancelReason').val('');
-            $('#refundBankCode').val('');
-            $('#refundBankNumber').val('');
-            $('#refundBankCustomerName').val('');
+            $('#cancel_edu_bank_select').val('');
+            $('#cancel_edu_bank_customer_name').val('');
+            $('#cancel_edu_bank_number').val('');
+
+            // 2. 경고 메시지 숨김 초기화 (재오픈 시 안 보이게)
+            $('#popupCancelEdu .cmnt_box').hide();
+
+            // 3. UI 초기화
+            $('#popupCancelEdu .box_1').show();
+            $('#popupCancelEdu .box_2').hide();
+
+            // 4. 팝업 노출
             $('#popupCancelEdu').addClass('on');
             $('body').addClass('lock_scroll');
         }
 
+        /* [팝업 닫기] */
+        function fn_popup_close() {
+            $('#popupCancelEdu').removeClass('on');
+            $('body').removeClass('lock_scroll');
+        }
+
         // [취소하기] - 실제 전송
         function fn_cancel_submit() {
-            var reason = $('#cancelReason').val();
-            var bankCode = $('#refundBankCode').val();
-            var bankNumber = $('#refundBankNumber').val();
-            var customerName = $('#refundBankCustomerName').val();
-            var bankName = $('#refundBankCode option:selected').text();
+            var reason = $('#cancelReason').val(); //취소사유
+            var bankCode = $('#cancel_edu_bank_select option:selected').val(); //환불계좌 은행코드
+            var bankNumber = $('#cancel_edu_bank_number').val(); // 환불계좌번호
+            var customerName = $('#cancel_edu_bank_customer_name').val(); //환불계좌 예금주
+            var bankName = $('#cancel_edu_bank_select option:selected').text(); //환불계좌 은행
 
-            if(!reason) { Swal.fire('알림', '취소 사유를 입력해주세요.', 'warning'); return; }
-            if(!bankCode || !bankNumber || !customerName) { Swal.fire('알림', '환불 계좌 정보를 모두 입력해주세요.', 'warning'); return; }
+            // 1. 취소 사유 유효성 검사 (10자 미만 체크)
+            if (reason.length < 10) {
+                // [수정] Swal 대신 경고 영역 노출
+                $('#popupCancelEdu .cmnt_box').show();
+                return; // 중단
+            } else {
+                // 정상이면 경고 영역 숨김
+                $('#popupCancelEdu .cmnt_box').hide();
+            }
+
+            // 2. 기타 필수값 체크
+            if (!bankCode) { // 은행 선택 여부 체크
+                Swal.fire('알림', '환불계좌 은행을 선택해주세요.', 'warning');
+                return;
+            }
+            if (customerName.trim() === "") {
+                Swal.fire('알림', '예금주명을 입력해주세요.', 'warning');
+                return;
+            }
+            if (bankNumber.trim() === "") {
+                Swal.fire('알림', '계좌번호를 입력해주세요.', 'warning');
+                return;
+            }
 
             Swal.fire({
-                title: '취소 신청',
+                title: '교육 신청 취소',
                 text: "정말로 취소하시겠습니까?",
                 icon: 'warning',
                 showCancelButton: true,
@@ -650,7 +564,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     var data = {
-                        seq: "${info.seq}",
+                        seq: $('input[name=seq]').val(),
                         cancelReason: reason,
                         refundBankCode: bankCode,
                         refundBankName: bankName,
@@ -662,6 +576,10 @@
                     _ajax_("POST", "/mypage/eduApplyUnified/cancel.do", data, function(res) {
                         if (res.resultCode === "0") {
                             Swal.fire('완료', '취소 신청이 접수되었습니다.', 'success').then(() => {
+                                // 완료 화면 전환
+                                $('#popupCancelEdu .box_1').hide();
+                                $('#popupCancelEdu .box_2').show();
+
                                 location.href = "/mypage/eduApplyInfo.do";
                             });
                         } else {

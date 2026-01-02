@@ -5,32 +5,68 @@
 
 $(function () {
 
+    // [신규] 초기화 함수 실행 (수정 모드 진입 시 로직 처리)
+    f_init_gbn_select();
+
     // 교육과정명
     $('#gbn_select').on('change', function () {
         let selectedOption = $(this).val();
-        let gbn = $('#gbn');
+        let gbnInput = $('#gbn');
 
         if (selectedOption === 'direct') {
-            // [CASE 1] 직접입력 선택 시: 입력창 초기화 및 활성화
-            gbn.val('').prop('readonly', false).focus();
+            // [CASE 1] 직접입력 선택: 입력창 활성화, 값 초기화, 포커스
+            gbnInput.prop('readonly', false).val('').focus();
         } else if (nvl(selectedOption, '') !== '') {
-            // [CASE 2] 기존 과정명 선택 시: 값 입력 및 비활성화(readonly)
-            gbn.val(selectedOption).prop('readonly', true);
+            // [CASE 2] 목록 선택: 입력창에 값 주입 후 비활성화
+            gbnInput.val(selectedOption).prop('readonly', true);
         } else {
-            // [CASE 3] 선택 안함
-            gbn.val('').prop('readonly', true);
+            // [CASE 3] 선택 안함: 초기화
+            gbnInput.val('').prop('readonly', true);
         }
 
+        // Depth(세부교육명) 노출 로직 (기존 유지)
+        f_control_gbn_depth(selectedOption);
+    });
+
+    // [신규] 페이지 로드 시 SelectBox 및 Input 상태 초기화 함수
+    function f_init_gbn_select() {
+        let dbValue = $('#gbn').val(); // DB에서 불러온 값 (수정 시 값 있음, 신규 시 빈값)
+
+        if (nvl(dbValue, '') === '') {
+            // [신규 등록] 아무것도 안 함 (기본 상태 유지)
+            return;
+        }
+
+        // SelectBox 내에 DB값과 일치하는 옵션이 있는지 확인
+        let existOption = $("#gbn_select option[value='" + dbValue + "']").length > 0;
+
+        if (existOption) {
+            // [수정 - 목록 일치] 해당 옵션 선택 & 입력창 Readonly
+            $('#gbn_select').val(dbValue).trigger('change.select2'); // select2 UI 갱신
+            $('#gbn').prop('readonly', true);
+            // depth 노출 체크
+            f_control_gbn_depth(dbValue);
+        } else {
+            // [수정 - 목록 불일치] '직접입력' 선택 & 입력창 활성화 & 값 유지
+            $('#gbn_select').val('direct').trigger('change.select2');
+            $('#gbn').prop('readonly', false);
+            // 주의: trigger('change')를 하면 위 이벤트 리스너 때문에 val('')이 실행될 수 있음.
+            // 따라서 값을 다시 한번 넣어줍니다.
+            $('#gbn').val(dbValue);
+        }
+    }
+
+    // [공통] Depth 노출 제어 함수 (중복 제거)
+    function f_control_gbn_depth(val) {
         let gbnDepth = $('#gbnDepth');
-        if(gbn.val() === '기초정비교육' || gbn.val() === '응급조치교육'){
+        if(val === '기초정비교육' || val === '응급조치교육'){
             gbnDepth.parent().parent().parent().removeClass('d-none');
-            //$('#gbnDepth').prop('disabled', true);
-        }else{
+        } else {
             gbnDepth.parent().parent().parent().addClass('d-none');
             $('#gbnDepth').val('');
             $('#gbn_depth_select').val('');
         }
-    });
+    }
 
     // 세부교육명
     $('#gbn_depth_select').on('change', function () {

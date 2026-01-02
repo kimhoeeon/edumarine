@@ -175,15 +175,15 @@
              , exposure_yn
              , schedule_exposure_yn
              , closing_yn
-             , del_yn
              , application_system_type
              , form_type
-             , thumb_file_id
+             , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , thumb_file_id
         FROM train
         WHERE seq = #{seq}
     </select>
@@ -1944,6 +1944,7 @@
                    , LISTA.trainStartDttm
                    , LISTA.trainEndDttm
                    , CASE WHEN DATEDIFF(LISTA.trainStartDttm,NOW()) <![CDATA[>]]> 4 THEN 'Y' ELSE 'N' END AS changeYn
+                   , LISTA.trainGbn
               FROM ( SELECT @ROWNUM := 0) R
                  , ( SELECT '상시신청' AS trainName
                           , r.train_seq
@@ -1953,6 +1954,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = r.member_seq and p.table_seq = r.seq and p.train_seq = r.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = r.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = r.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM regular r
 	                 WHERE r.member_seq = #{memberSeq}
 	                 AND r.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -1965,6 +1967,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = b.member_seq and p.table_seq = b.seq and p.train_seq = b.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = b.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = b.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM boarder b
                      WHERE b.member_seq = #{memberSeq}
                        AND b.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -1977,6 +1980,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = f.member_seq and p.table_seq = f.seq and p.train_seq = f.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = f.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = f.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM frp f
                      WHERE f.member_seq = #{memberSeq}
                        AND f.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -1989,6 +1993,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = i.member_seq and p.table_seq = i.seq and p.train_seq = i.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = i.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = i.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
 	                 FROM inboarder i
 	                 WHERE i.member_seq = #{memberSeq}
 	                 AND i.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2001,6 +2006,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = o.member_seq and p.table_seq = o.seq and p.train_seq = o.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = o.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = o.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM outboarder o
                      WHERE o.member_seq = #{memberSeq}
                        AND o.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2013,6 +2019,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = s.member_seq and p.table_seq = s.seq and p.train_seq = s.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = s.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = s.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM sailyacht s
                      WHERE s.member_seq = #{memberSeq}
                        AND s.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2025,6 +2032,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = h.member_seq and p.table_seq = h.seq and p.train_seq = h.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = h.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = h.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM highhorsepower h
                      WHERE h.member_seq = #{memberSeq}
                        AND h.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2037,6 +2045,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = e.member_seq and p.table_seq = e.seq and p.train_seq = e.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = e.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = e.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM highself e
                      WHERE e.member_seq = #{memberSeq}
                        AND e.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2049,6 +2058,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = c.member_seq and p.table_seq = c.seq and p.train_seq = c.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = c.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = c.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM highspecial c
                      WHERE c.member_seq = #{memberSeq}
                        AND c.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2061,6 +2071,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = t.member_seq and p.table_seq = t.seq and p.train_seq = t.train_seq) as payMethod
                           , (SELECT t1.train_start_dttm FROM train t1 WHERE t1.seq = t.train_seq) AS trainStartDttm
                           , (SELECT t2.train_end_dttm FROM train t2 WHERE t2.seq = t.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM sterndrive t
                      WHERE t.member_seq = #{memberSeq}
                        AND t.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2073,6 +2084,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = ss.member_seq and p.table_seq = ss.seq and p.train_seq = ss.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM sternspecial ss
                      WHERE ss.member_seq = #{memberSeq}
                        AND ss.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2085,6 +2097,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = ba.member_seq and p.table_seq = ba.seq and p.train_seq = ba.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM basic ba
                      WHERE ba.member_seq = #{memberSeq}
                        AND ba.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2097,6 +2110,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = em.member_seq and p.table_seq = em.seq and p.train_seq = em.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = em.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = em.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM emergency em
                      WHERE em.member_seq = #{memberSeq}
                        AND em.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2109,6 +2123,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = ge.member_seq and p.table_seq = ge.seq and p.train_seq = ge.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ge.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ge.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM generator ge
                      WHERE ge.member_seq = #{memberSeq}
                        AND ge.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2121,6 +2136,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = cp.member_seq and p.table_seq = cp.seq and p.train_seq = cp.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = cp.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = cp.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM competency cp
                      WHERE cp.member_seq = #{memberSeq}
                        AND cp.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2133,6 +2149,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = fi.member_seq and p.table_seq = fi.seq and p.train_seq = fi.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM famtourin fi
                      WHERE fi.member_seq = #{memberSeq}
                        AND fi.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2145,6 +2162,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = fo.member_seq and p.table_seq = fo.seq and p.train_seq = fo.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM famtourout fo
                      WHERE fo.member_seq = #{memberSeq}
                        AND fo.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2157,6 +2175,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = el.member_seq and p.table_seq = el.seq and p.train_seq = el.train_seq) as payMethod
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = el.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = el.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM electro el
                      WHERE el.member_seq = #{memberSeq}
                        AND el.apply_status NOT LIKE CONCAT('%','취소','%')
@@ -2170,6 +2189,7 @@
                           , (SELECT p.pay_method from payment p where p.member_seq = u.member_seq and p.table_seq = u.seq and p.train_seq = u.train_seq) as payMethod
                           , t.train_start_dttm AS trainStartDttm
                           , t.train_end_dttm AS trainEndDttm
+                          , 'UNIFIED' AS trainGbn
                      FROM application_unified u
                      JOIN train t
                      ON u.train_seq = t.seq
@@ -2195,6 +2215,7 @@
                           , r.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = r.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = r.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM regular r
 	                 WHERE r.member_seq = #{memberSeq}
 	                 AND r.apply_status LIKE CONCAT('%','취소','%')
@@ -2206,6 +2227,7 @@
                           , b.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = b.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = b.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM boarder b
                      WHERE b.member_seq = #{memberSeq}
                        AND b.apply_status LIKE CONCAT('%','취소','%')
@@ -2217,6 +2239,7 @@
                           , f.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = f.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = f.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM frp f
                      WHERE f.member_seq = #{memberSeq}
                        AND f.apply_status LIKE CONCAT('%','취소','%')
@@ -2228,6 +2251,7 @@
 	                      , i.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = i.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = i.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
 	                 FROM inboarder i
 	                 WHERE i.member_seq = #{memberSeq}
 	                 AND i.apply_status LIKE CONCAT('%','취소','%')
@@ -2239,6 +2263,7 @@
                           , o.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = o.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = o.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM outboarder o
                      WHERE o.member_seq = #{memberSeq}
                        AND o.apply_status LIKE CONCAT('%','취소','%')
@@ -2250,6 +2275,7 @@
                           , s.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = s.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = s.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM sailyacht s
                      WHERE s.member_seq = #{memberSeq}
                        AND s.apply_status LIKE CONCAT('%','취소','%')
@@ -2261,6 +2287,7 @@
                           , h.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = h.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = h.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM highhorsepower h
                      WHERE h.member_seq = #{memberSeq}
                        AND h.apply_status LIKE CONCAT('%','취소','%')
@@ -2272,6 +2299,7 @@
                           , e.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = e.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = e.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM highself e
                      WHERE e.member_seq = #{memberSeq}
                        AND e.apply_status LIKE CONCAT('%','취소','%')
@@ -2283,6 +2311,7 @@
                           , c.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = c.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = c.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM highspecial c
                      WHERE c.member_seq = #{memberSeq}
                        AND c.apply_status LIKE CONCAT('%','취소','%')
@@ -2294,6 +2323,7 @@
                           , t.final_regi_dttm
                           , (SELECT t1.train_start_dttm FROM train t1 WHERE t1.seq = t.train_seq) AS trainStartDttm
                           , (SELECT t2.train_end_dttm FROM train t2 WHERE t2.seq = t.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM sterndrive t
                      WHERE t.member_seq = #{memberSeq}
                        AND t.apply_status LIKE CONCAT('%','취소','%')
@@ -2305,6 +2335,7 @@
                           , ss.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ss.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM sternspecial ss
                      WHERE ss.member_seq = #{memberSeq}
                        AND ss.apply_status LIKE CONCAT('%','취소','%')
@@ -2316,6 +2347,7 @@
                           , ba.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ba.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM basic ba
                      WHERE ba.member_seq = #{memberSeq}
                        AND ba.apply_status LIKE CONCAT('%','취소','%')
@@ -2327,6 +2359,7 @@
                           , em.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = em.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = em.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM emergency em
                      WHERE em.member_seq = #{memberSeq}
                        AND em.apply_status LIKE CONCAT('%','취소','%')
@@ -2338,6 +2371,7 @@
                           , ge.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = ge.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = ge.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM generator ge
                      WHERE ge.member_seq = #{memberSeq}
                        AND ge.apply_status LIKE CONCAT('%','취소','%')
@@ -2349,6 +2383,7 @@
                           , cp.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = cp.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = cp.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM competency cp
                      WHERE cp.member_seq = #{memberSeq}
                        AND cp.apply_status LIKE CONCAT('%','취소','%')
@@ -2360,6 +2395,7 @@
                           , fi.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fi.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM famtourin fi
                      WHERE fi.member_seq = #{memberSeq}
                        AND fi.apply_status LIKE CONCAT('%','취소','%')
@@ -2371,6 +2407,7 @@
                           , fo.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = fo.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM famtourout fo
                      WHERE fo.member_seq = #{memberSeq}
                        AND fo.apply_status LIKE CONCAT('%','취소','%')
@@ -2382,6 +2419,7 @@
                           , el.final_regi_dttm
                           , (SELECT t.train_start_dttm FROM train t WHERE t.seq = el.train_seq) AS trainStartDttm
                           , (SELECT t.train_end_dttm FROM train t WHERE t.seq = el.train_seq) AS trainEndDttm
+                          , 'LEGACY' AS trainGbn
                      FROM electro el
                      WHERE el.member_seq = #{memberSeq}
                        AND el.apply_status LIKE CONCAT('%','취소','%')
@@ -2394,6 +2432,7 @@
                           , u.final_regi_dttm
                           , t.train_start_dttm AS trainStartDttm
                           , t.train_end_dttm AS trainEndDttm
+                          , 'UNIFIED' AS trainGbn
                      FROM application_unified u
                      JOIN train t
                      ON u.train_seq = t.seq

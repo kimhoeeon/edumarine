@@ -407,9 +407,9 @@ if (document.documentElement) {
                                                         <c:when test="${info.applicationSystemType == 'UNIFIED'}">
                                                             <select class="form-select form-select-solid" name="formType" data-control="select2" data-hide-search="true" data-placeholder="신청서 양식을 선택하세요">
                                                                 <option></option>
-                                                                <option value="BASIC_FORM" <c:if test="${info.formType == 'BASIC_FORM'}">selected</c:if>>기본형 (의류사이즈, 참여경로)</option>
-                                                                <option value="PRO_FORM" <c:if test="${info.formType == 'PRO_FORM'}">selected</c:if>>전문가형 (기본형 + 학력/경력/자격증)</option>
-                                                                <option value="FAMTOUR_FORM" <c:if test="${info.formType == 'FAMTOUR_FORM'}">selected</c:if>>팸투어형 (신청일 선택)</option>
+                                                                <option value="BASIC_FORM" <c:if test="${info.formType == 'BASIC_FORM'}">selected</c:if>>기본형 (작업복사이즈, 참여경로)</option>
+                                                                <option value="PRO_FORM" <c:if test="${info.formType == 'PRO_FORM'}">selected</c:if>>기본형2 (작업복사이즈, 참여경로, 추천인)</option>
+                                                                <%--<option value="FAMTOUR_FORM" <c:if test="${info.formType == 'FAMTOUR_FORM'}">selected</c:if>>팸투어형 (신청일 선택)</option>--%>
                                                             </select>
                                                             <input type="hidden" name="applicationSystemType" value="UNIFIED"/>
                                                         </c:when>
@@ -466,7 +466,7 @@ if (document.documentElement) {
                                                 <div class="col-lg-10">
 
                                                     <div class="d-flex align-items-center">
-                                                        <select id="gbn_select" class="form-select form-select-solid me-2" <c:if test="${info.gbn ne null}">disabled</c:if> >
+                                                        <select id="gbn_select" class="form-select form-select-solid me-2">
                                                             <option selected>- 교육과정명 선택 -</option>
                                                             <option value="direct">직접입력</option>
                                                             <option value="상시신청" <c:if test="${info.gbn eq '상시신청'}">selected</c:if> >상시신청</option>
@@ -771,12 +771,6 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
-    <script>
-        $(function(){
-            $('#gbn_select').trigger('change');
-        })
-    </script>
-
     <!--end::login check-->
 </c:if>
 </body>
