@@ -3207,6 +3207,17 @@ public class EduMarineController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/apply/eduApplyUnified/preCheck.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Integer> apply_eduApplyUnified_preCheck(@RequestBody ApplicationUnifiedDTO dto) {
+        System.out.println("EduMarineController > apply_eduApplyUnified_preCheck");
+        //System.out.println(noticeDTO.toString());
+
+        Integer result = eduMarineService.processSelectUnifiedPreCheck(dto);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     //***************************************************************************
     // edumarine Folder
     //***************************************************************************

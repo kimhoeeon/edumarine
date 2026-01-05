@@ -99,6 +99,15 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="selectUnifiedPreCheck" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO" resultType="java.lang.Integer">
+        /* com.mtf.edumarine.mapper.EdumarineMapper.selectUnifiedPreCheck */
+        SELECT COUNT(1)
+        FROM application_unified
+        WHERE train_seq = #{trainSeq}
+          AND member_seq = #{memberSeq}
+          AND apply_status NOT LIKE '%취소%'
+    </select>
+
     <select id="selectUnifiedApplicationList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
         /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedApplicationList */
         SELECT u.seq

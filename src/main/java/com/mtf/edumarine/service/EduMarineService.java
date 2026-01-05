@@ -340,4 +340,6 @@ public interface EduMarineService {
     ApplicationUnifiedDTO processSelectApplicationUnifiedSingle(String seq);
 
     ResponseDTO processUpdateUnifiedApplication(ApplicationUnifiedDTO dto);
+
+    Integer processSelectUnifiedPreCheck(ApplicationUnifiedDTO dto);
 }

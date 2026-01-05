@@ -286,6 +286,21 @@
                 }
             }
 
+            let resultCnt = ajaxConnect('/apply/eduApplyUnified/preCheck.do', 'post', { trainSeq: '${seq}', memberSeq: '${info.seq}' });
+
+            if(resultCnt > 0) {
+
+                Swal.fire({
+                    title: '[ 교육 신청 ]',
+                    html: '이미 신청하신 내역이 있습니다.<br>마이페이지>교육이력조회에서 확인 가능합니다.',
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인'
+                })
+
+                return;
+            }
+
             Swal.fire({
                 title: '[ 교육 신청 ]',
                 html: '교육을 신청하시겠습니까?<br>신청하기 클릭 시 결제화면으로 이동합니다.',
@@ -299,7 +314,7 @@
                 if (result.isConfirmed) {
                     // 1. 폼 데이터 직렬화
                     var formData = $("#applyForm").serializeObject();
-                    console.log("Unified Apply FormData:", formData);
+                    //console.log("Unified Apply FormData:", formData);
 
                     // 2. 신규 통합 INSERT API 호출
                     _ajax_("POST", "/apply/eduApplyUnified/insert.do", formData, function (response) {

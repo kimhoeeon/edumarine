@@ -519,7 +519,7 @@ if (document.documentElement) {
                                                 <a href="javascript:void(0);" onclick="f_education_train_modify_init_set('');" class="btn btn-primary ms-auto">교육 등록</a>
                                                 <!--end::등록-->
 
-                                                <c:if test="${sessionScope.get('id') eq 'admin'}">
+                                                <c:if test="${sessionScope.get('note') eq '개발사'}">
                                                     <a href="<c:url value="/mng/education/train/detail.do?type=UNIFIED"/>" class="btn btn-success ms-2" title="신규 통합 교육 등록 (관리자용)">
                                                         (신규) 통합 등록
                                                     </a>

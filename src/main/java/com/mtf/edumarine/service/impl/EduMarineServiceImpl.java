@@ -3438,4 +3438,11 @@ public class EduMarineServiceImpl implements EduMarineService {
         return response;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public Integer processSelectUnifiedPreCheck(ApplicationUnifiedDTO dto) {
+        System.out.println("EduMarineServiceImpl > processSelectUnifiedPreCheck");
+        return unifiedMapper.selectUnifiedPreCheck(dto);
+    }
+
 }
