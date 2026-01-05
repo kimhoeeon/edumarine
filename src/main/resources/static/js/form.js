@@ -102,7 +102,7 @@ $(document).ready(function () {
         if(nvl(changeYn,'') !== '' && changeYn === 'Y'){
             $('#popupCancelEdu').addClass('on');
 
-            let trainName = $(this).parent().siblings('.subject').find('a').text();
+            let trainName = $(this).parent().siblings('.subject').find('a').text().trim();
             if(nvl(trainName,'') !== ''){
                 $('#popupCancelEdu').find('.train_name').text(trainName);
 
@@ -119,10 +119,10 @@ $(document).ready(function () {
                     if(payMethod.includes('card')){
                         $("#popupCancelEdu .refund_account_box").css("display", "none");
                     }else{
-                        if(payStatus === '입금대기'){
-                            $("#popupCancelEdu .refund_account_box").css("display", "none");
-                        }else{
+                        if(payStatus === '결제완료'){
                             $("#popupCancelEdu .refund_account_box").css("display", "block");
+                        }else{
+                            $("#popupCancelEdu .refund_account_box").css("display", "none");
                         }
                     }
 
@@ -166,10 +166,10 @@ $(document).ready(function () {
                     if(payMethod.includes('card')){
                         $("#popupCancelEdu .refund_account_box").css("display", "none");
                     }else{
-                        if(applyStatus === '입금대기'){
-                            $("#popupCancelEdu .refund_account_box").css("display", "none");
-                        }else{
+                        if(applyStatus === '결제완료'){
                             $("#popupCancelEdu .refund_account_box").css("display", "block");
+                        }else{
+                            $("#popupCancelEdu .refund_account_box").css("display", "none");
                         }
                     }
 

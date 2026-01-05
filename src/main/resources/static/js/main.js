@@ -7309,7 +7309,7 @@ function f_main_schedule_search(searchGbn, searchText){
 }
 
 function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
-    //console.log(seq, trainName, payMethod);
+    console.log(seq, trainName, payMethod);
 
     let cancelReason = $('.cancel_edu_reason').val().trim();
 
@@ -7440,6 +7440,7 @@ function f_edu_apply_cancel_btn(seq, trainName, payMethod, paramApplyStatus){
                 cancelUrl = '/apply/eduApply22/update/status.do';
                 break;
             default:
+                cancelUrl = '/mypage/eduApplyUnified/cancel.do';
                 break;
         }
 

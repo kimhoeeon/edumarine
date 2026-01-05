@@ -604,7 +604,7 @@ function f_education_train_early_closing(seq) {
 }
 
 function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
-    console.log(gbn, nextTime, trainApplyCnt);
+    //console.log(gbn, nextTime, trainApplyCnt);
 
     if(trainApplyCnt === '0'){
         showMessage('', 'info', '[ 신청명단보기 ]', '현재 신청자가 없는 교육입니다.', '');
@@ -668,6 +668,7 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
             link = '/mng/customer/electro.do';
             break;
         default:
+            link = '/mng/customer/unified.do';
             break;
     }
 

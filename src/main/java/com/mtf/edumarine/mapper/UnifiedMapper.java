@@ -39,4 +39,6 @@ public interface UnifiedMapper {
     int selectUnifiedListCnt(Map<String, Object> paramMap);
 
     Integer updateUnifiedApplyStatus(ApplicationUnifiedDTO info);
+
+    Integer selectUnifiedPreCheck(ApplicationUnifiedDTO dto);
 }
