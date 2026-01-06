@@ -857,7 +857,7 @@ if (document.documentElement) {
                                     <option value="" disabled>- 환불 구분 -</option>
                                     <option value="ALL">전액 환불</option>
                                     <option value="PART">조건 환불 (환불 기한에 따라 환불)</option>
-                                    <option value="NOPAY">미결제환불</option>
+                                    <option value="NOPAY">미결제취소승인</option>
                                 </select>
                                 <!--end::Select2-->
                             </div>

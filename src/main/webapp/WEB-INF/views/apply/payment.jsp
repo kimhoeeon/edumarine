@@ -178,21 +178,6 @@
         $(function(){
             function on_pay() {
 
-                // 1. merchantData 동적 생성 (신규/기존 로직 분기)
-                var tableSeq = "${payInfo.tableSeq}";
-                var systemType = "${payInfo.applicationSystemType}";
-                var merchantData = tableSeq;
-
-                // 신규 통합 시스템('UNIFIED')인 경우에만 식별자 추가
-                if (systemType === 'UNIFIED') {
-                    merchantData = tableSeq + ",UNIFIED";
-                }
-
-                // (선택사항) 폼 내의 hidden input 값도 동기화 (일부 PG 설정에 따라 필요할 수 있음)
-                if (document.getElementById("SendPayForm_id").merchantData) {
-                    document.getElementById("SendPayForm_id").merchantData.value = merchantData;
-                }
-
                 // 2. 결제 요청
                 INIStdPay.pay('SendPayForm_id', {
                     version: "1.0",
@@ -210,9 +195,6 @@
                     buyername: "${payInfo.buyername}",
                     buyertel: "${payInfo.buyertel}",
                     buyeremail: "${payInfo.buyeremail}",
-
-                    // ★★★ 수정된 merchantData 적용 ★★★
-                    merchantData: merchantData,
 
                     returnUrl: "${payInfo.siteDomain}/mypage/eduApplyInfo.do",
                     closeUrl: "",

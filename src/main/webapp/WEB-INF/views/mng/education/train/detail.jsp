@@ -468,26 +468,36 @@ if (document.documentElement) {
                                                     <div class="d-flex align-items-center">
                                                         <select id="gbn_select" class="form-select form-select-solid me-2">
                                                             <option selected>- 교육과정명 선택 -</option>
-                                                            <option value="direct">직접입력</option>
-                                                            <option value="상시신청" <c:if test="${info.gbn eq '상시신청'}">selected</c:if> >상시신청</option>
-                                                            <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.gbn eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                            <option value="선외기 기초정비실습 과정" <c:if test="${info.gbn eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
-                                                            <option value="선내기 기초정비실습 과정" <c:if test="${info.gbn eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
-                                                            <option value="세일요트 기초정비실습 과정" <c:if test="${info.gbn eq '세일요트 기초정비실습 과정'}">selected</c:if> >세일요트 기초정비실습 과정</option>
-                                                            <option value="마리나선박 선외기 정비사 실무과정" <c:if test="${info.gbn eq '마리나선박 선외기 정비사 실무과정'}">selected</c:if> >마리나선박 선외기 정비사 실무과정</option>
-                                                            <option value="마리나선박 선내기 정비사 실무과정" <c:if test="${info.gbn eq '마리나선박 선내기 정비사 실무과정'}">selected</c:if> >마리나선박 선내기 정비사 실무과정</option>
-                                                            <option value="고마력 선외기 정비 중급 테크니션" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션'}">selected</c:if> >고마력 선외기 정비 중급 테크니션</option>
-                                                            <option value="자가정비 심화과정 (고마력 선외기)" <c:if test="${info.gbn eq '자가정비 심화과정 (고마력 선외기)'}">selected</c:if> >자가정비 심화과정 (고마력 선외기)</option>
-                                                            <option value="고마력 선외기 정비 중급 테크니션 (특별반)" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션 (특별반)'}">selected</c:if> >고마력 선외기 정비 중급 테크니션 (특별반)</option>
-                                                            <option value="스턴드라이브 정비 전문가과정" <c:if test="${info.gbn eq '스턴드라이브 정비 전문가과정'}">selected</c:if> >스턴드라이브 정비 전문가과정</option>
-                                                            <option value="스턴드라이브 정비 전문가과정 (특별반)" <c:if test="${info.gbn eq '스턴드라이브 정비 전문가과정 (특별반)'}">selected</c:if> >스턴드라이브 정비 전문가과정 (특별반)</option>
-                                                            <option value="기초정비교육" <c:if test="${info.gbn eq '기초정비교육'}">selected</c:if> >기초정비교육</option>
-                                                            <option value="응급조치교육" <c:if test="${info.gbn eq '응급조치교육'}">selected</c:if> >응급조치교육</option>
-                                                            <option value="발전기 정비 교육" <c:if test="${info.gbn eq '발전기 정비 교육'}">selected</c:if> >발전기 정비 교육</option>
-                                                            <option value="선외기/선내기 직무역량 강화과정" <c:if test="${info.gbn eq '선외기/선내기 직무역량 강화과정'}">selected</c:if> >선외기/선내기 직무역량 강화과정</option>
-                                                            <option value="선내기 팸투어" <c:if test="${info.gbn eq '선내기 팸투어'}">selected</c:if> >선내기 팸투어</option>
-                                                            <option value="선외기 팸투어" <c:if test="${info.gbn eq '선외기 팸투어'}">selected</c:if> >선외기 팸투어</option>
-                                                            <option value="레저선박 해양전자장비 교육" <c:if test="${info.gbn eq '레저선박 해양전자장비 교육'}">selected</c:if> >레저선박 해양전자장비 교육</option>
+                                                            <c:choose>
+                                                                <%--신규 통합 시스템 (UNIFIED)--%>
+                                                                <c:when test="${info.applicationSystemType == 'UNIFIED'}">
+                                                                    <option value="direct">직접입력</option>
+                                                                </c:when>
+
+                                                                <%--기존 시스템 (LEGACY) - 기본값--%>
+                                                                <c:otherwise>
+                                                                    <option value="상시신청" <c:if test="${info.gbn eq '상시신청'}">selected</c:if> >상시신청</option>
+                                                                    <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.gbn eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
+                                                                    <option value="선외기 기초정비실습 과정" <c:if test="${info.gbn eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
+                                                                    <option value="선내기 기초정비실습 과정" <c:if test="${info.gbn eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
+                                                                    <option value="세일요트 기초정비실습 과정" <c:if test="${info.gbn eq '세일요트 기초정비실습 과정'}">selected</c:if> >세일요트 기초정비실습 과정</option>
+                                                                    <option value="마리나선박 선외기 정비사 실무과정" <c:if test="${info.gbn eq '마리나선박 선외기 정비사 실무과정'}">selected</c:if> >마리나선박 선외기 정비사 실무과정</option>
+                                                                    <option value="마리나선박 선내기 정비사 실무과정" <c:if test="${info.gbn eq '마리나선박 선내기 정비사 실무과정'}">selected</c:if> >마리나선박 선내기 정비사 실무과정</option>
+                                                                    <option value="고마력 선외기 정비 중급 테크니션" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션'}">selected</c:if> >고마력 선외기 정비 중급 테크니션</option>
+                                                                    <option value="자가정비 심화과정 (고마력 선외기)" <c:if test="${info.gbn eq '자가정비 심화과정 (고마력 선외기)'}">selected</c:if> >자가정비 심화과정 (고마력 선외기)</option>
+                                                                    <option value="고마력 선외기 정비 중급 테크니션 (특별반)" <c:if test="${info.gbn eq '고마력 선외기 정비 중급 테크니션 (특별반)'}">selected</c:if> >고마력 선외기 정비 중급 테크니션 (특별반)</option>
+                                                                    <option value="스턴드라이브 정비 전문가과정" <c:if test="${info.gbn eq '스턴드라이브 정비 전문가과정'}">selected</c:if> >스턴드라이브 정비 전문가과정</option>
+                                                                    <option value="스턴드라이브 정비 전문가과정 (특별반)" <c:if test="${info.gbn eq '스턴드라이브 정비 전문가과정 (특별반)'}">selected</c:if> >스턴드라이브 정비 전문가과정 (특별반)</option>
+                                                                    <option value="기초정비교육" <c:if test="${info.gbn eq '기초정비교육'}">selected</c:if> >기초정비교육</option>
+                                                                    <option value="응급조치교육" <c:if test="${info.gbn eq '응급조치교육'}">selected</c:if> >응급조치교육</option>
+                                                                    <option value="발전기 정비 교육" <c:if test="${info.gbn eq '발전기 정비 교육'}">selected</c:if> >발전기 정비 교육</option>
+                                                                    <option value="선외기/선내기 직무역량 강화과정" <c:if test="${info.gbn eq '선외기/선내기 직무역량 강화과정'}">selected</c:if> >선외기/선내기 직무역량 강화과정</option>
+                                                                    <option value="선내기 팸투어" <c:if test="${info.gbn eq '선내기 팸투어'}">selected</c:if> >선내기 팸투어</option>
+                                                                    <option value="선외기 팸투어" <c:if test="${info.gbn eq '선외기 팸투어'}">selected</c:if> >선외기 팸투어</option>
+                                                                    <option value="레저선박 해양전자장비 교육" <c:if test="${info.gbn eq '레저선박 해양전자장비 교육'}">selected</c:if> >레저선박 해양전자장비 교육</option>
+                                                                </c:otherwise>
+                                                            </c:choose>
+
                                                         </select>
                                                         <input type="text" name="gbn" id="gbn" class="form-control form-control-solid"
                                                                value="${info.gbn}" readonly placeholder="직접입력 선택 시 작성 가능"/>

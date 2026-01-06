@@ -422,9 +422,8 @@
                 var pNotiValue = "";
 
                 if (systemType === 'UNIFIED') {
-                    // [신규] 파이프(|) 구분자 사용 (Controller 파싱 로직과 일치)
-                    // 형식: 교육PK | 신청PK | 시스템타입 | 상품명
-                    pNotiValue = trainSeq + "|" + tableSeq + "|" + systemType + "|" + goodName;
+                    // 형식: 교육PK_신청PK_시스템타입_상품명
+                    pNotiValue = trainSeq + "_" + tableSeq + "_" + systemType + "_" + goodName;
                 } else {
                     // [기존] 콤마(,) 구분자 사용 (기존 로직 유지)
                     pNotiValue = trainSeq + "," + tableSeq + "," + goodName;
@@ -453,7 +452,10 @@
                 myForm.submit();
             }
 
-            on_pay();
+            // [수정] 페이지 로드 후 on_pay() 함수 자동 호출
+            $(document).ready(function () {
+                on_pay();
+            });
         })
     </script>
 </c:if>

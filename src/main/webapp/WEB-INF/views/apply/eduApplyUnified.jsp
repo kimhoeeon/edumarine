@@ -113,7 +113,7 @@
     <form name="payForm" id="payForm" method="post">
         <input type="hidden" id="trainSeq" name="trainSeq" value="${seq}"/>
         <input type="hidden" id="tableSeq" name="tableSeq" value=""/>
-        <input type="hidden" id="applicationSystemType" name="applicationSystemType" value=""/>
+        <input type="hidden" id="applicationSystemType" name="applicationSystemType" value="UNIFIED"/>
         <input type="hidden" id="buyername" name="buyername" value="${info.name}"/>
         <input type="hidden" id="buyertel" name="buyertel" value="${info.phone}"/>
         <input type="hidden" id="buyeremail" name="buyeremail" value="${info.email}"/>
@@ -239,11 +239,45 @@
                         <!-- //form_notice -->
 
                     </form>
+
+                    <!-- popupPaySel -->
+                    <div class="popup" id="popupPaySel">
+                        <div class="popup_inner popup_form">
+                            <div class="popup_box popup_form">
+                                <div class="box_1">
+                                    <div class="tit_box">결제 수단 선택</div>
+                                    <div class="text_box">결제 수단을 선택해 주세요</div>
+                                    <div class="pay_select_box">
+                                        <div class="input_box" style="text-align: left;">
+                                            <input type="hidden" id="tableSeq" value="">
+                                            <input type="hidden" id="trainSeq" value="">
+                                            <input type="hidden" id="buyername" value="">
+                                            <input type="hidden" id="buyertel" value="">
+                                            <input type="hidden" id="buyeremail" value="">
+                                            <select id="pay_select" style="width: 100%">
+                                                <option value="" selected disabled>결제 수단</option>
+                                                <option value="CARD">신용카드</option>
+                                                <option value="VBANK">가상계좌(무통장입금)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="btn_box">
+                                        <a href="javascript:void(0);" class="btnSt03 btn_prev">취소</a>
+                                        <a href="javascript:void(0);" class="btnSt04" onclick="f_main_apply_payment_mobile(this);">확인</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //popupPaySel -->
+
                 </div>
             </div>
         </div>
     </div>
     <!-- //container -->
+
+
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
@@ -322,7 +356,17 @@
 
                             // 3. 성공 시 결제 페이지로 이동 (반환된 app_seq와 'UNIFIED' 타입 전달)
                             var appSeq = response.customValue; // Service에서 반환한 'AU000000X'
-                            fn_payment(appSeq, 'UNIFIED');
+
+                            if(deviceGbn() === 'MOBILE'){
+                                $('#popupPaySel').addClass('on');
+                                $('#popupPaySel #tableSeq').val(appSeq);
+                                $('#popupPaySel #trainSeq').val('${seq}');
+                                $('#popupPaySel #buyername').val('${info.name}');
+                                $('#popupPaySel #buyertel').val('${info.phone}');
+                                $('#popupPaySel #buyeremail').val('${info.email}');
+                            }else{
+                                fn_payment(appSeq, 'UNIFIED', deviceGbn());
+                            }
 
                         } else {
                             Swal.fire('신청 실패', response.resultMessage, 'error');
@@ -333,13 +377,21 @@
         }
 
         // 결제 함수 (기존 form.js와 동일 + systemType 파라미터 추가)
-        function fn_payment(seq, systemType) {
+        function fn_payment(seq, systemType, deviceGbn) {
             $("#tableSeq").val(seq);
             $("#applicationSystemType").val(systemType); // ★신규: 시스템 타입('UNIFIED') 설정
 
-            var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            // [수정] OID 길이 초과 방지를 위한 최적화
+            // "신청번호_타입약어" (예: AU0000013_U) 형태로 전송
+            var shortType = (systemType === 'UNIFIED') ? 'U' : systemType;
+            var oidValue = seq + "_" + shortType;
 
-            if (isMobile) {
+            if ($("#payForm input[name='oid']").length === 0) {
+                $("#payForm").append('<input type="hidden" name="oid" />');
+            }
+            $("#payForm input[name='oid']").val(oidValue);
+
+            if (deviceGbn === 'MOBILE') {
                 $("#payForm").attr("action", "/apply/mobile/payment.do");
             } else {
                 $("#payForm").attr("action", "/apply/payment.do");

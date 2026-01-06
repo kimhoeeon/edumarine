@@ -117,9 +117,9 @@
         <div class="sub_top sub_top_edu">
             <div class="inner">
                 <div class="sub_top_nav">
-                    <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span><span>교육신청</span><span>자가정비 세일요트</span>
+                    <span class="home"><img src="/img/icon_home_mini.png" alt="홈 아이콘"></span><span>교육신청</span><span>세일요트 기초정비실습 과정</span>
                 </div>
-                <h2 class="sub_top_title">자가정비 세일요트</h2>
+                <h2 class="sub_top_title">세일요트 기초정비실습 과정</h2>
             </div>
         </div>
         <!-- //sub_top -->

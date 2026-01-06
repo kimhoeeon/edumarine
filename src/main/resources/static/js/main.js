@@ -1179,7 +1179,7 @@ function deviceGbn(){
     }
 }
 
-function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email){
+function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email, applicationSystemType){
 
     // 교육 조회
     let resData = ajaxConnectSimple('/train/selectSingle.do', 'post', {seq: trainSeq});
@@ -1241,8 +1241,24 @@ function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email){
                 hiddenBuyerEmail.setAttribute('value', email);
                 paymentForm.appendChild(hiddenBuyerEmail);
 
+                let hiddenSystemType = document.createElement('input');
+                hiddenSystemType.setAttribute('type', 'hidden'); //값 입력
+                hiddenSystemType.setAttribute('name', 'applicationSystemType');
+                hiddenSystemType.setAttribute('value', applicationSystemType);
+                paymentForm.appendChild(hiddenSystemType);
+
+                let shortType = (applicationSystemType === 'UNIFIED') ? 'U' : 'L'; // UNIFIED가 아니면 Legacy(L) 등 처리
+                let oidValue = tableSeq + "_" + shortType;
+
+                let inputOid = document.createElement("input");
+                inputOid.setAttribute("type", "hidden");
+                inputOid.setAttribute("name", "oid"); // Controller가 받을 파라미터명
+                inputOid.setAttribute("value", oidValue);
+                paymentForm.appendChild(inputOid);
+
                 document.body.appendChild(paymentForm);
                 paymentForm.submit();
+                document.body.removeChild(paymentForm);
 
             }else if(device === 'MOBILE'){
                 $('#popupPaySel').addClass('on');
@@ -1251,6 +1267,7 @@ function f_main_apply_continue_payment(tableSeq, trainSeq, name, phone, email){
                 $('#popupPaySel #buyername').val(name);
                 $('#popupPaySel #buyertel').val(phone);
                 $('#popupPaySel #buyeremail').val(email);
+                $('#popupPaySel #applicationSystemType').val(applicationSystemType);
             }
 
         }
@@ -1270,6 +1287,7 @@ function f_main_apply_payment_mobile(el){
     let name = $('#popupPaySel #buyername').val();
     let phone = $('#popupPaySel #buyertel').val();
     let email = $('#popupPaySel #buyeremail').val();
+    let applicationSystemType = $('#applicationSystemType').val();
 
     // 결제모듈 Call
     let paymentForm = document.createElement('form');
@@ -1317,6 +1335,12 @@ function f_main_apply_payment_mobile(el){
     hiddenPayMethod.setAttribute('name', 'payMethod');
     hiddenPayMethod.setAttribute('value', payMethod);
     paymentForm.appendChild(hiddenPayMethod);
+
+    let hiddenApplicationSystemType = document.createElement('input');
+    hiddenApplicationSystemType.setAttribute('type', 'hidden'); //값 입력
+    hiddenApplicationSystemType.setAttribute('name', 'applicationSystemType');
+    hiddenApplicationSystemType.setAttribute('value', applicationSystemType);
+    paymentForm.appendChild(hiddenApplicationSystemType);
 
     document.body.appendChild(paymentForm);
     paymentForm.submit();

@@ -268,7 +268,7 @@
                                 <a href="javascript:void(0);" onclick="fn_update();" class="btnSt01">수정하기</a>
 
                                 <c:if test="${info.applyStatus eq '신청완료' or info.applyStatus eq '결제완료' or info.applyStatus eq '입금대기'}">
-                                    <a href="javascript:void(0);" onclick="fn_cancel_confirm();" class="btnSt02">신청취소</a>
+                                    <a href="javascript:void(0);" data-value="${payInfo.payMethod}" onclick="fn_cancel_confirm(this);" class="btnSt02">신청취소</a>
                                 </c:if>
                             </c:if>
                         </div>
@@ -480,7 +480,6 @@
             });
         }
 
-        // [추가] 커스텀 셀렉트 박스 값 동기화 (form.js 보완)
         // .option_item 클릭 시 숨겨진 select 박스의 값을 변경해줘야 fn_cancel_submit()에서 값을 읽을 수 있음
         $(document).on('click', '.select_box .option_item', function() {
             var code = $(this).data('value'); // data-value 값 가져오기
@@ -496,7 +495,7 @@
         });
 
         /* [팝업 열기 & 초기화] */
-        function fn_cancel_confirm() {
+        function fn_cancel_confirm(el) {
             // 1. 입력값 초기화
             $('#cancelReason').val('');
             $('#cancel_edu_bank_select').val('');
@@ -509,6 +508,13 @@
             // 3. UI 초기화
             $('#popupCancelEdu .box_1').show();
             $('#popupCancelEdu .box_2').hide();
+
+            let payMethod = $(el).data('value').toString().toLowerCase();
+            if(payMethod === 'vbank'){
+                $('#popupCancelEdu .refund_account_box').show();
+            }else{
+                $('#popupCancelEdu .refund_account_box').hide();
+            }
 
             // 4. 팝업 노출
             $('#popupCancelEdu').addClass('on');
@@ -540,17 +546,20 @@
             }
 
             // 2. 기타 필수값 체크
-            if (!bankCode) { // 은행 선택 여부 체크
-                Swal.fire('알림', '환불계좌 은행을 선택해주세요.', 'warning');
-                return;
-            }
-            if (customerName.trim() === "") {
-                Swal.fire('알림', '예금주명을 입력해주세요.', 'warning');
-                return;
-            }
-            if (bankNumber.trim() === "") {
-                Swal.fire('알림', '계좌번호를 입력해주세요.', 'warning');
-                return;
+            var isAccountVisible = $('#popupCancelEdu .refund_account_box').is(':visible');
+            if(isAccountVisible){
+                if (!bankCode) { // 은행 선택 여부 체크
+                    Swal.fire('알림', '환불계좌 은행을 선택해주세요.', 'warning');
+                    return;
+                }
+                if (customerName.trim() === "") {
+                    Swal.fire('알림', '예금주명을 입력해주세요.', 'warning');
+                    return;
+                }
+                if (bankNumber.trim() === "") {
+                    Swal.fire('알림', '계좌번호를 입력해주세요.', 'warning');
+                    return;
+                }
             }
 
             Swal.fire({
