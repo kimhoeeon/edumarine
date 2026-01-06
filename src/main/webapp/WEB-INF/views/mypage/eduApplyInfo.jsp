@@ -195,7 +195,7 @@
                                                 </c:choose>
                                                 <c:if test="${eduApplyInfo.payStatus eq '결제대기'}">
                                                     </br>
-                                                    <a href="javascript:void(0);" onclick="f_main_apply_continue_payment('${eduApplyInfo.seq}', '${eduApplyInfo.trainSeq}', '${memberInfo.name}', '${memberInfo.phone}', '${memberInfo.email}')" class="btn_modify_2">이어서 결제</a>
+                                                    <a href="javascript:void(0);" onclick="f_main_apply_continue_payment('${eduApplyInfo.seq}', '${eduApplyInfo.trainSeq}', '${memberInfo.name}', '${memberInfo.phone}', '${memberInfo.email}','${eduApplyInfo.trainGbn}')" class="btn_modify_2">이어서 결제</a>
                                                 </c:if>
                                             </div>
                                             <div class="modify">
@@ -335,6 +335,7 @@
                                             <input type="hidden" id="buyername" value="">
                                             <input type="hidden" id="buyertel" value="">
                                             <input type="hidden" id="buyeremail" value="">
+                                            <input type="hidden" id="applicationSystemType" value="">
                                             <select id="pay_select" style="width: 100%">
                                                 <option value="" selected disabled>결제 수단</option>
                                                 <option value="CARD">신용카드</option>

@@ -2720,8 +2720,8 @@ public class EduMarineController {
         }else if(mo_resultCode != null && !"null".equals(mo_resultCode)){
             System.out.println("이니시스 결제 Response mo_resultCode : " + mo_resultCode);
             if(!"01".equals(mo_resultCode)) { // 결제 도중 취소 코드 01
-                System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
-                System.out.println("Session Id : " + session.getAttribute("id"));
+                //System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
+                //System.out.println("Session Id : " + session.getAttribute("id"));
                 if (session.getAttribute("id") != null) {
                     String id = session.getAttribute("id").toString();
                     MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
@@ -3106,7 +3106,7 @@ public class EduMarineController {
 
     // 1. 상세 페이지 이동
     @RequestMapping(value = "/mypage/eduApplyUnified_detail.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApplyUnified_detail(String seq) {
+    public ModelAndView mypage_eduApplyUnified_detail(String auSeq) {
         ModelAndView mv = new ModelAndView();
 
         // 신청 정보 조회 (Service에 해당 메서드가 있다고 가정. 없다면 추가 필요)
@@ -3116,7 +3116,7 @@ public class EduMarineController {
 
         // (실제로는 EduMarineService에 UnifiedMapper.selectUnifiedApplicationSingle 호출 메서드를 만들어야 함)
         // 아래는 예시 코드입니다. Service에 메서드를 추가한 후 주석을 해제하세요.
-        ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(seq);
+        ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(auSeq);
 
         if(info != null){
             mv.addObject("info", info);
@@ -3131,9 +3131,11 @@ public class EduMarineController {
 
             // 결제 정보
             PaymentDTO payReq = new PaymentDTO();
-            payReq.setTableSeq(info.getSeq());
-            // payReq.setMemberSeq(info.getMemberSeq());
-            // (필요시 processSelectTrainPaymentInfo 같은 메서드로 결제 정보 조회)
+            payReq.setTableSeq(auSeq);
+            payReq.setMemberSeq(memberInfo.getSeq());
+            payReq.setTrainSeq(trainInfo.getSeq());
+            PaymentDTO payInfo = eduMarineService.processSelectPaymentSingle(payReq);
+            mv.addObject("payInfo", payInfo);
         }
 
         mv.setViewName("/mypage/eduApplyUnified_modify");
@@ -3969,10 +3971,8 @@ public class EduMarineController {
 
         if(deviceGbn.equals("PC")) {
             Map<String, String> resultMap = new HashMap<String, String>();
-            String merchantData = "";
-
             String tableSeq = "";
-            String systemType = "LEGACY";
+            String systemType = "L";
 
             try {
 
@@ -4014,20 +4014,6 @@ public class EduMarineController {
                     String authToken = paramMap.get("authToken");
                     String authUrl = paramMap.get("authUrl");
                     String netCancel = paramMap.get("netCancelUrl");
-                    merchantData = paramMap.get("merchantData");
-
-                    // merchantData 형식: "AU000001,UNIFIED" 또는 "F00001"
-                    if (merchantData != null) {
-                        if (merchantData.contains(",")) {
-                            String[] md = merchantData.split(",");
-                            tableSeq = md[0];
-                            if (md.length > 1) {
-                                systemType = md[1];
-                            }
-                        } else {
-                            tableSeq = merchantData;
-                        }
-                    }
 
                     //#####################
                     // 2.signature 생성
@@ -4116,6 +4102,18 @@ public class EduMarineController {
             if ("0000".equals(inistdpayResponseDTO.getResultCode())) {
                 // 결제내역 테이블 Insert process
 
+                String moid = inistdpayResponseDTO.getMOID();
+
+                if (moid != null && moid.contains("_")) {
+                    String[] parts = moid.split("_");
+
+                    // 구조: [0]Timestamp, [1]Seq, [2]TypeShort
+                    if (parts.length >= 3) {
+                        tableSeq = parts[1];      // AU0000013
+                        systemType = parts[2];     // U
+                    }
+                }
+
                 String goodName = inistdpayResponseDTO.getGoodName(); // [T0000003]상시신청
                 String trainSeq = goodName.substring(goodName.indexOf("[") + 1, goodName.indexOf("]")); // T0000003
                 String[] gbnArr = goodName.split("]"); // 상시신청
@@ -4203,7 +4201,7 @@ public class EduMarineController {
                         }
 
                         // --- ▼▼▼ [신규 추가] 시스템 타입 분기 (PC) ▼▼▼ ---
-                        if ("UNIFIED".equals(systemType)) {
+                        if ("U".equals(systemType)) {
 
                             // [신규 UNIFIED 로직]
                             ApplicationUnifiedDTO unifiedDTO = new ApplicationUnifiedDTO();
@@ -4475,6 +4473,7 @@ public class EduMarineController {
                 String P_REQ_URL = request.getParameter("P_REQ_URL");        // 결제요청 URL
                 String P_NOTI = request.getParameter("P_NOTI");                // 기타주문정보
 
+                System.out.println("P_NOTI : " + P_NOTI);
                 ////////////////////////////////////////////////////////////////////////////
                 // 인증성공 P_STATUS=00 확인
                 // IDC센터 확인 [idc_name=fc,ks,stg]
@@ -4557,27 +4556,28 @@ public class EduMarineController {
                 // --- [신규 추가] P_NOTI 파싱 (Mobile) ---
                 // P_NOTI 형식: trainSeq|tableSeq|systemType|goodName
                 // (주의: 파이프로 분리)
-                String[] P_NOTI_ARR = inistdpayResponseDTO.getP_NOTI().split("\\|");
+                String[] P_NOTI_ARR = inistdpayResponseDTO.getP_NOTI().split("_");
 
                 // 파싱 전 안전장치 (Legacy 포맷 대비)
                 // Legacy 포맷은 콤마 분리였음: T0000030,O0000261,해상엔진...
-                // Unified 포맷: T0000030|AU000001|UNIFIED|해상엔진...
+                // Unified 포맷: T0000030_AU000001_UNIFIED_해상엔진...
 
                 String trainSeq = "";
                 String tableSeq = "";
-                String systemType = "LEGACY";
+                String systemType = "L";
                 String trainName = "";
                 String goodName = "";
 
-                if (inistdpayResponseDTO.getP_NOTI().contains("|")) {
+                if (inistdpayResponseDTO.getP_NOTI().contains("_")) {
                     // Unified Logic (or Updated Legacy)
-                    if(P_NOTI_ARR.length >= 4) {
+                    if(P_NOTI_ARR.length >= 3) {
                         trainSeq = P_NOTI_ARR[0];
                         tableSeq = P_NOTI_ARR[1];
                         systemType = P_NOTI_ARR[2];
                         trainName = P_NOTI_ARR[3];
                         goodName = "[" + trainSeq + "]" + trainName;
                     }
+
                 } else {
                     // Legacy Logic Fallback (Original format with comma)
                     String[] legacyArr = inistdpayResponseDTO.getP_NOTI().split(",");
@@ -4941,7 +4941,17 @@ public class EduMarineController {
         String mKey = SignatureUtil.hash(signKey, "SHA-256");
 
         String timestamp			= SignatureUtil.getTimestamp();			// util에 의해서 자동생성
-        String orderNumber			= mid + "_" + SignatureUtil.getTimestamp();	// 가맹점 주문번호(가맹점에서 직접 설정)
+        String oid = inistdpayRequestDTO.getOid();
+        String orderNumber			= "";	// 가맹점 주문번호(가맹점에서 직접 설정)
+        if (oid != null && !oid.isEmpty()) {
+            // 화면에서 보낸 값: timestamp_seq_systemType
+            // 최종 oid: mid_timestamp_seq_systemType
+            orderNumber = SignatureUtil.getTimestamp() + "_" + oid;
+        } else {
+            // 없으면 기존 방식대로 생성
+            orderNumber = SignatureUtil.getTimestamp(); // 기본값
+        }
+
         String price				= String.valueOf(trainDTO.getPaySum());								// 상품가격(특수기호 제외, 가맹점에서 직접 설정)
 
         String use_chkfake			= "Y";									// verification 검증 여부 ('Y' , 'N')
@@ -5004,7 +5014,16 @@ public class EduMarineController {
         String mKey = SignatureUtil.hash(signKey, "SHA-256");
 
         String timestamp			= SignatureUtil.getTimestamp();			// util에 의해서 자동생성
-        String orderNumber			= mid + "_" + SignatureUtil.getTimestamp();	// 가맹점 주문번호(가맹점에서 직접 설정)
+        String oid = inistdpayRequestDTO.getOid();
+        String orderNumber			= "";	// 가맹점 주문번호(가맹점에서 직접 설정)
+        if (oid != null && !oid.isEmpty()) {
+            // 화면에서 보낸 값: timestamp_seq_systemType
+            // 최종 oid: mid_timestamp_seq_systemType
+            orderNumber = SignatureUtil.getTimestamp() + "_" + oid;
+        } else {
+            // 없으면 기존 방식대로 생성
+            orderNumber = SignatureUtil.getTimestamp(); // 기본값
+        }
         String price				= String.valueOf(trainDTO.getPaySum());								// 상품가격(특수기호 제외, 가맹점에서 직접 설정)
 
         String use_chkfake			= "Y";									// verification 검증 여부 ('Y' , 'N')

@@ -1741,6 +1741,13 @@ public class EduMarineServiceImpl implements EduMarineService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public PaymentDTO processSelectPaymentSingle(PaymentDTO payReq) {
+        System.out.println("EduMarineServiceImpl > processSelectPaymentSingle");
+        return eduMarineMapper.selectPaymentSingle(payReq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public RegularDTO processSelectRegularSingle(String seq) {
         System.out.println("EduMarineServiceImpl > processSelectRegularSingle");
         return eduMarineMapper.selectRegularSingle(seq);
@@ -3388,7 +3395,7 @@ public class EduMarineServiceImpl implements EduMarineService {
             dto.setSeq(seq);
 
             // 2. 기본 상태 설정
-            dto.setApplyStatus("신청완료");
+            dto.setApplyStatus("결제대기");
 
             // 3. 통합 테이블에 INSERT
             int result = unifiedMapper.insertUnifiedApplication(dto);

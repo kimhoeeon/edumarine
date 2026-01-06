@@ -342,4 +342,6 @@ public interface EduMarineService {
     ResponseDTO processUpdateUnifiedApplication(ApplicationUnifiedDTO dto);
 
     Integer processSelectUnifiedPreCheck(ApplicationUnifiedDTO dto);
+
+    PaymentDTO processSelectPaymentSingle(PaymentDTO payReq);
 }

@@ -4467,6 +4467,15 @@
           AND tot_price = <![CDATA[#{totPrice}]]>
     </select>
 
+    <select id="selectPaymentSingle" parameterType="com.mtf.edumarine.dto.PaymentDTO" resultType="com.mtf.edumarine.dto.PaymentDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.selectPaymentSingle */
+        SELECT *
+        FROM payment
+        WHERE table_seq = #{tableSeq}
+          AND member_seq = #{memberSeq}
+          AND pay_status NOT LIKE '%취소%'
+    </select>
+
     <select id="selectPaymentTableSeq" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.PaymentDTO">
         /* com.mtf.edumarine.mapper.EduMarineMapper.selectPaymentTableSeq */
         SELECT seq

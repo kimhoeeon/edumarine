@@ -550,8 +550,8 @@ if (document.documentElement) {
                                                             <option value="세일보트 엔진 테크니션" <c:if test="${info.firstApplicationField eq '세일보트 엔진 테크니션'}">selected</c:if> >세일보트 엔진 테크니션</option>
                                                             <option value="해상엔진 테크니션(선외기 및 선내기 통합)" <c:if test="${info.firstApplicationField eq '해상엔진 테크니션(선외기 및 선내기 통합)'}">selected</c:if> >해상엔진 테크니션(선외기 및 선내기 통합)</option>
                                                             <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.firstApplicationField eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                            <option value="자가정비 선외기" <c:if test="${info.firstApplicationField eq '자가정비 선외기'}">selected</c:if> >자가정비 선외기</option>
-                                                            <option value="자가정비 선내기" <c:if test="${info.firstApplicationField eq '자가정비 선내기'}">selected</c:if> >자가정비 선내기</option>
+                                                            <option value="선외기 기초정비실습 과정" <c:if test="${info.firstApplicationField eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
+                                                            <option value="선내기 기초정비실습 과정" <c:if test="${info.firstApplicationField eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -571,8 +571,8 @@ if (document.documentElement) {
                                                             <option value="세일보트 엔진 테크니션" <c:if test="${info.secondApplicationField eq '세일보트 엔진 테크니션'}">selected</c:if> >세일보트 엔진 테크니션</option>
                                                             <option value="해상엔진 테크니션(선외기 및 선내기 통합)" <c:if test="${info.secondApplicationField eq '해상엔진 테크니션(선외기 및 선내기 통합)'}">selected</c:if> >해상엔진 테크니션(선외기 및 선내기 통합)</option>
                                                             <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.secondApplicationField eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                            <option value="자가정비 선외기" <c:if test="${info.secondApplicationField eq '자가정비 선외기'}">selected</c:if> >자가정비 선외기</option>
-                                                            <option value="자가정비 선내기" <c:if test="${info.secondApplicationField eq '자가정비 선내기'}">selected</c:if> >자가정비 선내기</option>
+                                                            <option value="선외기 기초정비실습 과정" <c:if test="${info.secondApplicationField eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
+                                                            <option value="선내기 기초정비실습 과정" <c:if test="${info.secondApplicationField eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -592,8 +592,8 @@ if (document.documentElement) {
                                                             <option value="세일보트 엔진 테크니션" <c:if test="${info.thirdApplicationField eq '세일보트 엔진 테크니션'}">selected</c:if> >세일보트 엔진 테크니션</option>
                                                             <option value="해상엔진 테크니션(선외기 및 선내기 통합)" <c:if test="${info.thirdApplicationField eq '해상엔진 테크니션(선외기 및 선내기 통합)'}">selected</c:if> >해상엔진 테크니션(선외기 및 선내기 통합)</option>
                                                             <option value="FRP 레저보트 선체 정비 테크니션" <c:if test="${info.thirdApplicationField eq 'FRP 레저보트 선체 정비 테크니션'}">selected</c:if> >FRP 레저보트 선체 정비 테크니션</option>
-                                                            <option value="자가정비 선외기" <c:if test="${info.thirdApplicationField eq '자가정비 선외기'}">selected</c:if> >자가정비 선외기</option>
-                                                            <option value="자가정비 선내기" <c:if test="${info.thirdApplicationField eq '자가정비 선내기'}">selected</c:if> >자가정비 선내기</option>
+                                                            <option value="선외기 기초정비실습 과정" <c:if test="${info.thirdApplicationField eq '선외기 기초정비실습 과정'}">selected</c:if> >선외기 기초정비실습 과정</option>
+                                                            <option value="선내기 기초정비실습 과정" <c:if test="${info.thirdApplicationField eq '선내기 기초정비실습 과정'}">selected</c:if> >선내기 기초정비실습 과정</option>
                                                         </select>
                                                     </div>
                                                 </div>
