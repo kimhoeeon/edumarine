@@ -665,9 +665,15 @@ let DTCustomerBoarder = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -925,9 +931,15 @@ let DTCustomerFrp = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -1185,9 +1197,15 @@ let DTCustomerBasic = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -1445,9 +1463,15 @@ let DTCustomerEmergency = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -1704,9 +1728,15 @@ let DTCustomerOutboarder = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -1963,9 +1993,15 @@ let DTCustomerInboarder = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -2222,9 +2258,15 @@ let DTCustomerSailyacht = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -2481,9 +2523,15 @@ let DTCustomerHighhorsepower = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -2740,9 +2788,15 @@ let DTCustomerHighself = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -2999,9 +3053,15 @@ let DTCustomerHighspecial = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -3258,9 +3318,15 @@ let DTCustomerSterndrive = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -3517,9 +3583,15 @@ let DTCustomerSternspecial = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -3776,9 +3848,15 @@ let DTCustomerGenerator = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -4035,9 +4113,15 @@ let DTCustomerCompetency = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -4292,9 +4376,15 @@ let DTCustomerFamtourin = function () {
         let renderHTML = '';
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -4523,9 +4613,15 @@ let DTCustomerFamtourout = function () {
         let renderHTML = '';
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -4754,9 +4850,15 @@ let DTCustomerElectro = function () {
         let renderHTML = '';
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -5067,6 +5169,7 @@ let DTEducationTrain = function () {
         let gbn = row.gbn;
         let nextTime = row.nextTime;
         let trainApplyCnt = row.trainApplyCnt;
+        let applicationSystemType = row.applicationSystemType;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
@@ -5075,7 +5178,7 @@ let DTEducationTrain = function () {
         renderHTML += '<a onclick="f_education_train_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_education_train_apply_list(' + '\'' + gbn + '\'' + ',' + '\'' + nextTime + '\'' + ',' + '\'' + trainApplyCnt + '\'' + ')" class="menu-link px-3">신청명단보기</a>';
+        renderHTML += '<a onclick="f_education_train_apply_list(' + '\'' + gbn + '\'' + ',' + '\'' + nextTime + '\'' + ',' + '\'' + trainApplyCnt + '\'' + ',' + '\'' + applicationSystemType + '\'' + ')" class="menu-link px-3">신청명단보기</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_education_train_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';

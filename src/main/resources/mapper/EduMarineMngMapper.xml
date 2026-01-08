@@ -2059,6 +2059,7 @@
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateTrainApplyCnt */
         UPDATE train
         SET train_apply_cnt = train_apply_cnt - 1
+            , closing_yn = 'N'
         WHERE seq = #{seq}
         AND train_apply_cnt <![CDATA[>]]> 0
     </update>
@@ -3738,12 +3739,15 @@
              , exposure_yn
              , schedule_exposure_yn
              , closing_yn
+             , application_system_type
+             , form_type
              , del_yn
              , note
              , init_regi_pic
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , thumb_file_id
         FROM train
         WHERE 1=1
         AND del_yn = 'N'
