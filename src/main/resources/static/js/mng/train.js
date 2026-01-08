@@ -603,7 +603,7 @@ function f_education_train_early_closing(seq) {
 
 }
 
-function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
+function f_education_train_apply_list(gbn, nextTime, trainApplyCnt, applicationSystemType){
     //console.log(gbn, nextTime, trainApplyCnt);
 
     if(trainApplyCnt === '0'){
@@ -612,68 +612,71 @@ function f_education_train_apply_list(gbn, nextTime, trainApplyCnt){
     }
 
     let link = '';
-    switch (gbn){
-        case '상시신청':
-            link = '/mng/customer/regular.do'
-            break;
-        case '해상엔진 테크니션 (선내기/선외기)':
-            link = '/mng/customer/boarder.do';
-            break;
-        case 'FRP 레저보트 선체 정비 테크니션':
-            link = '/mng/customer/frp.do';
-            break;
-        case '선외기 기초정비실습 과정':
-            link = '/mng/customer/outboarder.do';
-            break;
-        case '선내기 기초정비실습 과정':
-            link = '/mng/customer/inboarder.do';
-            break;
-        case '세일요트 기초정비실습 과정':
-            link = '/mng/customer/sailyacht.do';
-            break;
-        case '고마력 선외기 정비 중급 테크니션':
-            link = '/mng/customer/highhorsepower.do';
-            break;
-        case '자가정비 심화과정 (고마력 선외기)':
-            link = '/mng/customer/highself.do';
-            break;
-        case '고마력 선외기 정비 중급 테크니션 (특별반)':
-            link = '/mng/customer/highspecial.do';
-            break;
-        case '스턴드라이브 정비 전문가과정':
-            link = '/mng/customer/sterndrive.do';
-            break;
-        case '스턴드라이브 정비 전문가과정 (특별반)':
-            link = '/mng/customer/sternspecial.do';
-            break;
-        case '기초정비교육':
-            link = '/mng/customer/basic.do';
-            break;
-        case '응급조치교육':
-            link = '/mng/customer/emergency.do';
-            break;
-        case '발전기 정비 교육':
-            link = '/mng/customer/generator.do';
-            break;
-        case '선외기/선내기 직무역량 강화과정':
-            link = '/mng/customer/competency.do';
-            break;
-        case '선내기 팸투어':
-            link = '/mng/customer/famtourin.do';
-            break;
-        case '선외기 팸투어':
-            link = '/mng/customer/famtourout.do';
-            break;
-        case '레저선박 해양전자장비 교육':
-            link = '/mng/customer/electro.do';
-            break;
-        default:
-            link = '/mng/customer/unified.do';
-            break;
+    if(applicationSystemType === 'UNIFIED'){
+        link = '/mng/customer/unified.do';
+    }else{
+        switch (gbn){
+            case '상시신청':
+                link = '/mng/customer/regular.do'
+                break;
+            case '해상엔진 테크니션 (선내기/선외기)':
+                link = '/mng/customer/boarder.do';
+                break;
+            case 'FRP 레저보트 선체 정비 테크니션':
+                link = '/mng/customer/frp.do';
+                break;
+            case '선외기 기초정비실습 과정':
+                link = '/mng/customer/outboarder.do';
+                break;
+            case '선내기 기초정비실습 과정':
+                link = '/mng/customer/inboarder.do';
+                break;
+            case '세일요트 기초정비실습 과정':
+                link = '/mng/customer/sailyacht.do';
+                break;
+            case '고마력 선외기 정비 중급 테크니션':
+                link = '/mng/customer/highhorsepower.do';
+                break;
+            case '자가정비 심화과정 (고마력 선외기)':
+                link = '/mng/customer/highself.do';
+                break;
+            case '고마력 선외기 정비 중급 테크니션 (특별반)':
+                link = '/mng/customer/highspecial.do';
+                break;
+            case '스턴드라이브 정비 전문가과정':
+                link = '/mng/customer/sterndrive.do';
+                break;
+            case '스턴드라이브 정비 전문가과정 (특별반)':
+                link = '/mng/customer/sternspecial.do';
+                break;
+            case '기초정비교육':
+                link = '/mng/customer/basic.do';
+                break;
+            case '응급조치교육':
+                link = '/mng/customer/emergency.do';
+                break;
+            case '발전기 정비 교육':
+                link = '/mng/customer/generator.do';
+                break;
+            case '선외기/선내기 직무역량 강화과정':
+                link = '/mng/customer/competency.do';
+                break;
+            case '선내기 팸투어':
+                link = '/mng/customer/famtourin.do';
+                break;
+            case '선외기 팸투어':
+                link = '/mng/customer/famtourout.do';
+                break;
+            case '레저선박 해양전자장비 교육':
+                link = '/mng/customer/electro.do';
+                break;
+            default:
+                break;
+        }
     }
 
     if(nvl(link,'') !== ''){
-        if(gbn === '상시신청'){
+        if(gbn === '상시신청' || applicationSystemType === 'UNIFIED'){
             window.location.href = link;
         }else{
             window.location.href = link + '?nextTime=' + nextTime;

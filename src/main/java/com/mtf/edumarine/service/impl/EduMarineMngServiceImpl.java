@@ -7447,6 +7447,10 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 }
                             }
 
+                        }else{
+                            resultCode = "-2";
+                            resultMessage = "[ " + UnifiedInfo.getApplyStatus() + " ] 는 [ " + info.getApplyStatus() + " ] 로<br>변경 불가합니다.";
+                            break;
                         }
 
                     }//regularInfo

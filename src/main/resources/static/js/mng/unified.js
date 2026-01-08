@@ -146,9 +146,15 @@ var DTCustomerUnified = function () {
         let cancelGbn = row.cancelGbn;
         let applyStatus = row.applyStatus;
         if(applyStatus.includes('취소')){
-            renderHTML += '<div class="badge badge-light-danger fw-bold">';
-            renderHTML += applyStatus;
-            renderHTML += '</div>';
+            if(applyStatus.includes('신청')){
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }else{
+                renderHTML += '<div class="badge badge-light-info fw-bold">';
+                renderHTML += applyStatus;
+                renderHTML += '</div>';
+            }
         }else{
             renderHTML += '<div class="badge badge-light-primary fw-bold">';
             renderHTML += applyStatus;
@@ -615,15 +621,19 @@ function f_apply_change_btn(){
 
                     let resData = ajaxConnect('/mng/customer/unified/status/change/update.do', 'post', jsonArr);
 
-                    if (resData.resultCode !== "0") {
-                        showMessage('', 'error', '에러 발생', '신청 상태 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                    } else {
+                    if (resData.resultCode === "0") {
                         showMessage('', 'info', '신청 상태 변경', '신청 상태 변경이 정상 완료되었습니다.', '');
 
                         $('#kt_modal_apply_status_change').modal('hide');
 
                         /* 재조회 */
                         f_customer_unified_search();
+                    } else {
+                        if(resData.resultCode === "-2"){
+                            showMessage('', 'error', '[ 신청 상태 변경 ]', resData.resultMessage, '');
+                        }else{
+                            showMessage('', 'error', '에러 발생', '신청 상태 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        }
                     }
                 }
             });
