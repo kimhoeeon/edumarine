@@ -38,8 +38,7 @@
             </div>
             <div class="info_box">
                 <div class="info">
-                    <p class="w100"><span class="gubun">Outboard Engine</span> 705, Haean-ro, Sangnok-gu, Ansan-si, Gyeonggi-do, 15588</p>
-                    <p class="w100"><span class="gubun">Inboard Engine</span> 210, Arayuk-ro 152beon-gil, Gochon-eup, Gimpo-si, Gyeonggi-do, 10135</p>
+                    <p class="w100"><span class="gubun">Outboard·Inboard Engine</span> 210, Arayuk-ro 152beon-gil, Gochon-eup, Gimpo-si, Gyeonggi-do, 10135</p>
                     <p><span class="gubun">Business Registration Number</span>484-86-01123</p>
                     <p><span class="gubun">Company Name</span>K-Water Operation Management Co., Ltd.</p>
                     <p><span class="gubun">Representative</span>Seok-gyu Seo</p>

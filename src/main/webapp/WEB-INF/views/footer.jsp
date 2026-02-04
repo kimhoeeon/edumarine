@@ -38,8 +38,7 @@
             </div>
             <div class="footer_info">
                 <div class="info">
-                    <p class="text1"><span class="gubun">선외기 교육장</span> 경기도 안산시 상록구 해안로 705 경기테크노파크 </p>
-                    <p class="text1"><span class="gubun">선내기 교육장</span> 경기도 김포시 고촌읍 아라육로 152번길 210 </p>
+                    <p class="text1"><span class="gubun">선외기·선내기 교육장</span> 경기도 김포시 고촌읍 아라육로 152번길 210 </p>
                     <p class="text2">
                         <span class="gubun">사업자번호</span>
                         484-86-01123
