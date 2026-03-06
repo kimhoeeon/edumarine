@@ -4059,7 +4059,7 @@ public class EduMarineController {
                         //6.API 통신결과 처리(***가맹점 개발수정***)
                         //############################################################
 
-                        String test = authResultString.replace(",", "&").replace(":", "=").replace("\"", "").replace(" ", "").replace("\n", "").replace("}", "").replace("{", "");
+                        String test = authResultString.replace(",", "&").replace(":", "=").replace("\"", "").replace("\n", "").replace("}", "").replace("{", "");
 
                         resultMap = ParseUtil.parseStringToMap(test); //문자열을 MAP형식으로 파싱
 
