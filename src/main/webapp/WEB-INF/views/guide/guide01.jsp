@@ -99,11 +99,6 @@
 
 <body>
 
-    <script>
-        alert('업데이트 예정입니다.');
-        window.location.href = '/';
-    </script>
-
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <!-- container -->
@@ -148,7 +143,7 @@
 
             <!-- content -->
             <div id="content" class="sub_guide">
-                <%--<div class="guide_wrap">
+                <div class="guide_wrap">
 
                     <!-- guide_all -->
                     <div class="guide_plan">
@@ -182,114 +177,86 @@
                                             <tbody>
                                             <tr>
                                                 <td rowspan="3" class="bg gubun">초급기술자</td>
-                                                <td class="bg name">마리나선박 선외기 정비사 실무과정(4회)</td>
+                                                <td class="bg name">마리나선박 선외기 정비사 실무과정(3회)</td>
+                                                <td>
+                                                    <div class="table_flex">
+                                                        <div>1차</div>
+                                                        <div>:</div>
+                                                        <div>26. 3. 3(화)</div>
+                                                        <div>~</div>
+                                                        <div>26. 4. 1(수)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>2차</div>
+                                                        <div>:</div>
+                                                        <div>26. 6. 29(월)</div>
+                                                        <div>~</div>
+                                                        <div>26. 7. 29(수)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>3차</div>
+                                                        <div>:</div>
+                                                        <div class="table_lt">26. 11. 2(월)</div>
+                                                        <div>~</div>
+                                                        <div>26. 12. 1(화)</div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
                                                         <div>26. 2. 2(월)</div>
                                                         <div>~</div>
-                                                        <div>26. 3. 12(목)</div>
+                                                        <div>26. 2. 20(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div>26. 5. 6(수)</div>
+                                                        <div>26. 6. 1(월)</div>
                                                         <div>~</div>
-                                                        <div>26. 6. 8(월)</div>
+                                                        <div class="table_lt">26. 6. 19(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>3차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 8. 10(월)</div>
+                                                        <div>26. 10. 16(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 9. 9(수)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>4차</div>
-                                                        <div>:</div>
-                                                        <div>26. 11. 9(월)</div>
-                                                        <div>~</div>
-                                                        <div>26. 12. 8(화)</div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="table_flex">
-                                                        <div>1차</div>
-                                                        <div>:</div>
-                                                        <div>26. 1. 5(월)</div>
-                                                        <div>~</div>
-                                                        <div>26. 1. 23(금)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>2차</div>
-                                                        <div>:</div>
-                                                        <div>26. 4. 6(월)</div>
-                                                        <div>~</div>
-                                                        <div class="table_lt">26. 4. 24(금)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>3차</div>
-                                                        <div>:</div>
-                                                        <div>26. 7. 13(월)</div>
-                                                        <div>~</div>
-                                                        <div>26. 7. 31(금)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>4차</div>
-                                                        <div>:</div>
-                                                        <div class="table_lt2">26. 10. 12(월)</div>
-                                                        <div>~</div>
-                                                        <div class="table_lt3">26. 10. 30(금)</div>
+                                                        <div>26. 10. 23(금)</div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="bg name">마리나선박 선내기 정비사 실무과정(3회)</td>
+                                                <td class="bg name">마리나선박 선내기 정비사 실무과정(2회)</td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 3. 25(수)</div>
+                                                        <div class="table_lt">26. 4. 20(월)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 4. 23(목)</div>
+                                                        <div class="table_lt">26. 5. 22(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 6. 22(월)</div>
+                                                        <div class="table_lt">26. 9. 7(월)</div>
                                                         <div>~</div>
-                                                        <div>26. 7. 21(화)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>3차</div>
-                                                        <div>:</div>
-                                                        <div class="table_lt">26. 9. 28(월)</div>
-                                                        <div>~</div>
-                                                        <div class="table_lt3">26. 10. 29(목)</div>
+                                                        <div>26. 10. 13(화)</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 2. 23(월)</div>
+                                                        <div class="table_lt">26. 3. 23(월)</div>
                                                         <div>~</div>
-                                                        <div>26. 3. 13(금)</div>
+                                                        <div>26. 4. 10(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 5. 25(월)</div>
+                                                        <div class="table_lt">26. 8. 10(월)</div>
                                                         <div>~</div>
-                                                        <div>26. 6. 12(금)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>3차</div>
-                                                        <div>:</div>
-                                                        <div class="table_lt">26. 8. 24(월)</div>
-                                                        <div>~</div>
-                                                        <div>26. 9. 15(화)</div>
+                                                        <div>26. 8. 28(화)</div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -299,114 +266,86 @@
                                             </tr>
                                             <tr>
                                                 <td rowspan="2" class="bg gubun">중급기술자</td>
-                                                <td class="bg name">고마력 선외기 정비 중급 테크니션(4회)</td>
+                                                <td class="bg name">고마력 선외기 정비 중급 테크니션(3회)</td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div>26. 3. 13(금)</div>
+                                                        <div>26. 4. 2(목)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 3. 23(월)</div>
+                                                        <div class="table_lt">26. 4. 10(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div>26. 6. 9(화)</div>
+                                                        <div>26. 7. 30(목)</div>
                                                         <div>~</div>
-                                                        <div>26. 6. 17(수)</div>
+                                                        <div>26. 8. 7(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>3차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 9. 10(목)</div>
+                                                        <div class="table_lt">26. 12. 2(수)</div>
                                                         <div>~</div>
-                                                        <div>26. 9. 18(금)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>4차</div>
-                                                        <div>:</div>
-                                                        <div>26. 12. 9(수)</div>
-                                                        <div>~</div>
-                                                        <div class="table_lt2">26. 12. 17(목)</div>
+                                                        <div>26. 12. 10(목)</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 3. 6(금)</div>
+                                                        <div>26. 3. 25(수)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 6. 5(금)</div>
+                                                        <div>26. 7. 22(수)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>3차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 9. 4(금)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>4차</div>
-                                                        <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
-                                                        <div>~</div>
-                                                        <div>26. 12. 4(금)</div>
+                                                        <div>26. 11. 24(화)</div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="bg name">스턴드라이브 정비 전문가 과정(3회)</td>
+                                                <td class="bg name">스턴드라이브 정비 전문가 과정(2회)</td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 4. 24(금)</div>
+                                                        <div class="table_lt">26. 5. 26(화)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 4. 29(수)</div>
+                                                        <div class="table_lt">26. 5. 29(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 7. 22(수)</div>
+                                                        <div class="table_lt">26. 10. 14(수)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 7. 27(월)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>3차</div>
-                                                        <div>:</div>
-                                                        <div class="table_lt3">26. 10. 30(금)</div>
-                                                        <div>~</div>
-                                                        <div>26. 11. 4(수)</div>
+                                                        <div class="table_lt">26. 10. 19(월)</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 4. 17(금)</div>
+                                                        <div>26. 5. 18(월)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 7. 17(금)</div>
-                                                    </div>
-                                                    <div class="table_flex">
-                                                        <div>3차</div>
-                                                        <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
-                                                        <div>~</div>
-                                                        <div class="table_lt2">26. 10.23(금)</div>
+                                                        <div>26. 10. 2(금)</div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -445,60 +384,60 @@
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 3. 14(토)</div>
+                                                        <div class="table_lt">26. 4. 11(토)</div>
                                                         <div>~</div>
-                                                        <div>26. 3. 15(일)</div>
+                                                        <div>26. 4. 12(일)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 6. 20(토)</div>
+                                                        <div class="table_lt">26. 5. 30(토)</div>
                                                         <div>~</div>
-                                                        <div>26. 6. 21(일)</div>
+                                                        <div>26. 5. 31(일)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>3차</div>
                                                         <div>:</div>
-                                                        <div>26. 9. 19(토)</div>
+                                                        <div>26. 8. 22(토)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 9. 20(일)</div>
+                                                        <div class="table_lt">26. 8. 23(일)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>4차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 11. 14(토)</div>
+                                                        <div class="table_lt">26. 10. 31(토)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 11. 15(일)</div>
+                                                        <div class="table_lt">26. 11. 1(일)</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 3. 6(금)</div>
+                                                        <div>26. 4. 3(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 6. 12(금)</div>
+                                                        <div>26. 5. 22(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>3차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 9. 11(금)</div>
+                                                        <div>26. 8. 14(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>4차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 11. 6(금)</div>
+                                                        <div>26. 10. 23(금)</div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -508,32 +447,32 @@
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 6. 27(토)</div>
+                                                        <div class="table_lt">26. 6. 13(토)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 6. 28(일)</div>
+                                                        <div class="table_lt">26. 6. 14(일)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div class="table_lt">26. 10. 3(토)</div>
+                                                        <div class="table_lt">26. 9. 5(토)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 10. 4(일)</div>
+                                                        <div class="table_lt">26. 9. 6(일)</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div>26. 6. 19(금)</div>
+                                                        <div>26. 6. 5(금)</div>
                                                     </div>
                                                     <div class="table_flex">
                                                         <div>2차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 9. 23(수)</div>
+                                                        <div class="table_lt">26. 8. 28(금)</div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -543,26 +482,26 @@
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div>26. 8. 1(토)</div>
+                                                        <div>26. 6. 27(토)</div>
                                                         <div>~</div>
-                                                        <div>26. 8. 2(일)</div>
+                                                        <div>26. 6. 28(일)</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
                                                         <div>:</div>
-                                                        <div>26. 1. 2(금)</div>
+                                                        <div>26. 3. 3(화)</div>
                                                         <div>~</div>
-                                                        <div class="table_lt">26. 7. 24(금)</div>
+                                                        <div class="table_lt">26. 6. 19(금)</div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="bg gubun">위탁교육 과정</td>
                                                 <td class="bg name">위탁교육 과정</td>
-                                                <td>26년 3월 ~ 26년 12월</td>
-                                                <td>단체교육 희망 시<br> 원하는 교육 맞춤 설계 및 일정조율 가능</td>
+                                                <td>3월 ~ 12월</td>
+                                                <td>단체교육 희망 시<br />원하는 교육 맞춤 설계 및 일정조율 가능</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -843,7 +782,7 @@
                     </div>
                     <!-- //guide_all_inquiry -->
 
-                </div>--%>
+                </div>
             </div>
             <!-- //content -->
 
