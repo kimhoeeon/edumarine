@@ -4579,43 +4579,38 @@ public class EduMarineController {
 
                 // --- [신규 추가] P_NOTI 파싱 (Mobile) ---
                 // P_NOTI 형식: trainSeq|tableSeq|systemType|goodName
-                // (주의: 파이프로 분리)
-                String[] P_NOTI_ARR = inistdpayResponseDTO.getP_NOTI().split("_");
-
-                // 파싱 전 안전장치 (Legacy 포맷 대비)
-                // Legacy 포맷은 콤마 분리였음: T0000030,O0000261,해상엔진...
-                // Unified 포맷: T0000030_AU000001_UNIFIED_해상엔진...
-
+                String pNoti = inistdpayResponseDTO.getP_NOTI();
                 String trainSeq = "";
                 String tableSeq = "";
                 String systemType = "L";
                 String trainName = "";
                 String goodName = "";
 
-                if (inistdpayResponseDTO.getP_NOTI().contains("_")) {
-                    if(P_NOTI_ARR.length >= 4) { // 3 -> 4로 수정
-                        trainSeq = P_NOTI_ARR[0];
-                        tableSeq = P_NOTI_ARR[1];
-                        systemType = P_NOTI_ARR[2];
-                        trainName = P_NOTI_ARR[3];
-                        goodName = "[" + trainSeq + "]" + trainName;
-                    } else if(P_NOTI_ARR.length == 3) {
-                        trainSeq = P_NOTI_ARR[0];
-                        tableSeq = P_NOTI_ARR[1];
-                        systemType = P_NOTI_ARR[2];
-                        // trainName이 없는 경우의 방어 코드 작성
-                        trainName = "";
-                        goodName = "[" + trainSeq + "]";
-                    }
-
-                } else {
-                    // Legacy Logic Fallback (Original format with comma)
-                    String[] legacyArr = inistdpayResponseDTO.getP_NOTI().split(",");
-                    if(legacyArr.length >= 3) {
-                        trainSeq = legacyArr[0];
-                        tableSeq = legacyArr[1];
-                        trainName = legacyArr[2];
-                        goodName = "[" + trainSeq + "]" + trainName;
+                if (pNoti != null) {
+                    String[] P_NOTI_ARR = pNoti.split("_");
+                    if (pNoti.contains("_")) {
+                        if(P_NOTI_ARR.length >= 4) {
+                            trainSeq = P_NOTI_ARR[0];
+                            tableSeq = P_NOTI_ARR[1];
+                            systemType = P_NOTI_ARR[2];
+                            trainName = P_NOTI_ARR[3];
+                            goodName = "[" + trainSeq + "]" + trainName;
+                        } else if(P_NOTI_ARR.length == 3) {
+                            trainSeq = P_NOTI_ARR[0];
+                            tableSeq = P_NOTI_ARR[1];
+                            systemType = P_NOTI_ARR[2];
+                            trainName = "";
+                            goodName = "[" + trainSeq + "]";
+                        }
+                    } else {
+                        // Legacy Logic Fallback (Original format with comma)
+                        String[] legacyArr = pNoti.split(",");
+                        if(legacyArr.length >= 3) {
+                            trainSeq = legacyArr[0];
+                            tableSeq = legacyArr[1];
+                            trainName = legacyArr[2];
+                            goodName = "[" + trainSeq + "]" + trainName;
+                        }
                     }
                 }
 
@@ -5244,7 +5239,9 @@ public class EduMarineController {
                         if (merchantData != null && merchantData.contains(",")) {
                             String[] md = merchantData.split(",");
                             tableSeq = md[0];
-                            systemType = md[1];
+                            if (md.length > 1) {
+                                systemType = md[1];
+                            }
                         }
                         // --- merchantData 파싱 ▲▲▲ ---
 
