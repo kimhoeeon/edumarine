@@ -8,6 +8,7 @@ import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineService;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -3974,14 +3975,15 @@ public class EduMarineController {
             String tableSeq = "";
             String systemType = "L";
 
+
             try {
+
+                Map<String, String> paramMap = new Hashtable<String, String>();
 
                 //#############################
                 // 인증결과 파라미터 일괄 수신
                 //#############################
                 request.setCharacterEncoding("UTF-8");
-
-                Map<String, String> paramMap = new Hashtable<String, String>();
 
                 Enumeration elems = request.getParameterNames();
 
@@ -4059,9 +4061,21 @@ public class EduMarineController {
                         //6.API 통신결과 처리(***가맹점 개발수정***)
                         //############################################################
 
-                        String test = authResultString.replace(",", "&").replace(":", "=").replace("\"", "").replace("\n", "").replace("}", "").replace("{", "");
+                        //String test = authResultString.replace(",", "&").replace(":", "=").replace("\"", "").replace("\n", "").replace("}", "").replace("{", "");
+                        //resultMap = ParseUtil.parseStringToMap(test); //문자열을 MAP형식으로 파싱
 
-                        resultMap = ParseUtil.parseStringToMap(test); //문자열을 MAP형식으로 파싱
+                        // 변경할 코드 (안전한 JSON 파싱)
+                        JSONParser parser = new JSONParser();
+                        JSONObject jsonObj = (JSONObject) parser.parse(authResultString);
+
+                        for (Object key : jsonObj.keySet()) {
+                            resultMap.put(((String) key).trim(), String.valueOf(jsonObj.get(key)).trim());
+                        }
+
+                        String reqMerchantData = request.getParameter("merchantData");
+                        if (reqMerchantData != null) {
+                            resultMap.put("merchantData", reqMerchantData);
+                        }
 
                         // 수신결과를 파싱후 resultCode가 "0000"이면 승인성공 이외 실패
                         //throw new Exception("강제 망취소 요청 Exception ");
@@ -4102,32 +4116,39 @@ public class EduMarineController {
             if ("0000".equals(inistdpayResponseDTO.getResultCode())) {
                 // 결제내역 테이블 Insert process
 
-                String moid = inistdpayResponseDTO.getMOID();
-
-                if (moid != null && moid.contains("_")) {
-                    String[] parts = moid.split("_");
-
-                    // 구조: [0]Timestamp, [1]Seq, [2]TypeShort
-                    if (parts.length >= 3) {
-                        tableSeq = parts[1];      // AU0000013
-                        systemType = parts[2];     // U
+                // ★ 1. tableSeq 추출 (Null 방어 로직 추가)
+                String merchantData = inistdpayResponseDTO.getMerchantData();
+                if (merchantData != null && !merchantData.isEmpty()) {
+                    if (merchantData.contains(",")) {
+                        String[] md = merchantData.split(",");
+                        tableSeq = md[0];
+                        if (md.length > 1) {
+                            systemType = md[1];
+                        }
+                    } else {
+                        tableSeq = merchantData;
                     }
                 }
 
-                String goodName = inistdpayResponseDTO.getGoodName(); // [T0000003]상시신청
-                String trainSeq = goodName.substring(goodName.indexOf("[") + 1, goodName.indexOf("]")); // T0000003
-                String[] gbnArr = goodName.split("]"); // 상시신청
+                //  2. goodName에서 trainSeq, trainName 추출 (IndexOutOfBoundsException 완벽 방어)
+                String goodName = inistdpayResponseDTO.getGoodName(); // 예: [T0000148]세일요트 기초정비실습 과정
+                String trainSeq = "";
+                String trainName = "";
+
+                if (goodName != null && goodName.contains("[") && goodName.contains("]")) {
+                    trainSeq = goodName.substring(goodName.indexOf("[") + 1, goodName.indexOf("]"));
+                    trainName = goodName.substring(goodName.indexOf("]") + 1).trim();
+                } else if (goodName != null) {
+                    trainName = goodName; // 괄호 형식이 아닐 경우 원본 그대로 저장
+                }
+
                 PaymentDTO paymentDTO = new PaymentDTO();
                 paymentDTO.setMemberSeq(memberSeq);
                 paymentDTO.setMemberName(inistdpayResponseDTO.getBuyerName());
                 paymentDTO.setMemberPhone(inistdpayResponseDTO.getBuyerTel());
                 paymentDTO.setTableSeq(tableSeq);
                 paymentDTO.setTrainSeq(trainSeq);
-                if (gbnArr.length > 1) {
-                    paymentDTO.setTrainName(gbnArr[1]);
-                } else {
-                    paymentDTO.setTrainName(""); // 에러 방지용 기본값
-                }
+                paymentDTO.setTrainName(trainName);
                 paymentDTO.setBuyerName(inistdpayResponseDTO.getBuyerName());
                 paymentDTO.setBuyerTel(inistdpayResponseDTO.getBuyerTel());
                 paymentDTO.setBuyerEmail(inistdpayResponseDTO.getBuyerEmail());
@@ -4203,7 +4224,7 @@ public class EduMarineController {
                             commService.smsSendNotifySending(smsSendReq);
                         }
 
-                        // --- ▼▼▼ [신규 추가] 시스템 타입 분기 (PC) ▼▼▼ ---
+                        // --- 시스템 타입 분기 (PC) ▼▼▼ ---
                         if ("U".equals(systemType)) {
 
                             // [신규 UNIFIED 로직]
@@ -5214,7 +5235,7 @@ public class EduMarineController {
                     if(updResult > 0) {
                         PaymentDTO payInfo = eduMarineService.processSelectPaymentVbankInfo(paymentDTO);
 
-                        // --- ▼▼▼ [신규 추가] merchantData 파싱 ▼▼▼ ---
+                        // --- merchantData 파싱 ▼▼▼ ---
                         // payInfo.tableSeq에는 "AU000001,UNIFIED" 또는 "F000001"이 들어있음
                         String merchantData = payInfo.getTableSeq();
                         String tableSeq = merchantData;
@@ -5225,13 +5246,13 @@ public class EduMarineController {
                             tableSeq = md[0];
                             systemType = md[1];
                         }
-                        // --- ▲▲▲ [신규 추가] merchantData 파싱 ▲▲▲ ---
+                        // --- merchantData 파싱 ▲▲▲ ---
 
                         String trainSeq = payInfo.getTrainSeq();
                         String trainName = payInfo.getTrainName();
                         String applyStatus = "결제완료";
 
-                        // --- ▼▼▼ [신규 추가] 시스템 타입 분기 ▼▼▼ ---
+                        // --- 시스템 타입 분기 ▼▼▼ ---
                         if ("UNIFIED".equals(systemType)) {
 
                             // [신규 로직]
