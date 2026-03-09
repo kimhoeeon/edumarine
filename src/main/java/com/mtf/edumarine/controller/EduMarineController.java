@@ -4117,14 +4117,17 @@ public class EduMarineController {
                 String goodName = inistdpayResponseDTO.getGoodName(); // [T0000003]상시신청
                 String trainSeq = goodName.substring(goodName.indexOf("[") + 1, goodName.indexOf("]")); // T0000003
                 String[] gbnArr = goodName.split("]"); // 상시신청
-
                 PaymentDTO paymentDTO = new PaymentDTO();
                 paymentDTO.setMemberSeq(memberSeq);
                 paymentDTO.setMemberName(inistdpayResponseDTO.getBuyerName());
                 paymentDTO.setMemberPhone(inistdpayResponseDTO.getBuyerTel());
                 paymentDTO.setTableSeq(tableSeq);
                 paymentDTO.setTrainSeq(trainSeq);
-                paymentDTO.setTrainName(gbnArr[1]);
+                if (gbnArr.length > 1) {
+                    paymentDTO.setTrainName(gbnArr[1]);
+                } else {
+                    paymentDTO.setTrainName(""); // 에러 방지용 기본값
+                }
                 paymentDTO.setBuyerName(inistdpayResponseDTO.getBuyerName());
                 paymentDTO.setBuyerTel(inistdpayResponseDTO.getBuyerTel());
                 paymentDTO.setBuyerEmail(inistdpayResponseDTO.getBuyerEmail());
@@ -4569,13 +4572,19 @@ public class EduMarineController {
                 String goodName = "";
 
                 if (inistdpayResponseDTO.getP_NOTI().contains("_")) {
-                    // Unified Logic (or Updated Legacy)
-                    if(P_NOTI_ARR.length >= 3) {
+                    if(P_NOTI_ARR.length >= 4) { // 3 -> 4로 수정
                         trainSeq = P_NOTI_ARR[0];
                         tableSeq = P_NOTI_ARR[1];
                         systemType = P_NOTI_ARR[2];
                         trainName = P_NOTI_ARR[3];
                         goodName = "[" + trainSeq + "]" + trainName;
+                    } else if(P_NOTI_ARR.length == 3) {
+                        trainSeq = P_NOTI_ARR[0];
+                        tableSeq = P_NOTI_ARR[1];
+                        systemType = P_NOTI_ARR[2];
+                        // trainName이 없는 경우의 방어 코드 작성
+                        trainName = "";
+                        goodName = "[" + trainSeq + "]";
                     }
 
                 } else {
