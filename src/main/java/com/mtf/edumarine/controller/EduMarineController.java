@@ -4948,7 +4948,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/apply/payment.do", method = RequestMethod.POST)
-    public ModelAndView apply_payment(InistdpayRequestDTO inistdpayRequestDTO) throws Exception {
+    public ModelAndView apply_payment(InistdpayRequestDTO inistdpayRequestDTO, HttpServletRequest request) throws Exception {
         System.out.println("EduMarineController > apply_payment");
         ModelAndView mv = new ModelAndView();
         TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(inistdpayRequestDTO.getTrainSeq());
@@ -4993,10 +4993,19 @@ public class EduMarineController {
 
         String verification = SignatureUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
 
-        /* 개발 */
-        /*String siteDomain = "http://localhost:8080";*/
-        /* 운영 */
-        String siteDomain = "https://edumarine.org";
+        // ---------------------------------------------------------
+        // 접속한 도메인을 동적으로 가져오도록 변경
+        // ---------------------------------------------------------
+        String scheme = request.getScheme(); // http or https
+        String serverName = request.getServerName(); // edumarine.org or www.edumarine.org
+        int serverPort = request.getServerPort();
+
+        String siteDomain = "";
+        if (serverPort == 80 || serverPort == 443) {
+            siteDomain = scheme + "://" + serverName;
+        } else {
+            siteDomain = scheme + "://" + serverName + ":" + serverPort; // 로컬 개발(8080 등) 대응
+        }
 
         String gbn = trainDTO.getGbn();
         if(trainDTO.getGbnDepth() != null && !"".equals(trainDTO.getGbnDepth())){
@@ -5021,7 +5030,7 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/apply/mobile/payment.do", method = RequestMethod.POST)
-    public ModelAndView apply_mobile_payment(InistdpayRequestDTO inistdpayRequestDTO) throws Exception {
+    public ModelAndView apply_mobile_payment(InistdpayRequestDTO inistdpayRequestDTO, HttpServletRequest request) throws Exception {
         System.out.println("EduMarineController > apply_mobile_payment");
         ModelAndView mv = new ModelAndView();
         TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(inistdpayRequestDTO.getTrainSeq());
@@ -5065,10 +5074,19 @@ public class EduMarineController {
 
         String verification = SignatureUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
 
-        /* 개발 */
-        /*String siteDomain = "http://localhost:8080";*/
-        /* 운영 */
-        String siteDomain = "https://edumarine.org";
+        // ---------------------------------------------------------
+        // 동적 도메인 할당
+        // ---------------------------------------------------------
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+
+        String siteDomain = "";
+        if (serverPort == 80 || serverPort == 443) {
+            siteDomain = scheme + "://" + serverName;
+        } else {
+            siteDomain = scheme + "://" + serverName + ":" + serverPort;
+        }
 
         String gbn = trainDTO.getGbn();
         if(trainDTO.getGbnDepth() != null && !"".equals(trainDTO.getGbnDepth())){
