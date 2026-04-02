@@ -320,7 +320,7 @@ function searchPosts(pageNum, categoryValue) {
                         str += '<li>';
                             str += '<div class="gubun">';
                                 str += '교육인원';
-                            if(!applyPath.includes('yachtmnr')) {
+                            if(!applyPath.includes('marinetech')) {
                                 str += '(현 신청인원)';
                             }
                             str += '</div>';
@@ -328,7 +328,7 @@ function searchPosts(pageNum, categoryValue) {
                                 str += '<span class="color">';
                                     str += trainCnt;
                                 str += '</span>';
-                                if(!applyPath.includes('yachtmnr')) {
+                                if(!applyPath.includes('marinetech')) {
                                     str += '(' + trainApplyCnt + ')';
                                 }
                             str += '</div>';
@@ -346,7 +346,7 @@ function searchPosts(pageNum, categoryValue) {
                 str += '</div>';
                 if(trainBtnText === '교육신청'){
                     str += '<div class="btn">';
-                        if(applyPath.includes('yachtmnr')){
+                        if(applyPath.includes('marinetech')){
                             str += '<a href="' + applyPath + '" target="_blank">';
                                 str += trainBtnText;
                             str += '</a>';
