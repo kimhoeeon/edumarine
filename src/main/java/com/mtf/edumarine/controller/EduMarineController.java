@@ -4996,15 +4996,15 @@ public class EduMarineController {
         // ---------------------------------------------------------
         // 접속한 도메인을 동적으로 가져오도록 변경
         // ---------------------------------------------------------
-        String scheme = request.getScheme(); // http or https
-        String serverName = request.getServerName(); // edumarine.org or www.edumarine.org
-        int serverPort = request.getServerPort();
-
+        String serverName = request.getServerName(); // 사용자가 접속한 도메인 (www.edumarine.org 등)
         String siteDomain = "";
-        if (serverPort == 80 || serverPort == 443) {
-            siteDomain = scheme + "://" + serverName;
+
+        if ("localhost".equals(serverName) || "127.0.0.1".equals(serverName)) {
+            // 로컬 개발 환경인 경우
+            siteDomain = "http://" + serverName + ":" + request.getServerPort();
         } else {
-            siteDomain = scheme + "://" + serverName + ":" + serverPort; // 로컬 개발(8080 등) 대응
+            // 실제 운영 환경인 경우 (무조건 https 프로토콜 적용)
+            siteDomain = "https://" + serverName;
         }
 
         String gbn = trainDTO.getGbn();
@@ -5077,15 +5077,15 @@ public class EduMarineController {
         // ---------------------------------------------------------
         // 동적 도메인 할당
         // ---------------------------------------------------------
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
-
+        String serverName = request.getServerName(); // 사용자가 접속한 도메인 (www.edumarine.org 등)
         String siteDomain = "";
-        if (serverPort == 80 || serverPort == 443) {
-            siteDomain = scheme + "://" + serverName;
+
+        if ("localhost".equals(serverName) || "127.0.0.1".equals(serverName)) {
+            // 로컬 개발 환경인 경우
+            siteDomain = "http://" + serverName + ":" + request.getServerPort();
         } else {
-            siteDomain = scheme + "://" + serverName + ":" + serverPort;
+            // 실제 운영 환경인 경우 (무조건 https 프로토콜 적용)
+            siteDomain = "https://" + serverName;
         }
 
         String gbn = trainDTO.getGbn();
