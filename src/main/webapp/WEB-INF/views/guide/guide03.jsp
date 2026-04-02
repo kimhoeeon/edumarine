@@ -710,7 +710,7 @@
                         <!-- guide_btn_box -->
                         <div class="guide_btn_box">
                             <div class="btn_box">
-                                <a href="https://yachtmnr.or.kr/common/greeting.do" target="_blank">교육신청 바로가기</a>
+                                <a href="https://marinetech.kr/common/greeting.do" target="_blank">교육신청 바로가기</a>
                             </div>
                         </div>
                         <!-- //guide_btn_box -->
