@@ -167,11 +167,11 @@ function searchPosts(pageNum, categoryValue) {
                         break;
                     case '마리나선박 선외기 정비사 실무과정':
                         thumbnailImage = '/img/thumbnail_marina_out.png';
-                        applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                        applyPath = 'https://marinetech.kr/common/greeting.do';
                         break;
                     case '마리나선박 선내기 정비사 실무과정':
                         thumbnailImage = '/img/thumbnail_marina_in.png';
-                        applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                        applyPath = 'https://marinetech.kr/common/greeting.do';
                         break;
 
                     case '상시신청':
@@ -184,7 +184,7 @@ function searchPosts(pageNum, categoryValue) {
                         break;
                     case 'FRP 레저보트 선체 정비 테크니션':
                         thumbnailImage = '/img/thumbnail_frp.png';
-                        applyPath = 'https://yachtmnr.or.kr/common/greeting.do';
+                        applyPath = 'https://marinetech.kr/common/greeting.do';
                         break;
                     case '자가정비 심화과정 (고마력 선외기)':
                         thumbnailImage = '/img/thumbnail_highself_re.jpg';
