@@ -60,7 +60,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public AdminDTO login(AdminDTO param_adminDTO, HttpSession session) {
-        System.out.println("EduMarineMngServiceImpl > loginCheck : ======");
+        //System.out.println("EduMarineMngServiceImpl > loginCheck : ======");
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMsg = CommConstants.RESULT_MSG_SUCCESS;
         AdminDTO db_adminDTO = eduMarineMngMapper.login(param_adminDTO);
@@ -131,7 +131,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Override
     public void logoutCheck(HttpSession session) {
-        System.out.println("EduMarineMngServiceImpl > logoutCheck : ======");
+        //System.out.println("EduMarineMngServiceImpl > logoutCheck : ======");
 
         // 로그인 여부 Update
         if(session.getAttribute("id") != null) {
@@ -156,35 +156,35 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsAccessorDay(StatisticsDTO statisticsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorDay");
+        //System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorDay");
         return eduMarineMngMapper.selectStatisticsAccessorDay(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsAccessorMonth(StatisticsDTO statisticsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorMonth");
+        //System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorMonth");
         return eduMarineMngMapper.selectStatisticsAccessorMonth(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsAccessorWeek(StatisticsDTO statisticsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorWeek");
+        //System.out.println("EduMarineMngServiceImpl > processSelectStatisticsAccessorWeek");
         return eduMarineMngMapper.selectStatisticsAccessorWeek(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectStatisticsTrainMember(StatisticsDTO reqDto) {
-        System.out.println("EduMarineMngServiceImpl > processSelectStatisticsTrainMember");
+        //System.out.println("EduMarineMngServiceImpl > processSelectStatisticsTrainMember");
         return eduMarineMngMapper.selectStatisticsTrainMember(reqDto);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<RegularDTO.TrainInfo> processSelectRegularTrainInfoList(RegularDTO info) {
-        System.out.println("EduMarineMngServiceImpl > processSelectRegularTrainInfoList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectRegularTrainInfoList");
         return eduMarineMngMapper.selectRegularTrainInfoList(info);
     }
 
@@ -192,21 +192,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NoticeDTO> processSelectNoticeList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectNoticeList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectNoticeList");
         return eduMarineMngMapper.selectNoticeList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public NoticeDTO processSelectNoticeSingle(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectNoticeSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectNoticeSingle");
         return eduMarineMngMapper.selectNoticeSingle(noticeDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteNotice(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteNotice");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -237,7 +237,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateNotice(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateNotice");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -276,7 +276,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertNotice(NoticeDTO noticeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertNotice");
+        //System.out.println("EduMarineMngServiceImpl > processInsertNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -317,21 +317,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PressDTO> processSelectPressList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPressList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectPressList");
         return eduMarineMngMapper.selectPressList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PressDTO processSelectPressSingle(PressDTO pressDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPressSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectPressSingle");
         return eduMarineMngMapper.selectPressSingle(pressDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeletePress(PressDTO pressDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeletePress");
+        //System.out.println("EduMarineMngServiceImpl > processDeletePress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -362,7 +362,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePress(PressDTO pressDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdatePress");
+        //System.out.println("EduMarineMngServiceImpl > processUpdatePress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -401,7 +401,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertPress(PressDTO pressDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertPress");
+        //System.out.println("EduMarineMngServiceImpl > processInsertPress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -441,21 +441,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<GalleryDTO> processSelectGalleryList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectGalleryList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectGalleryList");
         return eduMarineMngMapper.selectGalleryList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public GalleryDTO processSelectGallerySingle(GalleryDTO galleryDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectGallerySingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectGallerySingle");
         return eduMarineMngMapper.selectGallerySingle(galleryDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteGallery(GalleryDTO galleryDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteGallery");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteGallery");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -486,7 +486,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateGallery(GalleryDTO galleryDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateGallery");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateGallery");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -518,7 +518,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertGallery(GalleryDTO galleryDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertGallery");
+        //System.out.println("EduMarineMngServiceImpl > processInsertGallery");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -550,21 +550,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MediaDTO> processSelectMediaList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectMediaList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectMediaList");
         return eduMarineMngMapper.selectMediaList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public MediaDTO processSelectMediaSingle(MediaDTO mediaDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectMediaSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectMediaSingle");
         return eduMarineMngMapper.selectMediaSingle(mediaDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteMedia(MediaDTO mediaDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteMedia");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteMedia");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -595,7 +595,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateMedia(MediaDTO mediaDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateMedia");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateMedia");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -627,7 +627,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertMedia(MediaDTO mediaDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertMedia");
+        //System.out.println("EduMarineMngServiceImpl > processInsertMedia");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -659,21 +659,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NewsletterDTO> processSelectNewsletterList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectNewsletterList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectNewsletterList");
         return eduMarineMngMapper.selectNewsletterList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public NewsletterDTO processSelectNewsletterSingle(NewsletterDTO newsletterDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectNewsletterSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectNewsletterSingle");
         return eduMarineMngMapper.selectNewsletterSingle(newsletterDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteNewsletter(NewsletterDTO newsletterDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteNewsletter");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteNewsletter");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -704,7 +704,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateNewsletter(NewsletterDTO newsletterDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateNewsletter");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateNewsletter");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -754,7 +754,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertNewsletter(NewsletterDTO newsletterDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertNewsletter");
+        //System.out.println("EduMarineMngServiceImpl > processInsertNewsletter");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -805,21 +805,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<AnnouncementDTO> processSelectAnnouncementList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAnnouncementList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectAnnouncementList");
         return eduMarineMngMapper.selectAnnouncementList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public AnnouncementDTO processSelectAnnouncementSingle(AnnouncementDTO announcementDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAnnouncementSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectAnnouncementSingle");
         return eduMarineMngMapper.selectAnnouncementSingle(announcementDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteAnnouncement(AnnouncementDTO announcementDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteAnnouncement");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteAnnouncement");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -850,7 +850,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateAnnouncement(AnnouncementDTO announcementDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateAnnouncement");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateAnnouncement");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -889,7 +889,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertAnnouncement(AnnouncementDTO announcementDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertAnnouncement");
+        //System.out.println("EduMarineMngServiceImpl > processInsertAnnouncement");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -929,21 +929,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<JobDTO> processSelectJobList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectJobList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectJobList");
         return eduMarineMngMapper.selectJobList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public JobDTO processSelectJobSingle(JobDTO jobDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectJobSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectJobSingle");
         return eduMarineMngMapper.selectJobSingle(jobDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteJob(JobDTO jobDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteJob");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteJob");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -974,7 +974,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateJob(JobDTO jobDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateJob");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateJob");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1008,7 +1008,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertJob(JobDTO jobDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertJob");
+        //System.out.println("EduMarineMngServiceImpl > processInsertJob");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1042,21 +1042,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<EmploymentDTO> processSelectEmploymentList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectEmploymentList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectEmploymentList");
         return eduMarineMngMapper.selectEmploymentList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public EmploymentDTO processSelectEmploymentSingle(EmploymentDTO employmentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectEmploymentSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectEmploymentSingle");
         return eduMarineMngMapper.selectEmploymentSingle(employmentDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateEmployment(EmploymentDTO employmentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateEmployment");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateEmployment");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1088,7 +1088,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertEmployment(EmploymentDTO employmentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertEmployment");
+        //System.out.println("EduMarineMngServiceImpl > processInsertEmployment");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1120,21 +1120,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CommunityDTO> processSelectCommunityList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectCommunityList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectCommunityList");
         return eduMarineMngMapper.selectCommunityList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public CommunityDTO processSelectCommunitySingle(CommunityDTO communityDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectCommunitySingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectCommunitySingle");
         return eduMarineMngMapper.selectCommunitySingle(communityDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteCommunity(CommunityDTO communityDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteCommunity");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteCommunity");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1169,7 +1169,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateCommunity(CommunityDTO communityDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateCommunity");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateCommunity");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1209,7 +1209,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertCommunity(CommunityDTO communityDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertCommunity");
+        //System.out.println("EduMarineMngServiceImpl > processInsertCommunity");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1249,28 +1249,28 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FaqDTO> processSelectFaqList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFaqList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFaqList");
         return eduMarineMngMapper.selectFaqList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FaqDTO processSelectFaqSingle(FaqDTO faqDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFaqSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFaqSingle");
         return eduMarineMngMapper.selectFaqSingle(faqDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PopupDTO> processSelectPopupList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPopupList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectPopupList");
         return eduMarineMngMapper.selectPopupList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFaq(FaqDTO faqDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFaq");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFaq");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1304,7 +1304,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertFaq(FaqDTO faqDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertFaq");
+        //System.out.println("EduMarineMngServiceImpl > processInsertFaq");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1338,14 +1338,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PopupDTO processSelectPopupSingle(PopupDTO popupDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPopupSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectPopupSingle");
         return eduMarineMngMapper.selectPopupSingle(popupDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeletePopup(PopupDTO popupDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeletePopup");
+        //System.out.println("EduMarineMngServiceImpl > processDeletePopup");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1376,7 +1376,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePopup(PopupDTO popupDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdatePopup");
+        //System.out.println("EduMarineMngServiceImpl > processUpdatePopup");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1433,7 +1433,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertPopup(PopupDTO popupDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertPopup");
+        //System.out.println("EduMarineMngServiceImpl > processInsertPopup");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1489,21 +1489,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BannerDTO> processSelectBannerList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectBannerList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectBannerList");
         return eduMarineMngMapper.selectBannerList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public BannerDTO processSelectBannerSingle(BannerDTO bannerDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectBannerSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectBannerSingle");
         return eduMarineMngMapper.selectBannerSingle(bannerDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteBanner(BannerDTO bannerDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteBanner");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteBanner");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1534,7 +1534,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBanner(BannerDTO bannerDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateBanner");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateBanner");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1567,7 +1567,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertBanner(BannerDTO bannerDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertBanner");
+        //System.out.println("EduMarineMngServiceImpl > processInsertBanner");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1599,21 +1599,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MemberDTO> processSelectMemberList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectMemberList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectMemberList");
         return eduMarineMngMapper.selectMemberList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public MemberDTO processSelectMemberSingle(MemberDTO memberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectMemberSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectMemberSingle");
         return eduMarineMngMapper.selectMemberSingle(memberDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteMember(MemberDTO memberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteMember");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteMember");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1644,7 +1644,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateMember(MemberDTO memberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateMember");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateMember");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1676,7 +1676,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertMember(MemberDTO memberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertMember");
+        //System.out.println("EduMarineMngServiceImpl > processInsertMember");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1708,35 +1708,35 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ResumeDTO> processSelectResumeList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectResumeList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectResumeList");
         return eduMarineMngMapper.selectResumeList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResumeDTO processSelectResumeSingle(ResumeDTO resumeDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectResumeSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectResumeSingle");
         return eduMarineMngMapper.selectResumeSingle(resumeDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<RegularDTO> processSelectRegularList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectRegularList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectRegularList");
         return eduMarineMngMapper.selectRegularList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public RegularDTO processSelectRegularSingle(RegularDTO regularDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectRegularSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectRegularSingle");
         return eduMarineMngMapper.selectRegularSingle(regularDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteRegular(RegularDTO regularDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteRegular");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteRegular");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1767,7 +1767,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRegular(RegularDTO regularDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateRegular");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateRegular");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1799,7 +1799,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertRegular(RegularDTO regularDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertRegular");
+        //System.out.println("EduMarineMngServiceImpl > processInsertRegular");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1831,7 +1831,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRegularApplyStatus(List<RegularDTO> regularList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateRegularApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateRegularApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1883,7 +1883,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRegularApplyStatusChange(List<RegularDTO> regularList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateRegularApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateRegularApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1937,56 +1937,56 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainDTO> processSelectTrainNextTime(TrainDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrainNextTime");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrainNextTime");
         return eduMarineMngMapper.selectTrainNextTime(trainDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainDTO> processSelectTrainActive(TrainDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrainActive");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrainActive");
         return eduMarineMngMapper.selectTrainActive(trainDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BoarderDTO> processSelectBoarderList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectBoarderList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectBoarderList");
         return eduMarineMngMapper.selectBoarderList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public BoarderDTO processSelectBoarderSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectBoarderSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectBoarderSingle");
         return eduMarineMngMapper.selectBoarderSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FrpDTO processSelectFrpSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFrpSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFrpSingle");
         return eduMarineMngMapper.selectFrpSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CareerDTO> processSelectCareerList(String boarderSeq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectCareerList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectCareerList");
         return eduMarineMngMapper.selectCareerList(boarderSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<LicenseDTO> processSelectLicenseList(String boarderSeq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectLicenseList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectLicenseList");
         return eduMarineMngMapper.selectLicenseList(boarderSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoarderApplyStatus(List<BoarderDTO> boarderList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateBoarderApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateBoarderApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2253,7 +2253,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoarderApplyStatusChange(List<BoarderDTO> boarderList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateBoarderApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateBoarderApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2310,14 +2310,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FrpDTO> processSelectFrpList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFrpList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFrpList");
         return eduMarineMngMapper.selectFrpList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFrpApplyStatus(List<FrpDTO> frpList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFrpApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFrpApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2585,7 +2585,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFrpApplyStatusChange(List<FrpDTO> frpList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFrpApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFrpApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2643,21 +2643,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BasicDTO> processSelectBasicList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectBasicList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectBasicList");
         return eduMarineMngMapper.selectBasicList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public BasicDTO processSelectBasicSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectBasicSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectBasicSingle");
         return eduMarineMngMapper.selectBasicSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBasicApplyStatus(List<BasicDTO> basicList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateBasicApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateBasicApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2925,7 +2925,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBasicApplyStatusChange(List<BasicDTO> basicList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateBasicApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateBasicApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2983,21 +2983,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<EmergencyDTO> processSelectEmergencyList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectEmergencyList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectEmergencyList");
         return eduMarineMngMapper.selectEmergencyList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public EmergencyDTO processSelectEmergencySingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectEmergencySingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectEmergencySingle");
         return eduMarineMngMapper.selectEmergencySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateEmergencyApplyStatus(List<EmergencyDTO> emergencyList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateEmergencyApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateEmergencyApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3265,7 +3265,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateEmergencyApplyStatusChange(List<EmergencyDTO> emergencyList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateEmergencyApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateEmergencyApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3323,21 +3323,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<GeneratorDTO> processSelectGeneratorList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectGeneratorList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectGeneratorList");
         return eduMarineMngMapper.selectGeneratorList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public GeneratorDTO processSelectGeneratorSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectGeneratorSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectGeneratorSingle");
         return eduMarineMngMapper.selectGeneratorSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateGeneratorApplyStatus(List<GeneratorDTO> generatorList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateGeneratorApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateGeneratorApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3605,7 +3605,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateGeneratorApplyStatusChange(List<GeneratorDTO> generatorList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateGeneratorApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateGeneratorApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3663,21 +3663,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CompetencyDTO> processSelectCompetencyList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectCompetencyList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectCompetencyList");
         return eduMarineMngMapper.selectCompetencyList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public CompetencyDTO processSelectCompetencySingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectCompetencySingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectCompetencySingle");
         return eduMarineMngMapper.selectCompetencySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateCompetencyApplyStatus(List<CompetencyDTO> competencyList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateCompetencyApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateCompetencyApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3945,7 +3945,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateCompetencyApplyStatusChange(List<CompetencyDTO> competencyList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateCompetencyApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateCompetencyApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4003,21 +4003,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FamtourinDTO> processSelectFamtourinList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFamtourinList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFamtourinList");
         return eduMarineMngMapper.selectFamtourinList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FamtourinDTO processSelectFamtourinSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFamtourinSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFamtourinSingle");
         return eduMarineMngMapper.selectFamtourinSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtourinApplyStatus(List<FamtourinDTO> famtourinList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFamtourinApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFamtourinApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4061,7 +4061,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtourinApplyStatusChange(List<FamtourinDTO> famtourinList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFamtourinApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFamtourinApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4110,21 +4110,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FamtouroutDTO> processSelectFamtouroutList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFamtouroutList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFamtouroutList");
         return eduMarineMngMapper.selectFamtouroutList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FamtouroutDTO processSelectFamtouroutSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFamtouroutSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFamtouroutSingle");
         return eduMarineMngMapper.selectFamtouroutSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtouroutApplyStatus(List<FamtouroutDTO> famtouroutList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFamtouroutApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFamtouroutApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4168,7 +4168,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtouroutApplyStatusChange(List<FamtouroutDTO> famtouroutList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFamtouroutApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFamtouroutApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4217,21 +4217,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ElectroDTO> processSelectElectroList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectElectroList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectElectroList");
         return eduMarineMngMapper.selectElectroList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ElectroDTO processSelectElectroSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectElectroSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectElectroSingle");
         return eduMarineMngMapper.selectElectroSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateElectroApplyStatus(List<ElectroDTO> electroList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateElectroApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateElectroApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4275,7 +4275,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateElectroApplyStatusChange(List<ElectroDTO> electroList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateElectroApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateElectroApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4324,21 +4324,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<OutboarderDTO> processSelectOutboarderList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectOutboarderList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectOutboarderList");
         return eduMarineMngMapper.selectOutboarderList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public OutboarderDTO processSelectOutboarderSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectOutboarderSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectOutboarderSingle");
         return eduMarineMngMapper.selectOutboarderSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateOutboarderApplyStatus(List<OutboarderDTO> outboarderList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateOutboarderApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateOutboarderApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4607,7 +4607,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateOutboarderApplyStatusChange(List<OutboarderDTO> outboarderList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateOutboarderApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateOutboarderApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4665,21 +4665,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<InboarderDTO> processSelectInboarderList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectInboarderList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectInboarderList");
         return eduMarineMngMapper.selectInboarderList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public InboarderDTO processSelectInboarderSingle(InboarderDTO inboarderDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectInboarderSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectInboarderSingle");
         return eduMarineMngMapper.selectInboarderSingle(inboarderDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteInboarder(InboarderDTO inboarderDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteInboarder");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteInboarder");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4710,7 +4710,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateInboarder(InboarderDTO inboarderDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateInboarder");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateInboarder");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4742,7 +4742,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertInboarder(InboarderDTO inboarderDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertInboarder");
+        //System.out.println("EduMarineMngServiceImpl > processInsertInboarder");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4774,7 +4774,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateInboarderApplyStatus(List<InboarderDTO> inboarderList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateInboarderApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateInboarderApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5044,7 +5044,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateInboarderApplyStatusChange(List<InboarderDTO> inboarderList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateInboarderApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateInboarderApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5104,21 +5104,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SailyachtDTO> processSelectSailyachtList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSailyachtList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSailyachtList");
         return eduMarineMngMapper.selectSailyachtList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SailyachtDTO processSelectSailyachtSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSailyachtSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSailyachtSingle");
         return eduMarineMngMapper.selectSailyachtSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSailyachtApplyStatus(List<SailyachtDTO> sailyachtList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSailyachtApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateSailyachtApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5386,7 +5386,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSailyachtApplyStatusChange(List<SailyachtDTO> sailyachtList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSailyachtApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateSailyachtApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5444,21 +5444,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<HighHorsePowerDTO> processSelectHighhorsepowerList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectHighhorsepowerList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectHighhorsepowerList");
         return eduMarineMngMapper.selectHighhorsepowerList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public HighHorsePowerDTO processSelectHighhorsepowerSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectHighhorsepowerSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectHighhorsepowerSingle");
         return eduMarineMngMapper.selectHighhorsepowerSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighhorsepowerApplyStatus(List<HighHorsePowerDTO> highHorsePowerList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateHighhorsepowerApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateHighhorsepowerApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5726,7 +5726,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighhorsepowerApplyStatusChange(List<HighHorsePowerDTO> highHorsePowerList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateHighhorsepowerApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateHighhorsepowerApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5784,21 +5784,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<HighSelfDTO> processSelectHighSelfList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectHighSelfList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectHighSelfList");
         return eduMarineMngMapper.selectHighSelfList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public HighSelfDTO processSelectHighSelfSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectHighSelfSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectHighSelfSingle");
         return eduMarineMngMapper.selectHighSelfSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSelfApplyStatus(List<HighSelfDTO> highSelfList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateHighSelfApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateHighSelfApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -6066,7 +6066,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSelfApplyStatusChange(List<HighSelfDTO> highSelfList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateHighSelfApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateHighSelfApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -6124,21 +6124,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<HighSpecialDTO> processSelectHighSpecialList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectHighSpecialList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectHighSpecialList");
         return eduMarineMngMapper.selectHighSpecialList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public HighSpecialDTO processSelectHighSpecialSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectHighSpecialSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectHighSpecialSingle");
         return eduMarineMngMapper.selectHighSpecialSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSpecialApplyStatus(List<HighSpecialDTO> highSpecialList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateHighSpecialApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateHighSpecialApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -6406,7 +6406,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSpecialApplyStatusChange(List<HighSpecialDTO> highSpecialList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateHighSpecialApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateHighSpecialApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -6464,21 +6464,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SterndriveDTO> processSelectSterndriveList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSterndriveList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSterndriveList");
         return eduMarineMngMapper.selectSterndriveList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SterndriveDTO processSelectSterndriveSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSterndriveSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSterndriveSingle");
         return eduMarineMngMapper.selectSterndriveSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSterndriveApplyStatus(List<SterndriveDTO> sterndriveList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSterndriveApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateSterndriveApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -6746,7 +6746,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSterndriveApplyStatusChange(List<SterndriveDTO> sterndriveList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSterndriveApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateSterndriveApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -6804,21 +6804,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SternSpecialDTO> processSelectSternSpecialList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSternSpecialList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSternSpecialList");
         return eduMarineMngMapper.selectSternSpecialList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SternSpecialDTO processSelectSternSpecialSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSternSpecialSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSternSpecialSingle");
         return eduMarineMngMapper.selectSternSpecialSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSternSpecialApplyStatus(List<SternSpecialDTO> highSpecialList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSternSpecialApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateSternSpecialApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7086,7 +7086,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSternSpecialApplyStatusChange(List<SternSpecialDTO> sternSpecialList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSternSpecialApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateSternSpecialApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7144,7 +7144,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateUnifiedApplyStatus(List<ApplicationUnifiedDTO> applicationUnifiedList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateUnifiedApplyStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateUnifiedApplyStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7412,7 +7412,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateUnifiedApplyStatusChange(List<ApplicationUnifiedDTO> UnifiedList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateUnifiedApplyStatusChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateUnifiedApplyStatusChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7474,21 +7474,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainDTO> processSelectTrainList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrainList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrainList");
         return eduMarineMngMapper.selectTrainList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public TrainDTO processSelectTrainSingle(TrainDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrainSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrainSingle");
         return eduMarineMngMapper.selectTrainSingle(trainDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteTrain(TrainDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteTrain");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteTrain");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7519,7 +7519,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateTrain(TrainDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateTrain");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateTrain");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7551,7 +7551,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertTrain(TrainDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertTrain");
+        //System.out.println("EduMarineMngServiceImpl > processInsertTrain");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7586,7 +7586,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateTrainEarlyClosing(TrainDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateTrainEarlyClosing");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateTrainEarlyClosing");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7618,21 +7618,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PaymentDTO> processSelectPaymentList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPaymentList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectPaymentList");
         return eduMarineMngMapper.selectPaymentList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PaymentDTO processSelectPaymentSingle(PaymentDTO paymentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectPaymentSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectPaymentSingle");
         return eduMarineMngMapper.selectPaymentSingle(paymentDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeletePayment(PaymentDTO paymentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeletePayment");
+        //System.out.println("EduMarineMngServiceImpl > processDeletePayment");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7663,7 +7663,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePayment(PaymentDTO paymentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdatePayment");
+        //System.out.println("EduMarineMngServiceImpl > processUpdatePayment");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7695,7 +7695,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertPayment(PaymentDTO paymentDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertPayment");
+        //System.out.println("EduMarineMngServiceImpl > processInsertPayment");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7757,7 +7757,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePayStatus(List<PaymentDTO> paymentList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdatePayStatus");
+        //System.out.println("EduMarineMngServiceImpl > processUpdatePayStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7794,28 +7794,28 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PaymentDTO processSelectTrainPaymentInfo(PaymentDTO paymentRequestDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrainPaymentInfo");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrainPaymentInfo");
         return eduMarineMngMapper.selectTrainPaymentInfo(paymentRequestDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SubscriberDTO> processSelectSubscriberList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSubscriberList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSubscriberList");
         return eduMarineMngMapper.selectSubscriberList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SubscriberDTO processSelectSubscriberSingle(SubscriberDTO subscriberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSubscriberSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSubscriberSingle");
         return eduMarineMngMapper.selectSubscriberSingle(subscriberDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteSubscriber(SubscriberDTO subscriberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteSubscriber");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteSubscriber");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7846,7 +7846,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSubscriber(SubscriberDTO subscriberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateSubscriber");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateSubscriber");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7878,14 +7878,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processCheckSubscriber(SubscriberDTO subscriberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processCheckSubscriber");
+        //System.out.println("EduMarineMngServiceImpl > processCheckSubscriber");
         return eduMarineMngMapper.checkSubscriber(subscriberDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertSubscriber(SubscriberDTO subscriberDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertSubscriber");
+        //System.out.println("EduMarineMngServiceImpl > processInsertSubscriber");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7917,21 +7917,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SmsDTO> processSelectSmsList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSmsList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSmsList");
         return eduMarineMngMapper.selectSmsList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SmsDTO processSelectSmsSingle(SmsDTO smsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSmsSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSmsSingle");
         return eduMarineMngMapper.selectSmsSingle(smsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertSms(SmsDTO smsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertSms");
+        //System.out.println("EduMarineMngServiceImpl > processInsertSms");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7963,7 +7963,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteSms(SmsDTO smsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteSms");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteSms");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -7994,21 +7994,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TemplateDTO> processSelectSmsTemplateList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectSmsTemplateList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSmsTemplateList");
         return eduMarineMngMapper.selectSmsTemplateList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public TemplateDTO processSelectSmsTemplateSingle(TemplateDTO templateDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSmsTemplateSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSmsTemplateSingle");
         return eduMarineMngMapper.selectSmsTemplateSingle(templateDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processSaveSmsTemplate(TemplateDTO templateDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSaveSmsTemplate");
+        //System.out.println("EduMarineMngServiceImpl > processSaveSmsTemplate");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8054,7 +8054,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteSmsTemplate(TemplateDTO templateDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteSmsTemplate");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteSmsTemplate");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8085,7 +8085,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SmsSendDTO> processSelectSmsSendList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectSmsSendList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectSmsSendList");
         List<SmsSendDTO> responseList = new ArrayList<>();
         String gbn = searchDTO.getCondition();
         String boarderGbn = "";
@@ -8157,35 +8157,35 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ApplicationUnifiedDTO> processSelectUnifiedList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectUnifiedList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectUnifiedList");
         return unifiedMapper.selectUnifiedList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public int processSelectUnifiedListCnt(Map<String, Object> paramMap) {
-        System.out.println("EduMarineMngServiceImpl > processSelectUnifiedListCnt");
+        //System.out.println("EduMarineMngServiceImpl > processSelectUnifiedListCnt");
         return unifiedMapper.selectUnifiedListCnt(paramMap);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ApplicationUnifiedDTO> processSelectUnifiedApplicationList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectUnifiedApplicationList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectUnifiedApplicationList");
         return unifiedMapper.selectUnifiedApplicationList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ApplicationUnifiedDTO processSelectApplicationUnifiedSingle(String seq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectApplicationUnifiedSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectApplicationUnifiedSingle");
         return unifiedMapper.selectApplicationUnifiedSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelUnifiedApplicationList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelUnifiedApplicationList");
         // 페이징 없이 전체 조회 (엑셀용)
         searchDTO.setIsPaging("N");
         return unifiedMapper.selectUnifiedApplicationList(searchDTO);
@@ -8194,28 +8194,28 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public String processGetTrainSeq() {
-        System.out.println("EduMarineMngServiceImpl > processGetTrainSeq");
+        //System.out.println("EduMarineMngServiceImpl > processGetTrainSeq");
         return eduMarineMngMapper.getTrainSeq();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public String processGetFileId() {
-        System.out.println("EduMarineMngServiceImpl > processGetFileId");
+        //System.out.println("EduMarineMngServiceImpl > processGetFileId");
         return eduMarineMngMapper.getFileId();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<DownloadDTO> processSelectDownloadList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectDownloadList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectDownloadList");
         return eduMarineMngMapper.selectDownloadList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertDownload(DownloadDTO downloadDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertDownload");
+        //System.out.println("EduMarineMngServiceImpl > processInsertDownload");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8247,14 +8247,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrashDTO> processSelectTrashList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrashList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrashList");
         return eduMarineMngMapper.selectTrashList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processSaveTrash(TrashDTO trashDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSaveTrash");
+        //System.out.println("EduMarineMngServiceImpl > processSaveTrash");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8299,7 +8299,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteTrash(TrashDTO trashDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteTrash");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteTrash");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8344,7 +8344,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processRestoreTrash(TrashDTO trashDTO) {
-        System.out.println("EduMarineMngServiceImpl > processRestoreTrash");
+        //System.out.println("EduMarineMngServiceImpl > processRestoreTrash");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8389,7 +8389,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processSaveTrainTemplate(TrainTemplateDTO templateInfo) {
-        System.out.println("EduMarineMngServiceImpl > processSaveTrainTemplate");
+        //System.out.println("EduMarineMngServiceImpl > processSaveTrainTemplate");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8424,42 +8424,42 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrainTemplateList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrainTemplateList");
         return eduMarineMngMapper.selectTrainTemplateList(major);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<AdminDTO> processSelectAdminMngList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAdminMngList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectAdminMngList");
         return eduMarineMngMapper.selectAdminMngList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public AdminDTO processSelectAdminMngSingle(AdminDTO adminDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAdminMngSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectAdminMngSingle");
         return eduMarineMngMapper.selectAdminMngSingle(adminDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public AdminDTO processSelectAdminMngSingleId(AdminDTO adminDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAdminMngSingleId");
+        //System.out.println("EduMarineMngServiceImpl > processSelectAdminMngSingleId");
         return eduMarineMngMapper.selectAdminMngSingleId(adminDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectAdminMngCheckDuplicateId(AdminDTO adminDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectAdminMngCheckDuplicateId : ======");
+        //System.out.println("EduMarineMngServiceImpl > processSelectAdminMngCheckDuplicateId : ======");
         return eduMarineMngMapper.selectAdminMngCheckDuplicateId(adminDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateAdminMng(AdminDTO adminDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateAdminMng");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateAdminMng");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8493,7 +8493,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertAdminMng(AdminDTO adminDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertAdminMng");
+        //System.out.println("EduMarineMngServiceImpl > processInsertAdminMng");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8524,7 +8524,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processCheckAdminMngValidYn(AdminDTO param_adminDTO) {
-        System.out.println("EduMarineMngServiceImpl > processCheckAdminMngValidYn");
+        //System.out.println("EduMarineMngServiceImpl > processCheckAdminMngValidYn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8570,7 +8570,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public InistdpayCancelResponseDTO processApplyPaymentCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO) {
-        System.out.println("EduMarineMngController > processApplyPaymentCancel");
+        //System.out.println("EduMarineMngController > processApplyPaymentCancel");
         //System.out.println(memberDTO.toString());
 
         /* 이니시스 취소 API CALL */
@@ -8663,7 +8663,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public InistdpayCancelResponseDTO processApplyPaymentVbankCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO) {
-        System.out.println("EduMarineMngController > processApplyPaymentVbankCancelApi");
+        //System.out.println("EduMarineMngController > processApplyPaymentVbankCancelApi");
         //System.out.println(memberDTO.toString());
 
         /* 이니시스 취소 API CALL */
@@ -8778,168 +8778,168 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MemberDTO> processSelectExcelMemberDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelMemberDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelMemberDetailList");
         return eduMarineMngMapper.selectExcelMemberDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<RegularDTO> processSelectExcelRegularDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelRegularDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelRegularDetailList");
         return eduMarineMngMapper.selectExcelRegularDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BoarderDetailDTO> processSelectExcelBoarderDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelBoarderDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelBoarderDetailList");
         return eduMarineMngMapper.selectExcelBoarderDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FrpDetailDTO> processSelectExcelFrpDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelFrpDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelFrpDetailList");
         return eduMarineMngMapper.selectExcelFrpDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<OutboarderDetailDTO> processSelectExcelOutboarderDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelOutboarderDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelOutboarderDetailList");
         return eduMarineMngMapper.selectExcelOutboarderDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<InboarderDetailDTO> processSelectExcelInboarderDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelInboarderDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelInboarderDetailList");
         return eduMarineMngMapper.selectExcelInboarderDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SailyachtDetailDTO> processSelectExcelSailyachtDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelSailyachtDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelSailyachtDetailList");
         return eduMarineMngMapper.selectExcelSailyachtDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<HighHorsePowerDTO> processSelectExcelHighhorsepowerDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelHighhorsepowerDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelHighhorsepowerDetailList");
         return eduMarineMngMapper.selectExcelHighhorsepowerDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<HighSelfDTO> processSelectExcelHighSelfDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelHighSelfDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelHighSelfDetailList");
         return eduMarineMngMapper.selectExcelHighSelfDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<HighSpecialDTO> processSelectExcelHighSpecialDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelHighSpecialDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelHighSpecialDetailList");
         return eduMarineMngMapper.selectExcelHighSpecialDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SterndriveDTO> processSelectExcelSterndriveDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelHighhorsepowerDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelHighhorsepowerDetailList");
         return eduMarineMngMapper.selectExcelSterndriveDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SternSpecialDTO> processSelectExcelSternSpecialDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelSternSpecialDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelSternSpecialDetailList");
         return eduMarineMngMapper.selectExcelSternSpecialDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BasicDetailDTO> processSelectExcelBasicDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelBasicDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelBasicDetailList");
         return eduMarineMngMapper.selectExcelBasicDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<EmergencyDetailDTO> processSelectExcelEmergencyDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelEmergencyDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelEmergencyDetailList");
         return eduMarineMngMapper.selectExcelEmergencyDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<GeneratorDetailDTO> processSelectExcelGeneratorDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelGeneratorDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelGeneratorDetailList");
         return eduMarineMngMapper.selectExcelGeneratorDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CompetencyDetailDTO> processSelectExcelCompetencyDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelCompetencyDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelCompetencyDetailList");
         return eduMarineMngMapper.selectExcelCompetencyDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FamtourinDetailDTO> processSelectExcelFamtourinDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelFamtourinDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelFamtourinDetailList");
         return eduMarineMngMapper.selectExcelFamtourinDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FamtouroutDetailDTO> processSelectExcelFamtouroutDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelFamtouroutDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelFamtouroutDetailList");
         return eduMarineMngMapper.selectExcelFamtouroutDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ElectroDetailDTO> processSelectExcelElectroDetailList() {
-        System.out.println("EduMarineMngServiceImpl > processSelectExcelElectroDetailList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectExcelElectroDetailList");
         return eduMarineMngMapper.selectExcelElectroDetailList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectMemberCount(StatisticsDTO statisticsDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectMemberCount");
+        //System.out.println("EduMarineMngServiceImpl > processSelectMemberCount");
         return eduMarineMngMapper.selectMemberCount(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectTrainCount(StatisticsDTO trainDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectTrainCount");
+        //System.out.println("EduMarineMngServiceImpl > processSelectTrainCount");
         return eduMarineMngMapper.selectTrainCount(trainDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<RequestDTO> processSelectRequestList(SearchDTO searchDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectRequestList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectRequestList");
         return eduMarineMngMapper.selectRequestList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public RequestDTO processSelectRequestSingle(RequestDTO requestDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectRequestSingle");
+        //System.out.println("EduMarineMngServiceImpl > processSelectRequestSingle");
         return eduMarineMngMapper.selectRequestSingle(requestDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertRequest(RequestDTO requestDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertRequest");
+        //System.out.println("EduMarineMngServiceImpl > processInsertRequest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8971,7 +8971,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRequest(RequestDTO requestDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateRequest");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateRequest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9003,7 +9003,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteRequest(RequestDTO requestDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteRequest");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteRequest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9034,14 +9034,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<RequestReplyDTO> processSelectReplyList(String requestSeq) {
-        System.out.println("EduMarineMngServiceImpl > processSelectReplyList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectReplyList");
         return eduMarineMngMapper.selectReplyList(requestSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertReply(RequestReplyDTO requestReplyDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertReply");
+        //System.out.println("EduMarineMngServiceImpl > processInsertReply");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9073,7 +9073,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteReply(RequestReplyDTO requestReplyDTO) {
-        System.out.println("EduMarineMngServiceImpl > processDeleteReply");
+        //System.out.println("EduMarineMngServiceImpl > processDeleteReply");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9104,7 +9104,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRequestProgressStep(List<RequestDTO> requestList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateRequestProgressStep");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateRequestProgressStep");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9141,7 +9141,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRequestCompleteExpect(List<RequestDTO> requestList) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateRequestCompleteExpect");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateRequestCompleteExpect");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9178,7 +9178,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateTrainChange(TrainUpdateDTO trainUpdateDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateTrainChange");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateTrainChange");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9357,7 +9357,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FileResponseDTO processInsertFileInfo(FileDTO fileDTO) {
-        System.out.println("EduMarineMngServiceImpl > processInsertFileInfo");
+        //System.out.println("EduMarineMngServiceImpl > processInsertFileInfo");
         FileResponseDTO responseDTO = new FileResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9387,14 +9387,14 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FileDTO> processSelectFileUserIdList(FileDTO fileDTO) {
-        System.out.println("EduMarineMngServiceImpl > processSelectFileUserIdList");
+        //System.out.println("EduMarineMngServiceImpl > processSelectFileUserIdList");
         return eduMarineMngMapper.selectFileUserIdList(fileDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FileResponseDTO processUpdateFileUseN(FileDTO fileDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFileUseN");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFileUseN");
         FileResponseDTO responseDTO = new FileResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9427,7 +9427,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFileUserId(FileDTO fileDTO) {
-        System.out.println("EduMarineMngServiceImpl > processUpdateFileUserId");
+        //System.out.println("EduMarineMngServiceImpl > processUpdateFileUserId");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -9507,7 +9507,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
      * *****************************************/
 
     public ResponseDTO processMailSend(MailRequestDTO mailRequestDTO) {
-        System.out.println("EduMarineMngServiceImpl > processMailSend");
+        //System.out.println("EduMarineMngServiceImpl > processMailSend");
         ResponseDTO responseDto = new ResponseDTO();
         // URL
         String url = "https://directsend.co.kr/index.php/api_v2/mail_change_word";
