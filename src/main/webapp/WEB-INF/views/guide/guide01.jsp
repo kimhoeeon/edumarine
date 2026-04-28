@@ -262,7 +262,38 @@
                                             </tr>
                                             <tr>
                                                 <td class="bg name">마리나선박 FRP선체 정비사 실무과정(2회)</td>
-                                                <td colspan="2">일정 미정 (추후 재공지)</td>
+                                                <td>
+                                                    <div class="table_flex">
+                                                        <div>1차</div>
+                                                        <div>:</div>
+                                                        <div>26. 7. 20(월)</div>
+                                                        <div>~</div>
+                                                        <div class="table_lt">26. 7. 31(금)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>2차</div>
+                                                        <div>:</div>
+                                                        <div>26. 8. 3(월)</div>
+                                                        <div>~</div>
+                                                        <div>26. 8. 14(금)</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="table_flex">
+                                                        <div>1차</div>
+                                                        <div>:</div>
+                                                        <div>26. 6. 22(월)</div>
+                                                        <div>~</div>
+                                                        <div class="table_lt">26. 7. 10(금)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>2차</div>
+                                                        <div>:</div>
+                                                        <div>26. 6. 29(월)</div>
+                                                        <div>~</div>
+                                                        <div>26. 7. 16(목)</div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td rowspan="2" class="bg gubun">중급기술자</td>
