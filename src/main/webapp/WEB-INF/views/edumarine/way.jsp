@@ -141,10 +141,10 @@
                     <div class="center_way">
                         <!-- tab_menu -->
                         <ul class="center_way_tab tab_menu">
-                            <li class="on" data-tab="tab-2">김포아라마리나 (선내기)</li>
+                            <li class="on" data-tab="tab-2">김포아라마리나 (선외기·선내기 통합 교육장)</li>
                         </ul>
                         <!-- tab_menu -->
-                        <!-- 김포아라마리나 (선내기) -->
+                        <!-- 김포아라마리나 (선외기·선내기 통합 교육장) -->
                         <div class="center_way_map tab_content on" id="tab-2">
                             <div class="map">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6322.198910912671!2d126.78570294609352!3d37.599818267692804!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c9b45ed345fb1%3A0xffa07a65cced89b!2z6rK96riw64-EIOq5gO2PrOyLnCDqs6DstIzsnY0g7JWE65287Jyh66GcMTUy67KI6ri4IDIxMA!5e0!3m2!1sko!2skr!4v1701167568752!5m2!1sko!2skr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -173,7 +173,7 @@
                             </div>
                             <!-- //guide_btn_box -->
                         </div>
-                        <!-- //김포아라마리나 (선내기) -->
+                        <!-- //김포아라마리나 (선외기·선내기 통합 교육장) -->
                     </div>
                     <!-- //해양레저산업 성장추세 -->
 
