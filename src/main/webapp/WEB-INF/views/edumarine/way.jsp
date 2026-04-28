@@ -141,42 +141,11 @@
                     <div class="center_way">
                         <!-- tab_menu -->
                         <ul class="center_way_tab tab_menu">
-                            <li class="on" data-tab="tab-1">경기테크노파크 (선외기)</li>
-                            <li data-tab="tab-2">김포아라마리나 (선내기)</li>
+                            <li class="on" data-tab="tab-2">김포아라마리나 (선내기)</li>
                         </ul>
                         <!-- tab_menu -->
-                        <!-- 경기테크노파크 (선외기) -->
-                        <div class="center_way_map tab_content on" id="tab-1">
-                            <div class="map">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6348.317351773351!2d126.82981500000001!3d37.291373!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b6ec34390e3af%3A0x4290c03d6a503954!2z6rK96riw7YWM7YGs64W47YyM7YGs!5e0!3m2!1sko!2skr!4v1701167612534!5m2!1sko!2skr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
-                            <ul class="info_list">
-                                <li>
-                                    <div class="gubun">Address</div>
-                                    <div class="naeyong">경기도 안산시 상록구 해안로 705 경기테크노파크</div>
-                                </li>
-                                <li>
-                                    <div class="gubun">Tel</div>
-                                    <div class="naeyong">1811-7891</div>
-                                </li>
-                                <li>
-                                    <div class="gubun">Fax</div>
-                                    <div class="naeyong">031-999-7880</div>
-                                </li>
-                                <li>
-                                    <div class="gubun">E-mail</div>
-                                    <div class="naeyong">edu@edumarine.org</div>
-                                </li>
-                            </ul>
-                            <!-- guide_btn_box -->
-                            <div class="guide_btn_box">
-                                <div class="btn_box"><a href="https://www.gtp.or.kr/antp/index/way.jsp" target="_blank">교통안내 바로가기</a></div>
-                            </div>
-                            <!-- //guide_btn_box -->
-                        </div>
-                        <!-- //경기테크노파크 (선외기) -->
                         <!-- 김포아라마리나 (선내기) -->
-                        <div class="center_way_map tab_content" id="tab-2">
+                        <div class="center_way_map tab_content on" id="tab-2">
                             <div class="map">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6322.198910912671!2d126.78570294609352!3d37.599818267692804!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c9b45ed345fb1%3A0xffa07a65cced89b!2z6rK96riw64-EIOq5gO2PrOyLnCDqs6DstIzsnY0g7JWE65287Jyh66GcMTUy67KI6ri4IDIxMA!5e0!3m2!1sko!2skr!4v1701167568752!5m2!1sko!2skr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
