@@ -3,7 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ attribute name="items" type="java.util.List" required="true" %>
 
-<c:set var="currentURI" value="${pageContext.request.requestURI}" />
+<%-- 현재 페이지 URL 확인 (Spring MVC 포워딩 이전의 원본 URL 추출) --%>
+<c:set var="currentURI" value="${requestScope['javax.servlet.forward.request_uri']}" />
+<c:if test="${empty currentURI}">
+    <c:set var="currentURI" value="${pageContext.request.requestURI}" />
+</c:if>
 
 <c:forEach var="item" items="${items}">
     <%-- 헤더 메뉴는 주로 하위 메뉴가 있는 항목만 표시하거나, 링크형태로 표시 --%>
