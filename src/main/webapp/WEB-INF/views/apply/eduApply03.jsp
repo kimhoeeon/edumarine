@@ -740,7 +740,7 @@
                                     </div>
                                     <div class="btn_box">
                                         <a href="javascript:void(0);" class="btnSt03 btn_prev">취소</a>
-                                        <a href="javascript:void(0);" class="btnSt04" onclick="f_main_apply_payment_mobile(this);">확인</a>
+                                        <a href="javascript:void(0);" class="btnSt01" onclick="f_main_apply_payment_mobile(this);">확인</a>
                                     </div>
                                 </div>
                             </div>
