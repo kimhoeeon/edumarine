@@ -23,6 +23,7 @@ public class MenuService {
 
         // 2. 신청자 목록 (Icon: ki-people, paths: 5)
         List<MenuItem> applicantChildren = new ArrayList<>();
+        applicantChildren.add(new MenuItem("통합 교육 신청 목록", "/mng/customer/unified.do", null, 0));
         applicantChildren.add(new MenuItem("상시 사전 신청", "/mng/customer/regular.do", null, 0));
         applicantChildren.add(new MenuItem("해상 엔진 테크니션", "/mng/customer/boarder.do", null, 0));
         applicantChildren.add(new MenuItem("FRP 정비 테크니션", "/mng/customer/frp.do", null, 0));

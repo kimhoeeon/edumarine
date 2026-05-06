@@ -3,8 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ attribute name="items" type="java.util.List" required="true" %>
 
-<%-- 현재 페이지 URL 확인 --%>
-<c:set var="currentURI" value="${pageContext.request.requestURI}" />
+<%-- 현재 페이지 URL 확인 (Spring MVC 포워딩 이전의 원본 URL 추출) --%>
+<c:set var="currentURI" value="${requestScope['javax.servlet.forward.request_uri']}" />
+<c:if test="${empty currentURI}">
+    <c:set var="currentURI" value="${pageContext.request.requestURI}" />
+</c:if>
 
 <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu"
      data-kt-menu="true" data-kt-menu-expand="false">
