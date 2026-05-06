@@ -2703,34 +2703,87 @@ public class EduMarineController {
 
         System.out.println("PC : " + pc_resultCode + " / MOBILE : " + mo_resultCode);
 
-        if(pc_resultCode != null && !"null".equals(pc_resultCode)){
+        // --- 1. PC 결제 콜백 처리 ---
+        if (pc_resultCode != null && !"null".equals(pc_resultCode)) {
             System.out.println("이니시스 결제 Response pc_resultCode : " + pc_resultCode);
-            if(!"V801".equals(pc_resultCode)) { // 결제 도중 취소 코드 V801
-                System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
-                System.out.println("Session Id : " + session.getAttribute("id"));
-                if (session.getAttribute("id") != null) {
-                    String id = session.getAttribute("id").toString();
-                    MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
+            if (!"V801".equals(pc_resultCode)) { // 결제 도중 취소 코드 V801 아닐 때
 
-                    InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("PC", memberInfo.getSeq(), request);
-                    mv.addObject("payResInfo", inistdpayResponseDTO);
+                String userId = null;
+
+                // 1-1. 세션에서 ID 추출 시도
+                if (session.getAttribute("id") != null) {
+                    userId = session.getAttribute("id").toString();
+                }
+                // 1-2. 세션 유실 시 merchantData에서 역추출하여 세션 복구
+                else {
+                    String merchantData = request.getParameter("merchantData");
+                    if (merchantData != null && merchantData.contains("||")) {
+                        String[] parts = merchantData.split("\\|\\|");
+                        if (parts.length >= 2) {
+                            userId = parts[1]; // 사용자 ID 추출
+                            session.setAttribute("id", userId);
+                            session.setAttribute("status", "logon");
+                            System.out.println("PC 결제: 세션 복구 완료. ID: " + userId);
+                        }
+                    }
+                }
+
+                // 1-3. 결제 데이터 Insert 진행
+                if (userId != null) {
+                    MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(userId);
+                    if (memberInfo != null) {
+                        InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("PC", memberInfo.getSeq(), request);
+                        mv.addObject("payResInfo", inistdpayResponseDTO);
+                    } else {
+                        System.out.println("PC 결제 에러: 해당 회원이 존재하지 않습니다.");
+                    }
                 } else {
-                    System.out.println("Session getAttribute is null , PC");
+                    System.out.println("PC 결제 치명적 에러: 세션 및 merchantData 모두 ID 없음");
                 }
             }
-        }else if(mo_resultCode != null && !"null".equals(mo_resultCode)){
+        }
+        // --- 2. 모바일 결제 콜백 처리 ---
+        else if (mo_resultCode != null && !"null".equals(mo_resultCode)) {
             System.out.println("이니시스 결제 Response mo_resultCode : " + mo_resultCode);
-            if(!"01".equals(mo_resultCode)) { // 결제 도중 취소 코드 01
-                //System.out.println("request Session Id : " + request.getSession().getAttribute("id"));
-                //System.out.println("Session Id : " + session.getAttribute("id"));
-                if (session.getAttribute("id") != null) {
-                    String id = session.getAttribute("id").toString();
-                    MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(id);
+            if (!"01".equals(mo_resultCode)) { // 결제 도중 취소 코드 01 아닐 때
 
-                    InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("MOBILE", memberInfo.getSeq(), request);
-                    mv.addObject("payResInfo", inistdpayResponseDTO);
+                String userId = null;
+
+                // 2-1. 세션에서 ID 추출 시도
+                if (session.getAttribute("id") != null) {
+                    userId = session.getAttribute("id").toString();
+                }
+                // 2-2. 세션 유실 시 P_NOTI에서 역추출하여 세션 복구
+                else {
+                    String pNoti = request.getParameter("P_NOTI");
+                    if (pNoti != null) {
+                        if (pNoti.contains("_UNIFIED_")) { // 통합 폼 방식
+                            String[] parts = pNoti.split("_");
+                            if (parts.length >= 5) userId = parts[parts.length - 1];
+                        } else if (pNoti.contains(",")) { // 기존 폼 방식
+                            String[] parts = pNoti.split(",");
+                            if (parts.length >= 4) userId = parts[parts.length - 1];
+                        }
+
+                        if (userId != null) {
+                            session.setAttribute("id", userId);
+                            session.setAttribute("status", "logon");
+                            System.out.println("모바일 결제: 세션 복구 완료. ID: " + userId);
+                        }
+                    }
+                }
+
+                // 2-3. 결제 데이터 Insert 진행
+                if (userId != null) {
+                    MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(userId);
+                    if (memberInfo != null) {
+                        InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("MOBILE", memberInfo.getSeq(), request);
+                        mv.addObject("payResInfo", inistdpayResponseDTO);
+                    } else {
+                        System.out.println("모바일 결제 에러: 해당 회원이 존재하지 않습니다.");
+                    }
                 } else {
-                    System.out.println("Session getAttribute is null , MOBILE");
+                    System.out.println("모바일 결제 치명적 에러: 세션 및 P_NOTI 모두 ID 없음");
                 }
             }
         }
@@ -4225,7 +4278,7 @@ public class EduMarineController {
                         }
 
                         // --- 시스템 타입 분기 (PC) ▼▼▼ ---
-                        if ("U".equals(systemType)) {
+                        if ("UNIFIED".equals(systemType)) {
 
                             // [신규 UNIFIED 로직]
                             ApplicationUnifiedDTO unifiedDTO = new ApplicationUnifiedDTO();
@@ -5223,19 +5276,6 @@ public class EduMarineController {
                     //System.out.println("NM_INPUT : " + nm_input);
                     //System.out.println("************************************************");
 
-                    /*
-                    ************************************************
-                    PageCall time : [18:32:08]
-                    ID_MERCHANT : edumarin90
-                    NO_TID : ININPGVBNKedumarin9020240306182322164144
-                    NO_OID : edumarin90_1709716699089
-                    NO_VACCT : 27489058118161
-                    AMT_INPUT : 2000
-                    NM_INPUTBANK : ��������
-                    NM_INPUT : ��ȸ��
-                    ************************************************
-                    */
-
                     Boolean successFlag = true;
 
                     PaymentDTO paymentDTO = new PaymentDTO();
@@ -5250,16 +5290,11 @@ public class EduMarineController {
 
                         // --- merchantData 파싱 ▼▼▼ ---
                         // payInfo.tableSeq에는 "AU000001,UNIFIED" 또는 "F000001"이 들어있음
-                        String merchantData = payInfo.getTableSeq();
-                        String tableSeq = merchantData;
+                        String tableSeq = payInfo.getTableSeq();
                         String systemType = "LEGACY"; // 기본값
 
-                        if (merchantData != null && merchantData.contains(",")) {
-                            String[] md = merchantData.split(",");
-                            tableSeq = md[0];
-                            if (md.length > 1) {
-                                systemType = md[1];
-                            }
+                        if (tableSeq != null && tableSeq.startsWith("AU")) {
+                            systemType = "UNIFIED";
                         }
                         // --- merchantData 파싱 ▲▲▲ ---
 
