@@ -4169,9 +4169,15 @@ public class EduMarineController {
             if ("0000".equals(inistdpayResponseDTO.getResultCode())) {
                 // 결제내역 테이블 Insert process
 
-                // ★ 1. tableSeq 추출 (Null 방어 로직 추가)
+                // ★ 1. tableSeq 추출 (Null 방어 및 세션 복구용 데이터 분리 추가)
                 String merchantData = inistdpayResponseDTO.getMerchantData();
                 if (merchantData != null && !merchantData.isEmpty()) {
+
+                    // 세션 복구를 위해 '||' 로 이어붙인 아이디가 있다면 앞부분(tableSeq)만 추출
+                    if (merchantData.contains("||")) {
+                        merchantData = merchantData.split("\\|\\|")[0];
+                    }
+
                     if (merchantData.contains(",")) {
                         String[] md = merchantData.split(",");
                         tableSeq = md[0];
@@ -4181,6 +4187,11 @@ public class EduMarineController {
                     } else {
                         tableSeq = merchantData;
                     }
+                }
+
+                // 완벽한 분기를 위해 tableSeq가 'AU'로 시작하면 강제로 UNIFIED 시스템 타입으로 지정
+                if (tableSeq != null && tableSeq.startsWith("AU")) {
+                    systemType = "UNIFIED";
                 }
 
                 //  2. goodName에서 trainSeq, trainName 추출 (IndexOutOfBoundsException 완벽 방어)
@@ -5073,7 +5084,7 @@ public class EduMarineController {
         inistdpayRequestDTO.setSignature(signature);
         inistdpayRequestDTO.setVerification(verification);
         inistdpayRequestDTO.setMkey(mKey);
-        inistdpayRequestDTO.setGoodname(gbn);
+        inistdpayRequestDTO.setGoodname("[" + trainDTO.getSeq() + "] " + gbn);
         inistdpayRequestDTO.setSiteDomain(siteDomain);
         mv.addObject("payInfo", inistdpayRequestDTO);
 
@@ -5154,7 +5165,7 @@ public class EduMarineController {
         inistdpayRequestDTO.setSignature(signature);
         inistdpayRequestDTO.setVerification(verification);
         inistdpayRequestDTO.setMkey(mKey);
-        inistdpayRequestDTO.setGoodname(gbn);
+        inistdpayRequestDTO.setGoodname("[" + trainDTO.getSeq() + "] " + gbn);
         inistdpayRequestDTO.setSiteDomain(siteDomain);
         mv.addObject("payInfo", inistdpayRequestDTO);
 
