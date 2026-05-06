@@ -420,13 +420,14 @@
                 var systemType = "${payInfo.applicationSystemType}";
 
                 var pNotiValue = "";
+                var currentUserId = "${sessionScope.id}"; // 추가된 부분: 세션 ID
 
                 if (systemType === 'UNIFIED') {
-                    // 형식: 교육PK_신청PK_시스템타입_상품명
-                    pNotiValue = trainSeq + "_" + tableSeq + "_" + systemType + "_" + goodName;
+                    // 형식: 교육PK_신청PK_시스템타입_상품명_사용자ID
+                    pNotiValue = trainSeq + "_" + tableSeq + "_" + systemType + "_" + goodName + "_" + currentUserId;
                 } else {
-                    // [기존] 콤마(,) 구분자 사용 (기존 로직 유지)
-                    pNotiValue = trainSeq + "," + tableSeq + "," + goodName;
+                    // 기존 콤마(,) 구분자 사용 + 사용자ID
+                    pNotiValue = trainSeq + "," + tableSeq + "," + goodName + "," + currentUserId;
                 }
 
                 // 3. 폼 Hidden Input 값 업데이트 (P_NOTI)

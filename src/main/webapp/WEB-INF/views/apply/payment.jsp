@@ -149,7 +149,7 @@
         <input type="hidden" name="returnUrl" value="${payInfo.siteDomain}/mypage/eduApplyInfo.do">
         <input type="hidden" name="closeUrl" value=""><%--https://${payInfo.siteDomain}/mypage/eduApplyInfo.do--%>
         <input type="hidden" name="acceptmethod" value="HPP(1):below1000:centerCd(Y):SKIN(#083274):vbank(${sysDate})">
-        <input type="hidden" name="merchantData" value="${payInfo.tableSeq}">
+        <input type="hidden" name="merchantData" value="${payInfo.tableSeq}||${sessionScope.id}">
         <%--<input type="hidden" name="payViewType" value="popup">
         <input type="hidden" name="popupUrl" value="${payInfo.siteDomain}/apply/payment.do">--%>
     </form>
