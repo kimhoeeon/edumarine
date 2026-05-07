@@ -2202,8 +2202,21 @@ public class EduMarineController {
             String memberSeq = (String) session.getAttribute("seq");
             if (memberSeq != null && !memberSeq.isEmpty()) dto.setMemberSeq(memberSeq);
 
+            // ★ 교육비 0원(무료) 검증 및 상태 자동 지정 로직 추가
+            TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(dto.getTrainSeq());
+            if (trainDTO != null && trainDTO.getPaySum() != null && trainDTO.getPaySum() == 0) {
+                dto.setApplyStatus("결제완료"); // 무료 교육이므로 즉시 결제완료(신청완료 대상) 처리
+            } else {
+                dto.setApplyStatus("결제대기"); // 기본 상태
+            }
+
             // 서비스 호출
             eduMarineService.processInsertUnifiedApplication(dto);
+
+            // ★ 무료 교육일 경우 즉시 교육의 신청 인원(train_apply_cnt) 증가 처리
+            if ("결제완료".equals(dto.getApplyStatus())) {
+                eduMarineService.processUpdateTrainApplyCnt(dto.getTrainSeq());
+            }
 
             response.setResultCode("0");
             response.setResultMessage("저장되었습니다.");

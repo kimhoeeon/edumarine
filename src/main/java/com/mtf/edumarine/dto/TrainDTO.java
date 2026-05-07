@@ -42,4 +42,5 @@ public class TrainDTO extends AbstractPagingRequestVo {
     String today;
     String phone;
     String memberSeq;
+    String fullFilePath;
 }
