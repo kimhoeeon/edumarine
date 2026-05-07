@@ -200,6 +200,13 @@
         WHERE seq = #{seq}
     </select>
 
+    <update id="updateTrainApplyCntMinus" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.EduMarineMapper.updateTrainApplyCntMinus */
+        UPDATE train
+        SET train_apply_cnt = CASE WHEN train_apply_cnt > 0 THEN train_apply_cnt - 1 ELSE 0 END
+        WHERE seq = #{seq}
+    </update>
+
     <update id="updateTrainApplyCnt" parameterType="java.lang.String">
         /* com.mtf.edumarine.mapper.EduMarineMapper.updateTrainApplyCnt */
         UPDATE train

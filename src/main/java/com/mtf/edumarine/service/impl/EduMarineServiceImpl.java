@@ -3394,9 +3394,6 @@ public class EduMarineServiceImpl implements EduMarineService {
             String seq = unifiedMapper.getUnifiedAppSeq();
             dto.setSeq(seq);
 
-            // 2. 기본 상태 설정
-            dto.setApplyStatus("결제대기");
-
             // 3. 통합 테이블에 INSERT
             int result = unifiedMapper.insertUnifiedApplication(dto);
             if (result > 0) {
@@ -3443,6 +3440,11 @@ public class EduMarineServiceImpl implements EduMarineService {
         response.setResultCode(resultCode);
         response.setResultMessage(resultMessage);
         return response;
+    }
+
+    @Override
+    public Integer processUpdateTrainApplyCntMinus(String seq) {
+        return eduMarineMapper.updateTrainApplyCntMinus(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
