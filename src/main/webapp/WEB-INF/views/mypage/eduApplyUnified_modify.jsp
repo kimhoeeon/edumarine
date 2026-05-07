@@ -182,22 +182,25 @@
                             <ul class="form_list">
 
                                 <c:if test="${trainInfo.formType == 'BASIC_FORM'}">
-                                    <li>
-                                        <div class="gubun req"><p>작업복 사이즈(남여공용)</p></div>
-                                        <div class="naeyong">
-                                            <div class="input">
-                                                <select name="clothesSize" id="clothesSize" title="작업복 사이즈(남여공용)">
-                                                    <option value="">선택</option>
-                                                    <option value="S" <c:if test="${info.clothesSize eq 'S'}">selected</c:if> >S(90)</option>
-                                                    <option value="M" <c:if test="${info.clothesSize eq 'M'}">selected</c:if> >M(95)</option>
-                                                    <option value="L" <c:if test="${info.clothesSize eq 'L'}">selected</c:if> >L(100)</option>
-                                                    <option value="XL" <c:if test="${info.clothesSize eq 'XL'}">selected</c:if> >XL(105)</option>
-                                                    <option value="2XL" <c:if test="${info.clothesSize eq '2XL'}">selected</c:if> >2XL(110)</option>
-                                                    <option value="기타" <c:if test="${info.clothesSize eq '기타'}">selected</c:if> >기타</option>
-                                                </select>
+                                    <%-- 교육명에 '팸투어'가 포함되지 않은 경우에만 사이즈 선택 노출 --%>
+                                    <c:if test="${not fn:contains(trainInfo.gbn, '팸투어')}">
+                                        <li>
+                                            <div class="gubun req"><p>작업복 사이즈(남여공용)</p></div>
+                                            <div class="naeyong">
+                                                <div class="input">
+                                                    <select name="clothesSize" id="clothesSize" title="작업복 사이즈(남여공용)">
+                                                        <option value="">선택</option>
+                                                        <option value="S" <c:if test="${info.clothesSize eq 'S'}">selected</c:if> >S(90)</option>
+                                                        <option value="M" <c:if test="${info.clothesSize eq 'M'}">selected</c:if> >M(95)</option>
+                                                        <option value="L" <c:if test="${info.clothesSize eq 'L'}">selected</c:if> >L(100)</option>
+                                                        <option value="XL" <c:if test="${info.clothesSize eq 'XL'}">selected</c:if> >XL(105)</option>
+                                                        <option value="2XL" <c:if test="${info.clothesSize eq '2XL'}">selected</c:if> >2XL(110)</option>
+                                                        <option value="기타" <c:if test="${info.clothesSize eq '기타'}">selected</c:if> >기타</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    </c:if>
                                     <li>
                                         <div class="gubun req"><p>참여경로</p></div>
                                         <div class="naeyong">
@@ -442,8 +445,30 @@
 
         // [수정하기]
         function fn_update() {
+
+            // 폼 타입별 유효성 검사
+            var formType = "${trainInfo.formType}";
+            if (formType === 'BASIC_FORM' || formType === 'PRO_FORM') {
+
+                // ★ 수정: 작업복 사이즈 요소가 화면에 존재하는 경우에만 필수 체크 진행
+                if ($('#clothesSize').length > 0) {
+                    let clothesSize = $('#clothesSize').val();
+                    if(nvl(clothesSize,'') === ''){
+                        showMessage('', 'error', '[ 정보 수정 ]', '작업복 사이즈(남여공용) 항목을<br>선택해 주세요.', '');
+                        return;
+                    }
+                }
+
+                // 참여경로 체크
+                let participationPath = $('#participationPath').val();
+                if(nvl(participationPath,'') === ''){
+                    showMessage('', 'error', '[ 정보 수정 ]', '참여경로 항목을<br>선택해 주세요.', '');
+                    return;
+                }
+            }
+
             Swal.fire({
-                title: '[ 수정 확인 ]',
+                title: '[ 정보 수정 ]',
                 text: "입력하신 내용으로 수정하시겠습니까?",
                 icon: 'question',
                 showCancelButton: true,
