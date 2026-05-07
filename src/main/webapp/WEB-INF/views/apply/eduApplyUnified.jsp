@@ -335,9 +335,16 @@
                 return;
             }
 
+            // ★ 교육비 0원 여부에 따른 안내 모달 문구 동적 변경
+            var paySum = Number('${trainInfo.paySum}');
+            var confirmHtml = '교육을 신청하시겠습니까?';
+            if (paySum > 0) {
+                confirmHtml += '<br>신청하기 클릭 시 결제화면으로 이동합니다.';
+            }
+
             Swal.fire({
                 title: '[ 교육 신청 ]',
-                html: '교육을 신청하시겠습니까?<br>신청하기 클릭 시 결제화면으로 이동합니다.',
+                html: confirmHtml,
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#00a8ff',
@@ -357,15 +364,29 @@
                             // 3. 성공 시 결제 페이지로 이동 (반환된 app_seq와 'UNIFIED' 타입 전달)
                             var appSeq = response.customValue; // Service에서 반환한 'AU000000X'
 
-                            if(deviceGbn() === 'MOBILE'){
-                                $('#popupPaySel').addClass('on');
-                                $('#popupPaySel #tableSeq').val(appSeq);
-                                $('#popupPaySel #trainSeq').val('${seq}');
-                                $('#popupPaySel #buyername').val('${info.name}');
-                                $('#popupPaySel #buyertel').val('${info.phone}');
-                                $('#popupPaySel #buyeremail').val('${info.email}');
-                            }else{
-                                fn_payment(appSeq, 'UNIFIED', deviceGbn());
+                            if (paySum === 0) {
+                                // ★ 교육비가 0원일 경우 결제 모듈 호출 없이 완료 메시지 띄우고 마이페이지 이동
+                                Swal.fire({
+                                    title: '신청 완료',
+                                    html: '무료 교육 신청이 정상적으로 완료되었습니다.',
+                                    icon: 'success',
+                                    confirmButtonColor: '#00a8ff',
+                                    confirmButtonText: '마이페이지로 이동'
+                                }).then(() => {
+                                    window.location.href = '/mypage/eduApplyInfo.do';
+                                });
+                            } else {
+                                // 3. 유료 교육일 경우 기존 결제 페이지로 분기 이동
+                                if(deviceGbn() === 'MOBILE'){
+                                    $('#popupPaySel').addClass('on');
+                                    $('#popupPaySel #tableSeq').val(appSeq);
+                                    $('#popupPaySel #trainSeq').val('${seq}');
+                                    $('#popupPaySel #buyername').val('${info.name}');
+                                    $('#popupPaySel #buyertel').val('${info.phone}');
+                                    $('#popupPaySel #buyeremail').val('${info.email}');
+                                }else{
+                                    fn_payment(appSeq, 'UNIFIED', deviceGbn());
+                                }
                             }
 
                         } else {

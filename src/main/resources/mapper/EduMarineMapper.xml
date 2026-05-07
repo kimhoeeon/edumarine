@@ -141,6 +141,12 @@
              , application_system_type
              , form_type
              , thumb_file_id
+             , ( SELECT CONCAT('/upload', f.folder_path, f.file_name)
+                 FROM file f
+                 WHERE f.id = thumb_file_id
+                   AND f.file_yn = 'Y'
+                 LIMIT 1
+        ) AS fullFilePath
              , del_yn
              , note
              , init_regi_pic
@@ -148,8 +154,8 @@
              , final_regi_pic
              , final_regi_dttm
         FROM train
-        WHERE 1=1
-          AND gbn LIKE CONCAT('%',#{gbn},'%')
+        WHERE 1 = 1
+          AND gbn LIKE CONCAT('%', #{gbn}, '%')
           AND exposure_yn = 'Y'
           AND del_yn = 'N'
           AND closing_yn = 'N'
@@ -184,6 +190,12 @@
              , final_regi_pic
              , final_regi_dttm
              , thumb_file_id
+             , ( SELECT CONCAT('/upload', f.folder_path, f.file_name)
+                 FROM file f
+                 WHERE f.id = thumb_file_id
+                   AND f.file_yn = 'Y'
+                 LIMIT 1
+        ) AS fullFilePath
         FROM train
         WHERE seq = #{seq}
     </select>
@@ -214,9 +226,15 @@
              , exposure_yn
              , schedule_exposure_yn
              , closing_yn
-        , application_system_type
-        , form_type
-        , thumb_file_id
+             , application_system_type
+             , form_type
+             , thumb_file_id
+        , ( SELECT CONCAT('/upload', f.folder_path, f.file_name)
+        FROM file f
+        WHERE f.id = thumb_file_id
+        AND f.file_yn = 'Y'
+        LIMIT 1
+        ) AS fullFilePath
              , ( SELECT COUNT(*)
                  FROM train
                  WHERE del_yn = 'N'
