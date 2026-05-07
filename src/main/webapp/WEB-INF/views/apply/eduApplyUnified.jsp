@@ -122,7 +122,6 @@
     <!-- container -->
     <div id="container">
 
-
         <!-- sub_top -->
         <div class="sub_top sub_top_edu">
             <div class="inner">
@@ -305,11 +304,15 @@
             // (필요시 폼 타입별 유효성 검사 추가)
             var formType = "${trainInfo.formType}";
             if (formType === 'BASIC_FORM' || formType === 'PRO_FORM') {
+
                 // 작업복 사이즈
-                let clothesSize = $('#clothesSize').val();
-                if(nvl(clothesSize,'') === ''){
-                    showMessage('', 'error', '[ 교육 신청 ]', '작업복 사이즈(남여공용) 항목을<br>선택해 주세요.', '');
-                    return;
+                // 작업복 사이즈 요소가 화면에 렌더링 된 경우에만 필수 체크 진행
+                if ($('#clothesSize').length > 0) {
+                    let clothesSize = $('#clothesSize').val();
+                    if(nvl(clothesSize,'') === ''){
+                        showMessage('', 'error', '[ 교육 신청 ]', '작업복 사이즈(남여공용) 항목을<br>선택해 주세요.', '');
+                        return;
+                    }
                 }
 
                 // 참여경로

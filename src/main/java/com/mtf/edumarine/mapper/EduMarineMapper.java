@@ -399,4 +399,6 @@ public interface EduMarineMapper {
     Integer updateElectroPayStatus(ElectroDTO electroDTO);
 
     PaymentDTO selectPaymentSingle(PaymentDTO payReq);
+
+    Integer updateTrainApplyCntMinus(String seq);
 }

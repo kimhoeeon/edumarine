@@ -3270,9 +3270,36 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApplyUnified/cancel.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApplyUnified_cancel(@RequestBody ApplicationUnifiedDTO dto) {
-        // 취소 사유 등을 담아 상태를 '취소신청'으로 변경
-        dto.setApplyStatus("취소신청");
+
+        // 1. 기존 신청 정보 및 교육 과정 정보(수강료) 조회
+        ApplicationUnifiedDTO appInfo = eduMarineService.processSelectApplicationUnifiedSingle(dto.getSeq());
+        TrainDTO trainInfo = null;
+        if(appInfo != null) {
+            trainInfo = eduMarineService.processSelectTrainSingle(appInfo.getTrainSeq());
+        }
+
+        // 2. 무료 교육(0원) 여부에 따라 상태값 자동 분기
+        boolean isFree = false;
+        if (trainInfo != null && trainInfo.getPaySum() != null && trainInfo.getPaySum() == 0) {
+            isFree = true;
+        }
+
+        if (isFree) {
+            dto.setApplyStatus("취소완료"); // 무료는 환불이 필요 없으므로 즉시 취소 완료 처리
+        } else {
+            dto.setApplyStatus("취소신청"); // 유료는 환불(PG사 취소) 처리를 위해 관리자 승인 대기
+        }
+
+        // 3. 상태 업데이트 (취소 사유 등 포함)
         ResponseDTO response = eduMarineService.processUpdateUnifiedApplicationPayStatus(dto);
+
+        // 4. 즉시 취소 완료된 무료 교육의 경우, 수강 정원(인원) 1명 즉시 복구 처리
+        if (CommConstants.RESULT_CODE_SUCCESS.equals(response.getResultCode()) && isFree) {
+            if (appInfo != null) {
+                eduMarineService.processUpdateTrainApplyCntMinus(appInfo.getTrainSeq());
+            }
+        }
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
