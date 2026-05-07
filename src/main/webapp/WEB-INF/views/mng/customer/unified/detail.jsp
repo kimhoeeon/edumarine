@@ -386,7 +386,7 @@ if (document.documentElement) {
                                 <div class="card mb-5 mb-xl-10">
                                     <!--begin::form-->
                                     <form id="dataForm" method="post" onsubmit="return false;">
-                                            <%-- SEQ 값--%>
+                                        <%-- SEQ 값--%>
                                         <input type="hidden" id="userSeq" name="seq" value="${info.seq}">
                                         <!--begin::Card header-->
                                         <div class="card-header border-0">
@@ -546,6 +546,35 @@ if (document.documentElement) {
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <c:if test="${not empty info.clothesSize}">
+                                                <div class="row mb-6">
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">작업복 사이즈</label>
+                                                    <div class="col-lg-10">
+                                                        <input type="text" name="clothesSize" class="form-control form-control-lg form-control-solid-bg" placeholder="작업복 사이즈" value="${info.clothesSize}" readonly/>
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${not empty info.participationPath}">
+                                                <div class="row mb-6">
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">참여경로</label>
+                                                    <div class="col-lg-10">
+                                                        <input type="text" name="participationPath" class="form-control form-control-lg form-control-solid-bg" placeholder="참여경로" value="${info.participationPath}" readonly/>
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${not empty info.trainUnderstand}">
+                                                <div class="row mb-6">
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">교육 이해도</label>
+                                                    <div class="col-lg-10">
+                                                        <div class="input-group">
+                                                            <input type="text" name="trainUnderstand" class="form-control form-control-lg form-control-solid-bg me-4" placeholder="교육 이해도" value="${info.trainUnderstand}" readonly/>
+                                                            <c:if test="${not empty info.trainUnderstandEtc}">
+                                                                <input type="text" name="trainUnderstandEtc" class="form-control form-control-lg form-control-solid-bg" placeholder="이해도 상세" value="${info.trainUnderstandEtc}" readonly/>
+                                                            </c:if>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:if>
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
