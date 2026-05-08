@@ -44,4 +44,6 @@ public interface UnifiedMapper {
     Integer selectUnifiedPreCheck(ApplicationUnifiedDTO dto);
 
     List<TrainDTO> selectActiveUnifiedTrainList();
+
+    List<ApplicationUnifiedDTO> selectExcelUnifiedApplicationList(SearchDTO searchDTO);
 }
