@@ -506,6 +506,8 @@ public interface EduMarineMngService {
     /** 통합 신청 상세 조회 */
     ApplicationUnifiedDTO processSelectApplicationUnifiedSingle(String seq);
 
+    List<TrainDTO> processSelectActiveUnifiedTrainList();
+
     /** 통합 신청 엑셀용 전체 목록 조회 */
     List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO);
 

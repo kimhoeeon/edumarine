@@ -389,17 +389,15 @@ if (document.documentElement) {
                                 </div>
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
-                                <%--<div class="d-flex align-items-center gap-2 gap-lg-3">
-                                    <button type="button" onclick="f_excel_download('unified')" class="btn btn-success btn-active-light-success">
-                                        <i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
-                                        Export as Excel
-                                    </button>
-                                </div>--%>
+                                <div class="d-flex align-items-center gap-2 gap-lg-3">
+                                    <button type="button" onclick="f_excel_download('unified_detail')" class="btn btn-success btn-active-light-success" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>신청자 정보 상세 다운로드</button>
+                                </div>
                                 <!--end::Actions-->
 
-                                <!--begin::Hide default export buttons-->
-                                <%--<div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>--%>
-                                <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
                         </div>
@@ -443,6 +441,14 @@ if (document.documentElement) {
                                             <!--end:Action-->
                                         </div>
                                         <div class="card-toolbar flex-row-fluid gap-5">
+                                            <div class="w-100 mw-250px">
+                                                <select id="condition_train_seq" class="form-select form-select-solid" data-control="select2" data-hide-search="true" onchange="f_customer_unified_search()">
+                                                    <option value="">전체 교육명</option>
+                                                    <c:forEach var="train" items="${trainList}">
+                                                        <option value="${train.seq}">${train.gbn} ${train.gbnDepth}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                             <%--begin::신청상태--%>
                                             <div class="w-100 mw-175px">
                                                 <!--begin::Select2-->

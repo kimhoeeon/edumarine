@@ -44,6 +44,9 @@ public class ApplicationUnifiedDTO {
 
     String trainStartDttm;
 
+    private String address;
+    private String addressDetail;
+
     // 1. RegularDTO 컬럼
     private String region;
 

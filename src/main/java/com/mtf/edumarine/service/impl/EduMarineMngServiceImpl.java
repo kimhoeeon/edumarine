@@ -8161,6 +8161,11 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         return unifiedMapper.selectUnifiedList(searchDTO);
     }
 
+    @Override
+    public List<TrainDTO> processSelectActiveUnifiedTrainList() {
+        return unifiedMapper.selectActiveUnifiedTrainList();
+    }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public int processSelectUnifiedListCnt(Map<String, Object> paramMap) {

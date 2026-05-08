@@ -3081,11 +3081,8 @@ public class EduMarineMngController {
         //System.out.println("EduMarineMngController > mng_customer_unified");
         ModelAndView mv = new ModelAndView();
 
-        // 필터링을 위한 교육과정 목록 조회 (옵션)
-        // TrainDTO trainDTO = new TrainDTO();
-        // trainDTO.setApplicationSystemType("UNIFIED");
-        // List<TrainDTO> trainList = eduMarineMngService.processSelectTrainList(trainDTO); // 기존 메서드 재사용 확인 필요
-        // mv.addObject("trainList", trainList);
+        List<TrainDTO> trainList = eduMarineMngService.processSelectActiveUnifiedTrainList();
+        mv.addObject("trainList", trainList);
 
         mv.setViewName("/mng/customer/unified"); // JSP 파일명
         return mv;
@@ -3148,45 +3145,118 @@ public class EduMarineMngController {
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
-    
-    // 3. 엑셀 다운로드
-    @RequestMapping(value = "/mng/customer/unified/excel/download.do", method = RequestMethod.GET)
-    public void customer_unified_excel_download(HttpServletRequest req, HttpServletResponse res) {
-        //System.out.println("EduMarineMngController > customer_unified_excel_download");
-        String fileName = req.getParameter("fileName");
 
-        // 검색 조건 파싱 (필요시 request parameter에서 SearchDTO로 매핑)
-        SearchDTO searchDTO = new SearchDTO();
-        // searchDTO.setSearchText(req.getParameter("searchText")); ...
+    /**
+     * 통합 교육 신청자 정보 상세 다운로드 (기본정보 + 교육신청정보)
+     */
+    /**
+     * 통합 교육 신청자 정보 상세 다운로드 (요청 항목 반영)
+     */
+    @RequestMapping(value = "/mng/customer/unified/excel/detail_download.do", method = RequestMethod.GET)
+    public void mng_customer_unified_excel_detail_download(SearchDTO searchDTO, String reason, HttpServletResponse response) throws Exception {
 
-        try(SXSSFWorkbook workbook = new SXSSFWorkbook()){
-            // ... (엑셀 생성 로직: 기존 customer_boarder_detail_excel_download 참고하여 구현) ...
-            // ... (ApplicationUnifiedDTO 필드에 맞춰 컬럼 구성) ...
+        // 1. 엑셀 다운로드용 데이터 조회 (Alias가 적용된 selectExcelUnifiedApplicationList 호출)
+        List<ApplicationUnifiedDTO> list = eduMarineMngService.processSelectExcelUnifiedApplicationList(searchDTO);
 
-            // 간단 예시:
-            SXSSFSheet sheet = workbook.createSheet("UnifiedList");
-            SXSSFRow row = sheet.createRow(0);
-            row.createCell(0).setCellValue("성명");
-            row.createCell(1).setCellValue("교육과정");
-            row.createCell(2).setCellValue("상태");
+        // 2. 워크북 및 시트 생성
+        SXSSFWorkbook wb = new SXSSFWorkbook(100);
+        SXSSFSheet sheet = wb.createSheet("통합신청상세내역");
+        SXSSFRow row = null;
+        SXSSFCell cell = null;
+        int rowIdx = 0;
 
-            List<ApplicationUnifiedDTO> list = eduMarineMngService.processSelectExcelUnifiedApplicationList(searchDTO);
-            int rowNum = 1;
-            for(ApplicationUnifiedDTO dto : list){
-                SXSSFRow r = sheet.createRow(rowNum++);
-                r.createCell(0).setCellValue(dto.getMemberName());
-                r.createCell(1).setCellValue(dto.getTrainName());
-                r.createCell(2).setCellValue(dto.getApplyStatus());
-                // ... 나머지 필드 ...
-            }
+        // 3. 헤더 스타일 설정
+        CellStyle headerStyle = wb.createCellStyle();
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        Font headerFont = wb.createFont();
+        headerFont.setBold(true);
+        headerStyle.setFont(headerFont);
 
-            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            workbook.write(res.getOutputStream());
+        // 4. 요청하신 항목으로 헤더 구성
+        String[] headers = {
+                "번호", "신청번호", "교육명", "차시", "회원등급", "아이디", "이름(국문)", "이름(영문)",
+                "연락처", "이메일", "생년월일", "성별", "주소", "상세주소",
+                "작업복사이즈", "참여경로", "추천인",
+                "결제방식", "결제금액", "신청상태", "신청일시", "취소일시", "취소사유"
+        };
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        row = sheet.createRow(rowIdx++);
+        for (int i = 0; i < headers.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
         }
+
+        // 5. 데이터 본문 작성
+        if (list != null) {
+            for (ApplicationUnifiedDTO item : list) {
+                row = sheet.createRow(rowIdx++);
+                int c = 0;
+
+                // 생년월일 조합
+                String birth = (item.getBirthYear() != null && item.getBirthMonth() != null && item.getBirthDay() != null)
+                        ? item.getBirthYear() + "-" + item.getBirthMonth() + "-" + item.getBirthDay() : "";
+
+                // 교육명 (명칭 + 상세명칭)
+                String trainName = nullToStr(item.getGbn()) + " " + nullToStr(item.getGbnDepth());
+                String nextTimeStr = item.getNextTime() != null ? item.getNextTime() + "차" : "";
+
+                // 데이터 셀 작성 (요청 순서 준수)
+                row.createCell(c++).setCellValue(rowIdx - 1); // 번호
+                row.createCell(c++).setCellValue(nullToStr(item.getSeq())); // 신청번호
+                row.createCell(c++).setCellValue(trainName.trim()); // 교육명
+                row.createCell(c++).setCellValue(nextTimeStr); // 차시
+                row.createCell(c++).setCellValue(nullToStr(item.getGrade())); // 회원등급
+                row.createCell(c++).setCellValue(nullToStr(item.getId())); // 아이디
+                row.createCell(c++).setCellValue(nullToStr(item.getNameKo())); // 이름(국문)
+                row.createCell(c++).setCellValue(nullToStr(item.getNameEn())); // 이름(영문)
+                row.createCell(c++).setCellValue(nullToStr(item.getPhone())); // 연락처
+                row.createCell(c++).setCellValue(nullToStr(item.getEmail())); // 이메일
+                row.createCell(c++).setCellValue(birth); // 생년월일
+                row.createCell(c++).setCellValue(nullToStr(item.getSex())); // 성별
+                row.createCell(c++).setCellValue(nullToStr(item.getAddress())); // 주소
+                row.createCell(c++).setCellValue(nullToStr(item.getAddressDetail())); // 상세주소
+                row.createCell(c++).setCellValue(nullToStr(item.getClothesSize())); // 작업복사이즈
+                row.createCell(c++).setCellValue(nullToStr(item.getParticipationPath())); // 참여경로
+                row.createCell(c++).setCellValue(nullToStr(item.getRecommendPerson())); // 추천인
+                row.createCell(c++).setCellValue(nullToStr(item.getPayMethod())); // 결제방식
+                row.createCell(c++).setCellValue(item.getPaySum() != null ? String.valueOf(item.getPaySum()) : "0"); // 결제금액
+                row.createCell(c++).setCellValue(nullToStr(item.getApplyStatus())); // 신청상태
+                row.createCell(c++).setCellValue(nullToStr(item.getInitRegiDttm())); // 신청일시
+                row.createCell(c++).setCellValue(nullToStr(item.getCancelDttm())); // 취소일시
+                row.createCell(c++).setCellValue(nullToStr(item.getCancelReason())); // 취소사유
+            }
+        }
+
+        // 컬럼 너비 자동 조절 (선택 사항)
+        for (int i = 0; i < headers.length; i++) {
+            sheet.trackColumnForAutoSizing(i);
+            sheet.autoSizeColumn(i);
+        }
+
+        // 6. 파일 다운로드 응답 설정
+        String fileName = "통합교육관리_" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xlsx";
+        response.setContentType("application/vnd.ms-excel");
+        // 한글 파일명 깨짐 방지 처리
+        String encodedFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + encodedFileName);
+
+        wb.write(response.getOutputStream());
+        wb.close();
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+    }
+
+    // NullPointerException 방지용 헬퍼 메서드
+    private String nullToStr(Object obj) {
+        return obj == null ? "" : String.valueOf(obj).trim();
     }
 
     @RequestMapping(value = "/mng/education/train.do", method = RequestMethod.GET)
