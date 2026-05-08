@@ -441,7 +441,7 @@ if (document.documentElement) {
                                             <!--end:Action-->
                                         </div>
                                         <div class="card-toolbar flex-row-fluid gap-5">
-                                            <div class="w-100 mw-250px">
+                                            <div class="w-100 mw-275px">
                                                 <select id="condition_train_seq" class="form-select form-select-solid" data-control="select2" data-hide-search="true" onchange="f_customer_unified_search()">
                                                     <option value="">전체 교육명</option>
                                                     <c:forEach var="train" items="${trainList}">

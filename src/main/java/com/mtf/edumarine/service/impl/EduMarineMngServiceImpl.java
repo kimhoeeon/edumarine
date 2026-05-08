@@ -8191,9 +8191,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Override
     public List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO) {
         //System.out.println("EduMarineMngServiceImpl > processSelectExcelUnifiedApplicationList");
-        // 페이징 없이 전체 조회 (엑셀용)
-        searchDTO.setIsPaging("N");
-        return unifiedMapper.selectUnifiedApplicationList(searchDTO);
+        return unifiedMapper.selectExcelUnifiedApplicationList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
