@@ -208,6 +208,9 @@
         <if test='applyStatus != null and applyStatus != ""'>
             AND au.apply_status = #{applyStatus}
         </if>
+        <if test='trainSeq != null and trainSeq != ""'>
+            AND au.train_seq = #{trainSeq}
+        </if>
         <if test='time != null'>
             AND t.next_time = #{time}
         </if>
@@ -222,11 +225,12 @@
         SELECT COUNT(*)
         FROM application_unified A
         WHERE A.del_yn = 'N'
-
         <if test='status != null and status != ""'>
             AND A.apply_status = #{status}
         </if>
-
+        <if test='trainSeq != null and trainSeq != ""'>
+            AND A.train_seq = #{trainSeq}
+        </if>
         <if test='searchText != null and searchText != ""'>
             <choose>
                 <when test='condition == "name"'>
@@ -240,6 +244,14 @@
                 </otherwise>
             </choose>
         </if>
+    </select>
+
+    <select id="selectActiveUnifiedTrainList" resultType="com.mtf.edumarine.dto.TrainDTO">
+        SELECT seq, gbn, gbn_depth
+        FROM train
+        WHERE del_yn = 'N'
+          AND application_system_type = 'UNIFIED'
+        ORDER BY gbn ASC, gbn_depth ASC
     </select>
 
     <select id="selectUnifiedApplicationSingle" parameterType="String" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
@@ -357,5 +369,100 @@
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
+
+    <select id="selectExcelUnifiedApplicationList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.selectExcelUnifiedApplicationList */
+        SELECT au.seq
+        , au.train_seq AS trainSeq
+        , au.member_seq AS memberSeq
+        , au.apply_status AS applyStatus
+        , au.region AS region
+        , au.participation_path AS participationPath
+        , au.first_application_field AS firstApplicationField
+        , au.second_application_field AS secondApplicationField
+        , au.third_application_field AS thirdApplicationField
+        , au.desired_education_time AS desiredEducationTime
+        , au.experience_yn AS experienceYn
+        , au.recommend_person AS recommendPerson
+        , au.top_clothes_size AS topClothesSize
+        , au.bottom_clothes_size AS bottomClothesSize
+        , au.shoes_size AS shoesSize
+        , au.grade_gbn AS gradeGbn
+        , au.school_name AS schoolName
+        , au.major AS major
+        , au.military_gbn AS militaryGbn
+        , au.military_reason AS militaryReason
+        , au.disabled_gbn AS disabledGbn
+        , au.job_support_gbn AS jobSupportGbn
+        , au.tech_edu_gbn AS techEduGbn
+        , au.tech_edu_name AS techEduName
+        , au.apply_reason AS applyReason
+        , au.tech_reason AS techReason
+        , au.activity_reason AS activityReason
+        , au.plan_reason AS planReason
+        , au.etc_reason AS etcReason
+        , au.know_path AS knowPath
+        , au.know_path_reason AS knowPathReason
+        , au.clothes_size AS clothesSize
+        , au.rc_birth_year AS rcBirthYear
+        , au.rc_birth_month AS rcBirthMonth
+        , au.rc_birth_day AS rcBirthDay
+        , au.train_understand AS trainUnderstand
+        , au.train_understand_etc AS trainUnderstandEtc
+        , au.boarder_gbn AS boarderGbn
+        , au.apply_day AS applyDay
+        , au.choice_date AS choiceDate
+        , au.cancel_dttm AS cancelDttm
+        , au.cancel_reason AS cancelReason
+        , au.refund_bank_code AS refundBankCode
+        , au.refund_bank_name AS refundBankName
+        , au.refund_bank_customer_name AS refundBankCustomerName
+        , au.refund_bank_number AS refundBankNumber
+        , au.del_yn AS delYn
+        , au.note AS note
+        , t.gbn
+        , t.gbn_depth AS gbnDepth
+        , t.next_time AS nextTime
+        , m.grade
+        , m.id
+        , m.name AS nameKo
+        , m.name_en AS nameEn
+        , m.phone
+        , m.email
+        , m.birth_year AS birthYear
+        , m.birth_month AS birthMonth
+        , m.birth_day AS birthDay
+        , m.sex
+        , m.address
+        , m.address_detail AS addressDetail
+        , (SELECT p.pay_method from payment p where p.member_seq = m.seq and p.table_seq = au.seq limit 1) AS payMethod
+        , (SELECT p.tot_price from payment p where p.member_seq = m.seq and p.table_seq = au.seq limit 1) AS paySum
+        , DATE_FORMAT(au.init_regi_dttm, '%Y-%m-%d %T') AS initRegiDttm
+        FROM application_unified au
+        LEFT JOIN member m ON au.member_seq = m.seq
+        LEFT JOIN train t ON au.train_seq = t.seq
+        WHERE au.del_yn = 'N'
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "NAME"'>
+                AND m.name LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "PHONE"'>
+                AND m.phone LIKE BINARY CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "all"'>
+                AND (m.name LIKE BINARY CONCAT('%',#{searchText},'%') OR m.phone LIKE BINARY CONCAT('%',#{searchText},'%'))
+            </if>
+        </if>
+        <if test='applyStatus != null and applyStatus != ""'>
+            AND au.apply_status = #{applyStatus}
+        </if>
+        <if test='trainSeq != null and trainSeq != ""'>
+            AND au.train_seq = #{trainSeq}
+        </if>
+        <if test='year != null and year != ""'>
+            AND t.train_start_dttm LIKE CONCAT(#{year},'%')
+        </if>
+        ORDER BY au.init_regi_dttm DESC
+    </select>
 
 </mapper>

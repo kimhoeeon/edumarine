@@ -421,17 +421,22 @@ function f_customer_unified_search(){
 
     let year = $('#condition_year option:selected').val();
     let applyStatus = $('#condition_apply_status option:selected').val();
+
+    let trainSeq = $('#condition_train_seq option:selected').val();
+
     if(nvl(searchText,'') === ''){
         jsonObj = {
             year: year,
-            applyStatus: applyStatus
+            applyStatus: applyStatus,
+            trainSeq: trainSeq
         };
     }else{
         jsonObj = {
             year: year,
             applyStatus: applyStatus,
             condition: condition ,
-            searchText: searchText
+            searchText: searchText,
+            trainSeq: trainSeq
         }
     }
 
@@ -468,6 +473,7 @@ function f_customer_unified_search_condition_init(){
     $('#search_text').val('');
     $('#condition_year').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_apply_status').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_train_seq').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_customer_unified_search();
@@ -645,12 +651,60 @@ function f_apply_change_btn(){
 
 }
 
-// 엑셀 다운로드 함수
+/**
+ * 통합 교육 엑셀 다운로드 함수
+ * @param type 'unified_detail'(상세) 또는 'unified'(목록)
+ */
+/**
+ * 통합 교육 엑셀 다운로드 함수 (사유 입력 기능 포함)
+ */
 function f_excel_download(type) {
-    var condition = $("#search_box").val();
-    var searchText = $("#search_text").val();
-    var status = $("#condition_status").val();
 
-    var url = "/mng/customer/unified/excel/download.do?fileName=통합신청목록&condition=" + condition + "&searchText=" + searchText + "&status=" + status;
-    window.location.href = url;
+    // 사유 입력 알럿(모달) 띄우기
+    Swal.fire({
+        title: '[ 엑셀 다운로드 사유 ]',
+        text: '개인정보 보호를 위해 다운로드 사유를 입력해 주세요.',
+        input: 'text',
+        inputPlaceholder: '사유를 입력해주세요.',
+        width: '40em',
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '다운로드',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소',
+        preConfirm: (reason) => {
+            if (!reason) {
+                Swal.showValidationMessage('다운로드 사유를 입력해주세요.');
+            }
+            return reason;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var reason = result.value; // 입력받은 사유
+
+            // 현재 화면의 필터 값 가져오기
+            var condition = $("#search_box").val() || "";
+            var searchText = $("#search_text").val() || "";
+            var status = $("#condition_apply_status").val() || "";
+            var year = $("#condition_year").val() || "";
+            var trainSeq = $("#condition_train_seq").val() || "";
+
+            // Controller로 전달할 URL 세팅
+            var url = (type === 'unified_detail')
+                ? "/mng/customer/unified/excel/detail_download.do"
+                : "/mng/customer/unified/excel/download.do";
+
+            // 파라미터 맵핑 및 인코딩
+            url += "?fileName=" + encodeURIComponent("통합신청_목록") +
+                "&condition=" + encodeURIComponent(condition) +
+                "&searchText=" + encodeURIComponent(searchText) +
+                "&status=" + encodeURIComponent(status) +
+                "&year=" + encodeURIComponent(year) +
+                "&trainSeq=" + encodeURIComponent(trainSeq) +
+                "&reason=" + encodeURIComponent(reason); // 사유 파라미터 추가
+
+            // 다운로드 실행
+            window.location.href = url;
+        }
+    });
 }

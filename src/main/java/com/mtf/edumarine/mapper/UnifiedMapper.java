@@ -2,6 +2,7 @@ package com.mtf.edumarine.mapper;
 
 import com.mtf.edumarine.dto.ApplicationUnifiedDTO;
 import com.mtf.edumarine.dto.SearchDTO;
+import com.mtf.edumarine.dto.TrainDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,4 +42,6 @@ public interface UnifiedMapper {
     Integer updateUnifiedApplyStatus(ApplicationUnifiedDTO info);
 
     Integer selectUnifiedPreCheck(ApplicationUnifiedDTO dto);
+
+    List<TrainDTO> selectActiveUnifiedTrainList();
 }
