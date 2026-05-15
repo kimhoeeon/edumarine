@@ -465,4 +465,18 @@
         ORDER BY au.init_regi_dttm DESC
     </select>
 
+    <update id="updateTrainApplyCntMinus" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.updateTrainApplyCntMinus */
+        UPDATE train
+        SET train_apply_cnt = CASE WHEN train_apply_cnt > 0 THEN train_apply_cnt - 1 ELSE 0 END
+        WHERE seq = (SELECT train_seq FROM application_unified WHERE seq = #{seq})
+    </update>
+
+    <update id="updateTrainApplyCntPlus" parameterType="java.lang.String">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.updateTrainApplyCntPlus */
+        UPDATE train
+        SET train_apply_cnt = train_apply_cnt + 1
+        WHERE seq = (SELECT train_seq FROM application_unified WHERE seq = #{seq})
+    </update>
+
 </mapper>

@@ -46,4 +46,8 @@ public interface UnifiedMapper {
     List<TrainDTO> selectActiveUnifiedTrainList();
 
     List<ApplicationUnifiedDTO> selectExcelUnifiedApplicationList(SearchDTO searchDTO);
+
+    Integer updateTrainApplyCntMinus(String seq);
+
+    Integer updateTrainApplyCntPlus(String seq);
 }

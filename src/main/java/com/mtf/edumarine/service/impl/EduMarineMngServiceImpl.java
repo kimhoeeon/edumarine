@@ -7161,6 +7161,10 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                             cancelApiCallYn = true;
                         }
 
+                        // ★ 추가: 인원 가감을 판단하기 위해 이전 상태와 현재 변경할 상태를 비교
+                        boolean preCancel = unifiedInfo.getApplyStatus() != null && unifiedInfo.getApplyStatus().contains("취소");
+                        boolean nowCancel = info.getApplyStatus() != null && info.getApplyStatus().contains("취소");
+
                         if(cancelApiCallYn){
 
                             // 결제 내역이 있는 신청건인지 payment table 조회
@@ -7349,7 +7353,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                             updPayment.setRefundReason(unifiedInfo.getCancelReason());
                                             eduMarineMngMapper.updatePayment(updPayment);
 
-                                            // 교육 신청인원 빼기
+                                            // 교육 신청인원 빼기 (기존 정상 로직)
                                             eduMarineMngMapper.updateTrainApplyCnt(trainDTO.getSeq());
                                         }
                                     }else{
@@ -7367,14 +7371,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                     resultCode = CommConstants.RESULT_CODE_FAIL;
                                     resultMessage = "[Data Update Fail] Seq : " + info.getSeq();
                                     break;
+                                }else{
+                                    // ★ [수정 포인트 1] 결제 내역이 없을 때도 취소 처리 시 인원 빼기
+                                    if (!preCancel && nowCancel) {
+                                        unifiedMapper.updateTrainApplyCntMinus(info.getSeq());
+                                    } else if (preCancel && !nowCancel) {
+                                        unifiedMapper.updateTrainApplyCntPlus(info.getSeq());
+                                    }
                                 }
                             }
                         }else{
 
                             // 미결제취소 건 취소승인처리
-                            /*if( "미결제취소".equals(sailyachtInfo.getApplyStatus()) ) {
-                                info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
-                            }*/
+                        /*if( "미결제취소".equals(sailyachtInfo.getApplyStatus()) ) {
+                            info.setApplyStatus(info.getApplyStatus() + "(미결제취소)");
+                        }*/
 
                             // 결제대기 , 취소완료 건 취소승인처리
                             Integer result = unifiedMapper.updateUnifiedApplyStatus(info);
@@ -7387,6 +7398,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                                 if(paymentDTO != null){
                                     paymentDTO.setPayStatus(info.getApplyStatus());
                                     eduMarineMngMapper.updatePayment(paymentDTO);
+                                }
+
+                                // ★ [수정 포인트 2] 결제대기 상태 등에서 취소승인 시 인원 빼기
+                                if (!preCancel && nowCancel) {
+                                    unifiedMapper.updateTrainApplyCntMinus(info.getSeq());
+                                } else if (preCancel && !nowCancel) {
+                                    unifiedMapper.updateTrainApplyCntPlus(info.getSeq());
                                 }
                             }
                         }
