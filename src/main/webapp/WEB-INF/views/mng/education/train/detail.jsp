@@ -533,7 +533,7 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <input class="form-control form-control-solid onlyNum" id="nextTime" name="nextTime" maxlength="2" placeholder="차시" value="${info.nextTime}" <c:if test="${info ne null}">readonly</c:if>/>
+                                                    <input class="form-control form-control-solid onlyNum" id="nextTime" name="nextTime" maxlength="2" placeholder="차시" value="${info.nextTime}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>

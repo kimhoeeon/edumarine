@@ -219,7 +219,7 @@
                                                     <div class="table_flex">
                                                         <div>3차</div>
                                                         <div>:</div>
-                                                        <div>26. 10. 16(화)</div>
+                                                        <div>26. 10. 6(화)</div>
                                                         <div>~</div>
                                                         <div>26. 10. 23(금)</div>
                                                     </div>
@@ -508,7 +508,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="bg name">세일요트 기초정비실습 과정(1회)</td>
+                                                <td class="bg name">세일요트 기초정비실습 과정(2회)</td>
                                                 <td>
                                                     <div class="table_flex">
                                                         <div>1차</div>
@@ -516,6 +516,13 @@
                                                         <div>26. 6. 27(토)</div>
                                                         <div>~</div>
                                                         <div>26. 6. 28(일)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>2차</div>
+                                                        <div>:</div>
+                                                        <div>26. 10. 24(토)</div>
+                                                        <div>~</div>
+                                                        <div>26. 10. 25(일)</div>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -525,6 +532,13 @@
                                                         <div>26. 3. 3(화)</div>
                                                         <div>~</div>
                                                         <div class="table_lt">26. 6. 19(금)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>2차</div>
+                                                        <div>:</div>
+                                                        <div>26. 7. 2(목)</div>
+                                                        <div>~</div>
+                                                        <div class="table_lt">26. 10. 16(금)</div>
                                                     </div>
                                                 </td>
                                             </tr>
