@@ -42,7 +42,7 @@
         .print_area {
             border: 2px red solid;
             background: #fff;
-            height: 277mm;
+            min-height: 277mm;
         }
 
         @page {
@@ -174,7 +174,7 @@
                                     <div>${info.participationPath}</div>
                                 </div>
                             </li>
-                            <li style="height: 130px;">
+                            <li style="height: 60px;">
                                 <div class="gubun"><p>비고</p></div>
                                 <div class="naeyong">
                                 </div>
