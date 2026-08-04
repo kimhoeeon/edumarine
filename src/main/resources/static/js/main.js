@@ -290,7 +290,7 @@ function f_main_member_join(){
     if(pwConfirmCheck === 'false'){ showMessage('', 'error', '[비밀번호 확인]', '비밀번호 항목과 비밀번호 확인 항목이 일치하는지 확인해 주세요.', ''); return false; }
 
     // 개인정보수집 동의 여부
-    let privcy_chk = $('#f_privcy_essential').is(':checked');
+    let privcy_chk = $('#f_privcy_essential').prop('checked');
     if(!privcy_chk){ showMessage('', 'error', '[개인정보수집 동의]', '개인정보수집 동의 항목에 체크해 주세요.', ''); return false; }
 
     let id = $('#id').val();
@@ -347,6 +347,12 @@ function f_main_member_join(){
     let sexLen = $('input[type=radio][name=sex]:checked').length;
     if(sexLen === 0){ showMessage('', 'error', '[회원가입 정보]', '성별을 선택해 주세요.', ''); return false; }
 
+    let address = $('#address').val();
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '주소를 입력해 주세요.', ''); return false; }
+
+    let addressDetail = $('#addressDetail').val();
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '상세주소를 입력해 주세요.', ''); return false; }
+
     let email = $('#email').val();
     if(nvl(email,'') === ''){ showMessage('', 'error', '[회원가입 정보]', '이메일을 입력해 주세요.', ''); return false; }
 
@@ -358,6 +364,9 @@ function f_main_member_join(){
 
     // form
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    // 개인정보수집 동의 여부
+    form.privacyYn = privcy_chk ? 'Y' : 'N';
 
     //이메일
     form.email = email + '@' + domain;
@@ -437,9 +446,7 @@ function f_main_member_join(){
                                 }
                             })//ajax
                         }else{
-
                             showMessage('', 'info', '[회원가입]', '이미 가입된 회원 정보입니다.', '');
-
                         }
 
                     } else {
@@ -592,7 +599,7 @@ function f_main_member_modify(){
     if(pwConfirmCheck === 'false'){ showMessage('', 'error', '[비밀번호 확인]', '비밀번호 항목과 비밀번호 확인 항목이 일치하는지 확인해 주세요.', ''); return false; }
 
     // 개인정보수집 동의 여부
-    let privcy_chk = $('#f_privcy_essential').is(':checked');
+    let privcy_chk = $('#f_privcy_essential').prop('checked');
     if(!privcy_chk){ showMessage('', 'error', '[개인정보수집 동의]', '개인정보수집 동의 항목에 체크해 주세요.', ''); return false; }
 
     let password = $('#password').val();
@@ -619,6 +626,12 @@ function f_main_member_modify(){
     let sexLen = $('input[type=radio][name=sex]:checked').length;
     if(sexLen === 0){ showMessage('', 'error', '[회원 정보]', '성별을 선택해 주세요.', ''); return false; }
 
+    let address = $('#address').val();
+    if(nvl(address,'') === ''){ showMessage('', 'error', '[회원 정보]', '주소를 입력해 주세요.', ''); return false; }
+
+    let addressDetail = $('#addressDetail').val();
+    if(nvl(addressDetail,'') === ''){ showMessage('', 'error', '[회원 정보]', '상세주소를 입력해 주세요.', ''); return false; }
+
     let email = $('#email').val();
     if(nvl(email,'') === ''){ showMessage('', 'error', '[회원 정보]', '이메일을 입력해 주세요.', ''); return false; }
 
@@ -630,6 +643,9 @@ function f_main_member_modify(){
 
     // form
     let form = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
+
+    // 개인정보수집 동의 여부
+    form.privacyYn = privcy_chk ? 'Y' : 'N';
 
     //이메일
     form.email = email + '@' + domain;

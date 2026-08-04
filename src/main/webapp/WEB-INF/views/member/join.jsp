@@ -397,18 +397,18 @@
                         <div class="form_privacy_check">
                             <p>
                                 <label>
-                                    <input type="checkbox" class="f_privcy_chk_all" checked>개인정보수집 및 선택 사항에 모두 동의합니다.
+                                    <input type="checkbox" class="f_privcy_chk_all">개인정보수집 및 선택 사항에 모두 동의합니다.
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" id="f_privcy_essential" class="f_privcy_chk" checked>
+                                    <input type="checkbox" id="f_privcy_essential" class="f_privcy_chk">
                                     <span style="color: #C00000;">(필수)</span> 개인정보수집 동의
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" id="smsYn" name="smsYn" class="f_privcy_chk" checked>
+                                    <input type="checkbox" id="smsYn" name="smsYn" class="f_privcy_chk">
                                     (선택) SMS 알림서비스 동의 (가입, 신청 안내, 게시물 키워드 알림 등)
                                 </label>
                             </p>

@@ -68,9 +68,17 @@
             }
         }
 
+        /* Flexbox 영역 팽창 방지 및 이미지 제어 ---- */
+        .form_wrap .form_box .form_list > li .naeyong {
+            min-width: 0; /* Flex 아이템 팽창 방지 핵심 코드 */
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
 
-
-        /*div { border: 1px solid black;}*/
+        .form_wrap .form_box .form_list > li .naeyong img {
+            max-width: 100%; /* 부모 영역 밖으로 빠져나가지 않도록 제한 */
+            object-fit: contain; /* 이미지 비율 찌그러짐 방지 */
+        }
     </style>
 </head>
 <body>
@@ -133,7 +141,7 @@
                                 <div class="gubun"><p>상반신 사진</p></div>
                                 <div class="naeyong">
                                     <c:set var="bodyPhotoFileSrc" value="${fn:replace(bodyPhotoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
-                                    <img src="${bodyPhotoFileSrc}" style="max-height: 150px;"/>
+                                    <img src="${bodyPhotoFileSrc}" style="max-width: 100%; max-height: 150px; object-fit: contain;"/>
                                 </div>
                             </li>
                             <li>
