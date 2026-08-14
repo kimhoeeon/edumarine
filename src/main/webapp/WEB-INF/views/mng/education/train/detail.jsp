@@ -409,6 +409,7 @@ if (document.documentElement) {
                                                                 <option></option>
                                                                 <option value="BASIC_FORM" <c:if test="${info.formType == 'BASIC_FORM'}">selected</c:if>>기본형 (작업복사이즈, 참여경로)</option>
                                                                 <option value="PRO_FORM" <c:if test="${info.formType == 'PRO_FORM'}">selected</c:if>>기본형2 (작업복사이즈, 참여경로, 추천인)</option>
+                                                                <option value="BASE_FORM" <c:if test="${info.formType == 'BASE_FORM'}">selected</c:if>>기본형3 (참여경로)</option>
                                                                 <%--<option value="FAMTOUR_FORM" <c:if test="${info.formType == 'FAMTOUR_FORM'}">selected</c:if>>팸투어형 (신청일 선택)</option>--%>
                                                             </select>
                                                             <input type="hidden" name="applicationSystemType" value="UNIFIED"/>
