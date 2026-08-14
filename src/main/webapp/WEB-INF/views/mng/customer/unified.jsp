@@ -445,7 +445,7 @@ if (document.documentElement) {
                                                 <select id="condition_train_seq" class="form-select form-select-solid" data-control="select2" data-hide-search="true" onchange="f_customer_unified_search()">
                                                     <option value="">전체 교육명</option>
                                                     <c:forEach var="train" items="${trainList}">
-                                                        <option value="${train.seq}">${train.gbn} ${train.gbnDepth}</option>
+                                                        <option value="${train.gbn}">${train.gbn}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>

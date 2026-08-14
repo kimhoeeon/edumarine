@@ -209,7 +209,7 @@
             AND au.apply_status = #{applyStatus}
         </if>
         <if test='trainSeq != null and trainSeq != ""'>
-            AND au.train_seq = #{trainSeq}
+            AND t.gbn LIKE BINARY CONCAT(#{trainSeq}, '%')
         </if>
         <if test='time != null'>
             AND t.next_time = #{time}
