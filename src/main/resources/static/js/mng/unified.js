@@ -421,14 +421,15 @@ function f_customer_unified_search(){
 
     let year = $('#condition_year option:selected').val();
     let applyStatus = $('#condition_apply_status option:selected').val();
-
     let trainSeq = $('#condition_train_seq option:selected').val();
+    let nextTime = $('#condition_next_time option:selected').val();
 
     if(nvl(searchText,'') === ''){
         jsonObj = {
             year: year,
             applyStatus: applyStatus,
-            trainSeq: trainSeq
+            trainSeq: trainSeq,
+            time: nextTime
         };
     }else{
         jsonObj = {
@@ -436,7 +437,8 @@ function f_customer_unified_search(){
             applyStatus: applyStatus,
             condition: condition ,
             searchText: searchText,
-            trainSeq: trainSeq
+            trainSeq: trainSeq,
+            time: nextTime
         }
     }
 
@@ -474,6 +476,7 @@ function f_customer_unified_search_condition_init(){
     $('#condition_year').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_apply_status').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_train_seq').val('').select2({minimumResultsForSearch: Infinity});
+    $('#condition_next_time').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_customer_unified_search();
@@ -688,6 +691,7 @@ function f_excel_download(type) {
             var status = $("#condition_apply_status").val() || "";
             var year = $("#condition_year").val() || "";
             var trainSeq = $("#condition_train_seq").val() || "";
+            var nextTime = $("#condition_next_time").val() || "";
 
             // Controller로 전달할 URL 세팅
             var url = (type === 'unified_detail')
@@ -701,7 +705,8 @@ function f_excel_download(type) {
                 "&status=" + encodeURIComponent(status) +
                 "&year=" + encodeURIComponent(year) +
                 "&trainSeq=" + encodeURIComponent(trainSeq) +
-                "&reason=" + encodeURIComponent(reason); // 사유 파라미터 추가
+                "&time=" + encodeURIComponent(nextTime) +
+                "&reason=" + encodeURIComponent(reason);
 
             // 다운로드 실행
             window.location.href = url;

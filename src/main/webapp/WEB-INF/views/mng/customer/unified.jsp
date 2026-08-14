@@ -449,8 +449,19 @@ if (document.documentElement) {
                                                     </c:forEach>
                                                 </select>
                                             </div>
+                                            <div class="w-100 mw-150px">
+                                                <select id="condition_next_time" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 차시 -" onchange="f_customer_unified_search()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 차시 -</option>
+                                                    <c:forEach var="time" items="${timeList}">
+                                                        <option value="${time}">${time}차</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                             <%--begin::신청상태--%>
-                                            <div class="w-100 mw-175px">
+                                            <div class="w-100 mw-150px">
                                                 <!--begin::Select2-->
                                                 <select id="condition_year" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
