@@ -3086,24 +3086,28 @@ public class EduMarineMngController {
         // 순수 교육명 추출 및 중복 제거를 위한 리스트와 Set
         List<TrainDTO> uniqueTrainList = new ArrayList<>();
         Set<String> nameSet = new LinkedHashSet<>();
+        Set<Integer> timeSet = new TreeSet<>();
 
         for (TrainDTO train : trainList) {
-            // 정규식 설명: 공백이나 괄호 기호로 시작하는 '숫자+차' 패턴과 그 뒤의 모든 문자를 삭제
-            // 예: "해상엔진 (1차)" -> "해상엔진", "FRP 2차 주말반" -> "FRP"
+            // 1. 교육명 추출 및 중복 제거
             String baseName = train.getGbn().replaceAll("\\s*[\\[\\(]?[0-9]+차[\\]\\)]?.*", "").trim();
-
-            // Set을 이용해 중복 여부 확인
             if (!nameSet.contains(baseName)) {
                 nameSet.add(baseName);
-
                 TrainDTO dto = new TrainDTO();
-                dto.setGbn(baseName); // 순수 교육명만 gbn에 다시 담음
+                dto.setGbn(baseName);
                 uniqueTrainList.add(dto);
+            }
+
+            // 2. 차시(nextTime) 추출 및 중복 제거
+            if (train.getNextTime() != null) {
+                timeSet.add(train.getNextTime());
             }
         }
 
         // 중복 제거된 리스트를 화면으로 전달
         mv.addObject("trainList", uniqueTrainList);
+        mv.addObject("timeList", timeSet);
+
         mv.setViewName("/mng/customer/unified"); // JSP 파일명
         return mv;
     }

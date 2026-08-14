@@ -247,7 +247,7 @@
     </select>
 
     <select id="selectActiveUnifiedTrainList" resultType="com.mtf.edumarine.dto.TrainDTO">
-        SELECT seq, gbn, gbn_depth
+        SELECT seq, gbn, gbn_depth, next_time
         FROM train
         WHERE del_yn = 'N'
           AND application_system_type = 'UNIFIED'
