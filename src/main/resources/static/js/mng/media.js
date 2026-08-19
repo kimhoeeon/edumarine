@@ -232,12 +232,17 @@ function f_board_media_save(seq){
 }
 
 function f_board_media_form_data_setting(){
-
     let form = JSON.parse(JSON.stringify($('#dataForm').serializeObject()));
-
     form.uploadFile = '';
 
-    form.mediaKey = youtubeId(form.mediaUrl);
+    let url = form.mediaUrl;
+
+    // 유튜브인지 인스타그램 릴스인지 판별하여 mediaKey 저장
+    if(url.indexOf('instagram.com') !== -1) {
+        form.mediaKey = instagramId(url);
+    } else {
+        form.mediaKey = youtubeId(url);
+    }
 
     return JSON.stringify(form);
 }
@@ -259,11 +264,28 @@ function f_board_media_valid(){
 function youtubeId(url) {
     let tag = '';
     if(url)  {
-        let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        // 정규식에 (shorts\/) 추가
+        let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?)|(shorts\/))\??v?=?([^#\&\?]*).*/;
         let matchs = url.match(regExp);
         if (matchs) {
-            tag = matchs[7];
+            // (shorts\/) 그룹이 추가되었으므로 영상 ID가 담기는 위치가 7에서 8로 변경됩니다.
+            tag = matchs[8];
         }else {
+            tag = url;
+        }
+    }
+    return tag;
+}
+
+function instagramId(url) {
+    let tag = '';
+    if(url) {
+        // 인스타그램 /reel/ 또는 /p/ 뒤의 ID를 추출하는 정규식
+        let regExp = /(?:instagram\.com\/)(?:reel\/|p\/)([a-zA-Z0-9_-]+)/;
+        let matchs = url.match(regExp);
+        if (matchs) {
+            tag = matchs[1]; // 추출된 인스타그램 영상 ID
+        } else {
             tag = url;
         }
     }

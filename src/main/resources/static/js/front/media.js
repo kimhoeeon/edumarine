@@ -100,7 +100,7 @@ function searchPosts(pageNum) {
             let mediaUrl = results[i].mediaUrl;
             let mediaKey = results[i].mediaKey;
 
-            str += '<li class="video_view">';
+            str += '<li class="video_view" data-title="' + title + '" data-key="' + mediaKey + '" data-url="' + mediaUrl + '">';
                 str += '<div class="thumb">';
                     str += '<img src="https://img.youtube.com/vi/' + mediaKey +'/mqdefault.jpg">';
                 str += '</div>';
