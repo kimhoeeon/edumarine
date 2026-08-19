@@ -99,24 +99,43 @@ $(document).ready(function () {
 
     // 팝업 - 비디오
     $(document).on("click", ".video_view", function() {
-        //console.log($(this).find('img').attr('src')); // https://img.youtube.com/vi/WMaA84_cixo/mqdefault.jpg
-        let youtubeTitle = $(this).find('.subject').text();
-        let youtubeUrl = $(this).find('img').attr('src');
-        let youtubeSeq = '';
-        youtubeSeq = youtubeUrl.toString()
-            .replace('https://img.youtube.com/vi/','')
-            .replace('/mqdefault.jpg',''); // WMaA84_cixo
-        let youtubeIframeUrl = 'https://www.youtube.com/embed/' + youtubeSeq;
-        $('#popupVideo').find('.popup_tit').text(youtubeTitle);
-        $('#popupVideo').find('iframe').attr('src', youtubeIframeUrl);
+        let title = $(this).data('title');
+        let key = $(this).data('key');
+        let url = $(this).data('url');
+
+        let iframeUrl = '';
+
+        // 1. 유튜브 (일반, 쇼츠)
+        if (url && url.indexOf('youtu') !== -1) {
+            iframeUrl = 'https://www.youtube.com/embed/' + key + '?autoplay=1&mute=0';
+        }
+        // 2. 인스타그램 (릴스)
+        else if (url && url.indexOf('instagram.com') !== -1) {
+            iframeUrl = 'https://www.instagram.com/reel/' + key + '/embed/';
+
+            // 인스타그램은 자체 스크롤이 생길 수 있으므로 iframe 속성 조정
+            $('#popupVideo').find('iframe').attr({
+                'src': iframeUrl,
+                'scrolling': 'no',
+                'allowtransparency': 'true'
+            });
+        }
+        // 3. 기타
+        else {
+            iframeUrl = url;
+        }
+
+        $('#popupVideo').find('.popup_tit').text(title);
+        $('#popupVideo').find('iframe').attr('src', iframeUrl);
 
         $('#popupVideo').addClass('on');
         $('body').addClass('lock_scroll');
     });
+
     // 팝업 - 닫기 클릭 시 유튜브 영상 정지
     $('#popupVideo .popup_close').on('click', function () {
-        //playVideo=재생, pauseVideo=일시정지, stopVideo=정지 
-        $("iframe")[0].contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
+        // iframe src를 완전히 비워버려 오디오가 계속 재생되는 버그 원천 차단
+        $('#popupVideo').find('iframe').attr('src', '');
     });
 
     // 팝업 - 취창업후기
