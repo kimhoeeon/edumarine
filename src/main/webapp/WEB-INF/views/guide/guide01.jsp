@@ -586,8 +586,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="bg gubun">위탁교육 과정</td>
-                                                <td class="bg name">위탁교육 과정</td>
+                                                <td class="bg gubun" colspan="2">위탁교육 과정</td>
                                                 <td>3월 ~ 12월</td>
                                                 <td>단체교육 희망 시<br />원하는 교육 맞춤 설계 및 일정조율 가능</td>
                                             </tr>
