@@ -543,6 +543,49 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td class="bg gubun" colspan="2">레저선박 항해용 전자장비 입문 과정(3회)</td>
+                                                <td>
+                                                    <div class="table_flex">
+                                                        <div>1차</div>
+                                                        <div>:</div>
+                                                        <div>26. 8. 29(토)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>2차</div>
+                                                        <div>:</div>
+                                                        <div>26. 9. 19(토)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>3차</div>
+                                                        <div>:</div>
+                                                        <div>26. 11. 7(토)</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="table_flex">
+                                                        <div>1차</div>
+                                                        <div>:</div>
+                                                        <div>26. 8. 18(화)</div>
+                                                        <div>~</div>
+                                                        <div class="table_lt">26. 8. 24(월)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>2차</div>
+                                                        <div>:</div>
+                                                        <div>26. 8. 18(화)</div>
+                                                        <div>~</div>
+                                                        <div class="table_lt">26. 9. 14(월)</div>
+                                                    </div>
+                                                    <div class="table_flex">
+                                                        <div>3차</div>
+                                                        <div>:</div>
+                                                        <div>26. 8. 18(화)</div>
+                                                        <div>~</div>
+                                                        <div class="table_lt">26. 11. 2(월)</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td class="bg gubun">위탁교육 과정</td>
                                                 <td class="bg name">위탁교육 과정</td>
                                                 <td>3월 ~ 12월</td>
