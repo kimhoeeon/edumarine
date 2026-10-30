@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.inicis.std.util.HttpUtil;
 import com.inicis.std.util.ParseUtil;
 import com.inicis.std.util.SignatureUtil;
+import com.mtf.edumarine.util.InicisSignUtil;
 import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
@@ -4710,12 +4711,12 @@ public class EduMarineController {
                     signParam.put("timestamp", timestamp);        // 필수
 
                     // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
-                    String signature = SignatureUtil.makeSignature(signParam);
+                    String signature = InicisSignUtil.makeSignature(signParam);
 
                     signParam.put("signKey", externalApi.getInicisSignKey());        // 필수 (2026-10-30: 설정 파일 inicis.sign-key)
 
                     // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
-                    String verification = SignatureUtil.makeSignature(signParam);
+                    String verification = InicisSignUtil.makeSignature(signParam);
 
                     //#####################
                     // 3.API 요청 전문 생성
@@ -5647,7 +5648,7 @@ public class EduMarineController {
         String mid = externalApi.getInicisMid();
         String signKey = externalApi.getInicisSignKey();
 
-        String mKey = SignatureUtil.hash(signKey, "SHA-256");
+        String mKey = InicisSignUtil.sha256Hex(signKey);
 
         String timestamp			= SignatureUtil.getTimestamp();			// util에 의해서 자동생성
         String oid = inistdpayRequestDTO.getOid();
@@ -5671,11 +5672,11 @@ public class EduMarineController {
         signParam.put("price", price);
         signParam.put("timestamp", timestamp);
 
-        String signature = SignatureUtil.makeSignature(signParam);			// signature 대상: oid, price, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+        String signature = InicisSignUtil.makeSignature(signParam);			// signature 대상: oid, price, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
 
         signParam.put("signKey", signKey);
 
-        String verification = SignatureUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+        String verification = InicisSignUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
 
         // ---------------------------------------------------------
         // 접속한 도메인을 동적으로 가져오도록 변경
@@ -5728,7 +5729,7 @@ public class EduMarineController {
         String mid = externalApi.getInicisMid();
         String signKey = externalApi.getInicisSignKey();
 
-        String mKey = SignatureUtil.hash(signKey, "SHA-256");
+        String mKey = InicisSignUtil.sha256Hex(signKey);
 
         String timestamp			= SignatureUtil.getTimestamp();			// util에 의해서 자동생성
         String oid = inistdpayRequestDTO.getOid();
@@ -5751,11 +5752,11 @@ public class EduMarineController {
         signParam.put("price", price);
         signParam.put("timestamp", timestamp);
 
-        String signature = SignatureUtil.makeSignature(signParam);			// signature 대상: oid, price, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+        String signature = InicisSignUtil.makeSignature(signParam);			// signature 대상: oid, price, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
 
         signParam.put("signKey", signKey);
 
-        String verification = SignatureUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
+        String verification = InicisSignUtil.makeSignature(signParam);		// verification 대상 : oid, price, signkey, timestamp (알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
 
         // ---------------------------------------------------------
         // 동적 도메인 할당
