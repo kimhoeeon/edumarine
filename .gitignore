@@ -41,3 +41,10 @@ src/main/resources/application.properties
 
 ### Claude Code 세션 설정 (커밋 제외) ###
 .claude/
+
+### 정적 자원 (2026-10-30 사용자 결정: 이미지·파일·폰트·Metronic assets 는 git 에 두지 않는다. 이 PC 와 배포 WAR 에만 있으므로 별도 백업 필요) ###
+src/main/resources/static/img/
+src/main/resources/static/file/
+src/main/resources/static/assets/
+src/main/resources/static/eng/img/
+src/main/resources/static/eng/fonts/
