@@ -6,7 +6,7 @@ import java.io.IOException;
 
 /**
  * 인증 실패 응답 공통 처리.
- * - 화면 요청(GET + Accept: text/html): 로그인 페이지로 리다이렉트 (기존 JSP 스크립트 리다이렉트와 같은 결과)
+ * - 화면 요청(Accept: text/html, GET/POST 모두): 로그인 페이지로 리다이렉트 (기존 JSP 스크립트 리다이렉트와 같은 결과)
  * - API 요청(JSON/AJAX): 401 + ResponseDTO 형식 JSON
  */
 final class AuthResponses {
@@ -15,9 +15,11 @@ final class AuthResponses {
     }
 
     static void reject(HttpServletRequest request, HttpServletResponse response, String loginPage) throws IOException {
+        // 화면 요청 판정은 메서드가 아니라 Accept 헤더로 한다. 관리자 메인은 로그인 폼 전송(POST)으로 들어오므로
+        // 세션이 사라진 뒤 새로고침(POST 재전송)해도 JSON 이 아니라 로그인 페이지로 보내야 한다 (2026-10-30 배포 확인 반영).
+        // AJAX(jQuery JSON, fetch, sendBeacon)는 Accept 가 */* 또는 application/json 이라 401 JSON 을 받는다.
         String accept = request.getHeader("Accept");
-        boolean pageRequest = "GET".equalsIgnoreCase(request.getMethod())
-                && accept != null && accept.contains("text/html")
+        boolean pageRequest = accept != null && accept.contains("text/html")
                 && request.getHeader("X-Requested-With") == null;
 
         if (pageRequest) {
