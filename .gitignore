@@ -42,9 +42,6 @@ src/main/resources/application.properties
 ### Claude Code 세션 설정 (커밋 제외) ###
 .claude/
 
-### 정적 자원 (2026-10-30 사용자 결정: 이미지·파일·폰트·Metronic assets 는 git 에 두지 않는다. 이 PC 와 배포 WAR 에만 있으므로 별도 백업 필요) ###
-src/main/resources/static/img/
-src/main/resources/static/file/
-src/main/resources/static/assets/
-src/main/resources/static/eng/img/
-src/main/resources/static/eng/fonts/
+### 정적 자원 (2026-10-30 사용자 결정): 브로슈어 PDF(static/file/*.pdf)만 git 에 두지 않는다.
+### 이미지·폰트·Metronic assets·업로드 양식(static/file/sms)은 코드와 같이 git 에서 관리한다(히스토리 정리 후 재추적). PDF 는 이 PC 와 배포 WAR 에만 있다. ###
+src/main/resources/static/file/*.pdf
