@@ -9756,7 +9756,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
             urlParameters +=  ", \"key\":\"" + key + "\" ";
             urlParameters = "{"+ urlParameters  +"}";		//JSON 데이터
-            System.out.println("urlParameters : " + urlParameters);
+            // 2026-10-30: 요청 본문 출력 제거 (DirectSend API 키·메일 본문이 서버 로그에 남지 않도록)
 
             System.setProperty("jsse.enableSNIExtension", "false");
             con.setDoOutput(true);
