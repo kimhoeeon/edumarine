@@ -1,5 +1,7 @@
 package com.mtf.edumarine.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.google.gson.Gson;
 import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
@@ -35,6 +37,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
+@Slf4j
 public class CommServiceImpl implements CommService {
 
     @Setter(onMethod_ = {@Autowired})
@@ -130,12 +133,12 @@ public class CommServiceImpl implements CommService {
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error("[smsSend] error", e);
         }
 
         Gson gson = new Gson();
         SmsResponseDTO responseDTO = gson.fromJson(uniToKor(result), SmsResponseDTO.class);
-        System.out.println("Msg Send Response : " + responseDTO.toString());
+        log.info("SMS 발송 결과 result_code={} message={}", responseDTO.getResult_code(), responseDTO.getMessage());
         //{"result_code":"1","message":"success","msg_id":"583009869","success_cnt":1,"error_cnt":0,"msg_type":"SMS"}
 
         return responseDTO;
@@ -231,13 +234,13 @@ public class CommServiceImpl implements CommService {
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error("[smsSend_certNum] error", e);
         }
 
         Gson gson = new Gson();
         SmsResponseDTO responseDTO = gson.fromJson(uniToKor(result), SmsResponseDTO.class);
         responseDTO.setNote(certNum);
-        System.out.println("Msg Send Response : " + responseDTO.toString());
+        log.info("SMS 발송 결과 result_code={} message={}", responseDTO.getResult_code(), responseDTO.getMessage());
         //{"result_code":"1","message":"success","msg_id":"583009869","success_cnt":1,"error_cnt":0,"msg_type":"SMS"}
 
         return responseDTO;
@@ -252,7 +255,6 @@ public class CommServiceImpl implements CommService {
             numStr.append(ran);
         }
 
-        System.out.println("인증번호 : " + numStr);
         return numStr.toString();
     }
 
@@ -728,7 +730,7 @@ public class CommServiceImpl implements CommService {
             String grade = member.getGrade();
             String afterGrade = member.getAfterGrade();
             if(!Objects.equals(grade, afterGrade)){
-                System.out.println("[Member grade update] seq : " + member.getSeq() + " , name : " + member.getName() + " , grade : " + member.getGrade() + " -> " + member.getAfterGrade());
+                log.info("[Member grade update] seq={} grade {} -> {}", member.getSeq(), member.getGrade(), member.getAfterGrade());
                 commMapper.updateMemberGrade(member);
             }
         }
@@ -737,7 +739,6 @@ public class CommServiceImpl implements CommService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFileUserId(FileDTO fileDTO) {
-        System.out.println("CommServiceImpl > processUpdateFileUserId");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -750,7 +751,6 @@ public class CommServiceImpl implements CommService {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Update Fail] Id : " + fileDTO.getId();
                 }
-                //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Id Not Found Error]";
@@ -758,7 +758,7 @@ public class CommServiceImpl implements CommService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processUpdateFileUserId ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processUpdateFileUserId] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -769,20 +769,18 @@ public class CommServiceImpl implements CommService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public void processUpdateFileDeleteUseN(FileDTO fileDTO) {
-        System.out.println("CommServiceImpl > processUpdateFileDeleteUseN");
         try {
             if(!StringUtil.isEmpty(fileDTO.getUserId())){
                 commMapper.updateFileDeleteUseN(fileDTO);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("[processUpdateFileDeleteUseN] 처리 중 예외", e);
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FileDTO> processSelectFileUserIdList(FileDTO fileDTO) {
-        System.out.println("CommServiceImpl > processSelectFileUserIdList");
         return commMapper.selectFileUserIdList(fileDTO);
     }
 

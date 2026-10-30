@@ -1,5 +1,7 @@
 package com.mtf.edumarine.controller;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.inicis.std.util.HttpUtil;
 import com.inicis.std.util.ParseUtil;
 import com.inicis.std.util.SignatureUtil;
@@ -40,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
+@Slf4j
 public class EduMarineController {
 
     // 필드 주입이 아닌 생성자 주입형태로 사용합니다. '생성자 주입 형태'로 사용합니다.
@@ -159,7 +162,6 @@ public class EduMarineController {
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView home() {
-        //System.out.println("EduMarineController > home : ======");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("index");
         return mv;
@@ -167,7 +169,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
     public ModelAndView logout(HttpSession session, ModelAndView mv) {
-        //System.out.println("EduMarineController > logout");
         eduMarineService.logoutCheck(session);
         mv.setViewName("index");
         return mv;
@@ -175,7 +176,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/main.do", method = RequestMethod.GET)
     public ModelAndView main() {
-        //System.out.println("EduMarineController > main");
         ModelAndView mv = new ModelAndView();
 
         /* 방문자 수 카운트 */
@@ -284,7 +284,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/sitemap.do", method = RequestMethod.GET)
     public ModelAndView sitemap() {
-        //System.out.println("EduMarineController > sitemap");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("sitemap");
         return mv;
@@ -292,7 +291,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/search.do", method = RequestMethod.GET)
     public ModelAndView search() {
-        //System.out.println("EduMarineController > search");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("search");
         return mv;
@@ -304,7 +302,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/member/login.do", method = RequestMethod.GET)
     public ModelAndView member_login() {
-        //System.out.println("EduMarineController > member_login");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/login");
         return mv;
@@ -313,7 +310,6 @@ public class EduMarineController {
     @RequestMapping(value = "/member/login/submit.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> member_login_submit(@RequestBody MemberDTO memberDTO, HttpSession session, HttpServletRequest request) {
-        //System.out.println("EduMarineController > member_login_submit");
         // 2026-10-30 보안 조치(M-1): 실패 횟수 제한(같은 ID 10분 20회), 성공 시 세션 ID 교체. 로그인 방식은 그대로.
         String limitKey = "login:member:" + (memberDTO.getId() == null ? "" : memberDTO.getId().trim());
         if (SimpleRateLimiter.isBlocked(limitKey, 20, 10 * 60 * 1000L)) {
@@ -340,7 +336,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/member/findpw.do", method = RequestMethod.GET)
     public ModelAndView member_findpw() {
-        //System.out.println("EduMarineController > member_findpw");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/findpw");
         return mv;
@@ -349,7 +344,6 @@ public class EduMarineController {
     @RequestMapping(value = "/member/getEmail.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> member_getEmail(@RequestBody MemberDTO memberDTO) {
-        //System.out.println("EduMarineController > member_getEmail");
         // 2026-10-30 보안 조치(C-5): 아이디만으로 이메일 전체가 노출되지 않도록 마스킹해 돌려준다 (화면 안내 문구용)
         String result = eduMarineService.getMemberEmail(memberDTO);
         return new ResponseEntity<>(maskEmail(result), HttpStatus.OK);
@@ -358,7 +352,6 @@ public class EduMarineController {
     @RequestMapping(value = "/member/initPassword.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> member_initPassword(@RequestBody MemberDTO memberDTO, HttpServletRequest request) {
-        //System.out.println("EduMarineController > member_initPassword");
         // 2026-10-30 보안 조치(C-5): 고정 비밀번호 대신 무작위 임시 비밀번호를 서버가 만들고 메일도 서버가 보낸다.
         //  - 메일 발송에 성공한 뒤에만 DB 비밀번호를 바꾼다 (메일 실패 시 기존 비밀번호 유지)
         //  - 같은 ID 10분 6회, 같은 IP 10분 20회로 제한
@@ -402,7 +395,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/member/join.do", method = RequestMethod.GET)
     public ModelAndView member_join() {
-        //System.out.println("EduMarineController > member_join");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/join");
         return mv;
@@ -411,8 +403,6 @@ public class EduMarineController {
     @RequestMapping(value = "/member/join/member/check.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> member_join_member_check(@RequestBody MemberDTO memberDTO) {
-        //System.out.println("EduMarineController > member_join_member_check");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processCheckMember(memberDTO);
 
@@ -422,8 +412,6 @@ public class EduMarineController {
     @RequestMapping(value = "/member/join/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> member_join_insert(@RequestBody MemberDTO memberDTO) {
-        //System.out.println("EduMarineController > member_join_insert");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processInsertMember(memberDTO);
 
@@ -432,7 +420,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/member/complete.do", method = RequestMethod.GET)
     public ModelAndView member_complete() {
-        //System.out.println("EduMarineController > member_complete");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/complete");
         return mv;
@@ -441,8 +428,6 @@ public class EduMarineController {
     @RequestMapping(value = "/checkDuplicateId.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> checkDuplicateId(@RequestBody MemberDTO memberDTO) {
-        //System.out.println("EduMarineController > checkDuplicateId");
-        //System.out.println(searchDTO.toString());
         Integer result = eduMarineService.checkDuplicateId(memberDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -453,7 +438,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/schedule.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_schedule(String searchText) {
-        //System.out.println("EduMarineController > apply_schedule");
         ModelAndView mv = new ModelAndView();
         if(searchText != null && !searchText.isEmpty()){
             String trainName = "";
@@ -523,8 +507,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/schedule/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<TrainDTO>> apply_schedule_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > apply_schedule_selectList");
-        //System.out.println(searchDTO.toString());
 
         List<TrainDTO> responseList = eduMarineService.processSelectTrainScheduleList(searchDTO);
 
@@ -534,14 +516,12 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/schedule/calendar/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<TrainDTO>> apply_schedule_calendar_selectList(@RequestBody TrainDTO trainDTO) {
-        //System.out.println("EduMarineController > apply_schedule_calendar_selectList");
         List<TrainDTO> responseList = eduMarineService.processSelectTrainScheduleCalendarList(trainDTO);
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/apply/eduApply01.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply01(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply01");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -560,8 +540,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply01/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply01_preCheck(@RequestBody RegularDTO regularDTO) {
-        //System.out.println("EduMarineController > apply_eduApply01_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectRegularPreCheck(regularDTO);
 
@@ -571,8 +549,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply02/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply02_preCheck(@RequestBody BoarderDTO boarderDTO) {
-        //System.out.println("EduMarineController > apply_eduApply02_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectBoarderPreCheck(boarderDTO);
 
@@ -582,8 +558,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply03/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply03_preCheck(@RequestBody FrpDTO frpDTO) {
-        //System.out.println("EduMarineController > apply_eduApply03_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectFrpPreCheck(frpDTO);
 
@@ -593,8 +567,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply04/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply04_preCheck(@RequestBody InboarderDTO inboarderDTO) {
-        //System.out.println("EduMarineController > apply_eduApply04_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectInboarderPreCheck(inboarderDTO);
 
@@ -604,8 +576,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply05/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply05_preCheck(@RequestBody OutboarderDTO outboarderDTO) {
-        //System.out.println("EduMarineController > apply_eduApply05_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectOutboarderPreCheck(outboarderDTO);
 
@@ -615,8 +585,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply06/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply06_preCheck(@RequestBody SailyachtDTO sailyachtDTO) {
-        //System.out.println("EduMarineController > apply_eduApply06_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectSailyachtPreCheck(sailyachtDTO);
 
@@ -626,8 +594,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply01/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply01_insert(@RequestBody RegularDTO regularDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply01_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -643,8 +609,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply01/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply01_update_status(@RequestBody RegularDTO regularDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply01_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         RegularDTO existing = eduMarineService.processSelectRegularSingle(regularDTO.getSeq());
@@ -664,8 +628,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply02/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply02_update_status(@RequestBody BoarderDTO boarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply02_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         BoarderDTO existing = eduMarineService.processSelectBoarderSingle(boarderDTO.getSeq());
@@ -685,8 +647,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply03/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply03_update_status(@RequestBody FrpDTO frpDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply03_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         FrpDTO existing = eduMarineService.processSelectFrpSingle(frpDTO.getSeq());
@@ -706,8 +666,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply04/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply04_update_status(@RequestBody InboarderDTO inboarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply04_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         InboarderDTO existing = eduMarineService.processSelectInboarderSingle(inboarderDTO.getSeq());
@@ -727,8 +685,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply05/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply05_update_status(@RequestBody OutboarderDTO outboarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply05_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         OutboarderDTO existing = eduMarineService.processSelectOutboarderSingle(outboarderDTO.getSeq());
@@ -748,8 +704,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply06/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply06_update_status(@RequestBody SailyachtDTO sailyachtDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply06_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         SailyachtDTO existing = eduMarineService.processSelectSailyachtSingle(sailyachtDTO.getSeq());
@@ -769,8 +723,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply07/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply07_update_status(@RequestBody HighHorsePowerDTO highHorsePowerDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply07_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         HighHorsePowerDTO existing = eduMarineService.processSelectHighHorsePowerSingle(highHorsePowerDTO.getSeq());
@@ -790,8 +742,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply08/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply08_update_status(@RequestBody SterndriveDTO sterndriveDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply08_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         SterndriveDTO existing = eduMarineService.processSelectSterndriveSingle(sterndriveDTO.getSeq());
@@ -811,8 +761,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply09/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply09_update_status(@RequestBody HighSelfDTO highSelfDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply09_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         HighSelfDTO existing = eduMarineService.processSelectHighSelfSingle(highSelfDTO.getSeq());
@@ -832,8 +780,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply10/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply10_update_status(@RequestBody HighSpecialDTO highSpecialDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply10_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         HighSpecialDTO existing = eduMarineService.processSelectHighSpecialSingle(highSpecialDTO.getSeq());
@@ -853,8 +799,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply11/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply11_update_status(@RequestBody SternSpecialDTO sternSpecialDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply11_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         SternSpecialDTO existing = eduMarineService.processSelectSternSpecialSingle(sternSpecialDTO.getSeq());
@@ -874,8 +818,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply12/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply12_update_status(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply12_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
@@ -895,8 +837,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply13/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply13_update_status(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply13_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
@@ -916,8 +856,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply14/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply14_update_status(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply14_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
@@ -937,8 +875,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply15/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply15_update_status(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply15_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
@@ -958,8 +894,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply16/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply16_update_status(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply16_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
@@ -979,8 +913,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply17/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply17_update_status(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply17_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
@@ -1000,8 +932,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply18/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply18_update_status(@RequestBody GeneratorDTO generatorDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply18_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         GeneratorDTO existing = eduMarineService.processSelectGeneratorSingle(generatorDTO.getSeq());
@@ -1021,8 +951,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply19/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply19_update_status(@RequestBody CompetencyDTO competencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply19_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         CompetencyDTO existing = eduMarineService.processSelectCompetencySingle(competencyDTO.getSeq());
@@ -1042,8 +970,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply20/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply20_update_status(@RequestBody FamtourinDTO famtourinDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply20_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         FamtourinDTO existing = eduMarineService.processSelectFamtourinSingle(famtourinDTO.getSeq());
@@ -1067,8 +993,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply21/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply21_update_status(@RequestBody FamtouroutDTO famtouroutDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply21_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         FamtouroutDTO existing = eduMarineService.processSelectFamtouroutSingle(famtouroutDTO.getSeq());
@@ -1092,8 +1016,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply22/update/status.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply22_update_status(@RequestBody ElectroDTO electroDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply22_update_status");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
         ElectroDTO existing = eduMarineService.processSelectElectroSingle(electroDTO.getSeq());
@@ -1117,8 +1039,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply01/pre/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<RegularDTO> apply_eduApply01_pre_selectSingle(@RequestBody RegularDTO regularDTO) {
-        //System.out.println("EduMarineController > apply_eduApply01_pre_selectSingle");
-        //System.out.println(searchDTO.toString());
 
         RegularDTO responseDTO = eduMarineService.processSelectPreRegularSingle(regularDTO);
 
@@ -1127,7 +1047,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply02.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply02(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply02");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1145,8 +1064,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply02/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply02_insert(@RequestBody BoarderDTO boarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply02_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1161,7 +1078,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply03.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply03(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply03");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1179,8 +1095,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply03/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply03_insert(@RequestBody FrpDTO frpDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply03_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1195,7 +1109,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply04.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply04(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply04");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1214,8 +1127,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply04/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply04_insert(@RequestBody InboarderDTO inboarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply04_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1230,7 +1141,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply04_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply04_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply04_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1263,7 +1173,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply05.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply05(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply05");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1282,8 +1191,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply05/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply05_insert(@RequestBody OutboarderDTO outboarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply05_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1298,7 +1205,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply05_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply05_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply05_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1331,7 +1237,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply06.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply06(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply06");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1349,7 +1254,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply06_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply06_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply06_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1383,8 +1287,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply06/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply06_insert(@RequestBody SailyachtDTO sailyachtDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply06_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1399,7 +1301,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply07.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply07(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply07");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1418,8 +1319,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply07/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply07_preCheck(@RequestBody HighHorsePowerDTO highHorsePowerDTO) {
-        //System.out.println("EduMarineController > apply_eduApply07_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectHighHorsePowerPreCheck(highHorsePowerDTO);
 
@@ -1429,8 +1328,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply07/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply07_insert(@RequestBody HighHorsePowerDTO highHorsePowerDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply07_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1445,7 +1342,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply07_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply07_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply07_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1479,8 +1375,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply07/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply07_update(@RequestBody HighHorsePowerDTO highHorsePowerDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply07_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         HighHorsePowerDTO existing = eduMarineService.processSelectHighHorsePowerSingle(highHorsePowerDTO.getSeq());
@@ -1495,7 +1389,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply08.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply08(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply08");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1514,8 +1407,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply08/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply08_preCheck(@RequestBody SterndriveDTO sterndriveDTO) {
-        //System.out.println("EduMarineController > apply_eduApply08_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectSterndrivePreCheck(sterndriveDTO);
 
@@ -1525,8 +1416,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply08/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply08_insert(@RequestBody SterndriveDTO sterndriveDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply08_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1541,7 +1430,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply08_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply08_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply08_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1575,8 +1463,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply08/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply08_update(@RequestBody SterndriveDTO sterndriveDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply08_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         SterndriveDTO existing = eduMarineService.processSelectSterndriveSingle(sterndriveDTO.getSeq());
@@ -1591,7 +1477,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply09.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply09(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply09");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1610,8 +1495,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply09/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply09_preCheck(@RequestBody HighSelfDTO highselfDTO) {
-        //System.out.println("EduMarineController > apply_eduApply09_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectHighSelfPreCheck(highselfDTO);
 
@@ -1621,8 +1504,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply09/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply09_insert(@RequestBody HighSelfDTO highselfDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply09_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1637,7 +1518,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply09_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply09_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply09_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1671,8 +1551,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply09/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply09_update(@RequestBody HighSelfDTO highselfDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply09_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         HighSelfDTO existing = eduMarineService.processSelectHighSelfSingle(highselfDTO.getSeq());
@@ -1687,7 +1565,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply10.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply10(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply10");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1706,8 +1583,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply10/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply10_preCheck(@RequestBody HighSpecialDTO highSpecialDTO) {
-        //System.out.println("EduMarineController > apply_eduApply10_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectHighSpecialPreCheck(highSpecialDTO);
 
@@ -1717,8 +1592,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply10/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply10_insert(@RequestBody HighSpecialDTO highSpecialDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply10_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1733,7 +1606,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply10_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply10_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply10_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1767,8 +1639,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply10/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply10_update(@RequestBody HighSpecialDTO highSpecialDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply10_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         HighSpecialDTO existing = eduMarineService.processSelectHighSpecialSingle(highSpecialDTO.getSeq());
@@ -1783,7 +1653,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply11.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply11(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply11");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1802,8 +1671,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply11/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply11_preCheck(@RequestBody SternSpecialDTO sternSpecialDTO) {
-        //System.out.println("EduMarineController > apply_eduApply11_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectSternSpecialPreCheck(sternSpecialDTO);
 
@@ -1813,8 +1680,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply11/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply11_insert(@RequestBody SternSpecialDTO sternSpecialDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply11_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1829,7 +1694,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply11_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply11_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply11_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1863,8 +1727,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply11/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply11_update(@RequestBody SternSpecialDTO sternSpecialDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply11_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         SternSpecialDTO existing = eduMarineService.processSelectSternSpecialSingle(sternSpecialDTO.getSeq());
@@ -1879,7 +1741,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply12.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply12(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply12");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1898,8 +1759,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply12/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply12_preCheck(@RequestBody BasicDTO basicDTO) {
-        //System.out.println("EduMarineController > apply_eduApply12_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectBasicPreCheck(basicDTO);
 
@@ -1909,8 +1768,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply12/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply12_insert(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply12_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -1925,7 +1782,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply12_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply12_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply12_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -1959,8 +1815,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply12/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply12_update(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply12_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
@@ -1975,7 +1829,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply13.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply13(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply13");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -1994,8 +1847,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply13/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply13_preCheck(@RequestBody BasicDTO basicDTO) {
-        //System.out.println("EduMarineController > apply_eduApply13_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectBasicPreCheck(basicDTO);
 
@@ -2005,8 +1856,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply13/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply13_insert(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply13_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2021,7 +1870,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply13_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply13_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply13_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2055,8 +1903,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply13/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply13_update(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply13_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
@@ -2071,7 +1917,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply14.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply14(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply14");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2090,8 +1935,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply14/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply14_preCheck(@RequestBody BasicDTO basicDTO) {
-        //System.out.println("EduMarineController > apply_eduApply14_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectBasicPreCheck(basicDTO);
 
@@ -2101,8 +1944,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply14/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply14_insert(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply14_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2117,7 +1958,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply14_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply14_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply14_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2151,8 +1991,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply14/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply14_update(@RequestBody BasicDTO basicDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply14_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
@@ -2167,7 +2005,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply15.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply15(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply15");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2186,8 +2023,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply15/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply15_preCheck(@RequestBody EmergencyDTO emergencyDTO) {
-        //System.out.println("EduMarineController > apply_eduApply15_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectEmergencyPreCheck(emergencyDTO);
 
@@ -2197,8 +2032,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply15/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply15_insert(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply15_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2213,7 +2046,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply15_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply15_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply15_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2247,8 +2079,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply15/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply15_update(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply15_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
@@ -2263,7 +2093,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply16.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply16(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply16");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2282,8 +2111,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply16/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply16_preCheck(@RequestBody EmergencyDTO emergencyDTO) {
-        //System.out.println("EduMarineController > apply_eduApply16_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectEmergencyPreCheck(emergencyDTO);
 
@@ -2293,8 +2120,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply16/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply16_insert(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply16_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2309,7 +2134,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply16_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply16_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply16_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2343,8 +2167,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply16/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply16_update(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply16_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
@@ -2359,7 +2181,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply17.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply17(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply17");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2378,8 +2199,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply17/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply17_preCheck(@RequestBody EmergencyDTO emergencyDTO) {
-        //System.out.println("EduMarineController > apply_eduApply17_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectEmergencyPreCheck(emergencyDTO);
 
@@ -2389,8 +2208,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply17/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply17_insert(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply17_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2405,7 +2222,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply17_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply17_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply17_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2439,8 +2255,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply17/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply17_update(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply17_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
@@ -2455,7 +2269,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply18.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply18(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply18");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2474,8 +2287,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply18/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply18_preCheck(@RequestBody GeneratorDTO generatorDTO) {
-        //System.out.println("EduMarineController > apply_eduApply18_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectGeneratorPreCheck(generatorDTO);
 
@@ -2485,8 +2296,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply18/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply18_insert(@RequestBody GeneratorDTO generatorDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply18_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2501,7 +2310,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply18_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply18_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply18_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2535,8 +2343,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply18/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply18_update(@RequestBody GeneratorDTO generatorDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply18_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         GeneratorDTO existing = eduMarineService.processSelectGeneratorSingle(generatorDTO.getSeq());
@@ -2551,7 +2357,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply19.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply19(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply19");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2570,8 +2375,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply19/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply19_preCheck(@RequestBody CompetencyDTO competencyDTO) {
-        //System.out.println("EduMarineController > apply_eduApply19_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectCompetencyPreCheck(competencyDTO);
 
@@ -2581,8 +2384,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply19/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply19_insert(@RequestBody CompetencyDTO competencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply19_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2597,7 +2398,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply19_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply19_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply19_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2631,8 +2431,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply19/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply19_update(@RequestBody CompetencyDTO competencyDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply19_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         CompetencyDTO existing = eduMarineService.processSelectCompetencySingle(competencyDTO.getSeq());
@@ -2647,7 +2445,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply20.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply20(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply20");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2666,8 +2463,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply20/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply20_preCheck(@RequestBody FamtourinDTO famtourinDTO) {
-        //System.out.println("EduMarineController > apply_eduApply20_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectFamtourinPreCheck(famtourinDTO);
 
@@ -2677,8 +2472,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply20/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply20_insert(@RequestBody FamtourinDTO famtourinDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply20_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2693,7 +2486,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply20_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply20_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply20_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2727,8 +2519,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply20/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply20_update(@RequestBody FamtourinDTO famtourinDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply20_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         FamtourinDTO existing = eduMarineService.processSelectFamtourinSingle(famtourinDTO.getSeq());
@@ -2743,7 +2533,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply21.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply21(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply21");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2762,8 +2551,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply21/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply21_preCheck(@RequestBody FamtouroutDTO famtouroutDTO) {
-        //System.out.println("EduMarineController > apply_eduApply21_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectFamtouroutPreCheck(famtouroutDTO);
 
@@ -2773,8 +2560,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply21/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply21_insert(@RequestBody FamtouroutDTO famtouroutDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply21_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2789,7 +2574,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply21_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply21_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply21_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2823,8 +2607,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply21/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply21_update(@RequestBody FamtouroutDTO famtouroutDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply21_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         FamtouroutDTO existing = eduMarineService.processSelectFamtouroutSingle(famtouroutDTO.getSeq());
@@ -2839,7 +2621,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply22.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApply22(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply22");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -2858,8 +2639,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply22/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApply22_preCheck(@RequestBody ElectroDTO electroDTO) {
-        //System.out.println("EduMarineController > apply_eduApply22_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectElectroPreCheck(electroDTO);
 
@@ -2869,8 +2648,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApply22/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_eduApply22_insert(@RequestBody ElectroDTO electroDTO, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApply22_insert");
-        //System.out.println(noticeDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
         String sessionMemberSeq = getSessionMemberSeq(session);
@@ -2885,7 +2662,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply22_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply22_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply22_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -2919,8 +2695,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply22/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply22_update(@RequestBody ElectroDTO electroDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply22_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         ElectroDTO existing = eduMarineService.processSelectElectroSingle(electroDTO.getSeq());
@@ -2935,7 +2709,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApplyUnified.do", method = RequestMethod.GET)
     public ModelAndView apply_eduApplyUnified(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > apply_eduApplyUnified (신규 통합 신청)");
         ModelAndView mv = new ModelAndView();
 
         // 1. 세션에서 ID 확인
@@ -2953,7 +2726,7 @@ public class EduMarineController {
 
         // [CASE 2] 세션 ID는 있지만, DB에 회원 정보가 없는 경우 (정보 불일치/삭제됨)
         if (info == null) {
-            System.out.println("세션 ID[" + id + "]에 해당하는 회원 정보가 없습니다. 강제 로그아웃 처리.");
+            log.warn("세션 ID[{}]에 해당하는 회원 정보가 없어 강제 로그아웃 처리", id);
             session.invalidate(); // ★ 핵심: 세션 정보 삭제
             mv.setViewName("redirect:/member/login.do"); // 로그인 페이지로 이동
             return mv;
@@ -2975,7 +2748,7 @@ public class EduMarineController {
             mv.setViewName("/apply/eduApplyUnified"); // 이동할 JSP 페이지
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("[apply_eduApplyUnified] 처리 중 예외", e);
         }
 
         return mv;
@@ -3018,7 +2791,7 @@ public class EduMarineController {
             response.setCustomValue(dto.getSeq()); // 생성된 신청 번호 반환
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("[apply_eduApplyUnified_insert] 처리 중 예외", e);
             response.setResultCode("-1");
             response.setResultMessage("오류 발생: " + e.getMessage());
         }
@@ -3029,7 +2802,6 @@ public class EduMarineController {
     
     @RequestMapping(value = "/apply/faq.do", method = RequestMethod.GET)
     public ModelAndView apply_faq() {
-        //System.out.println("EduMarineController > apply_faq");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/apply/faq");
         return mv;
@@ -3038,7 +2810,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/faq/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<FaqDTO>> apply_faq_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > apply_faq_selectList");
 
         List<FaqDTO> responseList = eduMarineService.processSelectFaqList(searchDTO);
 
@@ -3051,7 +2822,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/notice_list.do", method = RequestMethod.GET)
     public ModelAndView board_notice_list() {
-        //System.out.println("EduMarineController > board_notice_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/notice_list");
         return mv;
@@ -3060,7 +2830,6 @@ public class EduMarineController {
     @RequestMapping(value = "/board/notice/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<NoticeDTO>> board_notice_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > board_notice_selectList");
 
         List<NoticeDTO> responseList = eduMarineService.processSelectBoardNoticeList(searchDTO);
 
@@ -3069,7 +2838,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/notice_view.do", method = RequestMethod.GET)
     public ModelAndView board_notice_view(String seq) {
-        //System.out.println("EduMarineController > board_notice_view");
         ModelAndView mv = new ModelAndView();
 
         /* 조회 카운트 Update */
@@ -3095,7 +2863,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/press_list.do", method = RequestMethod.GET)
     public ModelAndView board_press_list() {
-        //System.out.println("EduMarineController > board_press_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/press_list");
         return mv;
@@ -3104,7 +2871,6 @@ public class EduMarineController {
     @RequestMapping(value = "/board/press/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<PressDTO>> board_press_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > board_press_selectList");
 
         List<PressDTO> responseList = eduMarineService.processSelectBoardPressList(searchDTO);
 
@@ -3113,7 +2879,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/press_view.do", method = RequestMethod.GET)
     public ModelAndView board_press_view(String seq) {
-        //System.out.println("EduMarineController > board_press_view");
         ModelAndView mv = new ModelAndView();
 
         /* 조회 카운트 Update */
@@ -3139,7 +2904,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/gallery.do", method = RequestMethod.GET)
     public ModelAndView board_gallery() {
-        //System.out.println("EduMarineController > board_gallery");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/gallery");
         return mv;
@@ -3148,7 +2912,6 @@ public class EduMarineController {
     @RequestMapping(value = "/board/gallery/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<GalleryDTO>> board_gallery_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > board_gallery_selectList");
 
         List<GalleryDTO> responseList = eduMarineService.processSelectBoardGalleryList(searchDTO);
 
@@ -3166,7 +2929,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/media.do", method = RequestMethod.GET)
     public ModelAndView board_media() {
-        //System.out.println("EduMarineController > board_media");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/media");
         return mv;
@@ -3175,7 +2937,6 @@ public class EduMarineController {
     @RequestMapping(value = "/board/media/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MediaDTO>> board_media_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > board_media_selectList");
 
         List<MediaDTO> responseList = eduMarineService.processSelectBoardMediaList(searchDTO);
 
@@ -3184,7 +2945,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/news_list.do", method = RequestMethod.GET)
     public ModelAndView board_news_list() {
-        //System.out.println("EduMarineController > board_news_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/news_list");
         return mv;
@@ -3193,7 +2953,6 @@ public class EduMarineController {
     @RequestMapping(value = "/board/news/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<NewsletterDTO>> board_news_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > board_news_selectList");
 
         List<NewsletterDTO> responseList = eduMarineService.processSelectBoardNewsList(searchDTO);
 
@@ -3202,7 +2961,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/board/news_view.do", method = RequestMethod.GET)
     public ModelAndView board_news_view(String seq) {
-        //System.out.println("EduMarineController > board_news_view");
         ModelAndView mv = new ModelAndView();
 
         /* 조회 카운트 Update */
@@ -3231,7 +2989,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/announcement_list.do", method = RequestMethod.GET)
     public ModelAndView job_announcement_list() {
-        //System.out.println("EduMarineController > job_announcement_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/job/announcement_list");
         return mv;
@@ -3239,7 +2996,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/announcement_view.do", method = RequestMethod.GET)
     public ModelAndView job_announcement_view() {
-        //System.out.println("EduMarineController > job_announcement_view");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/job/announcement_view");
         return mv;
@@ -3247,7 +3003,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/state01.do", method = RequestMethod.GET)
     public ModelAndView job_state01() {
-        //System.out.println("EduMarineController > job_state01");
         ModelAndView mv = new ModelAndView();
 
         String gbn = "창업자";
@@ -3259,7 +3014,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/state02.do", method = RequestMethod.GET)
     public ModelAndView job_state02() {
-        //System.out.println("EduMarineController > job_state02");
         ModelAndView mv = new ModelAndView();
 
         String gbn = "취업자";
@@ -3271,7 +3025,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/review.do", method = RequestMethod.GET)
     public ModelAndView job_review() {
-        //System.out.println("EduMarineController > job_review");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/job/review");
         return mv;
@@ -3280,7 +3033,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/review/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<JobDTO>> job_review_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > job_review_selectList");
 
         List<JobDTO> responseList = eduMarineService.processSelectJobReviewList(searchDTO);
 
@@ -3298,7 +3050,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/community_list.do", method = RequestMethod.GET)
     public ModelAndView job_community_list() {
-        //System.out.println("EduMarineController > job_community_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/job/community_list");
         return mv;
@@ -3307,7 +3058,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<CommunityDTO>> job_community_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("EduMarineController > job_community_selectList");
 
         List<CommunityDTO> responseList = eduMarineService.processSelectCommunityList(searchDTO);
 
@@ -3316,7 +3066,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/community_view.do", method = RequestMethod.GET)
     public ModelAndView job_community_view(String seq, HttpSession session) {
-        //System.out.println("EduMarineController > job_community_view");
         ModelAndView mv = new ModelAndView();
 
         /* 조회 카운트 Update */
@@ -3359,8 +3108,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/write/check.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_write_check(@RequestBody CommunityDTO communityDTO) {
-        //System.out.println("EduMarineController > job_community_write_check");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processCheckCommunity(communityDTO);
 
@@ -3370,8 +3117,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/reply/check.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_reply_check(@RequestBody ReplyDTO replyDTO) {
-        //System.out.println("EduMarineController > job_community_reply_check");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processCheckReply(replyDTO);
 
@@ -3381,8 +3126,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/reply/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_reply_insert(@RequestBody ReplyDTO replyDTO) {
-        //System.out.println("EduMarineController > job_community_reply_insert");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processInsertReply(replyDTO);
 
@@ -3392,8 +3135,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/reply/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_reply_delete(@RequestBody ReplyDTO replyDTO) {
-        //System.out.println("EduMarineController > job_community_reply_delete");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processDeleteReply(replyDTO);
 
@@ -3403,8 +3144,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/recommend/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_recommend_update(@RequestBody RecommendDTO recommendDTO) {
-        //System.out.println("EduMarineController > job_community_recommend_update");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateRecommend(recommendDTO);
 
@@ -3413,7 +3152,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/community_write.do", method = RequestMethod.GET)
     public ModelAndView job_community_write(HttpSession session) {
-        //System.out.println("EduMarineController > job_community_write");
         ModelAndView mv = new ModelAndView();
         String id = String.valueOf(session.getAttribute("id"));
         mv.addObject("id", id);
@@ -3424,8 +3162,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/write/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_write_insert(@RequestBody CommunityDTO communityDTO) {
-        //System.out.println("EduMarineController > job_community_write_insert");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processInsertCommunity(communityDTO);
 
@@ -3434,7 +3170,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/job/community_modify.do", method = RequestMethod.GET)
     public ModelAndView job_community_modify(String seq) {
-        //System.out.println("EduMarineController > job_community_modify");
         ModelAndView mv = new ModelAndView();
         CommunityDTO info = eduMarineService.processSelectCommunitySingle(seq);
         mv.addObject("info", info);
@@ -3445,8 +3180,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/write/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_write_update(@RequestBody CommunityDTO communityDTO) {
-        //System.out.println("EduMarineController > job_community_write_update");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateCommunity(communityDTO);
 
@@ -3456,8 +3189,6 @@ public class EduMarineController {
     @RequestMapping(value = "/job/community/write/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> job_community_write_delete(@RequestBody CommunityDTO communityDTO) {
-        //System.out.println("EduMarineController > job_community_write_delete");
-        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processDeleteCommunity(communityDTO);
 
@@ -3471,8 +3202,6 @@ public class EduMarineController {
     @RequestMapping(value = "/train/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<TrainDTO> mypage_resume_save(@RequestBody TrainDTO trainDTO) {
-        //System.out.println("EduMarineController > mypage_resume_save");
-        //System.out.println(memberDTO.toString());
 
         TrainDTO responseDTO = eduMarineService.processSelectTrainSingle(trainDTO.getSeq());
 
@@ -3481,7 +3210,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApplyInfo.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_eduApplyInfo(HttpServletRequest request, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApplyInfo");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null) {
@@ -3509,11 +3237,10 @@ public class EduMarineController {
         String pc_resultCode = request.getParameter("resultCode");
         String mo_resultCode = request.getParameter("P_STATUS");
 
-        System.out.println("PC : " + pc_resultCode + " / MOBILE : " + mo_resultCode);
 
         // --- 1. PC 결제 콜백 처리 ---
         if (pc_resultCode != null && !"null".equals(pc_resultCode)) {
-            System.out.println("이니시스 결제 Response pc_resultCode : " + pc_resultCode);
+            log.info("이니시스 PC 결제 응답 resultCode={}", pc_resultCode);
             if (!"V801".equals(pc_resultCode)) { // 결제 도중 취소 코드 V801 아닐 때
 
                 String userId = null;
@@ -3536,9 +3263,9 @@ public class EduMarineController {
                                 userId = parts[1]; // 사용자 ID 추출
                                 session.setAttribute("id", userId);
                                 session.setAttribute("status", "logon");
-                                System.out.println("PC 결제: 세션 복구 완료. ID: " + userId);
+                                log.info("PC 결제: 세션 복구 완료 id={}", userId);
                             } else {
-                                System.out.println("PC 결제: merchantData 서명 불일치 - 세션 복구 생략");
+                                log.warn("PC 결제: merchantData 서명 불일치 - 세션 복구 생략");
                             }
                         }
                     }
@@ -3554,16 +3281,16 @@ public class EduMarineController {
                         InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("PC", memberInfo.getSeq(), request);
                         mv.addObject("payResInfo", inistdpayResponseDTO);
                     } else {
-                        System.out.println("PC 결제 에러: 해당 회원이 존재하지 않습니다.");
+                        log.warn("PC 결제 에러: 해당 회원이 존재하지 않습니다.");
                     }
                 } else {
-                    System.out.println("PC 결제 치명적 에러: 세션 및 merchantData 모두 ID 없음");
+                    log.error("PC 결제 치명적 에러: 세션 및 merchantData 모두 ID 없음");
                 }
             }
         }
         // --- 2. 모바일 결제 콜백 처리 ---
         else if (mo_resultCode != null && !"null".equals(mo_resultCode)) {
-            System.out.println("이니시스 결제 Response mo_resultCode : " + mo_resultCode);
+            log.info("이니시스 모바일 결제 응답 P_STATUS={}", mo_resultCode);
             if (!"01".equals(mo_resultCode)) { // 결제 도중 취소 코드 01 아닐 때
 
                 String userId = null;
@@ -3593,9 +3320,9 @@ public class EduMarineController {
                                 userId = candidate;
                                 session.setAttribute("id", userId);
                                 session.setAttribute("status", "logon");
-                                System.out.println("모바일 결제: 세션 복구 완료. ID: " + userId);
+                                log.info("모바일 결제: 세션 복구 완료 id={}", userId);
                             } else {
-                                System.out.println("모바일 결제: P_NOTI 서명 불일치 - 세션 복구 생략");
+                                log.warn("모바일 결제: P_NOTI 서명 불일치 - 세션 복구 생략");
                             }
                         }
                     }
@@ -3611,10 +3338,10 @@ public class EduMarineController {
                         InistdpayResponseDTO inistdpayResponseDTO = getInistdpayResponseDTO("MOBILE", memberInfo.getSeq(), request);
                         mv.addObject("payResInfo", inistdpayResponseDTO);
                     } else {
-                        System.out.println("모바일 결제 에러: 해당 회원이 존재하지 않습니다.");
+                        log.warn("모바일 결제 에러: 해당 회원이 존재하지 않습니다.");
                     }
                 } else {
-                    System.out.println("모바일 결제 치명적 에러: 세션 및 P_NOTI 모두 ID 없음");
+                    log.error("모바일 결제 치명적 에러: 세션 및 P_NOTI 모두 ID 없음");
                 }
             }
         }
@@ -3625,7 +3352,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduPayInfo.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduPayInfo(HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduPayInfo");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null) {
@@ -3649,7 +3375,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/resume.do", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView mypage_resume(HttpSession session) {
-        //System.out.println("EduMarineController > mypage_resume");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -3682,8 +3407,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/resume/save.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_resume_save(@RequestBody ResumeDTO resumeDTO) {
-        //System.out.println("EduMarineController > mypage_resume_save");
-        //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processSaveResume(resumeDTO);
 
@@ -3692,7 +3415,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/post.do", method = RequestMethod.GET)
     public ModelAndView mypage_post(HttpSession session) {
-        //System.out.println("EduMarineController > mypage_post");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -3713,7 +3435,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/modify.do", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView mypage_modify(HttpSession session) {
-        //System.out.println("EduMarineController > mypage_modify");
         ModelAndView mv = new ModelAndView();
 
         if(session.getAttribute("id") != null){
@@ -3729,8 +3450,6 @@ public class EduMarineController {
     @RequestMapping(value = "/member/modify/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> member_modify_update(@RequestBody MemberDTO memberDTO) {
-        //System.out.println("EduMarineController > member_modify_update");
-        //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateMember(memberDTO);
 
@@ -3740,13 +3459,10 @@ public class EduMarineController {
     @RequestMapping(value = "/member/modify/withdraw.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> member_modify_withdraw(@RequestBody MemberDTO memberDTO, HttpSession session) {
-        //System.out.println("EduMarineController > member_modify_withdraw");
-        //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processUpdateMemberWithdraw(memberDTO);
 
         if(CommConstants.RESULT_CODE_SUCCESS.equals(responseDTO.getResultCode())){
-            System.out.println("session invalidate");
             session.removeAttribute("status");
             session.invalidate();
         }
@@ -3757,7 +3473,6 @@ public class EduMarineController {
     @RequestMapping(value = "/member/seq/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<MemberDTO> member_seq_selectSingle(@RequestBody MemberDTO memberDTO) {
-        //System.out.println("EduMarineController > job_community_selectList");
 
         String seq = memberDTO.getSeq();
         MemberDTO responseInfo = eduMarineService.processSelectMemberSeqSingle(seq);
@@ -3775,7 +3490,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply01_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply01_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply01_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -3809,8 +3523,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply01/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply01_update(@RequestBody RegularDTO regularDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply01_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         RegularDTO existing = eduMarineService.processSelectRegularSingle(regularDTO.getSeq());
@@ -3825,7 +3537,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply02_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply02_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply02_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -3891,8 +3602,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply02/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply02_update(@RequestBody BoarderDTO boarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply02_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         BoarderDTO existing = eduMarineService.processSelectBoarderSingle(boarderDTO.getSeq());
@@ -3908,8 +3617,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply02/career/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply02_career_delete(@RequestBody CareerDTO careerDTO) {
-        //System.out.println("EduMarineController > mypage_eduApply02_career_delete");
-        //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processDeleteCareer(careerDTO);
 
@@ -3919,8 +3626,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply02/license/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply02_license_delete(@RequestBody LicenseDTO licenseDTO) {
-        //System.out.println("EduMarineController > mypage_eduApply02_license_delete");
-        //System.out.println(memberDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processDeleteLicense(licenseDTO);
 
@@ -3929,7 +3634,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply03_modify.do", method = RequestMethod.GET)
     public ModelAndView mypage_eduApply03_modify(String seq, String modYn, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply03_modify");
         ModelAndView mv = new ModelAndView();
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
@@ -3994,8 +3698,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply03/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply03_update(@RequestBody FrpDTO frpDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply03_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         FrpDTO existing = eduMarineService.processSelectFrpSingle(frpDTO.getSeq());
@@ -4011,8 +3713,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply04/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply04_update(@RequestBody InboarderDTO inboarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply04_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         InboarderDTO existing = eduMarineService.processSelectInboarderSingle(inboarderDTO.getSeq());
@@ -4028,8 +3728,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply05/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply05_update(@RequestBody OutboarderDTO outboarderDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply05_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         OutboarderDTO existing = eduMarineService.processSelectOutboarderSingle(outboarderDTO.getSeq());
@@ -4045,8 +3743,6 @@ public class EduMarineController {
     @RequestMapping(value = "/mypage/eduApply06/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_eduApply06_update(@RequestBody SailyachtDTO sailyachtDTO, HttpSession session) {
-        //System.out.println("EduMarineController > mypage_eduApply06_update");
-        //System.out.println(memberDTO.toString());
 
         // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
         SailyachtDTO existing = eduMarineService.processSelectSailyachtSingle(sailyachtDTO.getSeq());
@@ -4222,8 +3918,6 @@ public class EduMarineController {
     @RequestMapping(value = "/apply/eduApplyUnified/preCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> apply_eduApplyUnified_preCheck(@RequestBody ApplicationUnifiedDTO dto) {
-        //System.out.println("EduMarineController > apply_eduApplyUnified_preCheck");
-        //System.out.println(noticeDTO.toString());
 
         Integer result = eduMarineService.processSelectUnifiedPreCheck(dto);
 
@@ -4236,7 +3930,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/edumarine/introduce.do", method = RequestMethod.GET)
     public ModelAndView edumarine_introduce() {
-        //System.out.println("EduMarineController > edumarine_introduce");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/edumarine/introduce");
         return mv;
@@ -4244,7 +3937,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/edumarine/overview.do", method = RequestMethod.GET)
     public ModelAndView edumarine_overview() {
-        //System.out.println("EduMarineController > edumarine_overview");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/edumarine/overview");
         return mv;
@@ -4252,7 +3944,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/edumarine/current.do", method = RequestMethod.GET)
     public ModelAndView edumarine_current() {
-        //System.out.println("EduMarineController > edumarine_current");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/edumarine/current");
         return mv;
@@ -4260,7 +3951,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/edumarine/necessity.do", method = RequestMethod.GET)
     public ModelAndView edumarine_necessity() {
-        //System.out.println("EduMarineController > edumarine_necessity");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/edumarine/necessity");
         return mv;
@@ -4268,7 +3958,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/edumarine/sponsorship.do", method = RequestMethod.GET)
     public ModelAndView edumarine_sponsorship() {
-        //System.out.println("EduMarineController > edumarine_sponsorship");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/edumarine/sponsorship");
         return mv;
@@ -4276,7 +3965,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/edumarine/way.do", method = RequestMethod.GET)
     public ModelAndView edumarine_way() {
-        //System.out.println("EduMarineController > edumarine_way");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/edumarine/way");
         return mv;
@@ -4288,7 +3976,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide01.do", method = RequestMethod.GET)
     public ModelAndView guide_guide01() {
-        //System.out.println("EduMarineController > guide_guide01");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/guide01");
         return mv;
@@ -4296,7 +3983,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide02.do", method = RequestMethod.GET)
     public ModelAndView guide_guide02() {
-        //System.out.println("EduMarineController > guide_guide02");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/guide02");
         return mv;
@@ -4304,7 +3990,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide03.do", method = RequestMethod.GET)
     public ModelAndView guide_guide03() {
-        //System.out.println("EduMarineController > guide_guide03");
         ModelAndView mv = new ModelAndView();
 
         // 마리나
@@ -4373,7 +4058,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide04.do", method = RequestMethod.GET)
     public ModelAndView guide_guide04() {
-        //System.out.println("EduMarineController > guide_guide04");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/guide04");
         return mv;
@@ -4381,7 +4065,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide05.do", method = RequestMethod.GET)
     public ModelAndView guide_guide05() {
-        //System.out.println("EduMarineController > guide_guide05");
         ModelAndView mv = new ModelAndView();
 
         //위탁교육
@@ -4417,7 +4100,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide06.do", method = RequestMethod.GET)
     public ModelAndView guide_guide06() {
-        //System.out.println("EduMarineController > guide_guide06");
         ModelAndView mv = new ModelAndView();
 
         //선외기
@@ -4470,7 +4152,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide07.do", method = RequestMethod.GET)
     public ModelAndView guide_guide07() {
-        //System.out.println("EduMarineController > guide_guide07");
         ModelAndView mv = new ModelAndView();
 
         //선내기
@@ -4523,7 +4204,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide08.do", method = RequestMethod.GET)
     public ModelAndView guide_guide08() {
-        //System.out.println("EduMarineController > guide_guide08");
         ModelAndView mv = new ModelAndView();
 
         //세일요트
@@ -4576,7 +4256,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide09.do", method = RequestMethod.GET)
     public ModelAndView guide_guide09() {
-        //System.out.println("EduMarineController > guide_guide09");
         ModelAndView mv = new ModelAndView();
 
         //고마력
@@ -4633,7 +4312,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide10.do", method = RequestMethod.GET)
     public ModelAndView guide_guide10() {
-        //System.out.println("EduMarineController > guide_guide10");
         ModelAndView mv = new ModelAndView();
 
         //sterndrive
@@ -4690,7 +4368,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide11.do", method = RequestMethod.GET)
     public ModelAndView guide_guide11() {
-        //System.out.println("EduMarineController > guide_guide11");
         ModelAndView mv = new ModelAndView();
 
         //고마력 선외기 자가정비
@@ -4747,7 +4424,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide12.do", method = RequestMethod.GET)
     public ModelAndView guide_guide12() {
-        //System.out.println("EduMarineController > guide_guide12");
         ModelAndView mv = new ModelAndView();
 
         //기초정비교육
@@ -4804,7 +4480,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide13.do", method = RequestMethod.GET)
     public ModelAndView guide_guide13() {
-        //System.out.println("EduMarineController > guide_guide13");
         ModelAndView mv = new ModelAndView();
 
         //응급조치교육
@@ -4861,7 +4536,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/guide/guide14.do", method = RequestMethod.GET)
     public ModelAndView guide_guide14() {
-        //System.out.println("EduMarineController > guide_guide14");
         ModelAndView mv = new ModelAndView();
 
         //발전기 정비 교육
@@ -4922,7 +4596,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/eng/index.do", method = RequestMethod.GET)
     public ModelAndView eng_index() {
-        //System.out.println("EduMarineController > eng_index");
 
         /* 방문자 수 카운트 */
         eduMarineService.processStatisticsAccessor();
@@ -4934,7 +4607,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/eng/marine/intro.do", method = RequestMethod.GET)
     public ModelAndView eng_marine_intro() {
-        //System.out.println("EduMarineController > eng_marine_intro");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/marine/intro");
         return mv;
@@ -4942,7 +4614,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/eng/current/current.do", method = RequestMethod.GET)
     public ModelAndView eng_current_current() {
-        //System.out.println("EduMarineController > eng_current_current");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/current/current");
         return mv;
@@ -4950,7 +4621,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/eng/edu/curriculum.do", method = RequestMethod.GET)
     public ModelAndView eng_edu_curriculum() {
-        //System.out.println("EduMarineController > eng_edu_curriculum");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/edu/curriculum");
         return mv;
@@ -4958,7 +4628,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/eng/edu/equipment.do", method = RequestMethod.GET)
     public ModelAndView eng_edu_equipment() {
-        //System.out.println("EduMarineController > eng_edu_equipment");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/edu/equipment");
         return mv;
@@ -4966,7 +4635,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/eng/contact/contact.do", method = RequestMethod.GET)
     public ModelAndView eng_contact_contact() {
-        //System.out.println("EduMarineController > eng_contact_contact");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/contact/contact");
         return mv;
@@ -5012,7 +4680,7 @@ public class EduMarineController {
 
                 if ("0000".equals(paramMap.get("resultCode")) && paramMap.get("authUrl").equals(ResourceBundle.getBundle("idc_name").getString(paramMap.get("idc_name")))) {
 
-                    System.out.println("####인증성공/승인요청####");
+                    log.info("이니시스 PC 인증 성공, 승인 요청 시작");
 
                     //############################################
                     // 1.전문 필드 값 설정(***가맹점 개발수정***)
@@ -5096,17 +4764,16 @@ public class EduMarineController {
                         //####################################
 
                         //---- db 저장 실패시 등 예외처리----//
-                        System.out.println(ex.getMessage());
+                        log.error("[getInistdpayResponseDTO] error", ex);
 
                         //#####################
                         // 망취소 API
                         //#####################
                         String netcancelResultString = httpUtil.processHTTP(authMap, netCancel);    // 망취소 요청 API url(고정, 임의 세팅 금지)
 
-                        System.out.println("## 망취소 API 결과 ##");
 
                         // 망취소 결과 확인
-                        System.out.println("<p>" + netcancelResultString.replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "</p>");
+                        log.warn("이니시스 망취소 API 결과: {}", netcancelResultString);
                     }
 
                 } else {
@@ -5116,11 +4783,11 @@ public class EduMarineController {
                 }
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                log.error("[getInistdpayResponseDTO] error", e);
             }
 
             inistdpayResponseDTO = (InistdpayResponseDTO) convertMapToObject(resultMap, inistdpayResponseDTO);
-            System.out.println("PC Inisis Payment Result : " + inistdpayResponseDTO.toString());
+            log.info("이니시스 PC 승인 결과 resultCode={} resultMsg={} tid={}", inistdpayResponseDTO.getResultCode(), inistdpayResponseDTO.getResultMsg(), inistdpayResponseDTO.getTid());
 
             if ("0000".equals(inistdpayResponseDTO.getResultCode())) {
                 // 결제내역 테이블 Insert process
@@ -5517,7 +5184,6 @@ public class EduMarineController {
                 String P_REQ_URL = request.getParameter("P_REQ_URL");        // 결제요청 URL
                 String P_NOTI = request.getParameter("P_NOTI");                // 기타주문정보
 
-                System.out.println("P_NOTI : " + P_NOTI);
                 ////////////////////////////////////////////////////////////////////////////
                 // 인증성공 P_STATUS=00 확인
                 // IDC센터 확인 [idc_name=fc,ks,stg]
@@ -5562,7 +5228,6 @@ public class EduMarineController {
 
                             String[] values = new String(br.readLine()).split("&");
 
-                            //System.out.println("mobile pay result ========================");
                             for (String value : values) {
 
                                 // 승인결과를 파싱값 잘라 hashmap에 저장
@@ -5571,14 +5236,13 @@ public class EduMarineController {
                                 String value1 = value.substring(i + 1);
                                 map.put(key1, value1);
 
-                                //System.out.println(key1 + " / " + value1);
                             }
 
                             br.close();
                         }
 
                     } catch (Exception ex) {
-                        System.out.println(ex.getMessage());
+                        log.error("[getInistdpayResponseDTO] error", ex);
                     }
 
                 } else {
@@ -5588,11 +5252,11 @@ public class EduMarineController {
 
                 }
             }catch (Exception e){
-                System.out.println(e.getMessage());
+                log.error("[getInistdpayResponseDTO] error", e);
             }
 
             inistdpayResponseDTO = (InistdpayResponseDTO) convertMapToObject(map, inistdpayResponseDTO);
-            System.out.println("MOBILE Inisis Payment Result : " + inistdpayResponseDTO.toString());
+            log.info("이니시스 모바일 승인 결과 P_STATUS={} P_RMESG1={} P_TID={}", inistdpayResponseDTO.getP_STATUS(), inistdpayResponseDTO.getP_RMESG1(), inistdpayResponseDTO.getP_TID());
 
             if ("00".equals(inistdpayResponseDTO.getP_STATUS())) {
                 // 결제내역 테이블 Insert process
@@ -5969,7 +5633,6 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/payment.do", method = RequestMethod.POST)
     public ModelAndView apply_payment(InistdpayRequestDTO inistdpayRequestDTO, HttpServletRequest request) throws Exception {
-        //System.out.println("EduMarineController > apply_payment");
         ModelAndView mv = new ModelAndView();
         TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(inistdpayRequestDTO.getTrainSeq());
 
@@ -6050,14 +5713,13 @@ public class EduMarineController {
 
         mv.addObject("payInfo", inistdpayRequestDTO);
 
-        System.out.println("apply_payment : " + inistdpayRequestDTO.toString());
+        log.info("결제 요청(PC) trainSeq={} tableSeq={} oid={}", inistdpayRequestDTO.getTrainSeq(), inistdpayRequestDTO.getTableSeq(), inistdpayRequestDTO.getOid());
         mv.setViewName("/apply/payment");
         return mv;
     }
 
     @RequestMapping(value = "/apply/mobile/payment.do", method = RequestMethod.POST)
     public ModelAndView apply_mobile_payment(InistdpayRequestDTO inistdpayRequestDTO, HttpServletRequest request) throws Exception {
-        //System.out.println("EduMarineController > apply_mobile_payment");
         ModelAndView mv = new ModelAndView();
         TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(inistdpayRequestDTO.getTrainSeq());
 
@@ -6137,7 +5799,7 @@ public class EduMarineController {
 
         mv.addObject("payInfo", inistdpayRequestDTO);
 
-        System.out.println("apply_mobile_payment : " + inistdpayRequestDTO.toString());
+        log.info("결제 요청(모바일) trainSeq={} tableSeq={} oid={}", inistdpayRequestDTO.getTrainSeq(), inistdpayRequestDTO.getTableSeq(), inistdpayRequestDTO.getOid());
         mv.setViewName("/apply/payment_m");
         return mv;
     }
@@ -6158,7 +5820,7 @@ public class EduMarineController {
                     try {
                         method.invoke(obj, map.get(keyAttribute));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        log.error("[convertMapToObject] 처리 중 예외", e);
                     }
                 }
             }
@@ -6169,7 +5831,6 @@ public class EduMarineController {
     @RequestMapping(value = "/pc/payment/vbank/vacct/noti.do", method = RequestMethod.POST)
     @ResponseBody
     public String payment_vbank_vacct_noti(HttpServletRequest request) {
-        //System.out.println("EduMarineMngController > payment_vbank_vacct_noti");
         String response = "";
         /*******************************************************************************
          * FILE NAME : vacctinput.jsp
@@ -6244,16 +5905,6 @@ public class EduMarineController {
                 try {
                     /*writeLog(file_path);*/
 
-                    //System.out.println("************************************************");
-                    //System.out.println("PageCall time : " + getTime());
-                    //System.out.println("ID_MERCHANT : " + id_merchant);
-                    //System.out.println("NO_TID : " + no_tid);
-                    //System.out.println("NO_OID : " + no_oid);
-                    //System.out.println("NO_VACCT : " + no_vacct);
-                    //System.out.println("AMT_INPUT : " + amt_input);
-                    //System.out.println("NM_INPUTBANK : " + nm_inputbank);
-                    //System.out.println("NM_INPUT : " + nm_input);
-                    //System.out.println("************************************************");
 
                     Boolean successFlag = true;
 
@@ -6516,20 +6167,19 @@ public class EduMarineController {
                     //	리턴하셔야합니다. 아래 조건에 데이터베이스 성공시 받는 FLAG 변수를 넣으세요
                     //	(주의) OK를 리턴하지 않으시면 이니시스 지불 서버는 "OK"를 수신할때까지 계속 재전송을 시도합니다
                     //	기타 다른 형태의 out.println(response.write)는 하지 않으시기 바랍니다
-                    //  System.out.println("====================" + successFlag + "====================");
                     if (successFlag)
                     {
-                        System.out.print("OK"); // 절대로 지우지 마세요
+                        log.info("가상계좌 입금통보 처리 완료, OK 응답"); // 이니시스에는 아래 response 변수로 OK 를 돌려준다
                         response = "OK";
                     }
 
                 } catch (Exception ex) {
-                    System.out.print(ex.getMessage());
+                    log.error("[payment_vbank_vacct_noti] error", ex);
                 }
 
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            log.error("[payment_vbank_vacct_noti] error", e);
         }
 
         return response;
@@ -6602,16 +6252,13 @@ public class EduMarineController {
 
     @RequestMapping(value = "/payment/INIstdpay_pc_req.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView payment_INIstdpay_pc_req(@RequestBody InistdpayRequestDTO inistdpayRequestDTO) {
-        //System.out.println("EduMarineController > payment_INIstdpay_pc_req");
         ModelAndView mv = new ModelAndView();
-        System.out.println(inistdpayRequestDTO.toString());
         mv.setViewName("/payment/INIstdpay_pc_req");
         return mv;
     }
 
     @RequestMapping(value = "/payment/close.do", method = RequestMethod.GET)
     public ModelAndView payment_close(String trainSeq , String trainUrl) {
-        //System.out.println("EduMarineController > payment_close");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/payment/close");
         return mv;
@@ -6620,8 +6267,6 @@ public class EduMarineController {
     @RequestMapping(value = "/file/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> file_delete(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsController > file_delete");
-        //System.out.println(fileDTO.toString());
 
         ResponseDTO responseDTO = eduMarineService.processDeleteFile(fileDTO);
 

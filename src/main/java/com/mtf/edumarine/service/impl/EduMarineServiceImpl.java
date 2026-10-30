@@ -1,5 +1,7 @@
 package com.mtf.edumarine.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.mapper.EduMarineMapper;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class EduMarineServiceImpl implements EduMarineService {
 
     private static final String STR_RESULT_H = "%s - %s";
@@ -50,7 +53,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public void processStatisticsAccessor() {
-        //System.out.println("EduMarineServiceImpl > processStatisticsAccessor : ======");
 
         try {
             String joinYear = String.valueOf(LocalDateTime.now().getYear());
@@ -70,7 +72,7 @@ public class EduMarineServiceImpl implements EduMarineService {
 
         }catch (Exception e){
             String eMessage = "[main] processStatisticsAccessor Error : ";
-            System.out.println(e.getMessage() == null ? "" : e.getMessage());
+            log.error("[processStatisticsAccessor] error", e);
         }
 
     }
@@ -78,13 +80,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public void processUpdateTrainClosing(String todate) {
-        //System.out.println("EduMarineServiceImpl > processUpdateTrainClosing : ======");
 
         try {
             eduMarineMapper.updateTrainClosing(todate);
         }catch (Exception e){
             String eMessage = "[main] processUpdateTrainClosing Error : ";
-            System.out.println(e.getMessage() == null ? "" : e.getMessage());
+            log.error("[processUpdateTrainClosing] error", e);
         }
 
     }
@@ -92,21 +93,18 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PopupDTO> processSelectPopupList(PopupDTO popupDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectPopupList");
         return eduMarineMapper.selectPopupList(popupDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BannerDTO> processSelectBannerList(BannerDTO bannerDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBannerList");
         return eduMarineMapper.selectBannerList(bannerDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ApplicationUnifiedDTO processSelectApplicationUnifiedSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectApplicationUnifiedSingle");
         return unifiedMapper.selectApplicationUnifiedSingle(seq);
     }
 
@@ -135,49 +133,42 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainDTO> processSelectTrainList(TrainDTO trainDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectTrainList");
         return eduMarineMapper.selectTrainList(trainDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public TrainDTO processSelectTrainSingle(String trainSeq) {
-        //System.out.println("EduMarineServiceImpl > processSelectTrainSingle");
         return eduMarineMapper.selectTrainSingle(trainSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainDTO> processSelectTrainScheduleList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectTrainScheduleList");
         return eduMarineMapper.selectTrainScheduleList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainDTO> processSelectTrainScheduleCalendarList(TrainDTO trainDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectTrainScheduleCalendarList");
         return eduMarineMapper.selectTrainScheduleCalendarList(trainDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NoticeDTO> processSelectNoticeList(NoticeDTO noticeDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectNoticeList");
         return eduMarineMapper.selectNoticeList(noticeDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PressDTO> processSelectPressList(PressDTO pressDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectPressList");
         return eduMarineMapper.selectPressList(pressDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ResponseDTO processCheckMember(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > processCheckMember : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -199,7 +190,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ResponseDTO processCheckCommunity(CommunityDTO communityDTO) {
-        //System.out.println("EduMarineServiceImpl > processCheckCommunity : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -223,7 +213,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ResponseDTO processCheckReply(ReplyDTO replyDTO) {
-        //System.out.println("EduMarineServiceImpl > processCheckReply : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -247,7 +236,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public ResponseDTO processCheckMemberSingle(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > processCheckMemberSingle : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -277,14 +265,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Integer checkDuplicateId(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > checkDuplicateId : ======");
         return eduMarineMapper.checkDuplicateId(memberDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertMember(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertMember");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -327,11 +313,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                     resultMessage = "[Regular Data Update Fail]";
                 }*/
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertMember ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertMember] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -342,14 +327,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public String getMemberEmail(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > getMemberEmail : ======");
         return eduMarineMapper.getMemberEmail(memberDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO initMemberPassword(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > initMemberPassword : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -387,28 +370,24 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public MemberDTO processSelectMemberSingle(String id) {
-        //System.out.println("EduMarineServiceImpl > processSelectMemberSingle");
         return eduMarineMapper.selectMemberSingle(id);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public MemberDTO processSelectMemberSeqSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectMemberSeqSingle");
         return eduMarineMapper.selectMemberSeqSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NoticeDTO> processSelectBoardNoticeList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardNoticeList");
         return eduMarineMapper.selectBoardNoticeList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoardNoticeViewCnt(String seq) {
-        //System.out.println("EduMarineServiceImpl > processUpdateBoardNoticeViewCnt : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -430,21 +409,18 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public NoticeDTO processSelectBoardNoticeSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardNoticeSingle");
         return eduMarineMapper.selectBoardNoticeSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PressDTO> processSelectBoardPressList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardPressList");
         return eduMarineMapper.selectBoardPressList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoardPressViewCnt(String seq) {
-        //System.out.println("EduMarineServiceImpl > processUpdateBoardPressViewCnt : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -466,35 +442,30 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PressDTO processSelectBoardPressSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardPressSingle");
         return eduMarineMapper.selectBoardPressSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<GalleryDTO> processSelectBoardGalleryList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardGalleryList");
         return eduMarineMapper.selectBoardGalleryList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MediaDTO> processSelectBoardMediaList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardMediaList");
         return eduMarineMapper.selectBoardMediaList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NewsletterDTO> processSelectBoardNewsList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardNewsList");
         return eduMarineMapper.selectBoardNewsList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoardNewsViewCnt(String seq) {
-        //System.out.println("EduMarineServiceImpl > processUpdateBoardNewsViewCnt : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -516,21 +487,18 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public NewsletterDTO processSelectBoardNewsSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoardNewsSingle");
         return eduMarineMapper.selectBoardNewsSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<JobDTO> processSelectJobReviewList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectJobReviewList");
         return eduMarineMapper.selectJobReviewList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateMember(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateMember : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -549,7 +517,6 @@ public class EduMarineServiceImpl implements EduMarineService {
                 memberDTO.setPassword(pw_encrypt);
 
                 //update
-                System.out.println("[비밀번호 변경 프로세스 포함] 회원 정보 업데이트");
                 Integer result = eduMarineMapper.updateMember(memberDTO);
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -568,7 +535,6 @@ public class EduMarineServiceImpl implements EduMarineService {
                     resultMessage = "기존 비밀번호와 입력하신 비밀번호가 다릅니다.<br>비밀번호 변경도 진행하시겠습니까?";
                 }else{
                     //update
-                    System.out.println("[비밀번호 변경 프로세스 미포함] 회원 정보 업데이트");
                     Integer result = eduMarineMapper.updateMember(memberDTO);
                     if(result == 0){
                         resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -591,7 +557,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateMemberWithdraw(MemberDTO memberDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateMemberWithdraw : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -618,7 +583,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processSaveResume(ResumeDTO resumeDTO) {
-        //System.out.println("EduMarineServiceImpl > processSaveResume : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -659,140 +623,120 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResumeDTO processSelectResumeSingle(String memberSeq) {
-        //System.out.println("EduMarineServiceImpl > processSelectResumeSingle");
         return eduMarineMapper.selectResumeSingle(memberSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectRegularPreCheck(RegularDTO regularDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectRegularPreCheck");
         return eduMarineMapper.selectRegularPreCheck(regularDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectBoarderPreCheck(BoarderDTO boarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoarderPreCheck");
         return eduMarineMapper.selectBoarderPreCheck(boarderDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectFrpPreCheck(FrpDTO frpDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectFrpPreCheck");
         return eduMarineMapper.selectFrpPreCheck(frpDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectBasicPreCheck(BasicDTO basicDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectBasicPreCheck");
         return eduMarineMapper.selectBasicPreCheck(basicDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectEmergencyPreCheck(EmergencyDTO emergencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectEmergencyPreCheck");
         return eduMarineMapper.selectEmergencyPreCheck(emergencyDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectGeneratorPreCheck(GeneratorDTO generatorDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectGeneratorPreCheck");
         return eduMarineMapper.selectGeneratorPreCheck(generatorDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectCompetencyPreCheck(CompetencyDTO competencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectCompetencyPreCheck");
         return eduMarineMapper.selectCompetencyPreCheck(competencyDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectFamtourinPreCheck(FamtourinDTO famtourinDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectFamtourinPreCheck");
         return eduMarineMapper.selectFamtourinPreCheck(famtourinDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectFamtouroutPreCheck(FamtouroutDTO famtouroutDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectFamtouroutPreCheck");
         return eduMarineMapper.selectFamtouroutPreCheck(famtouroutDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectElectroPreCheck(ElectroDTO electroDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectElectroPreCheck");
         return eduMarineMapper.selectElectroPreCheck(electroDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectInboarderPreCheck(InboarderDTO inboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectInboarderPreCheck");
         return eduMarineMapper.selectInboarderPreCheck(inboarderDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectOutboarderPreCheck(OutboarderDTO outboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectOutboarderPreCheck");
         return eduMarineMapper.selectOutboarderPreCheck(outboarderDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectSailyachtPreCheck(SailyachtDTO sailyachtDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectSailyachtPreCheck");
         return eduMarineMapper.selectSailyachtPreCheck(sailyachtDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectHighHorsePowerPreCheck(HighHorsePowerDTO highHorsePowerDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectHighHorsePowerPreCheck");
         return eduMarineMapper.selectHighHorsePowerPreCheck(highHorsePowerDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectHighSelfPreCheck(HighSelfDTO highSelfDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectHighSelfPreCheck");
         return eduMarineMapper.selectHighSelfPreCheck(highSelfDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectHighSpecialPreCheck(HighSpecialDTO highSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectHighSpecialPreCheck");
         return eduMarineMapper.selectHighSpecialPreCheck(highSpecialDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectSterndrivePreCheck(SterndriveDTO sterndriveDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectSterndrivePreCheck");
         return eduMarineMapper.selectSterndrivePreCheck(sterndriveDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectSternSpecialPreCheck(SternSpecialDTO sternSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectSternSpecialPreCheck");
         return eduMarineMapper.selectSternSpecialPreCheck(sternSpecialDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertRegular(RegularDTO regularDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertRegular");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -823,11 +767,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertRegular ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertRegular] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -838,21 +781,18 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public RegularDTO processSelectPreRegularSingle(RegularDTO regularDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectPreRegularSingle");
         return eduMarineMapper.selectPreRegularSingle(regularDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CommunityDTO> processSelectCommunityList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectCommunityList");
         return eduMarineMapper.selectCommunityList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public CommunityDTO processSelectCommunitySingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectCommunitySingle");
         CommunityDTO info = eduMarineMapper.selectCommunitySingle(seq);
         if (info != null) {
             // 2026-10-30 보안 조치(H-4): 기존 저장분 포함 본문 정화 후 표시
@@ -864,7 +804,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateCommunityViewCnt(String seq) {
-        //System.out.println("EduMarineServiceImpl > processUpdateCommunityViewCnt : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -886,14 +825,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public RecommendDTO processSelectRecommendSingle(RecommendDTO recommendReqDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectRecommendSingle");
         return eduMarineMapper.selectRecommendSingle(recommendReqDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRecommend(RecommendDTO recommendDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateRecommend : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -920,14 +857,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ReplyDTO> processSelectReplyList(ReplyDTO replyReqDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectReplyList");
         return eduMarineMapper.selectReplyList(replyReqDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertReply(ReplyDTO replyDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertReply : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -959,7 +894,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteReply(ReplyDTO replyDTO) {
-        //System.out.println("EduMarineServiceImpl > processDeleteReply : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -996,7 +930,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertCommunity(CommunityDTO communityDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertCommunity");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1016,11 +949,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Insert Fail]";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertCommunity ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertCommunity] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -1031,7 +963,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteCommunity(CommunityDTO communityDTO) {
-        //System.out.println("EduMarineServiceImpl > processDeleteCommunity : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1059,21 +990,18 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CommunityDTO> processSelectPostCommunityList(String id) {
-        //System.out.println("EduMarineServiceImpl > processSelectPostCommunityList");
         return eduMarineMapper.selectPostCommunityList(id);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ReplyDTO> processSelectPostReplyList(String id) {
-        //System.out.println("EduMarineServiceImpl > processSelectPostReplyList");
         return eduMarineMapper.selectPostReplyList(id);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateCommunity(CommunityDTO communityDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateCommunity");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1089,11 +1017,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Insert Fail]";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processUpdateCommunity ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processUpdateCommunity] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -1104,7 +1031,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertPayment(PaymentDTO paymentDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertPayment");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1147,7 +1073,7 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertPayment ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertPayment] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -1174,7 +1100,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRegularPayStatus(RegularDTO regularDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateRegularPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1201,7 +1126,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoarderPayStatus(BoarderDTO boarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateBoarderPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1234,7 +1158,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFrpPayStatus(FrpDTO frpDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateFrpPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1267,7 +1190,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateInboarderPayStatus(InboarderDTO inboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateInboarderPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1300,7 +1222,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateOutboarderPayStatus(OutboarderDTO outboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateOutboarderPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1333,7 +1254,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSailyachtPayStatus(SailyachtDTO sailyachtDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateSailyachtPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1366,7 +1286,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighHorsePowerPayStatus(HighHorsePowerDTO highHorsePowerDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateHighHorsePowerPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1399,7 +1318,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSelfPayStatus(HighSelfDTO highSelfDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateHighSelfPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1432,7 +1350,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSpecialPayStatus(HighSpecialDTO highSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateHighSpecialPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1465,7 +1382,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSterndrivePayStatus(SterndriveDTO sterndriveDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateSterndrivePayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1498,7 +1414,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSternSpecialPayStatus(SternSpecialDTO sternSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateSternSpecialPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1531,7 +1446,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBasicPayStatus(BasicDTO basicDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateBasicPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1564,7 +1478,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateEmergencyPayStatus(EmergencyDTO emergencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateEmergencyPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1597,7 +1510,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateGeneratorPayStatus(GeneratorDTO generatorDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateGeneratorPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1630,7 +1542,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateCompetencyPayStatus(CompetencyDTO competencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateCompetencyPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1663,7 +1574,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtourinPayStatus(FamtourinDTO famtourinDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateFamtourinPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1689,7 +1599,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtouroutPayStatus(FamtouroutDTO famtouroutDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateFamtouroutPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1715,7 +1624,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateElectroPayStatus(ElectroDTO electroDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateElectroPayStatus : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1741,35 +1649,30 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<EduApplyInfoDTO> processSelectEduApplyInfoList(String memberSeq) {
-        //System.out.println("EduMarineServiceImpl > processSelectEduApplyInfoList");
         return eduMarineMapper.selectEduApplyInfoList(memberSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<EduApplyInfoDTO> processSelectEduApplyInfoCancelList(String memberSeq) {
-        //System.out.println("EduMarineServiceImpl > processSelectEduApplyInfoCancelList");
         return eduMarineMapper.selectEduApplyInfoCancelList(memberSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PaymentDTO processSelectPaymentSingle(PaymentDTO payReq) {
-        //System.out.println("EduMarineServiceImpl > processSelectPaymentSingle");
         return eduMarineMapper.selectPaymentSingle(payReq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public RegularDTO processSelectRegularSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectRegularSingle");
         return eduMarineMapper.selectRegularSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRegular(RegularDTO regularDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateRegular : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1792,28 +1695,24 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public BoarderDTO processSelectBoarderSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectBoarderSingle");
         return eduMarineMapper.selectBoarderSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FrpDTO processSelectFrpSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectFrpSingle");
         return eduMarineMapper.selectFrpSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PaymentDTO> processSelectPaymentList(String memberSeq) {
-        //System.out.println("EduMarineServiceImpl > processSelectPaymentList");
         return eduMarineMapper.selectPaymentList(memberSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertBoarder(BoarderDTO boarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertBoarder");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1863,11 +1762,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertRegular ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertBoarder] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -1878,21 +1776,18 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CareerDTO> processSelectCareerList(CareerDTO careerDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectCareerList");
         return eduMarineMapper.selectCareerList(careerDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<LicenseDTO> processSelectLicenseList(LicenseDTO licenseDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectLicenseList");
         return eduMarineMapper.selectLicenseList(licenseDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoarder(BoarderDTO boarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateBoarder : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1948,7 +1843,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteCareer(CareerDTO careerDTO) {
-        //System.out.println("EduMarineServiceImpl > processDeleteCareer");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1968,7 +1862,7 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteCareer ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processDeleteCareer] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -1979,7 +1873,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteLicense(LicenseDTO licenseDTO) {
-        //System.out.println("EduMarineServiceImpl > processDeleteLicense");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1999,7 +1892,7 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteLicense ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processDeleteLicense] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2010,7 +1903,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertFrp(FrpDTO frpDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertFrp");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2060,11 +1952,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertFrp ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertFrp] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2075,7 +1966,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFrp(FrpDTO frpDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateFrp : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2131,7 +2021,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertInboarder(InboarderDTO inboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertInboarder");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2162,11 +2051,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertInboarder ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertInboarder] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2177,14 +2065,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public InboarderDTO processSelectInboarderSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectInboarderSingle");
         return eduMarineMapper.selectInboarderSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateInboarder(InboarderDTO inboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateInboarder : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2207,7 +2093,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertBasic(BasicDTO basicDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertBasic");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2238,11 +2123,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertBasic ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertBasic] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2253,14 +2137,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public BasicDTO processSelectBasicSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectBasicSingle");
         return eduMarineMapper.selectBasicSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBasic(BasicDTO basicDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateBasic : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2283,7 +2165,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertEmergency(EmergencyDTO emergencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertEmergency");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2314,11 +2195,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertEmergency ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertEmergency] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2329,14 +2209,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public EmergencyDTO processSelectEmergencySingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectEmergencySingle");
         return eduMarineMapper.selectEmergencySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateEmergency(EmergencyDTO emergencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateEmergency : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2359,14 +2237,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public GeneratorDTO processSelectGeneratorSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectGeneratorSingle");
         return eduMarineMapper.selectGeneratorSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertGenerator(GeneratorDTO generatorDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertGenerator");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2397,11 +2273,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertEmergency ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertGenerator] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2412,7 +2287,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateGenerator(GeneratorDTO generatorDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateGenerator : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2435,14 +2309,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public CompetencyDTO processSelectCompetencySingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectCompetencySingle");
         return eduMarineMapper.selectCompetencySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertCompetency(CompetencyDTO competencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertCompetency");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2473,11 +2345,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertCompetency ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertCompetency] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2488,7 +2359,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateCompetency(CompetencyDTO competencyDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateCompetency : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2511,14 +2381,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FamtourinDTO processSelectFamtourinSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectFamtourinSingle");
         return eduMarineMapper.selectFamtourinSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertFamtourin(FamtourinDTO famtourinDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertFamtourin");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2549,11 +2417,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertFamtourin ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertFamtourin] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2564,7 +2431,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtourin(FamtourinDTO famtourinDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateFamtourin : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2587,14 +2453,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FamtouroutDTO processSelectFamtouroutSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectFamtouroutSingle");
         return eduMarineMapper.selectFamtouroutSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertFamtourout(FamtouroutDTO famtouroutDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertFamtourout");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2625,11 +2489,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertFamtourout ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertFamtourout] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2640,7 +2503,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFamtourout(FamtouroutDTO famtouroutDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateFamtourout : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2663,14 +2525,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ElectroDTO processSelectElectroSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectElectroSingle");
         return eduMarineMapper.selectElectroSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertElectro(ElectroDTO electroDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertElectro");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2701,11 +2561,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertElectro ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertElectro] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2716,7 +2575,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateElectro(ElectroDTO electroDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateElectro : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2739,7 +2597,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertOutboarder(OutboarderDTO outboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertOutboarder");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2770,11 +2627,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertOutboarder ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertOutboarder] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2785,14 +2641,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public OutboarderDTO processSelectOutboarderSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectOutboarderSingle");
         return eduMarineMapper.selectOutboarderSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateOutboarder(OutboarderDTO outboarderDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateOutboarder : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2815,7 +2669,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertSailyacht(SailyachtDTO sailyachtDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertSailyacht");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2846,11 +2699,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertSailyacht ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertSailyacht] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -2861,14 +2713,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SailyachtDTO processSelectSailyachtSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectSailyachtSingle");
         return eduMarineMapper.selectSailyachtSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSailyacht(SailyachtDTO sailyachtDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateSailyacht : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2891,14 +2741,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public HighHorsePowerDTO processSelectHighHorsePowerSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectHighHorsePowerSingle");
         return eduMarineMapper.selectHighHorsePowerSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighhorsepower(HighHorsePowerDTO highHorsePowerDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateHighhorsepower : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2921,14 +2769,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public HighSelfDTO processSelectHighSelfSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectHighSelfSingle");
         return eduMarineMapper.selectHighSelfSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSelf(HighSelfDTO highselfDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateHighSelf : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2951,14 +2797,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public HighSpecialDTO processSelectHighSpecialSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectHighSpecialSingle");
         return eduMarineMapper.selectHighSpecialSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateHighSpecial(HighSpecialDTO highSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateHighSelf : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2981,14 +2825,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SterndriveDTO processSelectSterndriveSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectSterndriveSingle");
         return eduMarineMapper.selectSterndriveSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSterndrive(SterndriveDTO sterndriveDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateSterndrive : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3011,14 +2853,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SternSpecialDTO processSelectSternSpecialSingle(String seq) {
-        //System.out.println("EduMarineServiceImpl > processSelectSternSpecialSingle");
         return eduMarineMapper.selectSternSpecialSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSternSpecial(SternSpecialDTO sternSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdateSternSpecial : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3041,49 +2881,42 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processUpdateTrainApplyCnt(String trainSeq) {
-        //System.out.println("EduMarineServiceImpl > processUpdateTrainApplyCnt : ======");
         return eduMarineMapper.updateTrainApplyCnt(trainSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<EmploymentDTO> processSelectEmploymentList(String gbn) {
-        //System.out.println("EduMarineServiceImpl > processSelectEmploymentList");
         return eduMarineMapper.selectEmploymentList(gbn);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FaqDTO> processSelectFaqList(SearchDTO searchDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectFaqList");
         return eduMarineMapper.selectFaqList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processUpdatePaymentVbankNoti(PaymentDTO paymentDTO) {
-        //System.out.println("EduMarineServiceImpl > processUpdatePaymentVbankNoti");
         return eduMarineMapper.updatePaymentVbankNoti(paymentDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PaymentDTO processSelectPaymentVbankInfo(PaymentDTO paymentDTO) {
-        //System.out.println("EduMarineServiceImpl > processSelectPaymentVbankInfo");
         return eduMarineMapper.selectPaymentVbankInfo(paymentDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<TrainTemplateDTO.TrainTemplateInfo> processSelectTrainTemplateList(String major) {
-        //System.out.println("EduMarineServiceImpl > processSelectTrainTemplateList");
         return eduMarineMapper.selectTrainTemplateList(major);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertHighHorsePower(HighHorsePowerDTO highHorsePowerDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertHighHorsePower");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3114,11 +2947,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertHighHorsePower ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertHighHorsePower] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -3129,7 +2961,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertHighSelf(HighSelfDTO highselfDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertHighSelf");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3160,11 +2991,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertHighSelf ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertHighSelf] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -3175,7 +3005,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertHighSpecial(HighSpecialDTO highSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertHighSpecial");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3206,11 +3035,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertHighSpecial ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertHighSpecial] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -3221,7 +3049,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertSterndrive(SterndriveDTO sterndriveDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertSterndrive");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3252,11 +3079,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertSterndrive ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertSterndrive] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -3267,7 +3093,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertSternSpecial(SternSpecialDTO sternSpecialDTO) {
-        //System.out.println("EduMarineServiceImpl > processInsertSternSpecial");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3298,11 +3123,10 @@ public class EduMarineServiceImpl implements EduMarineService {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[재로그인 요청] 로그아웃 후 다시 로그인하여 재시도 부탁드립니다.";
             }
-            //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processInsertSternSpecial ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processInsertSternSpecial] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -3317,21 +3141,18 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FileDTO processSelectFileIdSingle(FileDTO fileReq) {
-        //System.out.println("EduMarineServiceImpl > processSelectFileIdSingle");
         return eduMarineMapper.selectFileIdSingle(fileReq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FileDTO> processSelectFileList(String userId) {
-        //System.out.println("EduMarineServiceImpl > processSelectFileList");
         return eduMarineMapper.selectFileList(userId);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteFile(FileDTO fileDTO) {
-        //System.out.println("EduMarineServiceImpl > processDeleteFile");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3351,7 +3172,7 @@ public class EduMarineServiceImpl implements EduMarineService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteFile ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+            log.error("[processDeleteFile] 처리 중 예외", e);
         }
 
         responseDTO.setResultCode(resultCode);
@@ -3369,7 +3190,7 @@ public class EduMarineServiceImpl implements EduMarineService {
             salt = new String(Base64.getEncoder().encode(bytes));
 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error("[Salt] 처리 중 예외", e);
         }
         return salt;
     }
@@ -3384,7 +3205,7 @@ public class EduMarineServiceImpl implements EduMarineService {
             hex = String.format("%128x", new BigInteger(1, msg.digest()));
 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error("[SHA512] 처리 중 예외", e);
         }
         return hex;
     }
@@ -3463,7 +3284,6 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Integer processSelectUnifiedPreCheck(ApplicationUnifiedDTO dto) {
-        //System.out.println("EduMarineServiceImpl > processSelectUnifiedPreCheck");
         return unifiedMapper.selectUnifiedPreCheck(dto);
     }
 
