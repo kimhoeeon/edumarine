@@ -1,5 +1,6 @@
 package com.mtf.edumarine.service.impl;
 
+import com.mtf.edumarine.config.ExternalApiProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,6 +72,11 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
      */
     @Value("${security.admin-password-hash:false}")
     private boolean adminPasswordHashEnabled;
+
+    /** 2026-10-30 보안 조치(2단계): 외부 서비스 키는 설정 파일(application.properties)에서 읽는다. */
+    @Autowired
+    private ExternalApiProperties externalApi;
+
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
@@ -8329,8 +8335,8 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMddHHmmss");
 
         //step1. 요청을 위한 파라미터 설정
-        String key = "oGFXQGaqFgjAhdrB";//"ItEQKi3rY7uvDS8l";
-        String mid = "edumarin90";//"INIpayTest";
+        String key = externalApi.getInicisCancelKey(); // 2026-10-30: 설정 파일(inicis.cancel-key)
+        String mid = externalApi.getInicisMid();
         String type = "refund";
         if("PART".equals(inistdpayCancelRequestDTO.getCancelGbn())){
             type = "partialRefund";
@@ -8420,9 +8426,9 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMddHHmmss");
 
         //step1. 요청을 위한 파라미터 설정
-        String key = "oGFXQGaqFgjAhdrB";//"ItEQKi3rY7uvDS8l";
-        String iv = "kXyGHLFTLLYANZ==";
-        String mid = "edumarin90";//"INIpayTest";
+        String key = externalApi.getInicisCancelKey(); // 2026-10-30: 설정 파일(inicis.cancel-key)
+        String iv = externalApi.getInicisCancelIv();
+        String mid = externalApi.getInicisMid();
         String type = "refund";
         if("PART".equals(inistdpayCancelRequestDTO.getCancelGbn())){
             if(!Objects.equals(inistdpayCancelRequestDTO.getPrice(), inistdpayCancelRequestDTO.getConfirmPrice())){
@@ -9255,11 +9261,10 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
             String subject = mailRequestDTO.getSubject();   //필수입력(템플릿 사용시 23 line 설명 참조)
             String body = mailRequestDTO.getBody().replaceAll("\"","'");		//필수입력, 템플릿 사용시 빈값을 입력 하시기 바랍니다. 예시) String body = "";
-            //String sender = "business@meetingfan.com";        //필수입력(미팅팬 발송테스트용)
             String sender = "business@meetingfan.com";        //필수입력()
             String sender_name = "경기해양레저 인력양성센터";
-            String username = "meetingfan";              //필수입력
-            String key = "L7QNsEQIyrAzNHO";           //필수입력
+            String username = externalApi.getDirectsendUsername();   // 2026-10-30: 설정 파일(directsend.username)
+            String key = externalApi.getDirectsendKey();             // 2026-10-30: 설정 파일(directsend.key)
 
             //수신자 정보 추가 - 필수 입력(주소록 미사용시), 치환문자 미사용시 치환문자 데이터를 입력하지 않고 사용할수 있습니다.
             //치환문자 미사용시 {\"email\":\"aaaa@naver.com\"} 이메일만 입력 해주시기 바랍니다.

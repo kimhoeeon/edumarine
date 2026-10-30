@@ -1,5 +1,7 @@
 package com.mtf.edumarine.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import com.mtf.edumarine.config.ExternalApiProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import com.inicis.std.util.HttpUtil;
@@ -51,6 +53,11 @@ public class EduMarineController {
     private final CommService commService;
 
     private final EduMarineMngService eduMarineMngService;
+
+    /** 2026-10-30 보안 조치(2단계): 외부 서비스 키는 설정 파일(application.properties)에서 읽는다. */
+    @Autowired
+    private ExternalApiProperties externalApi;
+
 
     public EduMarineController(EduMarineService ks, CommService cs, EduMarineMngService ms){
         this.eduMarineService = ks;
@@ -4705,7 +4712,7 @@ public class EduMarineController {
                     // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
                     String signature = SignatureUtil.makeSignature(signParam);
 
-                    signParam.put("signKey", "elVJSjZPYWhaelBCVjlCSFYwbzdkQT09");        // 필수
+                    signParam.put("signKey", externalApi.getInicisSignKey());        // 필수 (2026-10-30: 설정 파일 inicis.sign-key)
 
                     // signature 데이터 생성 (모듈에서 자동으로 signParam을 알파벳 순으로 정렬후 NVP 방식으로 나열해 hash)
                     String verification = SignatureUtil.makeSignature(signParam);
@@ -5636,15 +5643,9 @@ public class EduMarineController {
         ModelAndView mv = new ModelAndView();
         TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(inistdpayRequestDTO.getTrainSeq());
 
-        //String mid					= "INIpayTest";		                    // 상점아이디
-        //String signKey			    = "SU5JTElURV9UUklQTEVERVNfS0VZU1RS";	// 웹 결제 signkey
-
-        String mid = "edumarin90";
-        String signKey = "elVJSjZPYWhaelBCVjlCSFYwbzdkQT09";
-
-        // 실제 Key
-        // 웹결제 signkey
-        // TmlKeFBiSjlpVUhkMldsMlJDWWdKQT09
+        // 2026-10-30 보안 조치(2단계): 상점 ID·signKey 는 설정 파일(inicis.*)에서 읽는다.
+        String mid = externalApi.getInicisMid();
+        String signKey = externalApi.getInicisSignKey();
 
         String mKey = SignatureUtil.hash(signKey, "SHA-256");
 
@@ -5723,15 +5724,9 @@ public class EduMarineController {
         ModelAndView mv = new ModelAndView();
         TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(inistdpayRequestDTO.getTrainSeq());
 
-        //String mid					= "INIpayTest";		                    // 상점아이디
-        //String signKey			    = "SU5JTElURV9UUklQTEVERVNfS0VZU1RS";	// 웹 결제 signkey
-
-        String mid = "edumarin90";
-        String signKey = "elVJSjZPYWhaelBCVjlCSFYwbzdkQT09";
-
-        // 실제 Key
-        // 웹결제 signkey
-        // TmlKeFBiSjlpVUhkMldsMlJDWWdKQT09
+        // 2026-10-30 보안 조치(2단계): 상점 ID·signKey 는 설정 파일(inicis.*)에서 읽는다.
+        String mid = externalApi.getInicisMid();
+        String signKey = externalApi.getInicisSignKey();
 
         String mKey = SignatureUtil.hash(signKey, "SHA-256");
 

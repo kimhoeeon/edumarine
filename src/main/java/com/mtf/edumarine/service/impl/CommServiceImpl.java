@@ -1,5 +1,6 @@
 package com.mtf.edumarine.service.impl;
 
+import com.mtf.edumarine.config.ExternalApiProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import com.google.gson.Gson;
@@ -45,6 +46,11 @@ public class CommServiceImpl implements CommService {
 
     private final EduMarineMngService eduMarineMngService;
 
+    /** 2026-10-30 보안 조치(2단계): 외부 서비스 키는 설정 파일(application.properties)에서 읽는다. */
+    @Autowired
+    private ExternalApiProperties externalApi;
+
+
     @Autowired
     public CommServiceImpl(EduMarineMngService eduMarineMngService) {
         this.eduMarineMngService = eduMarineMngService;
@@ -75,8 +81,8 @@ public class CommServiceImpl implements CommService {
 
             Map<String, String> sms = new HashMap<String, String>();
 
-            sms.put("user_id", "meetingfan"); // SMS 아이디
-            sms.put("key", "ddefu9nx1etgljr1p1z1n9h7ri5u8mf0"); //인증키
+            sms.put("user_id", externalApi.getAligoUserId()); // SMS 아이디 (2026-10-30: 설정 파일 aligo.user-id)
+            sms.put("key", externalApi.getAligoKey()); //인증키 (2026-10-30: 설정 파일 aligo.key)
 
             /******************** 인증정보 ********************/
 
@@ -175,8 +181,8 @@ public class CommServiceImpl implements CommService {
 
             Map<String, String> sms = new HashMap<String, String>();
 
-            sms.put("user_id", "meetingfan"); // SMS 아이디
-            sms.put("key", "ddefu9nx1etgljr1p1z1n9h7ri5u8mf0"); //인증키
+            sms.put("user_id", externalApi.getAligoUserId()); // SMS 아이디 (2026-10-30: 설정 파일 aligo.user-id)
+            sms.put("key", externalApi.getAligoKey()); //인증키 (2026-10-30: 설정 파일 aligo.key)
 
             /******************** 인증정보 ********************/
 
