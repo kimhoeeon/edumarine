@@ -1439,12 +1439,16 @@ public class EduMarineMngController {
     public ModelAndView mng_customer_member_detail(String seq) {
         ModelAndView mv = new ModelAndView();
 
-        if(seq != null && !"".equals(seq)){
-            MemberDTO memberDTO = new MemberDTO();
-            memberDTO.setSeq(seq);
-            MemberDTO info = eduMarineMngService.processSelectMemberSingle(memberDTO);
-            mv.addObject("info", info);
+        // 2026-10-30: 관리자 회원 등록 기능 제거. seq 없이 들어오면(등록 화면) 목록으로 보낸다.
+        if(seq == null || "".equals(seq)){
+            mv.setViewName("redirect:/mng/customer/member.do");
+            return mv;
         }
+
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setSeq(seq);
+        MemberDTO info = eduMarineMngService.processSelectMemberSingle(memberDTO);
+        mv.addObject("info", info);
 
         mv.setViewName("/mng/customer/member/detail");
         return mv;
@@ -1455,15 +1459,6 @@ public class EduMarineMngController {
     public ResponseEntity<ResponseDTO> mng_customer_member_update(@RequestBody MemberDTO memberDTO) {
 
         ResponseDTO responseDTO = eduMarineMngService.processUpdateMember(memberDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/customer/member/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_customer_member_insert(@RequestBody MemberDTO memberDTO) {
-
-        ResponseDTO responseDTO = eduMarineMngService.processInsertMember(memberDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

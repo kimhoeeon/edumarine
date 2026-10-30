@@ -52,3 +52,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// 2026-10-30: WEB-INF/lib 의 jar 가 의존성(fileTree)과 webapp 복사본으로 두 번 들어가 Gradle 7 에서 war/bootWar 가
+// "cos.jar is a duplicate" 로 실패하던 것을 같은 파일이므로 한 번만 넣도록 지정. 런타임 동작 변화 없음.
+tasks.withType(War).configureEach {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

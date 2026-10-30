@@ -235,35 +235,9 @@ function f_customer_member_save(seq){
                             alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                         }
                     })//ajax
-                }else { /* Insert */
-                    $.ajax({
-                        url: '/mng/customer/member/insert.do',
-                        method: 'POST',
-                        async: false,
-                        data: data,
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            if (data.resultCode === "0") {
-                                Swal.fire({
-                                    title: '회원 정보 등록',
-                                    text: "회원 정보가 등록되었습니다.",
-                                    icon: 'info',
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: '확인'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/mng/customer/member.do'; // 목록으로 이동
-                                    }
-                                });
-                            } else {
-                                showMessage('', 'error', '에러 발생', '회원 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
-                            }
-                        },
-                        error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                        }
-                    })//ajax
+                }else {
+                    // 2026-10-30: 관리자 회원 등록 기능 제거(사용자 결정). 회원 가입은 공개 화면에서만 한다.
+                    showMessage('', 'error', '[등록 정보]', '관리자 화면에서는 회원을 등록할 수 없습니다. 회원 가입은 사이트 회원가입 화면에서 진행됩니다.', '');
                 }// id check
 
             }//validCheck
@@ -321,7 +295,7 @@ function f_customer_member_valid(){
     let applyStatus = document.querySelector('#applyStatus').value;
     let grade = document.querySelector('#grade').value;
     let id = document.querySelector('#id').value;
-    let password = document.querySelector('#password').value;
+    // 2026-10-30: 비밀번호 필수 검사 제거. 수정 화면의 비밀번호란은 비활성 표시 전용(저장 시 전송·갱신되지 않음)이고, 등록 화면에는 비밀번호란 자체가 없다.
     let name = document.querySelector('#name').value;
     let phone = document.querySelector('#phone').value;
     let birth = document.querySelector('#birth').value;
@@ -335,7 +309,6 @@ function f_customer_member_valid(){
     if(nvl(applyStatus,"") === ""){ showMessage('', 'error', '[등록 정보]', '상태(회원/탈퇴)를 입력해 주세요.', ''); return false; }
     if(nvl(grade,"") === ""){ showMessage('', 'error', '[등록 정보]', '등급을 입력해 주세요.', ''); return false; }
     if(nvl(id,"") === ""){ showMessage('', 'error', '[등록 정보]', '아이디를 입력해 주세요.', ''); return false; }
-    if(nvl(password,"") === ""){ showMessage('', 'error', '[등록 정보]', '비밀번호를 입력해 주세요.', ''); return false; }
     if(nvl(name,"") === ""){ showMessage('', 'error', '[등록 정보]', '이름을 입력해 주세요.', ''); return false; }
     if(nvl(phone,"") === ""){ showMessage('', 'error', '[등록 정보]', '연락처를 입력해 주세요.', ''); return false; }
     if(nvl(birth,"") === ""){ showMessage('', 'error', '[등록 정보]', '생년월일을 YYYY-MM-DD 형태로 입력해 주세요.', ''); return false; }

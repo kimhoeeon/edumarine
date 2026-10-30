@@ -504,9 +504,7 @@ if (document.documentElement) {
 
                                             <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
 
-                                                <!--begin::등록-->
-                                                <a href="javascript:void(0);" onclick="f_customer_member_modify_init_set('');" class="btn btn-primary ms-auto">회원 등록</a>
-                                                <!--end::등록-->
+                                                <%-- 2026-10-30: 관리자 회원 등록 기능 제거(사용자 결정). 회원 가입은 공개 화면에서만 한다. --%>
 
                                             </div>
 

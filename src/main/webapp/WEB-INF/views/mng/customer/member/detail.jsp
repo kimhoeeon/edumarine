@@ -443,7 +443,8 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8">
-                                                    <input type="text" id="password" name="password" class="form-control form-control-lg form-control-solid-bg" placeholder="비밀번호" value="${info.password}" disabled/>
+                                                    <%-- 2026-10-30 보안 조치: 회원 비밀번호 해시를 화면에 내보내지 않는다. 이 입력란은 비활성이라 저장 시 전송되지 않고, 회원 수정 SQL 도 비밀번호를 갱신하지 않는다. --%>
+                                                    <input type="text" id="password" name="password" class="form-control form-control-lg form-control-solid-bg" placeholder="비밀번호" value="설정됨 (관리자 화면에서는 표시하지 않음)" disabled/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>

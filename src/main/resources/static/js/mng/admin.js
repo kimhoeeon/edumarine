@@ -272,9 +272,12 @@ function f_mng_admin_valid(seq){
     let id = $('#id').val();
     if(nvl(id,'') === ''){ showMessage('', 'error', '[등록 정보]', '아이디를 입력해 주세요.', ''); return false; }
 
-    let password = $('#password').val();
-    if(nvl(password,'') === ''){ showMessage('', 'error', '[등록 정보]', '비밀번호를 입력해 주세요.', ''); return false; }
-    
+    // 2026-10-30: 비밀번호 필수 검사는 신규 등록 때만. 수정 화면은 저장된 비밀번호를 더 이상 채워 넣지 않고(노출 방지), 수정 저장은 비밀번호를 갱신하지 않는다.
+    if(nvl(seq,'') === ''){
+        let password = $('#password').val();
+        if(nvl(password,'') === ''){ showMessage('', 'error', '[등록 정보]', '비밀번호를 입력해 주세요.', ''); return false; }
+    }
+
     let cpName = $('#cpName').val();
     if(nvl(cpName,'') === ''){ showMessage('', 'error', '[등록 정보]', '이름을 입력해 주세요.', ''); return false; }
 

@@ -156,10 +156,6 @@ public interface EduMarineMngMapper {
 
     Integer updateMember(MemberDTO memberDTO);
 
-    String getMemberSeq();
-
-    Integer insertMember(MemberDTO memberDTO);
-
     List<RegularDTO> selectRegularList(SearchDTO searchDTO);
 
     RegularDTO selectRegularSingle(RegularDTO regularDTO);

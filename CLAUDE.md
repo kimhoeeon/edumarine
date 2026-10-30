@@ -7,9 +7,12 @@
 - Spring Boot 2.7.13 / Java 8 (`~/.jdks/corretto-1.8.0_512`) / Gradle 7.6.1 / WAR → 외장 Tomcat(`/usr/local/tomcat`, ROOT 배포) / MariaDB / MyBatis XML / JSP+JSTL / 관리자 UI Metronic.
 - **서버 사양 제약**: JDK·Spring Boot·Tomcat 버전을 올리지 않는다 (2026-10-30 사용자 결정). 라이브러리 추가는 Java 8 호환 버전만.
 - 컴파일: `JAVA_HOME=~/.jdks/corretto-1.8.0_512 ./gradlew compileJava -q`
+- **실제 배포 WAR 는 IntelliJ 로 만든다** (사용자 방식, 2026-10-30 확인): IntelliJ → Build → Build Artifacts… → `ROOT` → Build → `out/artifacts/ROOT/ROOT.war` 생성(아티팩트 정의 `.idea/artifacts/ROOT.xml`, Gradle exploded WAR 를 그대로 묶음, `src/main/resources/application.properties` 포함). 이 파일을 FTP 로 서버 `/usr/local/tomcat/webapps/ROOT.war` 에 올리면 Tomcat 이 재배포한다. `out/`·`.idea/` 는 git 제외.
+- Gradle 로도 만들 수 있다(검증용): `JAVA_HOME=~/.jdks/corretto-1.8.0_512 ./gradlew clean bootWar -q` → `build/libs/edumarine-0.0.1-SNAPSHOT.war`. `build.gradle` 의 `War` 중복 제외(`DuplicatesStrategy.EXCLUDE`, 2026-10-30)가 없으면 `WEB-INF/lib/cos.jar` 중복으로 실패한다(IntelliJ 아티팩트 빌드에는 영향 없음).
+- 업로드 전 확인(사용자 터미널은 PowerShell 이라 `unzip` 이 없음): `Add-Type -AssemblyName System.IO.Compression.FileSystem; $z=[IO.Compression.ZipFile]::OpenRead("$PWD\out\artifacts\ROOT\ROOT.war"); $r=New-Object IO.StreamReader($z.GetEntry('WEB-INF/classes/application.properties').Open()); ($r.ReadToEnd() -split "`n") | Select-String 'security\.'; $r.Close(); $z.Dispose()` → `security.*` 값이 의도한 대로인지 본다. Git Bash 에서는 `unzip -p out/artifacts/ROOT/ROOT.war WEB-INF/classes/application.properties | grep security.`. `build.gradle` 을 바꾼 뒤에는 IntelliJ 가 Gradle 프로젝트 다시 읽기를 요청할 수 있다(동의하면 됨).
 - 로컬 실행(운영 DB 직결, 로컬 DB 없음): `SPRING_DATASOURCE_JDBC_URL='jdbc:log4jdbc:mariadb://<운영DB호스트>:3306/edumarine?serverTimezone=UTC&characterEncoding=utf8&userUnicode=true' ./gradlew bootRun --console=plain`. 업로드·다운로드 경로가 리눅스 절대경로라 로컬에서는 파일 기능이 동작하지 않는다. JSP·정적 파일 변경은 재시작해야 반영된다.
 - 설정 파일 `src/main/resources/application.properties` 는 비밀값을 담고 있어 2026-10-30 부터 `.gitignore` 대상. 아직 git 추적 중이므로 사용자가 `git rm --cached` 로 해제한다. WAR 에는 작업 트리의 파일이 들어가므로 로컬 사본을 지운다.
-- 배포는 사용자가 WAR 를 서버에 올려 Tomcat 을 재시작한다. Claude 는 배포하지 않는다.
+- 배포는 사용자가 위 방식으로 `ROOT.war` 를 FTP 업로드한다(템플릿 프로젝트의 `deploy/deploy.sh` 방식이 아님). Claude 는 배포하지 않고, 배포 후 확인 포인트만 정리한다.
 
 ## 운영 원칙 (2026-10-30 사용자 결정)
 - 운영 중 사이트. 사용자·관리자가 쓰는 화면 흐름과 로그인 방식을 바꾸는 수정은 하지 않는다 (2단계 인증 추가, 로그인 정책 변경, 화면 동선 변경 등).
@@ -40,7 +43,7 @@
 - 변경: 비밀번호 초기화는 서버가 임시 비밀번호를 만들고 DirectSend 로 본문을 직접 보낸 뒤 DB 를 바꾼다(템플릿 93 미사용). 이메일 조회 응답은 마스킹. `main.js` 의 `/mail/send.do` 호출 제거. 같은 ID 10분 6회, 같은 IP 10분 20회 제한.
 - 변경: 마이페이지 신청 조회·수정·상태변경·취소(레거시 22종 + 통합) 소유자 검사. 신청 insert 는 로그인 시 세션 회원번호로 고정. 화면에서 보내는 `결제완료` 는 교육비가 1원 이상으로 확인되는 교육이면 거부(0원·미입력·교육 미확인은 허용). `/member/seq/selectSingle.do` 는 seq 와 마스킹 id 만 반환.
 - 변경: 커뮤니티 본문은 저장·조회 시 jsoup 정화, 제목·작성자·해시태그 `c:out`, 목록 JS 이스케이프.
-- 변경: 관리자 로그인 실패 같은 ID 10분 20회 제한, 성공 시 세션 ID 교체, 응답에서 password 제거, 서버가 본 접속 IP 를 로그에 기록. 해시 검증은 항상 지원하고, 해시 저장 전환은 `security.admin-password-hash=true` 일 때만(기본 false, 롤백 안전). IP 검사는 `security.admin-ip-check=server`(로컬 설정 파일에 server, 코드 기본값 client)면 서버가 본 접속 IP 로 비교.
+- 변경: 관리자 로그인 실패 같은 ID 10분 20회 제한, 성공 시 세션 ID 교체, 응답에서 password 제거, 서버가 본 접속 IP 를 로그에 기록. 해시 검증은 항상 지원하고, 해시 저장 전환은 `security.admin-password-hash=true` 일 때만(코드 기본값 false). 2026-10-30 2차 배포 확인 후 로컬 설정 파일에서 true 로 전환 — 관리자가 다음 로그인에 성공하면 평문이 `$pbkdf2$` 해시로 바뀌고, 이후 `PasswordUtil` 이 없는 구버전 WAR(`c8e3848` 이전)로는 롤백할 수 없다(설정을 false 로 되돌리는 것은 안전). IP 검사는 `security.admin-ip-check=server`(로컬 설정 파일에 server, 코드 기본값 client)면 서버가 본 접속 IP 로 비교.
 - 변경: 회원 로그인 실패 10분 20회 제한, 세션 ID 교체.
 - 변경: 관리자 세션 종료 API 가 세션별 플래그 사용(B-2). electro SMS 대상 SQL 추가(B-1). 로그 레벨 `jdbc.sqltiming`/`resultsettable` OFF.
 - 삭제: 동작하지 않던 `/uploadFile.do`, 자격증명이 든 `MySQLConnectionTest.java`, 미사용 `commons-fileupload`, `EduMarineApplication` 의 주석 블록.
@@ -51,7 +54,7 @@
 2. 회원 로그인, 마이페이지 신청 내역·수정, 통합 신청·무료 신청 완료, 결제(PC·모바일) 복귀 화면.
 3. 비밀번호 초기화 메일 수신·임시 비밀번호 로그인.
 4. 게시판 첨부 다운로드, 관리자 첨부 업로드, 커뮤니티 이미지 표시.
-5. 안정 확인 후 `security.admin-password-hash=true` 로 변경해 재배포(관리자 재로그인 시 해시 전환).
+5. 해시 전환 배포(2026-10-30 설정 true) 후: 관리자 로그인 정상, `admin.password` 가 `$pbkdf2$` 로 시작하는지, 관리자 관리 > 상세 화면 비밀번호란이 비어 있고 수정 저장이 되는지, 신규 관리자 등록·로그인이 되는지, 회원 관리 > 상세 화면 비밀번호란에 "설정됨" 만 보이고 회원 정보 수정 저장이 되는지, 회원 목록에 "회원 등록" 버튼이 없고 `/mng/customer/member/detail.do`(seq 없음)가 목록으로 돌아가는지.
 
 ## 진행 중 / 미완 (보고서 8장 참조)
 - 2단계: 노출된 비밀값(DB root·서버·이니시스·알리고·DirectSend) 교체, 코드 내 키를 설정으로 이동, DB 외부 접속 차단. (`git rm --cached` 는 완료)
@@ -74,3 +77,4 @@
 - 2026-10-30: 위 6건(`c8e3848`~`41893e9`)을 origin 에 푸시하고 사용자가 운영 서버에 배포. 배포 직후 읽기 전용 확인 통과 — 새 JS·구독 섹션 반영, 무세션 관리자 API 401, 관리자 화면 302, 임의 파일 읽기 3종 404(설정 파일 포함), 미로그인 마이페이지 302, 공개 화면·sitemap 200, 기존 업로드 이미지 200. 사용자 확인 남은 항목: 관리자 로그인 후 목록·엑셀, 비밀번호 초기화 메일 수신, 레거시 과정 TEST 신청 문자, 구독 버튼.
 - 2026-10-30: 운영 로그로 관리자 접속 IP(서버 관측)와 화면 전송 IP 가 같고 프록시가 없음을 확인 → 관리자 IP 검사를 서버 관측 IP 기준으로 전환(`security.admin-ip-check=server`, X-Forwarded-For 미신뢰). 로그인 절차 변경 없음. 문제 시 설정을 client 로 되돌려 재배포.
 - 2026-10-30: 배포 후 확인에서 발견 — 세션이 사라진 상태에서 관리자 메인(로그인 폼 POST 로 진입)을 새로고침하면 401 JSON 이 그대로 보임. 인증 거부 응답의 화면 판정을 메서드가 아니라 Accept 헤더 기준으로 바꿔 POST 재전송도 로그인 페이지로 리다이렉트(`AuthResponses`). 커밋 `a822458` 푸시·배포 후 운영 확인(읽기 전용): 무세션 `/mng/main.do` GET·POST 모두 302 → `/mng/index.do`, AJAX 목록 조회 401 JSON 유지, 공개 화면·관리자 로그인 화면·sitemap 200, 공개 구독 중복검사 API 200. 발주사 관리자(eduadmin) 로그인은 `mode=server` 로 정상 통과 확인.
+- 2026-10-30: 관리자 비밀번호 해시 저장 전환(`security.admin-password-hash=true`, 로컬 설정 파일). 코드 확인 근거 — 로그인 SQL 은 id 로만 조회하고 비교는 `PasswordUtil.matches`(평문·해시 모두), 관리자 수정 SQL(`updateAdminMng`)은 password 컬럼을 갱신하지 않음, 계정 인증(`updateValidYn`)은 비밀번호 미사용, 목록·엑셀 노출 없음. 함께 수정: 관리자 관리 상세 화면(`mng/adminMng/admin/detail.jsp`)이 저장된 비밀번호를 입력란 value 로 내보내던 것을 제거하고, `mng/admin.js` 의 비밀번호 필수 검사를 신규 등록 때만 하도록 변경(수정 저장은 원래 비밀번호를 쓰지 않으므로 동작 동일). 회원 상세(`mng/customer/member/detail.jsp`)도 회원 비밀번호(SHA512 해시)를 비활성 입력란에 출력하던 것을 사용자 결정으로 같은 날 수정 — 값 대신 "설정됨" 고정 문구만 표시하고 `mng/member.js` 의 비밀번호 필수 검사를 제거(입력란은 비활성이라 전송되지 않고 `updateMember` 도 비밀번호를 갱신하지 않으므로 동작 동일). 이어서 사용자 결정으로 **관리자 회원 등록 기능 제거**(원래부터 등록 화면에 비밀번호란이 없고 서버 로직에 솔트·해시 처리가 없어 사용 불가 상태였음): 목록(`mng/customer/member.jsp`)의 "회원 등록" 버튼 삭제, `/mng/customer/member/detail.do` 는 seq 없이 들어오면 목록으로 리다이렉트, `/mng/customer/member/insert.do` 핸들러·`processInsertMember`·`EduMarineMngMapper.getMemberSeq/insertMember` 삭제, `mng/member.js` 등록 분기는 안내 메시지로 대체. 공개 회원가입(`EduMarineMapper.insertMember`)은 그대로. 회원 수정·삭제·엑셀은 변경 없음. 같은 작업에서 Gradle `war`/`bootWar` 가 `cos.jar` 중복으로 실패하던 것을 `build.gradle` 중복 제외 설정으로 해결하고 WAR(`security.admin-password-hash=true` 포함) 빌드 확인. 관리자 상세 화면 변경은 로그인이 필요해 브라우저 확인은 배포 후 확인 포인트 5 로 넘김.

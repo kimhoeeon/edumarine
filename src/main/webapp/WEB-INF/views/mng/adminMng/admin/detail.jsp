@@ -438,7 +438,8 @@ if (document.documentElement) {
                                                 <div class="col-lg-8">
                                                     <div class="row">
                                                         <div class="col-lg-8">
-                                                            <input type="password" id="password" name="password" class="form-control form-control-lg form-control-solid-bg" placeholder="비밀번호" value="${info.password}" onchange="f_mng_admin_pw_status_change()"/>
+                                                            <%-- 2026-10-30 보안 조치: 저장된 비밀번호(평문·해시)를 화면에 내보내지 않는다. 수정 저장은 비밀번호를 갱신하지 않으므로 빈 값이어도 기존 동작과 같다. --%>
+                                                            <input type="password" id="password" name="password" class="form-control form-control-lg form-control-solid-bg" placeholder="비밀번호" value="" autocomplete="new-password" onchange="f_mng_admin_pw_status_change()"/>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <button type="button" class="btn btn-primary" onclick="f_mng_admin_pw_check()">비밀번호 검사</button>

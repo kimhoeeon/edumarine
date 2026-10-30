@@ -1603,36 +1603,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processInsertMember(MemberDTO memberDTO) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            String getSeq = eduMarineMngMapper.getMemberSeq();
-            memberDTO.setSeq(getSeq);
-
-            result = eduMarineMngMapper.insertMember(memberDTO);
-
-            responseDTO.setCustomValue(getSeq);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertMember ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            log.error("[processInsertMember] 처리 중 예외", e);
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
     public List<ResumeDTO> processSelectResumeList(SearchDTO searchDTO) {
         return eduMarineMngMapper.selectResumeList(searchDTO);
     }

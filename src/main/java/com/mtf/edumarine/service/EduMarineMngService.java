@@ -154,8 +154,6 @@ public interface EduMarineMngService {
 
     ResponseDTO processUpdateMember(MemberDTO memberDTO);
 
-    ResponseDTO processInsertMember(MemberDTO memberDTO);
-
     List<RegularDTO> processSelectRegularList(SearchDTO searchDTO);
 
     RegularDTO processSelectRegularSingle(RegularDTO regularDTO);

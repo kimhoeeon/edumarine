@@ -1596,66 +1596,6 @@
         WHERE seq = #{seq}
     </update>
 
-    <select id="getMemberSeq" resultType="java.lang.String">
-        /* com.mtf.edumarine.mapper.EduMarineMngMapper.getMemberSeq */
-        SELECT CONCAT('V', LPAD(nextval('member_seq'), '7', '0'))
-        FROM DUAL
-    </select>
-
-    <insert id="insertMember" parameterType="com.mtf.edumarine.dto.MemberDTO">
-        /* com.mtf.edumarine.mapper.EduMarineMngMapper.insertMember */
-        INSERT INTO member
-        ( seq
-        , apply_status
-        , id
-        , password
-        , grade
-        , name
-        , name_en
-        , phone
-        , birth_year
-        , birth_month
-        , birth_day
-        , sex
-        , address
-        , address_detail
-        , email
-        , keyword
-        , sms_yn
-        , del_yn
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , '회원'
-            , #{id}
-            , <![CDATA[#{password}]]>
-            , #{grade}
-            , #{name}
-            , #{nameEn}
-            , #{phone}
-            , #{birthYear}
-            , #{birthMonth}
-            , #{birthDay}
-            , #{sex}
-            , #{address}
-            , <![CDATA[#{addressDetail}]]>
-            , #{email}
-            , #{keyword}
-            , #{smsYn}
-            , 'N'
-            , #{note}
-            , 'MEMBER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'MEMBER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
-    </insert>
-
     <select id="selectResumeList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ResumeDTO">
         /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectResumeList */
         SELECT rst.*
