@@ -40,7 +40,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/mng/index.do",
                         "/mng/login.do",
                         "/mng/logoutCheck.do",
-                        "/mng/session/kill/gbn.do"
+                        "/mng/session/kill/gbn.do",
+                        // 메인·뉴스레터 화면의 공개 구독 기능이 관리자 경로를 그대로 호출함 (main.js) - 기존 동작 유지
+                        "/mng/newsletter/subscriber/checkDuplicate.do",
+                        "/mng/newsletter/subscriber/insert.do"
                 );
 
         registry.addInterceptor(new LoginRequiredInterceptor())

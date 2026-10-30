@@ -192,6 +192,9 @@
         </div>
         <!-- content_wrap -->
 
+        <%-- 뉴스레터 구독 섹션 (공통 inc/subscribe.jsp) - 2026-10-30 발주사 요청: 목록 최하단에도 메인과 동일 노출 --%>
+        <c:import url="../inc/subscribe.jsp" charEncoding="UTF-8"/>
+
     </div>
     <!-- //container -->
 

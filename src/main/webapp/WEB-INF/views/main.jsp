@@ -595,20 +595,8 @@
         </div>
         <!-- //main_board -->
 
-        <!-- subscribe_wrap -->
-        <div class="subscribe_wrap">
-            <div class="inner">
-                <div class="title">
-                    <span>경기해양레저인력양성센터</span>의 다양한 소식을<br>
-                    뉴스레터로 받아보세요.
-                </div>
-                <div class="subscribe_bar">
-                    <input type="email" id="subscriber_email" class="onlyNumEng" placeholder="e-mail">
-                    <a href="javascript:void(0);" onclick="main_newsletter_subscriber_btn(this);" class="btn">구독하기</a>
-                </div>
-            </div>
-        </div>
-        <!-- //subscribe_wrap -->
+        <%-- 뉴스레터 구독 섹션 (공통 inc/subscribe.jsp) --%>
+        <c:import url="inc/subscribe.jsp" charEncoding="UTF-8"/>
 
     </div>
     <!-- //container -->
