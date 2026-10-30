@@ -8,6 +8,8 @@ import com.mtf.edumarine.mapper.EduMarineMngMapper;
 import com.mtf.edumarine.mapper.UnifiedMapper;
 import com.mtf.edumarine.service.EduMarineMngService;
 import com.mtf.edumarine.util.AES128;
+import com.mtf.edumarine.util.HtmlSanitizer;
+import com.mtf.edumarine.util.PasswordUtil;
 import com.mtf.edumarine.util.SHA512;
 import com.mtf.edumarine.util.StringUtil;
 import lombok.Setter;
@@ -21,6 +23,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +60,15 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Autowired
     private UnifiedMapper unifiedMapper;
 
+    /**
+     * 2026-10-30 보안 조치(C-7): 관리자 비밀번호 해시 저장 사용 여부.
+     * true 면 로그인 성공 시 평문 비밀번호를 해시로 전환하고 신규 관리자도 해시로 저장한다.
+     * 기본 false - 해시로 바뀐 뒤 구버전으로 롤백하면 관리자 로그인이 안 되므로, 배포가 안정된 뒤 application.properties 에서 켠다.
+     * 해시 검증(matches) 자체는 설정과 무관하게 항상 동작한다.
+     */
+    @Value("${security.admin-password-hash:false}")
+    private boolean adminPasswordHashEnabled;
+
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public AdminDTO login(AdminDTO param_adminDTO, HttpSession session) {
@@ -73,7 +85,8 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             String param_pw = param_adminDTO.getPassword();
 
             if(db_ip.equals(param_ip)){
-                if(db_pw.equals(param_pw)){
+                // 2026-10-30 보안 조치(C-7): 해시 저장분은 해시 검증, 아직 평문인 계정은 기존처럼 비교(로그인 끊김 없음)
+                if(PasswordUtil.matches(param_pw, db_pw)){
                     if("Y".equals(db_validYn)){
                         System.out.println("Login Success");
                         /*if("N".equals(db_loginYn)){*/
@@ -83,6 +96,19 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                             session.setAttribute("id", db_adminDTO.getId());
                             session.setAttribute("gbn", db_adminDTO.getGbn());
                             session.setAttribute("note", db_adminDTO.getNote());
+                            session.setAttribute("adminYn", "Y"); // 관리자 세션 표식 (인터셉터 판정용)
+
+                            // 평문으로 저장돼 있던 비밀번호는 로그인 성공 시점에 해시로 전환 (security.admin-password-hash=true 일 때만)
+                            if (adminPasswordHashEnabled && !PasswordUtil.isHashed(db_pw)) {
+                                try {
+                                    AdminDTO pwUpd = new AdminDTO();
+                                    pwUpd.setSeq(db_adminDTO.getSeq());
+                                    pwUpd.setPassword(PasswordUtil.hash(param_pw));
+                                    eduMarineMngMapper.updateAdminPassword(pwUpd);
+                                } catch (Exception e) {
+                                    System.out.println("[admin password hash upgrade skipped] " + e.getMessage());
+                                }
+                            }
 
                             // 로그인 여부 Update
                             /*AdminDTO req_adminDTO = new AdminDTO();
@@ -1128,7 +1154,12 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     @Override
     public CommunityDTO processSelectCommunitySingle(CommunityDTO communityDTO) {
         //System.out.println("EduMarineMngServiceImpl > processSelectCommunitySingle");
-        return eduMarineMngMapper.selectCommunitySingle(communityDTO);
+        CommunityDTO info = eduMarineMngMapper.selectCommunitySingle(communityDTO);
+        if (info != null) {
+            // 2026-10-30 보안 조치(H-4): 회원 작성 본문은 정화 후 표시
+            info.setContent(HtmlSanitizer.clean(info.getContent()));
+        }
+        return info;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -8523,6 +8554,11 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
             String seq = eduMarineMngMapper.getAdminSeq();
             adminDTO.setSeq(seq);
+
+            // 2026-10-30 보안 조치(C-7): 비밀번호는 해시로 저장 (security.admin-password-hash=true 일 때만)
+            if (adminPasswordHashEnabled && adminDTO.getPassword() != null && !PasswordUtil.isHashed(adminDTO.getPassword())) {
+                adminDTO.setPassword(PasswordUtil.hash(adminDTO.getPassword()));
+            }
 
             result = eduMarineMngMapper.insertAdminMng(adminDTO);
 

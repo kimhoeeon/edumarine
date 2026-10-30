@@ -6,7 +6,11 @@ import com.inicis.std.util.SignatureUtil;
 import com.mtf.edumarine.constants.CommConstants;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
+import com.mtf.edumarine.service.EduMarineMngService;
 import com.mtf.edumarine.service.EduMarineService;
+import com.mtf.edumarine.util.PasswordUtil;
+import com.mtf.edumarine.util.SignUtil;
+import com.mtf.edumarine.util.SimpleRateLimiter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
@@ -43,9 +47,110 @@ public class EduMarineController {
 
     private final CommService commService;
 
-    public EduMarineController(EduMarineService ks, CommService cs){
+    private final EduMarineMngService eduMarineMngService;
+
+    public EduMarineController(EduMarineService ks, CommService cs, EduMarineMngService ms){
         this.eduMarineService = ks;
         this.commService = cs;
+        this.eduMarineMngService = ms;
+    }
+
+    //***************************************************************************
+    // 2026-10-30 보안 조치 공통 헬퍼 (세션 회원 확인 / 소유자 검사)
+    //***************************************************************************
+
+    /** 세션 로그인 회원의 member seq (미로그인·회원 없음이면 null) */
+    private String getSessionMemberSeq(HttpSession session) {
+        if (session == null || session.getAttribute("id") == null) {
+            return null;
+        }
+        MemberDTO member = eduMarineService.processSelectMemberSingle(session.getAttribute("id").toString());
+        return member == null ? null : member.getSeq();
+    }
+
+    /** 세션 회원이 해당 신청 레코드(memberSeq)의 소유자인지 */
+    private boolean isOwner(HttpSession session, String recordMemberSeq) {
+        String mine = getSessionMemberSeq(session);
+        return mine != null && recordMemberSeq != null && mine.equals(recordMemberSeq.trim());
+    }
+
+    private ResponseEntity<ResponseDTO> forbidden() {
+        ResponseDTO res = new ResponseDTO();
+        res.setResultCode(CommConstants.RESULT_CODE_FAIL);
+        res.setResultMessage("본인의 신청 정보만 처리할 수 있습니다.");
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    /**
+     * 신청 상태 변경(/apply/eduApplyNN/update/status.do) 공통 검증.
+     * - 로그인 회원 본인 신청만 변경 가능
+     * - '결제완료' 는 교육비가 1원 이상으로 확인되는 유료 교육이면 거부 (0원·미입력·교육 미확인은 허용, 유료는 결제 승인 시 서버가 설정)
+     * @return 통과면 null, 아니면 실패 응답
+     */
+    private ResponseEntity<ResponseDTO> guardStatusUpdate(HttpSession session, String recordMemberSeq, String recordTrainSeq,
+                                                          String applyStatus, String requestTrainSeq) {
+        if (!isOwner(session, recordMemberSeq)) {
+            return forbidden();
+        }
+        if ("결제완료".equals(applyStatus)) {
+            String trainSeq = (requestTrainSeq != null && !requestTrainSeq.isEmpty()) ? requestTrainSeq : recordTrainSeq;
+            TrainDTO train = (trainSeq == null || trainSeq.isEmpty()) ? null : eduMarineService.processSelectTrainSingle(trainSeq);
+            if (train != null && train.getPaySum() != null && train.getPaySum() > 0) {
+                ResponseDTO res = new ResponseDTO();
+                res.setResultCode(CommConstants.RESULT_CODE_FAIL);
+                res.setResultMessage("유료 교육은 결제 완료 후 상태가 변경됩니다.");
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            }
+        }
+        return null;
+    }
+
+    /** 이메일 마스킹 (앞 3자 유지) */
+    private String maskEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return email;
+        }
+        int at = email.indexOf('@');
+        if (at <= 0) {
+            return "***";
+        }
+        String local = email.substring(0, at);
+        int keep = Math.min(3, local.length());
+        return local.substring(0, keep) + "***" + email.substring(at);
+    }
+
+    /** 아이디 마스킹 (앞 2자·뒤 2자 유지, 화면의 maskingName 과 같은 규칙) */
+    private String maskId(String id) {
+        if (id == null) {
+            return null;
+        }
+        if (id.length() <= 4) {
+            return id.isEmpty() ? id : id.charAt(0) + "***";
+        }
+        StringBuilder sb = new StringBuilder(id);
+        for (int i = 2; i < id.length() - 2; i++) {
+            sb.setCharAt(i, '*');
+        }
+        return sb.toString();
+    }
+
+    private String escapeHtml(String s) {
+        if (s == null) {
+            return "";
+        }
+        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&#39;");
+    }
+
+    private String buildInitPasswordMailBody(String id, String tempPassword) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div style='font-family:sans-serif; line-height:1.7;'>");
+        sb.append("<p>안녕하세요. 경기해양레저 인력양성센터입니다.</p>");
+        sb.append("<p>요청하신 아이디 [ ").append(escapeHtml(id)).append(" ] 의 비밀번호가 아래 임시 비밀번호로 초기화되었습니다.</p>");
+        sb.append("<p style='font-size:18px; font-weight:bold;'>임시 비밀번호 : ").append(escapeHtml(tempPassword)).append("</p>");
+        sb.append("<p>로그인 후 마이페이지에서 반드시 비밀번호를 변경해 주세요.</p>");
+        sb.append("<p>본인이 요청하지 않았다면 센터(Tel. 1811-7891)로 문의해 주세요.</p>");
+        sb.append("</div>");
+        return sb.toString();
     }
 
     //***************************************************************************
@@ -207,14 +312,28 @@ public class EduMarineController {
 
     @RequestMapping(value = "/member/login/submit.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> member_login_submit(@RequestBody MemberDTO memberDTO, HttpSession session/*, HttpServletResponse httpResponse*/) {
+    public ResponseEntity<ResponseDTO> member_login_submit(@RequestBody MemberDTO memberDTO, HttpSession session, HttpServletRequest request) {
         //System.out.println("EduMarineController > member_login_submit");
-        //System.out.println(searchDTO.toString());
+        // 2026-10-30 보안 조치(M-1): 실패 횟수 제한(같은 ID 10분 20회), 성공 시 세션 ID 교체. 로그인 방식은 그대로.
+        String limitKey = "login:member:" + (memberDTO.getId() == null ? "" : memberDTO.getId().trim());
+        if (SimpleRateLimiter.isBlocked(limitKey, 20, 10 * 60 * 1000L)) {
+            ResponseDTO blocked = new ResponseDTO();
+            blocked.setResultCode(CommConstants.RESULT_CODE_FAIL);
+            blocked.setResultMessage("로그인 시도가 너무 많습니다. 10분 후 다시 시도해주세요.");
+            return new ResponseEntity<>(blocked, HttpStatus.OK);
+        }
         ResponseDTO response = eduMarineService.processCheckMemberSingle(memberDTO);
         if(response.getResultCode().equals("0")){
+            SimpleRateLimiter.reset(limitKey);
+            try {
+                request.changeSessionId(); // 세션 고정 방지 (속성은 유지됨)
+            } catch (Exception e) {
+                // 세션 ID 교체 실패는 로그인에 영향 없음
+            }
             session.setAttribute("status", "logon");
             session.setAttribute("id", memberDTO.getId());
-            /*httpResponse.setHeader("Set-Cookie", "id=" + memberDTO.getId() + ";   Secure; SameSite=None");*/
+        } else {
+            SimpleRateLimiter.recordFailure(limitKey, 10 * 60 * 1000L);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -231,15 +350,53 @@ public class EduMarineController {
     @ResponseBody
     public ResponseEntity<String> member_getEmail(@RequestBody MemberDTO memberDTO) {
         //System.out.println("EduMarineController > member_getEmail");
+        // 2026-10-30 보안 조치(C-5): 아이디만으로 이메일 전체가 노출되지 않도록 마스킹해 돌려준다 (화면 안내 문구용)
         String result = eduMarineService.getMemberEmail(memberDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(maskEmail(result), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/member/initPassword.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> member_initPassword(@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<ResponseDTO> member_initPassword(@RequestBody MemberDTO memberDTO, HttpServletRequest request) {
         //System.out.println("EduMarineController > member_initPassword");
-        ResponseDTO response = eduMarineService.initMemberPassword(memberDTO);
+        // 2026-10-30 보안 조치(C-5): 고정 비밀번호 대신 무작위 임시 비밀번호를 서버가 만들고 메일도 서버가 보낸다.
+        //  - 메일 발송에 성공한 뒤에만 DB 비밀번호를 바꾼다 (메일 실패 시 기존 비밀번호 유지)
+        //  - 같은 ID 10분 6회, 같은 IP 10분 20회로 제한
+        ResponseDTO response = new ResponseDTO();
+        String id = memberDTO.getId() == null ? "" : memberDTO.getId().trim();
+        if (id.isEmpty()
+                || !SimpleRateLimiter.tryAcquire("pwinit:" + id, 6, 10 * 60 * 1000L)
+                || !SimpleRateLimiter.tryAcquire("pwinit:ip:" + request.getRemoteAddr(), 20, 10 * 60 * 1000L)) {
+            response.setResultCode(CommConstants.RESULT_CODE_FAIL);
+            response.setResultMessage("요청이 너무 많습니다. 잠시 후 다시 시도해주세요.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        memberDTO.setId(id);
+        String email = eduMarineService.getMemberEmail(memberDTO);
+        if (email == null || email.trim().isEmpty()) {
+            response.setResultCode("-2");
+            response.setResultMessage("등록된 이메일이 없습니다.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
+        String tempPassword = PasswordUtil.generateTempPassword(10);
+
+        MailRequestDTO mail = new MailRequestDTO();
+        mail.setSubject("[ 경기해양레저 인력양성센터 ] 비밀번호 초기화 요청");
+        mail.setBody(buildInitPasswordMailBody(id, tempPassword));
+        mail.setTemplate("");
+        MailRequestDTO.Receiver receiver = new MailRequestDTO.Receiver();
+        receiver.setEmail(email.trim());
+        mail.setReceiver(Collections.singletonList(receiver));
+        ResponseDTO mailRes = eduMarineMngService.processMailSend(mail);
+        if (mailRes == null || !CommConstants.RESULT_CODE_SUCCESS.equals(mailRes.getResultCode())) {
+            response.setResultCode("-2");
+            response.setResultMessage("메일 전송에 실패하였습니다.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
+        memberDTO.setPassword(tempPassword);
+        response = eduMarineService.initMemberPassword(memberDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -468,9 +625,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply01/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply01_insert(@RequestBody RegularDTO regularDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply01_insert(@RequestBody RegularDTO regularDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply01_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            regularDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertRegular(regularDTO);
 
@@ -479,9 +642,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply01/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply01_update_status(@RequestBody RegularDTO regularDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply01_update_status(@RequestBody RegularDTO regularDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply01_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        RegularDTO existing = eduMarineService.processSelectRegularSingle(regularDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                regularDTO.getApplyStatus(), regularDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateRegularPayStatus(regularDTO);
 
@@ -490,9 +663,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply02/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply02_update_status(@RequestBody BoarderDTO boarderDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply02_update_status(@RequestBody BoarderDTO boarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply02_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        BoarderDTO existing = eduMarineService.processSelectBoarderSingle(boarderDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                boarderDTO.getApplyStatus(), boarderDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBoarderPayStatus(boarderDTO);
 
@@ -501,9 +684,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply03/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply03_update_status(@RequestBody FrpDTO frpDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply03_update_status(@RequestBody FrpDTO frpDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply03_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        FrpDTO existing = eduMarineService.processSelectFrpSingle(frpDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                frpDTO.getApplyStatus(), frpDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateFrpPayStatus(frpDTO);
 
@@ -512,9 +705,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply04/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply04_update_status(@RequestBody InboarderDTO inboarderDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply04_update_status(@RequestBody InboarderDTO inboarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply04_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        InboarderDTO existing = eduMarineService.processSelectInboarderSingle(inboarderDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                inboarderDTO.getApplyStatus(), inboarderDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateInboarderPayStatus(inboarderDTO);
 
@@ -523,9 +726,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply05/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply05_update_status(@RequestBody OutboarderDTO outboarderDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply05_update_status(@RequestBody OutboarderDTO outboarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply05_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        OutboarderDTO existing = eduMarineService.processSelectOutboarderSingle(outboarderDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                outboarderDTO.getApplyStatus(), outboarderDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateOutboarderPayStatus(outboarderDTO);
 
@@ -534,9 +747,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply06/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply06_update_status(@RequestBody SailyachtDTO sailyachtDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply06_update_status(@RequestBody SailyachtDTO sailyachtDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply06_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        SailyachtDTO existing = eduMarineService.processSelectSailyachtSingle(sailyachtDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                sailyachtDTO.getApplyStatus(), sailyachtDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSailyachtPayStatus(sailyachtDTO);
 
@@ -545,9 +768,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply07/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply07_update_status(@RequestBody HighHorsePowerDTO highHorsePowerDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply07_update_status(@RequestBody HighHorsePowerDTO highHorsePowerDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply07_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        HighHorsePowerDTO existing = eduMarineService.processSelectHighHorsePowerSingle(highHorsePowerDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                highHorsePowerDTO.getApplyStatus(), highHorsePowerDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateHighHorsePowerPayStatus(highHorsePowerDTO);
 
@@ -556,9 +789,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply08/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply08_update_status(@RequestBody SterndriveDTO sterndriveDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply08_update_status(@RequestBody SterndriveDTO sterndriveDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply08_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        SterndriveDTO existing = eduMarineService.processSelectSterndriveSingle(sterndriveDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                sterndriveDTO.getApplyStatus(), sterndriveDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSterndrivePayStatus(sterndriveDTO);
 
@@ -567,9 +810,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply09/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply09_update_status(@RequestBody HighSelfDTO highSelfDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply09_update_status(@RequestBody HighSelfDTO highSelfDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply09_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        HighSelfDTO existing = eduMarineService.processSelectHighSelfSingle(highSelfDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                highSelfDTO.getApplyStatus(), highSelfDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateHighSelfPayStatus(highSelfDTO);
 
@@ -578,9 +831,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply10/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply10_update_status(@RequestBody HighSpecialDTO highSpecialDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply10_update_status(@RequestBody HighSpecialDTO highSpecialDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply10_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        HighSpecialDTO existing = eduMarineService.processSelectHighSpecialSingle(highSpecialDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                highSpecialDTO.getApplyStatus(), highSpecialDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateHighSpecialPayStatus(highSpecialDTO);
 
@@ -589,9 +852,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply11/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply11_update_status(@RequestBody SternSpecialDTO sternSpecialDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply11_update_status(@RequestBody SternSpecialDTO sternSpecialDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply11_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        SternSpecialDTO existing = eduMarineService.processSelectSternSpecialSingle(sternSpecialDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                sternSpecialDTO.getApplyStatus(), sternSpecialDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSternSpecialPayStatus(sternSpecialDTO);
 
@@ -600,9 +873,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply12/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply12_update_status(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply12_update_status(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply12_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                basicDTO.getApplyStatus(), basicDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBasicPayStatus(basicDTO);
 
@@ -611,9 +894,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply13/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply13_update_status(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply13_update_status(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply13_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                basicDTO.getApplyStatus(), basicDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBasicPayStatus(basicDTO);
 
@@ -622,9 +915,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply14/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply14_update_status(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply14_update_status(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply14_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                basicDTO.getApplyStatus(), basicDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBasicPayStatus(basicDTO);
 
@@ -633,9 +936,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply15/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply15_update_status(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply15_update_status(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply15_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                emergencyDTO.getApplyStatus(), emergencyDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
 
@@ -644,9 +957,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply16/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply16_update_status(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply16_update_status(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply16_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                emergencyDTO.getApplyStatus(), emergencyDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
 
@@ -655,9 +978,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply17/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply17_update_status(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply17_update_status(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply17_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                emergencyDTO.getApplyStatus(), emergencyDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergencyPayStatus(emergencyDTO);
 
@@ -666,9 +999,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply18/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply18_update_status(@RequestBody GeneratorDTO generatorDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply18_update_status(@RequestBody GeneratorDTO generatorDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply18_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        GeneratorDTO existing = eduMarineService.processSelectGeneratorSingle(generatorDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                generatorDTO.getApplyStatus(), generatorDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateGeneratorPayStatus(generatorDTO);
 
@@ -677,9 +1020,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply19/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply19_update_status(@RequestBody CompetencyDTO competencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply19_update_status(@RequestBody CompetencyDTO competencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply19_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        CompetencyDTO existing = eduMarineService.processSelectCompetencySingle(competencyDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                competencyDTO.getApplyStatus(), competencyDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateCompetencyPayStatus(competencyDTO);
 
@@ -688,9 +1041,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply20/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply20_update_status(@RequestBody FamtourinDTO famtourinDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply20_update_status(@RequestBody FamtourinDTO famtourinDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply20_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        FamtourinDTO existing = eduMarineService.processSelectFamtourinSingle(famtourinDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                famtourinDTO.getApplyStatus(), famtourinDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateFamtourinPayStatus(famtourinDTO);
 
@@ -703,9 +1066,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply21/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply21_update_status(@RequestBody FamtouroutDTO famtouroutDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply21_update_status(@RequestBody FamtouroutDTO famtouroutDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply21_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        FamtouroutDTO existing = eduMarineService.processSelectFamtouroutSingle(famtouroutDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                famtouroutDTO.getApplyStatus(), famtouroutDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateFamtouroutPayStatus(famtouroutDTO);
 
@@ -718,9 +1091,19 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply22/update/status.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply22_update_status(@RequestBody ElectroDTO electroDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply22_update_status(@RequestBody ElectroDTO electroDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply22_update_status");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 변경, '결제완료' 는 유료(교육비 1원 이상) 교육이면 거부
+        ElectroDTO existing = eduMarineService.processSelectElectroSingle(electroDTO.getSeq());
+        ResponseEntity<ResponseDTO> guard = guardStatusUpdate(session,
+                existing == null ? null : existing.getMemberSeq(),
+                existing == null ? null : existing.getTrainSeq(),
+                electroDTO.getApplyStatus(), electroDTO.getTrainSeq());
+        if (guard != null) {
+            return guard;
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateElectroPayStatus(electroDTO);
 
@@ -761,9 +1144,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply02/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply02_insert(@RequestBody BoarderDTO boarderDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply02_insert(@RequestBody BoarderDTO boarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply02_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            boarderDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertBoarder(boarderDTO);
 
@@ -789,9 +1178,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply03/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply03_insert(@RequestBody FrpDTO frpDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply03_insert(@RequestBody FrpDTO frpDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply03_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            frpDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertFrp(frpDTO);
 
@@ -818,9 +1213,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply04/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply04_insert(@RequestBody InboarderDTO inboarderDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply04_insert(@RequestBody InboarderDTO inboarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply04_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            inboarderDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertInboarder(inboarderDTO);
 
@@ -828,11 +1229,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply04_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply04_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply04_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply04_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         InboarderDTO info = eduMarineService.processSelectInboarderSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -870,9 +1281,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply05/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply05_insert(@RequestBody OutboarderDTO outboarderDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply05_insert(@RequestBody OutboarderDTO outboarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply05_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            outboarderDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertOutboarder(outboarderDTO);
 
@@ -880,11 +1297,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply05_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply05_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply05_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply05_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         OutboarderDTO info = eduMarineService.processSelectOutboarderSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -921,11 +1348,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply06_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply06_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply06_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply06_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         SailyachtDTO info = eduMarineService.processSelectSailyachtSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -945,9 +1382,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply06/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply06_insert(@RequestBody SailyachtDTO sailyachtDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply06_insert(@RequestBody SailyachtDTO sailyachtDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply06_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            sailyachtDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertSailyacht(sailyachtDTO);
 
@@ -985,9 +1428,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply07/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply07_insert(@RequestBody HighHorsePowerDTO highHorsePowerDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply07_insert(@RequestBody HighHorsePowerDTO highHorsePowerDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply07_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            highHorsePowerDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertHighHorsePower(highHorsePowerDTO);
 
@@ -995,11 +1444,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply07_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply07_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply07_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply07_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         HighHorsePowerDTO info = eduMarineService.processSelectHighHorsePowerSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1019,9 +1478,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply07/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply07_update(@RequestBody HighHorsePowerDTO highHorsePowerDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply07_update(@RequestBody HighHorsePowerDTO highHorsePowerDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply07_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        HighHorsePowerDTO existing = eduMarineService.processSelectHighHorsePowerSingle(highHorsePowerDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateHighhorsepower(highHorsePowerDTO);
 
@@ -1059,9 +1524,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply08/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply08_insert(@RequestBody SterndriveDTO sterndriveDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply08_insert(@RequestBody SterndriveDTO sterndriveDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply08_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            sterndriveDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertSterndrive(sterndriveDTO);
 
@@ -1069,11 +1540,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply08_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply08_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply08_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply08_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         SterndriveDTO info = eduMarineService.processSelectSterndriveSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1093,9 +1574,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply08/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply08_update(@RequestBody SterndriveDTO sterndriveDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply08_update(@RequestBody SterndriveDTO sterndriveDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply08_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        SterndriveDTO existing = eduMarineService.processSelectSterndriveSingle(sterndriveDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSterndrive(sterndriveDTO);
 
@@ -1133,9 +1620,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply09/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply09_insert(@RequestBody HighSelfDTO highselfDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply09_insert(@RequestBody HighSelfDTO highselfDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply09_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            highselfDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertHighSelf(highselfDTO);
 
@@ -1143,11 +1636,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply09_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply09_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply09_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply09_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         HighSelfDTO info = eduMarineService.processSelectHighSelfSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1167,9 +1670,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply09/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply09_update(@RequestBody HighSelfDTO highselfDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply09_update(@RequestBody HighSelfDTO highselfDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply09_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        HighSelfDTO existing = eduMarineService.processSelectHighSelfSingle(highselfDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateHighSelf(highselfDTO);
 
@@ -1207,9 +1716,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply10/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply10_insert(@RequestBody HighSpecialDTO highSpecialDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply10_insert(@RequestBody HighSpecialDTO highSpecialDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply10_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            highSpecialDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertHighSpecial(highSpecialDTO);
 
@@ -1217,11 +1732,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply10_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply10_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply10_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply10_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         HighSpecialDTO info = eduMarineService.processSelectHighSpecialSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1241,9 +1766,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply10/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply10_update(@RequestBody HighSpecialDTO highSpecialDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply10_update(@RequestBody HighSpecialDTO highSpecialDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply10_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        HighSpecialDTO existing = eduMarineService.processSelectHighSpecialSingle(highSpecialDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateHighSpecial(highSpecialDTO);
 
@@ -1281,9 +1812,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply11/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply11_insert(@RequestBody SternSpecialDTO sternSpecialDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply11_insert(@RequestBody SternSpecialDTO sternSpecialDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply11_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            sternSpecialDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertSternSpecial(sternSpecialDTO);
 
@@ -1291,11 +1828,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply11_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply11_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply11_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply11_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         SternSpecialDTO info = eduMarineService.processSelectSternSpecialSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1315,9 +1862,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply11/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply11_update(@RequestBody SternSpecialDTO sternSpecialDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply11_update(@RequestBody SternSpecialDTO sternSpecialDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply11_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        SternSpecialDTO existing = eduMarineService.processSelectSternSpecialSingle(sternSpecialDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSternSpecial(sternSpecialDTO);
 
@@ -1355,9 +1908,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply12/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply12_insert(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply12_insert(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply12_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            basicDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertBasic(basicDTO);
 
@@ -1365,11 +1924,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply12_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply12_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply12_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply12_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         BasicDTO info = eduMarineService.processSelectBasicSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1389,9 +1958,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply12/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply12_update(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply12_update(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply12_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBasic(basicDTO);
 
@@ -1429,9 +2004,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply13/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply13_insert(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply13_insert(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply13_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            basicDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertBasic(basicDTO);
 
@@ -1439,11 +2020,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply13_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply13_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply13_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply13_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         BasicDTO info = eduMarineService.processSelectBasicSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1463,9 +2054,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply13/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply13_update(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply13_update(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply13_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBasic(basicDTO);
 
@@ -1503,9 +2100,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply14/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply14_insert(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply14_insert(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply14_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            basicDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertBasic(basicDTO);
 
@@ -1513,11 +2116,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply14_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply14_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply14_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply14_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         BasicDTO info = eduMarineService.processSelectBasicSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1537,9 +2150,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply14/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply14_update(@RequestBody BasicDTO basicDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply14_update(@RequestBody BasicDTO basicDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply14_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        BasicDTO existing = eduMarineService.processSelectBasicSingle(basicDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBasic(basicDTO);
 
@@ -1577,9 +2196,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply15/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply15_insert(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply15_insert(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply15_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            emergencyDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertEmergency(emergencyDTO);
 
@@ -1587,11 +2212,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply15_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply15_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply15_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply15_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         EmergencyDTO info = eduMarineService.processSelectEmergencySingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1611,9 +2246,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply15/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply15_update(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply15_update(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply15_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergency(emergencyDTO);
 
@@ -1651,9 +2292,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply16/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply16_insert(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply16_insert(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply16_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            emergencyDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertEmergency(emergencyDTO);
 
@@ -1661,11 +2308,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply16_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply16_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply16_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply16_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         EmergencyDTO info = eduMarineService.processSelectEmergencySingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1685,9 +2342,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply16/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply16_update(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply16_update(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply16_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergency(emergencyDTO);
 
@@ -1725,9 +2388,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply17/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply17_insert(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply17_insert(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply17_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            emergencyDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertEmergency(emergencyDTO);
 
@@ -1735,11 +2404,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply17_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply17_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply17_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply17_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         EmergencyDTO info = eduMarineService.processSelectEmergencySingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1759,9 +2438,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply17/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply17_update(@RequestBody EmergencyDTO emergencyDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply17_update(@RequestBody EmergencyDTO emergencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply17_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        EmergencyDTO existing = eduMarineService.processSelectEmergencySingle(emergencyDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateEmergency(emergencyDTO);
 
@@ -1799,9 +2484,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply18/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply18_insert(@RequestBody GeneratorDTO generatorDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply18_insert(@RequestBody GeneratorDTO generatorDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply18_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            generatorDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertGenerator(generatorDTO);
 
@@ -1809,11 +2500,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply18_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply18_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply18_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply18_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         GeneratorDTO info = eduMarineService.processSelectGeneratorSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1833,9 +2534,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply18/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply18_update(@RequestBody GeneratorDTO generatorDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply18_update(@RequestBody GeneratorDTO generatorDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply18_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        GeneratorDTO existing = eduMarineService.processSelectGeneratorSingle(generatorDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateGenerator(generatorDTO);
 
@@ -1873,9 +2580,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply19/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply19_insert(@RequestBody CompetencyDTO competencyDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply19_insert(@RequestBody CompetencyDTO competencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply19_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            competencyDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertCompetency(competencyDTO);
 
@@ -1883,11 +2596,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply19_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply19_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply19_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply19_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         CompetencyDTO info = eduMarineService.processSelectCompetencySingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1907,9 +2630,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply19/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply19_update(@RequestBody CompetencyDTO competencyDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply19_update(@RequestBody CompetencyDTO competencyDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply19_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        CompetencyDTO existing = eduMarineService.processSelectCompetencySingle(competencyDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateCompetency(competencyDTO);
 
@@ -1947,9 +2676,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply20/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply20_insert(@RequestBody FamtourinDTO famtourinDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply20_insert(@RequestBody FamtourinDTO famtourinDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply20_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            famtourinDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertFamtourin(famtourinDTO);
 
@@ -1957,11 +2692,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply20_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply20_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply20_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply20_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         FamtourinDTO info = eduMarineService.processSelectFamtourinSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -1981,9 +2726,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply20/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply20_update(@RequestBody FamtourinDTO famtourinDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply20_update(@RequestBody FamtourinDTO famtourinDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply20_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        FamtourinDTO existing = eduMarineService.processSelectFamtourinSingle(famtourinDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateFamtourin(famtourinDTO);
 
@@ -2021,9 +2772,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply21/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply21_insert(@RequestBody FamtouroutDTO famtouroutDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply21_insert(@RequestBody FamtouroutDTO famtouroutDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply21_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            famtouroutDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertFamtourout(famtouroutDTO);
 
@@ -2031,11 +2788,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply21_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply21_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply21_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply21_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         FamtouroutDTO info = eduMarineService.processSelectFamtouroutSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -2055,9 +2822,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply21/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply21_update(@RequestBody FamtouroutDTO famtouroutDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply21_update(@RequestBody FamtouroutDTO famtouroutDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply21_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        FamtouroutDTO existing = eduMarineService.processSelectFamtouroutSingle(famtouroutDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateFamtourout(famtouroutDTO);
 
@@ -2095,9 +2868,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/apply/eduApply22/insert.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> apply_eduApply22_insert(@RequestBody ElectroDTO electroDTO) {
+    public ResponseEntity<ResponseDTO> apply_eduApply22_insert(@RequestBody ElectroDTO electroDTO, HttpSession session) {
         //System.out.println("EduMarineController > apply_eduApply22_insert");
         //System.out.println(noticeDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 상태면 회원번호는 세션 기준으로 고정 (타인 명의 신청 차단)
+        String sessionMemberSeq = getSessionMemberSeq(session);
+        if (sessionMemberSeq != null) {
+            electroDTO.setMemberSeq(sessionMemberSeq);
+        }
 
         ResponseDTO responseDTO = eduMarineService.processInsertElectro(electroDTO);
 
@@ -2105,11 +2884,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply22_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply22_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply22_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply22_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         ElectroDTO info = eduMarineService.processSelectElectroSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -2129,9 +2918,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply22/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply22_update(@RequestBody ElectroDTO electroDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply22_update(@RequestBody ElectroDTO electroDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply22_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        ElectroDTO existing = eduMarineService.processSelectElectroSingle(electroDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateElectro(electroDTO);
 
@@ -2198,8 +2993,8 @@ public class EduMarineController {
 
         ResponseDTO response = new ResponseDTO();
         try {
-            // 세션 정보 바인딩
-            String memberSeq = (String) session.getAttribute("seq");
+            // 세션 정보 바인딩 (2026-10-30 보안 조치(H-1): 세션 회원번호로 고정. 기존 코드의 "seq" 속성은 어디서도 넣지 않아 항상 null 이었음)
+            String memberSeq = getSessionMemberSeq(session);
             if (memberSeq != null && !memberSeq.isEmpty()) dto.setMemberSeq(memberSeq);
 
             // ★ 교육비 0원(무료) 검증 및 상태 자동 지정 로직 추가
@@ -2722,26 +3517,37 @@ public class EduMarineController {
             if (!"V801".equals(pc_resultCode)) { // 결제 도중 취소 코드 V801 아닐 때
 
                 String userId = null;
+                String userIdForPay = null; // 결제 처리에만 쓰는 ID (세션 복구와 분리)
 
                 // 1-1. 세션에서 ID 추출 시도
                 if (session.getAttribute("id") != null) {
                     userId = session.getAttribute("id").toString();
                 }
                 // 1-2. 세션 유실 시 merchantData에서 역추출하여 세션 복구
+                //      2026-10-30 보안 조치(C-4): 결제 요청 시 서버가 붙인 서명(발급시각·HMAC)이 맞을 때만 세션을 복구한다.
+                //      서명이 없거나 틀리면 결제 처리는 기존대로 진행하되 로그인 세션은 만들지 않는다.
                 else {
                     String merchantData = request.getParameter("merchantData");
                     if (merchantData != null && merchantData.contains("||")) {
                         String[] parts = merchantData.split("\\|\\|");
                         if (parts.length >= 2) {
-                            userId = parts[1]; // 사용자 ID 추출
-                            session.setAttribute("id", userId);
-                            session.setAttribute("status", "logon");
-                            System.out.println("PC 결제: 세션 복구 완료. ID: " + userId);
+                            userIdForPay = parts[1];
+                            if (parts.length >= 4 && SignUtil.verifyMerchant(parts[0], parts[1], parts[2], parts[3])) {
+                                userId = parts[1]; // 사용자 ID 추출
+                                session.setAttribute("id", userId);
+                                session.setAttribute("status", "logon");
+                                System.out.println("PC 결제: 세션 복구 완료. ID: " + userId);
+                            } else {
+                                System.out.println("PC 결제: merchantData 서명 불일치 - 세션 복구 생략");
+                            }
                         }
                     }
                 }
 
                 // 1-3. 결제 데이터 Insert 진행
+                if (userId == null && userIdForPay != null) {
+                    userId = userIdForPay;
+                }
                 if (userId != null) {
                     MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(userId);
                     if (memberInfo != null) {
@@ -2761,32 +3567,44 @@ public class EduMarineController {
             if (!"01".equals(mo_resultCode)) { // 결제 도중 취소 코드 01 아닐 때
 
                 String userId = null;
+                String userIdForPay = null; // 결제 처리에만 쓰는 ID (세션 복구와 분리)
 
                 // 2-1. 세션에서 ID 추출 시도
                 if (session.getAttribute("id") != null) {
                     userId = session.getAttribute("id").toString();
                 }
                 // 2-2. 세션 유실 시 P_NOTI에서 역추출하여 세션 복구
+                //      2026-10-30 보안 조치(C-4): P_NOTI 끝에 붙인 발급시각·서명이 맞을 때만 세션을 복구한다.
                 else {
                     String pNoti = request.getParameter("P_NOTI");
                     if (pNoti != null) {
+                        String[] parts = null;
                         if (pNoti.contains("_UNIFIED_")) { // 통합 폼 방식
-                            String[] parts = pNoti.split("_");
-                            if (parts.length >= 5) userId = parts[parts.length - 1];
+                            parts = pNoti.split("_");
                         } else if (pNoti.contains(",")) { // 기존 폼 방식
-                            String[] parts = pNoti.split(",");
-                            if (parts.length >= 4) userId = parts[parts.length - 1];
+                            parts = pNoti.split(",");
                         }
-
-                        if (userId != null) {
-                            session.setAttribute("id", userId);
-                            session.setAttribute("status", "logon");
-                            System.out.println("모바일 결제: 세션 복구 완료. ID: " + userId);
+                        if (parts != null && parts.length >= 4) {
+                            int last = parts.length - 1;
+                            boolean signed = parts.length >= 6 && SignUtil.looksLikeSign(parts[last]) && SignUtil.looksLikeTs(parts[last - 1]);
+                            String candidate = signed ? parts[last - 2] : parts[last];
+                            userIdForPay = candidate;
+                            if (signed && SignUtil.verifyMerchant(parts[1], candidate, parts[last - 1], parts[last])) {
+                                userId = candidate;
+                                session.setAttribute("id", userId);
+                                session.setAttribute("status", "logon");
+                                System.out.println("모바일 결제: 세션 복구 완료. ID: " + userId);
+                            } else {
+                                System.out.println("모바일 결제: P_NOTI 서명 불일치 - 세션 복구 생략");
+                            }
                         }
                     }
                 }
 
                 // 2-3. 결제 데이터 Insert 진행
+                if (userId == null && userIdForPay != null) {
+                    userId = userIdForPay;
+                }
                 if (userId != null) {
                     MemberDTO memberInfo = eduMarineService.processSelectMemberSingle(userId);
                     if (memberInfo != null) {
@@ -2944,15 +3762,33 @@ public class EduMarineController {
         String seq = memberDTO.getSeq();
         MemberDTO responseInfo = eduMarineService.processSelectMemberSeqSingle(seq);
 
-        return new ResponseEntity<>(responseInfo, HttpStatus.OK);
+        // 2026-10-30 보안 조치(H-1): 비밀번호·연락처 등 개인정보는 돌려주지 않고, 화면 안내에 쓰는 마스킹 아이디만 반환
+        MemberDTO safe = null;
+        if (responseInfo != null) {
+            safe = new MemberDTO();
+            safe.setSeq(responseInfo.getSeq());
+            safe.setId(maskId(responseInfo.getId()));
+        }
+
+        return new ResponseEntity<>(safe, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/eduApply01_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply01_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply01_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply01_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         RegularDTO info = eduMarineService.processSelectRegularSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -2972,9 +3808,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply01/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply01_update(@RequestBody RegularDTO regularDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply01_update(@RequestBody RegularDTO regularDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply01_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        RegularDTO existing = eduMarineService.processSelectRegularSingle(regularDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateRegular(regularDTO);
 
@@ -2982,11 +3824,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply02_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply02_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply02_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply02_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         BoarderDTO info = eduMarineService.processSelectBoarderSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
 
@@ -3038,9 +3890,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply02/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply02_update(@RequestBody BoarderDTO boarderDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply02_update(@RequestBody BoarderDTO boarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply02_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        BoarderDTO existing = eduMarineService.processSelectBoarderSingle(boarderDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateBoarder(boarderDTO);
 
@@ -3070,11 +3928,21 @@ public class EduMarineController {
     }
 
     @RequestMapping(value = "/mypage/eduApply03_modify.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApply03_modify(String seq, String modYn) {
+    public ModelAndView mypage_eduApply03_modify(String seq, String modYn, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply03_modify");
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 열람 (미로그인 → 로그인, 타인 신청 → 내 신청 목록)
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
+
         FrpDTO info = eduMarineService.processSelectFrpSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) {
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
 
@@ -3125,9 +3993,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply03/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply03_update(@RequestBody FrpDTO frpDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply03_update(@RequestBody FrpDTO frpDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply03_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        FrpDTO existing = eduMarineService.processSelectFrpSingle(frpDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateFrp(frpDTO);
 
@@ -3136,9 +4010,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply04/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply04_update(@RequestBody InboarderDTO inboarderDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply04_update(@RequestBody InboarderDTO inboarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply04_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        InboarderDTO existing = eduMarineService.processSelectInboarderSingle(inboarderDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateInboarder(inboarderDTO);
 
@@ -3147,9 +4027,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply05/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply05_update(@RequestBody OutboarderDTO outboarderDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply05_update(@RequestBody OutboarderDTO outboarderDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply05_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        OutboarderDTO existing = eduMarineService.processSelectOutboarderSingle(outboarderDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateOutboarder(outboarderDTO);
 
@@ -3158,9 +4044,15 @@ public class EduMarineController {
 
     @RequestMapping(value = "/mypage/eduApply06/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApply06_update(@RequestBody SailyachtDTO sailyachtDTO) {
+    public ResponseEntity<ResponseDTO> mypage_eduApply06_update(@RequestBody SailyachtDTO sailyachtDTO, HttpSession session) {
         //System.out.println("EduMarineController > mypage_eduApply06_update");
         //System.out.println(memberDTO.toString());
+
+        // 2026-10-30 보안 조치(H-1): 로그인 회원 본인 신청만 수정
+        SailyachtDTO existing = eduMarineService.processSelectSailyachtSingle(sailyachtDTO.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
 
         ResponseDTO responseDTO = eduMarineService.processUpdateSailyacht(sailyachtDTO);
 
@@ -3173,8 +4065,14 @@ public class EduMarineController {
 
     // 1. 상세 페이지 이동
     @RequestMapping(value = "/mypage/eduApplyUnified_detail.do", method = RequestMethod.GET)
-    public ModelAndView mypage_eduApplyUnified_detail(String auSeq) {
+    public ModelAndView mypage_eduApplyUnified_detail(String auSeq, HttpSession session) {
         ModelAndView mv = new ModelAndView();
+
+        // 2026-10-30 보안 조치(H-1): 로그인 필수
+        if (session.getAttribute("id") == null) {
+            mv.setViewName("redirect:/member/login.do");
+            return mv;
+        }
 
         // 신청 정보 조회 (Service에 해당 메서드가 있다고 가정. 없다면 추가 필요)
         // ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(seq);
@@ -3184,6 +4082,10 @@ public class EduMarineController {
         // (실제로는 EduMarineService에 UnifiedMapper.selectUnifiedApplicationSingle 호출 메서드를 만들어야 함)
         // 아래는 예시 코드입니다. Service에 메서드를 추가한 후 주석을 해제하세요.
         ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(auSeq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) { // 타인 신청은 내 신청 목록으로
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if(info != null){
             mv.addObject("info", info);
@@ -3222,6 +4124,10 @@ public class EduMarineController {
 
         // 2. 통합 신청 정보 조회
         ApplicationUnifiedDTO info = eduMarineService.processSelectApplicationUnifiedSingle(seq);
+        if (info != null && !isOwner(session, info.getMemberSeq())) { // 2026-10-30 보안 조치(H-1): 타인 신청은 내 신청 목록으로
+            mv.setViewName("redirect:/mypage/eduApplyInfo.do");
+            return mv;
+        }
 
         if (info != null) {
             mv.addObject("info", info);
@@ -3261,7 +4167,12 @@ public class EduMarineController {
     // 3. 정보 수정 실행 (POST)
     @RequestMapping(value = "/mypage/eduApplyUnified/update.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApplyUnified_update(@RequestBody ApplicationUnifiedDTO dto) {
+    public ResponseEntity<ResponseDTO> mypage_eduApplyUnified_update(@RequestBody ApplicationUnifiedDTO dto, HttpSession session) {
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 수정
+        ApplicationUnifiedDTO existing = eduMarineService.processSelectApplicationUnifiedSingle(dto.getSeq());
+        if (existing == null || !isOwner(session, existing.getMemberSeq())) {
+            return forbidden();
+        }
         ResponseDTO response = eduMarineService.processUpdateUnifiedApplication(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3269,10 +4180,15 @@ public class EduMarineController {
     // 4. 신청 취소 실행 (POST)
     @RequestMapping(value = "/mypage/eduApplyUnified/cancel.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_eduApplyUnified_cancel(@RequestBody ApplicationUnifiedDTO dto) {
+    public ResponseEntity<ResponseDTO> mypage_eduApplyUnified_cancel(@RequestBody ApplicationUnifiedDTO dto, HttpSession session) {
 
         // 1. 기존 신청 정보 및 교육 과정 정보(수강료) 조회
         ApplicationUnifiedDTO appInfo = eduMarineService.processSelectApplicationUnifiedSingle(dto.getSeq());
+
+        // 2026-10-30 보안 조치(H-1): 본인 신청만 취소
+        if (appInfo == null || !isOwner(session, appInfo.getMemberSeq())) {
+            return forbidden();
+        }
         TrainDTO trainInfo = null;
         if(appInfo != null) {
             trainInfo = eduMarineService.processSelectTrainSingle(appInfo.getTrainSeq());
@@ -5126,6 +6042,12 @@ public class EduMarineController {
         inistdpayRequestDTO.setMkey(mKey);
         inistdpayRequestDTO.setGoodname("[" + trainDTO.getSeq() + "] " + gbn);
         inistdpayRequestDTO.setSiteDomain(siteDomain);
+        // 2026-10-30 보안 조치(C-4): 결제 복귀 세션 복구용 서명 (merchantData / P_NOTI 끝에 붙임)
+        String mdTs = SignUtil.now();
+        Object sessionLoginId = request.getSession().getAttribute("id");
+        mv.addObject("mdTs", mdTs);
+        mv.addObject("mdSign", SignUtil.signMerchant(inistdpayRequestDTO.getTableSeq(), sessionLoginId == null ? "" : sessionLoginId.toString(), mdTs));
+
         mv.addObject("payInfo", inistdpayRequestDTO);
 
         System.out.println("apply_payment : " + inistdpayRequestDTO.toString());
@@ -5207,6 +6129,12 @@ public class EduMarineController {
         inistdpayRequestDTO.setMkey(mKey);
         inistdpayRequestDTO.setGoodname("[" + trainDTO.getSeq() + "] " + gbn);
         inistdpayRequestDTO.setSiteDomain(siteDomain);
+        // 2026-10-30 보안 조치(C-4): 결제 복귀 세션 복구용 서명 (merchantData / P_NOTI 끝에 붙임)
+        String mdTs = SignUtil.now();
+        Object sessionLoginId = request.getSession().getAttribute("id");
+        mv.addObject("mdTs", mdTs);
+        mv.addObject("mdSign", SignUtil.signMerchant(inistdpayRequestDTO.getTableSeq(), sessionLoginId == null ? "" : sessionLoginId.toString(), mdTs));
+
         mv.addObject("payInfo", inistdpayRequestDTO);
 
         System.out.println("apply_mobile_payment : " + inistdpayRequestDTO.toString());
@@ -5689,54 +6617,6 @@ public class EduMarineController {
         return mv;
     }
 
-    /**
-     * Upload file response entity.
-     *
-     * @return the response entity
-     */
-    @RequestMapping(value = "/uploadFile.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity uploadFile(MultipartFile[] uploadFiles, String uploadFilePath) {
-
-        //System.out.println(uploadFilePath); // exhibitor/{id}
-        System.out.println(uploadFiles.toString());
-
-        JSONObject obj = new JSONObject();
-        ResponseDTO response = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        if(uploadFiles != null) {
-            for (MultipartFile multipartFile : uploadFiles) {
-                try {
-                    /* Prod */
-                    String path = ResourceUtils.getFile("/usr/local/tomcat/webapps/upload/" + uploadFilePath).toPath().toString();
-
-                    /* Local */
-                    //String path = ResourceUtils.getFile("C:/Users/slhge/project/Kibs/upload/" + uploadFilePath).toPath().toString();
-
-                    File folder = new File(path);
-
-                    // 해당 디렉토리가 없을경우 디렉토리를 생성
-                    if (!folder.exists()) {
-                        Files.createDirectories(folder.toPath());
-                    }
-
-                    String fileName = generateFileName(multipartFile);
-                    File tmp = new File(path + "/" + fileName);
-                    multipartFile.transferTo(tmp);
-                } catch (Exception e) {
-                    String eMessage = "[UPLOAD] Error : ";
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = String.format("%s - %s", eMessage, e.getMessage() == null ? "" : e.getMessage());
-                }
-            }
-        }
-
-        response.setResultCode(resultCode);
-        response.setResultMessage(resultMessage);
-        return new ResponseEntity(response, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/file/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> file_delete(@RequestBody FileDTO fileDTO) {
@@ -5746,12 +6626,6 @@ public class EduMarineController {
         ResponseDTO responseDTO = eduMarineService.processDeleteFile(fileDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    private String generateFileName(MultipartFile multipartFile) {
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        return new SimpleDateFormat("yyyyMMdd").format(date)+"_"+multipartFile.getOriginalFilename();
     }
 
     public HashMap<String, Object> convertMap(HttpServletRequest request) {

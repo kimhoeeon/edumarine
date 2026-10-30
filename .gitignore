@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### secrets (2026-10-30 보안 조치: 비밀값 포함 설정 파일은 추적하지 않음) ###
+src/main/resources/application.properties
+
+### Claude Code 세션 설정 (커밋 제외) ###
+.claude/

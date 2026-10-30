@@ -1,3 +1,9 @@
+/* 2026-10-30 보안 조치(H-4): 목록에 회원 입력값을 넣을 때 HTML 이스케이프 */
+function f_escape_html(v) {
+    if (v === null || v === undefined) { return ''; }
+    return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 var pageNum = 1; // 페이지 번호 생성 시점에 따른 변수 초기화
 $(function(){
     //페이지 오픈 시 default ()
@@ -106,8 +112,8 @@ function searchPosts(pageNum) {
             let rownum = results[i].rownum;
             let seq = results[i].seq;
             let gbn = results[i].gbn;
-            let title = results[i].title;
-            let writer = results[i].writer;
+            let title = f_escape_html(results[i].title);   // 2026-10-30 보안 조치(H-4)
+            let writer = f_escape_html(results[i].writer);
             let writerKey = results[i].writerKey;
             let writeDate = results[i].writeDate;
             writeDate = writeDate.split(' ')[0].replaceAll('-','.');

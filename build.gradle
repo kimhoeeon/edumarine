@@ -32,10 +32,11 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.13'
 
-	implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
-
 	implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
 	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+
+	// 2026-10-30 보안 조치: 회원 작성 HTML(커뮤니티) 정화용. Java 8 호환 버전으로 고정
+	implementation 'org.jsoup:jsoup:1.15.3'
 
 	implementation fileTree(dir : 'src/main/webapp/WEB-INF/lib', include : [ '*.jar'])
 

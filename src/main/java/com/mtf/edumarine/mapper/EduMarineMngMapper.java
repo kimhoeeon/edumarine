@@ -13,6 +13,9 @@ public interface EduMarineMngMapper {
 
     AdminDTO login(AdminDTO customerDTO);
 
+    /** 2026-10-30 보안 조치: 관리자 비밀번호 해시 저장 */
+    Integer updateAdminPassword(AdminDTO adminDTO);
+
     List<NoticeDTO> selectNoticeList(SearchDTO searchDTO);
 
     NoticeDTO selectNoticeSingle(NoticeDTO noticeDTO);

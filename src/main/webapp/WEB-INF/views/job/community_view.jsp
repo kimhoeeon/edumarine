@@ -137,11 +137,11 @@
 
                     <!-- board_view -->
                     <div class="board_view_wrap">
-                        <div class="subject">${info.title}</div>
+                        <div class="subject"><c:out value="${info.title}"/></div>
                         <div class="info_box">
                             <div class="box write">
                                 <div class="gubun">작성자</div>
-                                <div class="naeyong">${info.writer}</div>
+                                <div class="naeyong"><c:out value="${info.writer}"/></div>
                             </div>
                             <div class="box date">
                                 <div class="gubun">작성일</div>
@@ -160,7 +160,7 @@
                         </div>
                         <div class="tag_box">
                             <c:forTokens items="${info.hashtag}" delims="," var="item">
-                                <p>#${item}</p>
+                                <p>#<c:out value="${item}"/></p>
                             </c:forTokens>
                         </div>
                         <div class="file_box">
@@ -201,7 +201,7 @@
                                     <c:forEach var="reply" items="${replyList}" begin="0" end="${replyList.size()}" step="1" varStatus="status">
                                         <c:if test="${reply.depthReplyNo eq '0'}">
                                             <div class="reply_box">
-                                                <div class="user_id">${reply.writer} <c:if test="${id eq info.writerKey}"><span class="icon_writer"></span></c:if></div>
+                                                <div class="user_id"><c:out value="${reply.writer}"/> <c:if test="${id eq info.writerKey}"><span class="icon_writer"></span></c:if></div>
                                                 <div class="reply_cont"><c:out value="${reply.content}" escapeXml="true"/></div>
                                                 <div class="reply_info">
                                                     <div class="date">
@@ -230,7 +230,7 @@
                                         <c:forEach var="reReply" items="${replyList}" begin="0" end="${replyList.size()}" step="1" varStatus="status">
                                             <c:if test="${reply.seq eq reReply.moReplySeq}">
                                                 <div class="reply_box replyToReply">
-                                                    <div class="user_id">${reReply.writer} <c:if test="${id eq info.writerKey}"><span class="icon_writer"></span></c:if></div>
+                                                    <div class="user_id"><c:out value="${reReply.writer}"/> <c:if test="${id eq info.writerKey}"><span class="icon_writer"></span></c:if></div>
                                                     <div class="reply_cont"><c:out value="${reReply.content}" escapeXml="true"/></div>
                                                     <div class="reply_info">
                                                         <div class="date">

@@ -6891,4 +6891,34 @@
         WHERE seq = #{seq}
     </update>
 
+    <!-- 2026-10-30 보안 조치(C-7): 관리자 비밀번호 해시 전환/저장 -->
+    <update id="updateAdminPassword" parameterType="com.mtf.edumarine.dto.AdminDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateAdminPassword */
+        UPDATE admin
+        SET password = #{password}
+        WHERE seq = #{seq}
+    </update>
+
+    <!-- 2026-10-30 점검 조치(B-1): 누락되어 있던 '레저선박 해양전자장비 교육' SMS 대상 조회 -->
+    <select id="selectSmsSendElectroList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.EduMarineMngMapper.selectSmsSendElectroList */
+        SELECT el.seq AS tableSeq
+             , el.train_seq
+             , ( SELECT t.next_time
+                 FROM train t
+                 WHERE t.seq = el.train_seq ) as nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , el.apply_status
+        FROM `member` m
+        JOIN electro el
+        ON m.seq = el.member_seq
+        WHERE el.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+        ORDER BY el.seq DESC
+    </select>
+
 </mapper>

@@ -537,32 +537,22 @@ function f_pw_init(){
 
                 let email = ajaxConnectSimple('/member/getEmail.do', 'post', jsonStr);
                 if(nvl(email,'') !== ''){
-                    let jsonObj = {
-                        subject: '[ 경기해양레저 인력양성센터 ] 비밀번호 초기화 요청', //제목
-                        body: "", //본문
-                        template: "93", //템플릿 번호
-                        receiver: [{"email": email}]
+                    /* 2026-10-30 보안 조치(C-5): 임시 비밀번호 생성과 안내 메일 발송은 서버(/member/initPassword.do)가 처리 */
+                    let res = ajaxConnect('/member/initPassword.do', 'post', jsonStr);
+                    if(nvl(res,'') === '' || res === 'fail'){
+                        showMessage('', 'error', '[회원 정보]', '비밀번호 초기화에 실패하였습니다. 관리자에게 문의해주세요.', '');
+                        return false;
                     }
-
-                    let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
-                    //console.log(i , resData);
-                    if (resData.resultCode === "0") {
-                        /* 비밀번호 초기화 */
-                        let res = ajaxConnect('/member/initPassword.do', 'post', jsonStr);
-                        if(res.resultCode !== "0"){
-                            showMessage('', 'error', '[회원 정보]', '비밀번호 초기화에 실패하였습니다. 관리자에게 문의해주세요.', '');
-                            return false;
-                        }else{
-                            Swal.fire({
-                                title: '회원 정보',
-                                html: '해당 ID의 비밀번호가 초기화되었습니다.<br>초기화 정보는 [ ' + email + ' ] 로 전송되었습니다.<br>로그인하신 후 비밀번호를 변경하여 이용해주세요.',
-                                icon: 'info',
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: '확인'
-                            });
-                            return false;
-                        }
-                    }else{
+                    if(res.resultCode === "0"){
+                        Swal.fire({
+                            title: '회원 정보',
+                            html: '해당 ID의 비밀번호가 초기화되었습니다.<br>초기화 정보는 [ ' + email + ' ] 로 전송되었습니다.<br>로그인하신 후 비밀번호를 변경하여 이용해주세요.',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: '확인'
+                        });
+                        return false;
+                    }else if(res.resultCode === "-2"){
                         Swal.fire({
                             title: '회원 정보',
                             html: '해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기해양레저 인력양성센터로 문의 바랍니다.<br>Tel. 1811-7891',
@@ -570,6 +560,9 @@ function f_pw_init(){
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: '확인'
                         });
+                        return false;
+                    }else{
+                        showMessage('', 'error', '[회원 정보]', nvl(res.resultMessage, '') !== '' ? res.resultMessage : '비밀번호 초기화에 실패하였습니다. 관리자에게 문의해주세요.', '');
                         return false;
                     }
                 }else{

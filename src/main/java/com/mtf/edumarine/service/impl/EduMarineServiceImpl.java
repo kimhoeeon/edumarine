@@ -5,6 +5,8 @@ import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.mapper.EduMarineMapper;
 import com.mtf.edumarine.mapper.UnifiedMapper;
 import com.mtf.edumarine.service.EduMarineService;
+import com.mtf.edumarine.util.HtmlSanitizer;
+import com.mtf.edumarine.util.PasswordUtil;
 import com.mtf.edumarine.util.StringUtil;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -353,7 +355,11 @@ public class EduMarineServiceImpl implements EduMarineService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
-            String password = "aa134!@cc";
+            // 2026-10-30 보안 조치(C-5): 고정 비밀번호 대신 컨트롤러가 생성한 임시 비밀번호 사용 (없으면 여기서 생성)
+            String password = memberDTO.getPassword();
+            if (password == null || password.trim().isEmpty()) {
+                password = PasswordUtil.generateTempPassword(10);
+            }
             //salt값 생성
             String salt = Salt();
             memberDTO.setSalt(salt);
@@ -847,7 +853,12 @@ public class EduMarineServiceImpl implements EduMarineService {
     @Override
     public CommunityDTO processSelectCommunitySingle(String seq) {
         //System.out.println("EduMarineServiceImpl > processSelectCommunitySingle");
-        return eduMarineMapper.selectCommunitySingle(seq);
+        CommunityDTO info = eduMarineMapper.selectCommunitySingle(seq);
+        if (info != null) {
+            // 2026-10-30 보안 조치(H-4): 기존 저장분 포함 본문 정화 후 표시
+            info.setContent(HtmlSanitizer.clean(info.getContent()));
+        }
+        return info;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -996,6 +1007,7 @@ public class EduMarineServiceImpl implements EduMarineService {
             communityDTO.setSeq(getSeq);
 
             String content = communityDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            content = HtmlSanitizer.clean(content); // 2026-10-30 보안 조치(H-4): 스크립트·이벤트 속성 제거
             communityDTO.setContent(content);
             result = eduMarineMapper.insertCommunity(communityDTO);
 
@@ -1069,6 +1081,7 @@ public class EduMarineServiceImpl implements EduMarineService {
         try {
 
             String content = communityDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            content = HtmlSanitizer.clean(content); // 2026-10-30 보안 조치(H-4): 스크립트·이벤트 속성 제거
             communityDTO.setContent(content);
             result = eduMarineMapper.updateCommunity(communityDTO);
 

@@ -1,6 +1,8 @@
 package com.mtf.edumarine.controller;
 
 import com.mtf.edumarine.constants.CommConstants;
+import com.mtf.edumarine.util.PathSecurityUtil;
+import com.mtf.edumarine.util.SimpleRateLimiter;
 import com.mtf.edumarine.dto.*;
 import com.mtf.edumarine.service.CommService;
 import com.mtf.edumarine.service.EduMarineMngService;
@@ -215,9 +217,35 @@ public class EduMarineMngController {
      */
     @RequestMapping(value = "/mng/login.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AdminDTO> login(@RequestBody AdminDTO adminDTO, HttpSession session) {
+    public ResponseEntity<AdminDTO> login(@RequestBody AdminDTO adminDTO, HttpSession session, HttpServletRequest request) {
         //System.out.println("EduMarineMngController > login");
+        // 2026-10-30 보안 조치(C-7): 실패 횟수 제한(같은 ID 10분 20회), 성공 시 세션 ID 교체, 응답에서 비밀번호 제거.
+        //  서버가 본 접속 IP 를 로그로 남겨 두어, 추후 서버 측 IP 검사로 바꿀 때 참고한다. (로그인 방식은 그대로)
+        String limitKey = "login:admin:" + (adminDTO.getId() == null ? "" : adminDTO.getId().trim());
+        if (SimpleRateLimiter.isBlocked(limitKey, 20, 10 * 60 * 1000L)) {
+            AdminDTO blocked = new AdminDTO();
+            blocked.setResultCode("-6");
+            blocked.setResultMsg("로그인 시도가 너무 많습니다.<br>10분 후 다시 시도해주세요.");
+            return new ResponseEntity<>(blocked, HttpStatus.OK);
+        }
+        String forwarded = request.getHeader("X-Forwarded-For");
+        String serverSeenIp = (forwarded != null && !forwarded.trim().isEmpty()) ? forwarded.trim() : request.getRemoteAddr();
+        System.out.println("[admin login] id=" + adminDTO.getId() + " clientIp=" + adminDTO.getIpAddress() + " serverIp=" + serverSeenIp);
+
         AdminDTO result = eduMarineMngService.login(adminDTO, session);
+        if (result != null && CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
+            SimpleRateLimiter.reset(limitKey);
+            try {
+                request.changeSessionId(); // 세션 고정 방지 (속성은 유지됨)
+            } catch (Exception e) {
+                // 세션 ID 교체 실패는 로그인 자체에 영향 없음
+            }
+        } else {
+            SimpleRateLimiter.recordFailure(limitKey, 10 * 60 * 1000L);
+        }
+        if (result != null) {
+            result.setPassword(null);
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -229,12 +257,12 @@ public class EduMarineMngController {
         return mv;
     }
 
-    boolean isClose = false;
     @RequestMapping(value = "/mng/session/kill/gbn.do", method = RequestMethod.POST)
     @ResponseBody
     public void mng_session_kill_gbn(boolean isClose, HttpSession session) throws Exception {
         //System.out.println("EduMarineMngController > mng_session_kill_gbn");
-        this.isClose = isClose;
+        // 2026-10-30 점검 조치(B-2): 컨트롤러 공유 필드 대신 세션별 플래그 사용 (관리자 간 간섭 방지)
+        session.setAttribute("killPending", isClose ? "Y" : "N");
 
         if ( !isClose ) {
             System.out.println("Refresh Site");
@@ -242,9 +270,13 @@ public class EduMarineMngController {
         }
 
         Thread.sleep(2000);
-        if ( this.isClose ) {
-            System.out.println("Log Out");
-            eduMarineMngService.logoutCheck(session);
+        try {
+            if ( "Y".equals(session.getAttribute("killPending")) ) {
+                System.out.println("Log Out");
+                eduMarineMngService.logoutCheck(session);
+            }
+        } catch (IllegalStateException e) {
+            // 이미 만료된 세션
         }
 
     }
@@ -3419,6 +3451,18 @@ public class EduMarineMngController {
                 String filesystemName = multi.getFilesystemName(paramName); // 저장된 파일명
                 String originalFileName = multi.getOriginalFileName(paramName); // 원본 파일명
 
+                // 2026-10-30 보안 조치(C-3): 실행/스크립트 확장자 차단 (저장된 파일 삭제)
+                if (filesystemName != null
+                        && (!PathSecurityUtil.isSafeFileName(filesystemName) || !PathSecurityUtil.isSafeFileName(originalFileName))) {
+                    File bad = new File(savePath + filesystemName);
+                    if (bad.exists()) {
+                        bad.delete();
+                    }
+                    response.setResultCode("-1");
+                    response.setResultMessage("허용되지 않는 파일 형식입니다.");
+                    return new ResponseEntity<>(response, HttpStatus.OK);
+                }
+
                 if (filesystemName != null) {
                     // 5. 교육 ID(seq) 결정
                     String trainSeq = seq;
@@ -4654,6 +4698,12 @@ public class EduMarineMngController {
         uploadFile.setCharacterEncoding("UTF-8");
         JSONObject response = new JSONObject();
 
+        // 2026-10-30 보안 조치(C-3): 업로드 폴더 파라미터 검증 (../ 등 상위 폴더 이동 차단)
+        if (!PathSecurityUtil.isSafeSegment(gbn)) {
+            response.put("error", "잘못된 업로드 경로입니다.");
+            return new ResponseEntity(response, HttpStatus.OK);
+        }
+
         int size = 1024 * 1024 * 100; // 100M
         String file = "";
         String oriFile = "";
@@ -4699,6 +4749,16 @@ public class EduMarineMngController {
 
             file = multi.getFilesystemName(str);
             oriFile = multi.getOriginalFileName(str);
+
+            // 2026-10-30 보안 조치(C-3): 서버 실행/스크립트 확장자는 저장 직후 삭제하고 거부
+            if (!PathSecurityUtil.isSafeFileName(file) || !PathSecurityUtil.isSafeFileName(oriFile)) {
+                File saved = new File(uploadPath.getPath() + File.separator + file);
+                if (saved.exists()) {
+                    saved.delete();
+                }
+                response.put("error", "허용되지 않는 파일 형식입니다.");
+                return new ResponseEntity(response, HttpStatus.OK);
+            }
 
             file = appendSuffixName(uploadPath.getPath() , file, 1);
 
@@ -4793,7 +4853,12 @@ public class EduMarineMngController {
 
         //String replaceFileName = fileName.replace("/",File.separator);
 
-        File file = new File(fileName);
+        // 2026-10-30 보안 조치(C-2): 업로드 루트·메일 이미지 폴더 밖의 파일은 내려주지 않음 (임의 파일 읽기 차단)
+        File file = PathSecurityUtil.resolveAbsoluteUnderAny(fileName,
+                new File(PathSecurityUtil.UPLOAD_ROOT), new File(PathSecurityUtil.MAIL_IMG_ROOT));
+        if (file == null || !file.isFile()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         ResponseEntity<byte[]> result = null;
 
@@ -4841,6 +4906,19 @@ public class EduMarineMngController {
         // 서버에 실제 저장된 파일명
         //String filename = "20140819151221.zip" ;
         String fileName = request.getParameter("fileName");
+
+        // 2026-10-30 보안 조치(C-2): 경로 조작(../) 차단 - 저장 루트 밖이면 404
+        if (path.contains("..") || fileName == null || fileName.contains("..")
+                || fileName.contains("/") || fileName.contains("\\")) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        File rootDir = new File("mail".equals(path) ? PathSecurityUtil.MAIL_IMG_ROOT : PathSecurityUtil.UPLOAD_ROOT);
+        File safeFile = PathSecurityUtil.resolveUnder(rootDir, ("mail".equals(path) ? "" : path + "/") + fileName);
+        if (safeFile == null || !safeFile.isFile()) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
         OutputStream out = response.getOutputStream();
         String downFile = file_repo + "/" + fileName;
@@ -10831,9 +10909,25 @@ public class EduMarineMngController {
 
     @RequestMapping(value = "/sms/send/notify/sending.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> sms_send_notify_sending(@RequestBody SmsNotificationDTO smsNotificationDTO) {
+    public ResponseEntity<String> sms_send_notify_sending(@RequestBody SmsNotificationDTO smsNotificationDTO, HttpServletRequest request) {
         //System.out.println("EduMarineMngController > sms_send_notify_sending");
-        //System.System.out.println(fileDTO.toString());
+        // 2026-10-30 보안 조치(H-3): 공개 호출은 회원 흐름이 쓰는 대상(1 가입, 2 신청, 5 취소완료, 8 키워드)만 허용하고,
+        //  문자 내용은 화면이 보낸 값을 쓰지 않고 서버 템플릿으로 다시 만든다. 같은 대상에 10분 4회, IP 당 1분 40회 제한.
+        String target = smsNotificationDTO.getTarget();
+        if (!("1".equals(target) || "2".equals(target) || "5".equals(target) || "8".equals(target))) {
+            return new ResponseEntity<>(CommConstants.RESULT_CODE_FAIL, HttpStatus.OK);
+        }
+        String targetKey = "smsnoti:" + target + ":" + String.valueOf(smsNotificationDTO.getSeq())
+                + ":" + String.valueOf(smsNotificationDTO.getKeyword());
+        if (!SimpleRateLimiter.tryAcquire("smsnoti:ip:" + request.getRemoteAddr(), 40, 60 * 1000L)
+                || !SimpleRateLimiter.tryAcquire(targetKey, 4, 10 * 60 * 1000L)) {
+            return new ResponseEntity<>(CommConstants.RESULT_CODE_FAIL, HttpStatus.OK);
+        }
+        String content = commService.smsSendNotifyContent(smsNotificationDTO);
+        if (content == null || content.trim().isEmpty()) {
+            return new ResponseEntity<>(CommConstants.RESULT_CODE_FAIL, HttpStatus.OK);
+        }
+        smsNotificationDTO.setContent(content);
         String result = commService.smsSendNotifySending(smsNotificationDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

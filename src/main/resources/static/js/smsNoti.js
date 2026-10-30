@@ -16,7 +16,7 @@ function f_sms_notify_sending(target, paramData){
             result = ajaxConnect('/sms/send/notify/sending.do', 'post', jsonObj1);
             break;
         case '2': // 수강신청 후 (완)
-            let jsonObj2 = { target: target , content: f_sms_notify_content(target, paramData) , seq : paramData.seq }
+            let jsonObj2 = { target: target , content: f_sms_notify_content(target, paramData) , seq : paramData.seq , trainSeq : paramData.trainSeq }
             result = ajaxConnect('/sms/send/notify/sending.do', 'post', jsonObj2);
             break;
         case '5': // 취소완료 후

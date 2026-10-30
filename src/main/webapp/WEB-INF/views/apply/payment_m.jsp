@@ -424,10 +424,10 @@
 
                 if (systemType === 'UNIFIED') {
                     // 형식: 교육PK_신청PK_시스템타입_상품명_사용자ID
-                    pNotiValue = trainSeq + "_" + tableSeq + "_" + systemType + "_" + goodName + "_" + currentUserId;
+                    pNotiValue = trainSeq + "_" + tableSeq + "_" + systemType + "_" + goodName + "_" + currentUserId + "_${mdTs}_${mdSign}";
                 } else {
                     // 기존 콤마(,) 구분자 사용 + 사용자ID
-                    pNotiValue = trainSeq + "," + tableSeq + "," + goodName + "," + currentUserId;
+                    pNotiValue = trainSeq + "," + tableSeq + "," + goodName + "," + currentUserId + ",${mdTs},${mdSign}";
                 }
 
                 // 3. 폼 Hidden Input 값 업데이트 (P_NOTI)
