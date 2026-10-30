@@ -243,10 +243,16 @@
 | M-2 회원 해시 방식 | 미조치 | 로그인 흐름 영향 없이 바꾸려면 재해시 이관 설계 필요 |
 | B-1 electro SMS SQL | 조치 | XML 추가 |
 | B-2 세션 종료 API 공유 필드 | 조치 | 세션별 플래그 |
-| B-3 팸투어 양식 파일 없음 | 미조치 | 발주사 확인 사항(FAMTOUR_FORM 사용 여부) |
+| B-3 팸투어 양식 파일 없음 | 보류(정리) | 사용자 결정(2026-10-30): 팸투어 통합 양식은 나중에 만들기로 하고, 주석 처리된 FAMTOUR_FORM 분기와 관리자 선택지 주석을 제거. 통합 양식 신청 완료 문자는 추가 |
 | B-4 멀티파트 비활성 핸들러 | 부분 | `/uploadFile.do` 삭제. `/mng/excelUpload.do` 는 관리자 전용으로만 남김 |
 | B-5~B-8 | 미조치 | 3단계 정리 대상 |
 | B-9 System.out·printStackTrace | 조치 | `@Slf4j` 로거 도입, 활성 출력 258곳 전환·삭제, 주석 출력 1,274줄 제거 (2026-10-30 추가 작업) |
+| 5장 죽은 코드·파일 | 조치 (2026-10-30 3단계) | 매퍼 선언 5·서비스 2·`convertMap`·DTO 4·`Reference.xml`·중복 SQL 7·주석 코드·이니시스 샘플 2·JS 10·CSS 4·`inc/common*JS.jsp`·테스트 의존성 2 삭제. `guide02/04/12`·announcement 는 링크·매핑이 있어 유지 |
+| 5장 정적 파일 126개(36MB) | 변경 (사용자 결정) | 삭제 대신 `static/img·file·assets·eng/img·eng/fonts` 를 git 추적 해제·`.gitignore`. WAR 에는 그대로 포함되므로 WAR 크기는 변화 없음 |
+| 6장 엑셀 export 복붙 | 부분 조치 | `util/ExcelExportUtil`(스타일·셀 쓰기·열 너비) 로 공통화, 컬럼 정의·헤더 루프·응답은 핸들러 유지. 컬럼 메타 방식 전환은 보류 |
+| 6장 결제 취소 블록 | 조치 | `callInicisRefundApi` helper 로 통합 |
+| 6장 관리자 레이아웃 복제 | 조치 | `views/mng/inc/_*.jspf` 11개 정적 include, 펼침 검증으로 렌더링 동일 확인 |
+| 6장 레거시 모듈 19벌·과정명 분기 | 보류 | 데이터 이관이 선행돼야 해 사용자 결정으로 보류 |
 
 검증: JDK 8 `compileJava` 성공. 로컬 실행·브라우저 확인 결과는 CLAUDE.md 변경 이력과 세션 보고 참조.
 
