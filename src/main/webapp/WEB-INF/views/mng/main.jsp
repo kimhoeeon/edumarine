@@ -1,128 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-language" content="ko">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="copyright" content="경기테크노파크">
-    <meta name="robots" content="all">
-    <meta property="og:locale" content="ko_KR">
-    <meta itemprop="inLanguage" content="ko-kr">
-    <meta name="resource-type" content="website">
-    <meta property="og:type" content="website">
-
-    <meta property="og:site_name" content="경기해양레저인력양성센터">
-    <title>경기해양레저 인력양성센터</title>
-
-    <meta name="title" content="경기해양레저인력양성센터">
-    <meta property="og:title" content="경기해양레저인력양성센터">
-    <meta name="twitter:title" content="경기해양레저인력양성센터">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://edumarine.org/main.do">
-    <meta itemprop="name" content="경기해양레저인력양성센터">
-    <meta property="nate:title" content="경기해양레저인력양성센터">
-    <meta property="nate:url" content="https://edumarine.org/main.do">
-
-    <meta property="og:url" content="https://edumarine.org/main.do">
-    <meta itemprop="url" content="https://edumarine.org/main.do">
-    <link rel="canonical" id="canonical" href="https://edumarine.org/main.do">
-
-    <meta name="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
-    <meta name="twitter:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
-    <meta property="og:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
-    <meta itemprop="description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
-    <meta property="nate:description" content="경기해양레저인력양성센터는 경기도가 ‘16년도에 전국 최초로 개설한 해양레저 테크니션 전문교육기관입니다.">
-
-    <meta property="og:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
-    <meta name="keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
-    <meta property="twitter:keywords" content="경기해양레저인력양성센터, EDU marine, 에듀마린, 해상엔진, 해상엔진 교육, 선박엔진, 선박엔진 교육, 선외기, 선외기 교육, 선외기 정비 교육, 선내기, 선내기 교육, 선외기 정비 교육, 선체, 선체 교육, 선체 정비 교육, 해양레저, 해양레저 교육, 요트 교육, 요트정비 교육, 엔진정비 교육  편집 지켜보기">
-
-    <meta name="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
-    <meta name="twitter:image " content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
-    <meta property="og:image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
-    <meta itemprop="image" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
-    <meta itemprop="thumbnailUrl" content="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
-    <link rel="image_src" link="https://cdn2.micehub.com/home/2017/edua/Files/edua_20210604_122121.jpg">
-
-    <%-- favicon --%>
-    <link rel="apple-touch-icon" sizes="57x57" href="/img/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/img/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/img/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/img/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/img/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/img/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/img/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/img/favicon/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-    <%-- favicon --%>
-
-    <!--begin::Fonts(mandatory for all pages)-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
-    <!--end::Fonts-->
-    <!--begin::Vendor Stylesheets(used for this page only)-->
-
-    <link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
-    <!--end::Vendor Stylesheets-->
-    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
-    <!--end::Global Stylesheets Bundle-->
-
-    <!--begin::custom Mng css-->
-    <link href="/css/font.css" rel="stylesheet">
-    <link href="/css/mngStyle.css" rel="stylesheet" type="text/css"/>
-    <!--end::custom Mng css-->
+<%@ include file="/WEB-INF/views/mng/inc/_top.jspf" %>
+<%@ include file="/WEB-INF/views/mng/inc/_head.jspf" %>
 </head>
-<!--end::Head-->
-<!--begin::Body-->
-<body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
-      data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
-      data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
-      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
-<!--begin::Theme mode setup on page load-->
-<script>var defaultThemeMode = "light";
-var themeMode;
-if (document.documentElement) {
-    if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
-        themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
-    } else {
-        if (localStorage.getItem("data-bs-theme") !== null) {
-            themeMode = localStorage.getItem("data-bs-theme");
-        } else {
-            themeMode = defaultThemeMode;
-        }
-    }
-    if (themeMode === "system") {
-        themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    document.documentElement.setAttribute("data-bs-theme", themeMode);
-}</script>
-<!--end::Theme mode setup on page load-->
-
-<!--begin::login check-->
-<c:if test="${sessionScope.get('status') ne 'logon'}">
-    <script>
-        alert("로그인해 주세요.");
-        location.href = '/mng/index.do';
-    </script>
-</c:if>
-
+<%@ include file="/WEB-INF/views/mng/inc/_body_open.jspf" %>
 <c:if test="${sessionScope.get('status') eq 'logon'}">
 
 <!--begin::App-->
@@ -558,6 +438,4 @@ if (document.documentElement) {
 
 <!--end::login check-->
 </c:if>
-</body>
-<!--end::Body-->
-</html>
+<%@ include file="/WEB-INF/views/mng/inc/_bottom.jspf" %>

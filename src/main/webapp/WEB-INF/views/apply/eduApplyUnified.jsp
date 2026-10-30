@@ -193,9 +193,7 @@
                             <c:when test="${trainInfo.formType == 'BASE_FORM'}">
                                 <jsp:include page="_form_unified_base.jsp" />
                             </c:when>
-                            <%--<c:when test="${trainInfo.formType == 'FAMTOUR_FORM'}">
-                                <jsp:include page="_form_unified_famtour.jsp" />
-                            </c:when>--%>
+                            <%-- 팸투어형(FAMTOUR_FORM) 양식은 미구현. 필요해지면 _form_unified_famtour.jsp 를 만들고 여기와 관리자 교육 등록 화면의 form_type 선택지에 추가한다 (2026-10-30 보류). --%>
                             <c:otherwise>
                                 <div class="form_box">
                                     <p style="text-align:center; padding: 20px;">
@@ -370,6 +368,10 @@
 
                             // 3. 성공 시 결제 페이지로 이동 (반환된 app_seq와 'UNIFIED' 타입 전달)
                             var appSeq = response.customValue; // Service에서 반환한 'AU000000X'
+
+                            // 2026-10-30 발주사 결정: 통합 양식도 레거시 과정과 같이 신청 완료 직후 수강신청 안내 문자(템플릿 2)를 보낸다.
+                            //  seq 는 신청번호(AU...)이며 서버가 application_unified 에서 회원 연락처를 찾는다. 내용은 서버 템플릿(trainSeq 기준).
+                            f_sms_notify_sending('2', { seq: appSeq, trainSeq: '${seq}' });
 
                             if (paySum === 0) {
                                 // ★ 교육비가 0원일 경우 결제 모듈 호출 없이 완료 메시지 띄우고 마이페이지 이동
