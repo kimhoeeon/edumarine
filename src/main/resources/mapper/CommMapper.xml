@@ -273,4 +273,13 @@
         ORDER BY id
     </select>
 
+    <!-- 2026-10-30 결함 수정: 신청번호로 회원번호 조회. table 은 CommServiceImpl.APPLY_TABLE_BY_PREFIX 의 고정 문자열만 들어온다 (사용자 입력 아님) -->
+    <select id="selectMemberSeqByApplySeq" parameterType="java.util.Map" resultType="java.lang.String">
+        /* com.mtf.edumarine.mapper.CommMapper.selectMemberSeqByApplySeq */
+        SELECT member_seq
+        FROM ${table}
+        WHERE seq = #{seq}
+        LIMIT 1
+    </select>
+
 </mapper>

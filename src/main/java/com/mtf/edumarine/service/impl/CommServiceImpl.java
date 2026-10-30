@@ -296,6 +296,17 @@ public class CommServiceImpl implements CommService {
             } else if ("2".equals(smsNotificationDTO.getTarget())) { // 수강신청 후
                 String phone = commMapper.getSmsSendingJoinList(smsNotificationDTO);
 
+                // 2026-10-30 결함 수정: 레거시 신청 화면 20종은 회원번호 대신 방금 만든 신청번호를 넘겨
+                //  회원 조회가 비고 문자가 나가지 않았다. 신청번호면 신청 테이블에서 회원번호를 찾아 다시 조회한다.
+                if (phone == null || "".equals(phone)) {
+                    String memberSeq = resolveMemberSeqByApplySeq(smsNotificationDTO.getSeq());
+                    if (memberSeq != null && !memberSeq.isEmpty()) {
+                        SmsNotificationDTO memberReq = new SmsNotificationDTO();
+                        memberReq.setSeq(memberSeq);
+                        phone = commMapper.getSmsSendingJoinList(memberReq);
+                    }
+                }
+
                 if (phone != null && !"".equals(phone)) {
                     SmsDTO smsDTO = new SmsDTO();
                     smsDTO.setPhone(phone);
@@ -797,4 +808,56 @@ public class CommServiceImpl implements CommService {
                 "</urlset>";
     }
 
+    /** 신청번호 접두어 → 신청 테이블. 접두어는 번호 앞의 영문 전체(F 와 FR 처럼 길이가 달라 구분됨) */
+    private static final Map<String, String> APPLY_TABLE_BY_PREFIX = new LinkedHashMap<>();
+
+    static {
+        APPLY_TABLE_BY_PREFIX.put("AU", "application_unified");
+        APPLY_TABLE_BY_PREFIX.put("U", "regular");
+        APPLY_TABLE_BY_PREFIX.put("F", "boarder");
+        APPLY_TABLE_BY_PREFIX.put("FR", "frp");
+        APPLY_TABLE_BY_PREFIX.put("I", "inboarder");
+        APPLY_TABLE_BY_PREFIX.put("O", "outboarder");
+        APPLY_TABLE_BY_PREFIX.put("SA", "sailyacht");
+        APPLY_TABLE_BY_PREFIX.put("HP", "highhorsepower");
+        APPLY_TABLE_BY_PREFIX.put("HF", "highself");
+        APPLY_TABLE_BY_PREFIX.put("HC", "highspecial");
+        APPLY_TABLE_BY_PREFIX.put("SD", "sterndrive");
+        APPLY_TABLE_BY_PREFIX.put("SS", "sternspecial");
+        APPLY_TABLE_BY_PREFIX.put("BA", "basic");
+        APPLY_TABLE_BY_PREFIX.put("EM", "emergency");
+        APPLY_TABLE_BY_PREFIX.put("GE", "generator");
+        APPLY_TABLE_BY_PREFIX.put("CP", "competency");
+        APPLY_TABLE_BY_PREFIX.put("FI", "famtourin");
+        APPLY_TABLE_BY_PREFIX.put("FO", "famtourout");
+        APPLY_TABLE_BY_PREFIX.put("EL", "electro");
+    }
+
+    /**
+     * 2026-10-30 결함 수정: 신청번호(예 I0000012, AU0000003)로 회원번호를 찾는다.
+     * 회원번호(V...)처럼 목록에 없는 접두어면 null.
+     */
+    private String resolveMemberSeqByApplySeq(String applySeq) {
+        if (applySeq == null) {
+            return null;
+        }
+        String seq = applySeq.trim();
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("^([A-Z]+)[0-9]+$").matcher(seq);
+        if (!m.matches()) {
+            return null;
+        }
+        String table = APPLY_TABLE_BY_PREFIX.get(m.group(1));
+        if (table == null) {
+            return null;
+        }
+        try {
+            Map<String, Object> param = new HashMap<>();
+            param.put("table", table);
+            param.put("seq", seq);
+            return commMapper.selectMemberSeqByApplySeq(param);
+        } catch (Exception e) {
+            log.error("[resolveMemberSeqByApplySeq] error", e);
+            return null;
+        }
+    }
 }

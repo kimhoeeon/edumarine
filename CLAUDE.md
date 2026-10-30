@@ -28,7 +28,7 @@
 - 교육과정명(한글 문자열)이 라우팅 키다: `MenuService`, `static/js/front/schedule.js`, `EduMarineMngServiceImpl` 의 SMS 대상 switch, 매퍼 XML. 과정명을 바꾸면 모두 확인한다.
 - 관리자 JSP 82개가 Metronic 레이아웃 전체를 각자 복제한다. 로그인 가드는 JSP 스크립트 + 서버 인터셉터(`config/WebMvcConfig`).
 - 결제는 이니시스 STDPay. PC 복귀는 `merchantData`(tableSeq||id||ts||sign), 모바일은 `P_NOTI` 끝에 ts·sign 이 붙는다(`util/SignUtil`). 가상계좌 입금 통보는 `/pc/payment/vbank/vacct/noti.do`(이니시스 IP 검사).
-- 공개 SMS 알림 `/sms/send/notify/sending.do` 는 회원가입(1)·수강신청(2)·취소완료(5)·키워드(8)만 허용하고 내용은 서버 템플릿으로 다시 만든다(IP 1분 40회, 같은 대상 10분 4회 제한). 비로그인 호출(가입 직후) 흐름을 위해 로그인 검사 대상이 아니다.
+- 공개 SMS 알림 `/sms/send/notify/sending.do` 는 회원가입(1)·수강신청(2)·취소완료(5)·키워드(8)만 허용하고 내용은 서버 템플릿으로 다시 만든다(IP 1분 40회, 같은 대상 10분 4회 제한). 수강신청(2)은 `seq` 가 회원번호든 신청번호든 서버가 회원을 찾아 발송한다. 비로그인 호출(가입 직후) 흐름을 위해 로그인 검사 대상이 아니다.
 - 뉴스레터 구독 띠는 `views/inc/subscribe.jsp` 공통 파일로 메인과 뉴스레터 목록(`board/news_list.jsp`)에 노출된다. 구독 API 는 관리자 경로(`/mng/newsletter/subscriber/checkDuplicate.do`, `insert.do`)를 공개로 쓰므로 관리자 인터셉터 예외 목록에 들어 있다.
 
 ## 보안 조치 이력
@@ -70,3 +70,4 @@
 - 2026-10-30: 발주사 요청으로 뉴스레터 구독 섹션을 `inc/subscribe.jsp` 로 분리해 뉴스레터 목록 최하단에도 메인과 동일 노출(국문 전용, 상세 페이지는 요청 없음). 같은 날 발견한 회귀(공개 구독 API 가 관리자 인터셉터에 막힘)를 `WebMvcConfig` 예외 처리로 수정.
 - 2026-10-30: 화면 전수점검 완료 — 공개 GET 111건(정상 84, 의도된 로그인 리다이렉트 25, 죽은 결제 샘플 핸들러 1, Accept 에 따른 정상 406 1)과 관리자 GET 84건 전부 렌더링 확인, 서버 예외 0건. 기록 `docs/QA_SWEEP_2026-10-30.md`. 쓰기 기능 점검(TEST 데이터)과 결제·파일·발송(서버에서만 가능)은 같은 문서 5장의 표대로 미실시.
 - 2026-10-30: 메일 발송 요청 본문(API 키·본문) 콘솔 출력 제거(`68e57bf`). 이어서 `@Slf4j` 로거 도입: 컨트롤러 2·서비스 구현 3·SHA512 에서 활성 `System.out/err` 103곳과 `printStackTrace` 155곳을 `log.*` 로 전환하거나 삭제(개인정보·인증번호·DTO 덤프 출력은 삭제), 주석 처리된 디버그 출력 1,274줄 제거. 동작 변경 없음.
+- 2026-10-30: 수강신청 안내 문자(템플릿 2) 결함 수정. 레거시 신청 화면 20종이 `/sms/send/notify/sending.do` 에 회원번호 대신 신청번호를 넘겨 문자가 나가지 않던 것을, 서버(`CommServiceImpl.resolveMemberSeqByApplySeq`)가 신청번호 접두어로 신청 테이블을 찾아 회원번호를 조회하도록 보완(`CommMapper.selectMemberSeqByApplySeq`, 테이블명은 고정 목록). 화면 변경 없음. 통합 양식(UNIFIED)은 신청 완료 문자 호출 자체가 없어 발주사 확인 후 결정.
