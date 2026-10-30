@@ -21,6 +21,7 @@ import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,6 +57,14 @@ public class EduMarineMngController {
     private final EduMarineMngService eduMarineMngService;
 
     private final CommService commService;
+
+    /**
+     * 2026-10-30 보안 조치(C-7): 관리자 IP 검사 기준. "server" 면 서버가 직접 본 접속 IP(request.getRemoteAddr) 로 비교해
+     * 화면이 보낸 IP 값을 바꿔 통과하는 우회를 막는다. "client" 면 기존처럼 화면이 보낸 값으로 비교(롤백용).
+     * 운영 서버는 Tomcat 이 443 을 직접 받아 프록시가 없으므로 X-Forwarded-For 는 신뢰하지 않는다.
+     */
+    @Value("${security.admin-ip-check:client}")
+    private String adminIpCheckMode;
 
     /**
      * Instantiates a new Sipa controller.
@@ -220,9 +229,11 @@ public class EduMarineMngController {
             blocked.setResultMsg("로그인 시도가 너무 많습니다.<br>10분 후 다시 시도해주세요.");
             return new ResponseEntity<>(blocked, HttpStatus.OK);
         }
-        String forwarded = request.getHeader("X-Forwarded-For");
-        String serverSeenIp = (forwarded != null && !forwarded.trim().isEmpty()) ? forwarded.trim() : request.getRemoteAddr();
-        log.info("[admin login] id={} clientIp={} serverIp={}", adminDTO.getId(), adminDTO.getIpAddress(), serverSeenIp);
+        String serverSeenIp = request.getRemoteAddr();
+        log.info("[admin login] id={} clientIp={} serverIp={} mode={}", adminDTO.getId(), adminDTO.getIpAddress(), serverSeenIp, adminIpCheckMode);
+        if ("server".equalsIgnoreCase(adminIpCheckMode)) {
+            adminDTO.setIpAddress(serverSeenIp); // 화면이 보낸 값 대신 서버가 본 접속 IP 로 등록 IP 와 비교
+        }
 
         AdminDTO result = eduMarineMngService.login(adminDTO, session);
         if (result != null && CommConstants.RESULT_CODE_SUCCESS.equals(result.getResultCode())) {

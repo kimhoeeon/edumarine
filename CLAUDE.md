@@ -40,7 +40,7 @@
 - 변경: 비밀번호 초기화는 서버가 임시 비밀번호를 만들고 DirectSend 로 본문을 직접 보낸 뒤 DB 를 바꾼다(템플릿 93 미사용). 이메일 조회 응답은 마스킹. `main.js` 의 `/mail/send.do` 호출 제거. 같은 ID 10분 6회, 같은 IP 10분 20회 제한.
 - 변경: 마이페이지 신청 조회·수정·상태변경·취소(레거시 22종 + 통합) 소유자 검사. 신청 insert 는 로그인 시 세션 회원번호로 고정. 화면에서 보내는 `결제완료` 는 교육비가 1원 이상으로 확인되는 교육이면 거부(0원·미입력·교육 미확인은 허용). `/member/seq/selectSingle.do` 는 seq 와 마스킹 id 만 반환.
 - 변경: 커뮤니티 본문은 저장·조회 시 jsoup 정화, 제목·작성자·해시태그 `c:out`, 목록 JS 이스케이프.
-- 변경: 관리자 로그인 실패 같은 ID 10분 20회 제한, 성공 시 세션 ID 교체, 응답에서 password 제거, 서버가 본 접속 IP 를 로그에 기록. 해시 검증은 항상 지원하고, 해시 저장 전환은 `security.admin-password-hash=true` 일 때만(기본 false, 롤백 안전).
+- 변경: 관리자 로그인 실패 같은 ID 10분 20회 제한, 성공 시 세션 ID 교체, 응답에서 password 제거, 서버가 본 접속 IP 를 로그에 기록. 해시 검증은 항상 지원하고, 해시 저장 전환은 `security.admin-password-hash=true` 일 때만(기본 false, 롤백 안전). IP 검사는 `security.admin-ip-check=server`(로컬 설정 파일에 server, 코드 기본값 client)면 서버가 본 접속 IP 로 비교.
 - 변경: 회원 로그인 실패 10분 20회 제한, 세션 ID 교체.
 - 변경: 관리자 세션 종료 API 가 세션별 플래그 사용(B-2). electro SMS 대상 SQL 추가(B-1). 로그 레벨 `jdbc.sqltiming`/`resultsettable` OFF.
 - 삭제: 동작하지 않던 `/uploadFile.do`, 자격증명이 든 `MySQLConnectionTest.java`, 미사용 `commons-fileupload`, `EduMarineApplication` 의 주석 블록.
@@ -54,7 +54,7 @@
 5. 안정 확인 후 `security.admin-password-hash=true` 로 변경해 재배포(관리자 재로그인 시 해시 전환).
 
 ## 진행 중 / 미완 (보고서 8장 참조)
-- 2단계: 노출된 비밀값(DB root·서버·이니시스·알리고·DirectSend) 교체, `git rm --cached src/main/resources/application.properties`, 코드 내 키를 설정으로 이동, DB 외부 접속 차단.
+- 2단계: 노출된 비밀값(DB root·서버·이니시스·알리고·DirectSend) 교체, 코드 내 키를 설정으로 이동, DB 외부 접속 차단. (`git rm --cached` 는 완료)
 - 서버 확인 필요: Tomcat `webapps/upload` 자동 배포 여부, 프록시 유무.
 - 3단계 정리(죽은 코드·레이아웃 공통화·로거 도입)와 4단계 구조 전환은 사용자 결정 대기.
 
@@ -71,3 +71,5 @@
 - 2026-10-30: 화면 전수점검 완료 — 공개 GET 111건(정상 84, 의도된 로그인 리다이렉트 25, 죽은 결제 샘플 핸들러 1, Accept 에 따른 정상 406 1)과 관리자 GET 84건 전부 렌더링 확인, 서버 예외 0건. 기록 `docs/QA_SWEEP_2026-10-30.md`. 쓰기 기능 점검(TEST 데이터)과 결제·파일·발송(서버에서만 가능)은 같은 문서 5장의 표대로 미실시.
 - 2026-10-30: 메일 발송 요청 본문(API 키·본문) 콘솔 출력 제거(`68e57bf`). 이어서 `@Slf4j` 로거 도입: 컨트롤러 2·서비스 구현 3·SHA512 에서 활성 `System.out/err` 103곳과 `printStackTrace` 155곳을 `log.*` 로 전환하거나 삭제(개인정보·인증번호·DTO 덤프 출력은 삭제), 주석 처리된 디버그 출력 1,274줄 제거. 동작 변경 없음.
 - 2026-10-30: 수강신청 안내 문자(템플릿 2) 결함 수정. 레거시 신청 화면 20종이 `/sms/send/notify/sending.do` 에 회원번호 대신 신청번호를 넘겨 문자가 나가지 않던 것을, 서버(`CommServiceImpl.resolveMemberSeqByApplySeq`)가 신청번호 접두어로 신청 테이블을 찾아 회원번호를 조회하도록 보완(`CommMapper.selectMemberSeqByApplySeq`, 테이블명은 고정 목록). 화면 변경 없음. 통합 양식(UNIFIED)은 신청 완료 문자 호출 자체가 없어 발주사 확인 후 결정.
+- 2026-10-30: 위 6건(`c8e3848`~`41893e9`)을 origin 에 푸시하고 사용자가 운영 서버에 배포. 배포 직후 읽기 전용 확인 통과 — 새 JS·구독 섹션 반영, 무세션 관리자 API 401, 관리자 화면 302, 임의 파일 읽기 3종 404(설정 파일 포함), 미로그인 마이페이지 302, 공개 화면·sitemap 200, 기존 업로드 이미지 200. 사용자 확인 남은 항목: 관리자 로그인 후 목록·엑셀, 비밀번호 초기화 메일 수신, 레거시 과정 TEST 신청 문자, 구독 버튼.
+- 2026-10-30: 운영 로그로 관리자 접속 IP(서버 관측)와 화면 전송 IP 가 같고 프록시가 없음을 확인 → 관리자 IP 검사를 서버 관측 IP 기준으로 전환(`security.admin-ip-check=server`, X-Forwarded-For 미신뢰). 로그인 절차 변경 없음. 문제 시 설정을 client 로 되돌려 재배포.
