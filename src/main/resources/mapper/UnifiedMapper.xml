@@ -241,8 +241,8 @@
         WHERE u.seq = #{seq}
     </select>
 
-    <update id="updateUnifiedApplyStatus" parameterType="com.mtf.edumarine.dto.SternSpecialDTO">
-        /* com.mtf.edumarine.mapper.EduMarineMngMapper.updateUnifiedApplyStatus */
+    <update id="updateUnifiedApplyStatus" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.updateUnifiedApplyStatus */
         UPDATE application_unified
         SET apply_status = #{applyStatus}
         <if test='applyStatus eq "취소신청"'>
@@ -390,5 +390,30 @@
         SET train_apply_cnt = train_apply_cnt + 1
         WHERE seq = (SELECT train_seq FROM application_unified WHERE seq = #{seq})
     </update>
+
+    <!-- 2026-10-30 G2: 관리자 과정별 문자 발송 대상 (통합 양식 신청자). 레거시 selectSmsSend*List 와 같은 컬럼 구성 -->
+    <select id="selectSmsSendUnifiedList" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.SmsSendDTO">
+        /* com.mtf.edumarine.mapper.UnifiedMapper.selectSmsSendUnifiedList */
+        SELECT au.seq AS tableSeq
+             , au.train_seq AS trainSeq
+             , t.next_time AS nextTime
+             , m.seq AS memberSeq
+             , m.id
+             , m.name
+             , m.phone
+             , au.apply_status AS applyStatus
+        FROM `member` m
+        JOIN application_unified au
+        ON m.seq = au.member_seq
+        JOIN train t
+        ON t.seq = au.train_seq
+        WHERE au.del_yn = 'N'
+          AND m.del_yn = 'N'
+          AND m.sms_yn = '1'
+          AND t.del_yn = 'N'
+          AND t.application_system_type = 'UNIFIED'
+          AND t.gbn = #{gbn}
+        ORDER BY au.seq DESC
+    </select>
 
 </mapper>

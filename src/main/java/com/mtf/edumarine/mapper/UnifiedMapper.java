@@ -2,6 +2,7 @@ package com.mtf.edumarine.mapper;
 
 import com.mtf.edumarine.dto.ApplicationUnifiedDTO;
 import com.mtf.edumarine.dto.SearchDTO;
+import com.mtf.edumarine.dto.SmsSendDTO;
 import com.mtf.edumarine.dto.TrainDTO;
 import org.springframework.stereotype.Repository;
 
@@ -45,4 +46,7 @@ public interface UnifiedMapper {
     Integer updateTrainApplyCntMinus(String seq);
 
     Integer updateTrainApplyCntPlus(String seq);
+
+    /** 2026-10-30 G2: 관리자 과정별 문자 발송 대상 (통합 양식 신청자, 과정명 기준) */
+    List<SmsSendDTO> selectSmsSendUnifiedList(String gbn);
 }

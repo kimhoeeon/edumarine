@@ -2741,9 +2741,7 @@ public class EduMarineController {
         }
 
         try {
-            // 회원 신청 정보 조회
-            ApplicationUnifiedDTO appInfo = eduMarineService.processSelectApplicationUnifiedSingle(info.getSeq());
-            mv.addObject("appInfo", appInfo);
+            // 2026-10-30 G6: 회원번호로 신청(application_unified.seq)을 조회하던 죽은 코드(항상 null, 양식 JSP 의 appInfo 참조도 함께 제거) 삭제
 
             // 교육 과정 정보 조회
             if (seq != null && !seq.isEmpty()) {
@@ -2780,6 +2778,16 @@ public class EduMarineController {
 
             // ★ 교육비 0원(무료) 검증 및 상태 자동 지정 로직 추가
             TrainDTO trainDTO = eduMarineService.processSelectTrainSingle(dto.getTrainSeq());
+
+            // 2026-10-30 통합 양식 점검(G3): 화면(schedule.js)에서만 하던 마감·접수기간·정원·중복 판정을 서버에서도 검사
+            String rejectMessage = checkUnifiedApplyAvailable(trainDTO, dto);
+            if (rejectMessage != null) {
+                log.warn("[apply_eduApplyUnified_insert] 신청 거부 trainSeq={} memberSeq={} reason={}", dto.getTrainSeq(), memberSeq, rejectMessage);
+                response.setResultCode("99");
+                response.setResultMessage(rejectMessage);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+
             if (trainDTO != null && trainDTO.getPaySum() != null && trainDTO.getPaySum() == 0) {
                 dto.setApplyStatus("결제완료"); // 무료 교육이므로 즉시 결제완료(신청완료 대상) 처리
             } else {
@@ -2804,6 +2812,87 @@ public class EduMarineController {
             response.setResultMessage("오류 발생: " + e.getMessage());
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * 2026-10-30 통합 양식 점검(G3): 통합 교육 신청 가능 여부 서버 검사.
+     * 화면(schedule.js)의 버튼 판정과 같은 기준(마감 여부 → 접수 시작 전 → 접수 종료 → 정원 → 중복 신청)으로 검사한다.
+     * 교육 날짜는 train 테이블의 yyyy.MM.dd 문자열이라 문자열 비교로 충분하다.
+     *
+     * @return 신청 불가 사유 메시지, 신청 가능하면 null
+     */
+    private String checkUnifiedApplyAvailable(TrainDTO trainDTO, ApplicationUnifiedDTO dto) {
+        if (trainDTO == null || "Y".equals(trainDTO.getDelYn())) {
+            return "교육 정보를 찾을 수 없습니다.";
+        }
+        if (!"UNIFIED".equals(trainDTO.getApplicationSystemType())) {
+            return "통합 양식으로 신청할 수 없는 교육입니다.";
+        }
+        if ("Y".equals(trainDTO.getClosingYn())) {
+            return "접수가 마감된 교육입니다.";
+        }
+        String today = new SimpleDateFormat("yyyy.MM.dd").format(new Date());
+        String applyStart = normalizeYmd(trainDTO.getApplyStartDttm());
+        String applyEnd = normalizeYmd(trainDTO.getApplyEndDttm());
+        if (applyStart != null && applyStart.compareTo(today) > 0) {
+            return "접수 기간 전입니다. (접수 시작: " + applyStart + ")";
+        }
+        if (applyEnd != null && applyEnd.compareTo(today) < 0) {
+            return "접수 기간이 종료된 교육입니다.";
+        }
+        if (trainDTO.getTrainCnt() != null && trainDTO.getTrainApplyCnt() != null
+                && trainDTO.getTrainApplyCnt() >= trainDTO.getTrainCnt()) {
+            return "수강 정원이 초과하여 신청이 불가합니다.";
+        }
+        if (dto.getMemberSeq() != null && !dto.getMemberSeq().isEmpty()) {
+            Integer dup = eduMarineService.processSelectUnifiedPreCheck(dto);
+            if (dup != null && dup > 0) {
+                return "이미 신청한 교육입니다. 마이페이지에서 신청 내역을 확인해 주세요.";
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 2026-10-30 통합 양식 점검(G4): 마이페이지에서 통합 신청 내용을 수정할 수 있는지.
+     * 취소 신청·취소 완료 상태이거나 교육 종료일(yyyy.MM.dd)이 지났으면 수정 불가.
+     *
+     * @return "Y" 수정 가능 / "N" 수정 불가
+     */
+    private String unifiedModifiable(ApplicationUnifiedDTO info, TrainDTO trainInfo) {
+        if (info == null) return "N";
+        String status = info.getApplyStatus();
+        if (status != null && status.contains("취소")) return "N";
+        if (trainInfo != null) {
+            String trainEnd = normalizeYmd(trainInfo.getTrainEndDttm());
+            String today = new SimpleDateFormat("yyyy.MM.dd").format(new Date());
+            if (trainEnd != null && trainEnd.compareTo(today) < 0) return "N";
+        }
+        return "Y";
+    }
+
+    /**
+     * 교육 날짜 문자열(yyyy.MM.dd 또는 yyyy-MM-dd HH:mm:ss)을 yyyy.MM.dd 로 정규화한다.
+     * 형식이 다르면 null 을 돌려주어 해당 날짜 검사를 건너뛴다(형식 문제로 신청을 막지 않기 위함).
+     */
+    private static String normalizeYmd(String value) {
+        if (value == null || value.trim().length() < 10) return null;
+        String ymd = value.trim().substring(0, 10).replace('-', '.');
+        return ymd.matches("\\d{4}\\.\\d{2}\\.\\d{2}") ? ymd : null;
+    }
+
+    /**
+     * 2026-10-30 G7: 모바일 P_NOTI(trainSeq_tableSeq_UNIFIED_과정명_회원ID[_발급시각_서명]) 에서 과정명 조각을 복원한다.
+     * 과정명에 '_' 가 들어 있어도 회원ID 바로 앞까지를 다시 이어 붙이므로 잘리지 않는다(결제 처리에는 쓰이지 않고 결제 내역 표시용).
+     * 회원ID 가 없는 옛 형식(조각 4개)은 전과 같이 네 번째 조각만 쓴다.
+     */
+    private static String joinNotiTrainName(String[] arr) {
+        int last = arr.length - 1;
+        boolean signed = arr.length >= 6 && SignUtil.looksLikeSign(arr[last]) && SignUtil.looksLikeTs(arr[last - 1]);
+        int nameEnd = signed ? last - 3 : last - 1; // 회원ID 바로 앞 조각까지
+        if (nameEnd < 3) nameEnd = 3;
+        if (nameEnd > last) nameEnd = last;
+        return String.join("_", Arrays.copyOfRange(arr, 3, nameEnd + 1));
     }
 
 
@@ -3844,13 +3933,12 @@ public class EduMarineController {
             MemberDTO memberInfo = eduMarineService.processSelectMemberSeqSingle(info.getMemberSeq());
             mv.addObject("memberInfo", memberInfo);
 
-            // 5. 수정 가능 여부 체크 (결제완료/신청완료 상태만 수정 가능하도록)
-            // 마감 여부(closingYn)나 교육 시작일 체크 로직이 필요하다면 Service에서 처리 후 modYn 반환
-            /*String modYn = "Y";
-            if (!"신청완료".equals(info.getApplyStatus()) && !"결제완료".equals(info.getApplyStatus()) && !"입금대기".equals(info.getApplyStatus())) {
-                modYn = "N"; // 이미 수강확정되거나 취소된 경우 수정 불가 처리
-            }*/
-            if(modYn == null || modYn.isEmpty()){
+            // 5. 수정 가능 여부 체크
+            // 2026-10-30 통합 양식 점검(G4): 취소 상태·교육 종료 후에는 서버가 수정 불가(N)로 판정. 화면에서 modYn=N 으로 열면(조회 전용) 그대로 존중.
+            String serverModYn = unifiedModifiable(info, trainInfo);
+            if ("N".equals(serverModYn) || "N".equals(modYn)) {
+                modYn = "N";
+            } else {
                 modYn = "Y";
             }
             mv.addObject("modYn", modYn);
@@ -3876,6 +3964,15 @@ public class EduMarineController {
         ApplicationUnifiedDTO existing = eduMarineService.processSelectApplicationUnifiedSingle(dto.getSeq());
         if (existing == null || !isOwner(session, existing.getMemberSeq())) {
             return forbidden();
+        }
+        // 2026-10-30 통합 양식 점검(G4): 취소 상태·교육 종료 후 수정 저장 거부 (화면 차단과 같은 기준)
+        TrainDTO trainInfo = eduMarineService.processSelectTrainSingle(existing.getTrainSeq());
+        if ("N".equals(unifiedModifiable(existing, trainInfo))) {
+            log.warn("[mypage_eduApplyUnified_update] 수정 불가 상태의 수정 요청 seq={} status={}", dto.getSeq(), existing.getApplyStatus());
+            ResponseDTO response = new ResponseDTO();
+            response.setResultCode("99");
+            response.setResultMessage("취소되었거나 교육이 종료된 신청은 수정할 수 없습니다.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
         ResponseDTO response = eduMarineService.processUpdateUnifiedApplication(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -5285,7 +5382,8 @@ public class EduMarineController {
                             trainSeq = P_NOTI_ARR[0];
                             tableSeq = P_NOTI_ARR[1];
                             systemType = P_NOTI_ARR[2];
-                            trainName = P_NOTI_ARR[3];
+                            // 2026-10-30 G7: 과정명에 '_' 가 있으면 split 으로 잘리므로 회원ID·발급시각·서명 앞까지의 조각을 다시 이어 붙인다
+                            trainName = joinNotiTrainName(P_NOTI_ARR);
                             goodName = "[" + trainSeq + "]" + trainName;
                         } else if(P_NOTI_ARR.length == 3) {
                             trainSeq = P_NOTI_ARR[0];

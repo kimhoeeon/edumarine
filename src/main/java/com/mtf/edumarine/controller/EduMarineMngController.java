@@ -3933,6 +3933,9 @@ public class EduMarineMngController {
     public ModelAndView mng_smsMng_sms_send() {
         ModelAndView mv = new ModelAndView();
 
+        // 2026-10-30 G2: 과정 선택 목록에 통합 양식 교육(application_system_type=UNIFIED) 과정명을 추가
+        mv.addObject("unifiedGbnList", eduMarineMngService.processSelectUnifiedSmsGbnList());
+
         mv.setViewName("/mng/smsMng/sms/send");
         return mv;
     }

@@ -6964,6 +6964,15 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
                             PaymentDTO paymentDTO = eduMarineMngMapper.selectPaymentTableSeq(info.getSeq());
                             if(paymentDTO != null){
 
+                                // 2026-10-30 G8: 결제 내역이 있는 취소 승인은 환불 구분(ALL/PART)이 있어야 한다. 화면(unified.js)에서만 검사하던 것을 서버에서도 검사해,
+                                //  구분 없이 호출되면 환불 API 를 부르지 않은 채 취소완료로 바뀌던 것을 막는다.
+                                if (!"ALL".equals(info.getCancelGbn()) && !"PART".equals(info.getCancelGbn())) {
+                                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                                    resultMessage = "[환불 구분 누락] SEQ : " + info.getSeq() + " / 결제 내역이 있는 신청은 환불 구분(전체·부분)을 선택해야 합니다.";
+                                    log.warn("[processUpdateUnifiedApplyStatus] 환불 구분 없이 취소 승인 요청 seq={}", info.getSeq());
+                                    break;
+                                }
+
                                 // 교육 정보 조회
                                 TrainDTO trainReqDTO = new TrainDTO();
                                 trainReqDTO.setSeq(paymentDTO.getTrainSeq());
@@ -7855,6 +7864,13 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
     public List<SmsSendDTO> processSelectSmsSendList(SearchDTO searchDTO) {
         List<SmsSendDTO> responseList = new ArrayList<>();
         String gbn = searchDTO.getCondition();
+        if (gbn == null) {
+            return responseList;
+        }
+        // 2026-10-30 G2: 통합 양식 교육은 화면 option 값이 "UNIFIED:<과정명>" 으로 오며 application_unified 에서 조회
+        if (gbn.startsWith(UNIFIED_SMS_GBN_PREFIX)) {
+            return unifiedMapper.selectSmsSendUnifiedList(gbn.substring(UNIFIED_SMS_GBN_PREFIX.length()));
+        }
         String boarderGbn = "";
         if(gbn.contains("기초정비교육") || gbn.contains("응급조치교육")){
             gbn = gbn.split(" ")[0];
@@ -7930,6 +7946,21 @@ public class EduMarineMngServiceImpl implements EduMarineMngService {
     @Override
     public List<TrainDTO> processSelectActiveUnifiedTrainList() {
         return unifiedMapper.selectActiveUnifiedTrainList();
+    }
+
+    /** 2026-10-30 G2: 관리자 문자 발송 화면의 통합 교육 option 값 접두어 (sms/send.jsp 와 맞춤) */
+    public static final String UNIFIED_SMS_GBN_PREFIX = "UNIFIED:";
+
+    /** 2026-10-30 G2: 관리자 문자 발송 화면의 과정 선택 목록용 통합 교육 과정명(중복 제거, 과정명 순) */
+    @Override
+    public List<String> processSelectUnifiedSmsGbnList() {
+        Set<String> names = new LinkedHashSet<>();
+        for (TrainDTO t : unifiedMapper.selectActiveUnifiedTrainList()) {
+            if (t.getGbn() != null && !t.getGbn().trim().isEmpty()) {
+                names.add(t.getGbn().trim());
+            }
+        }
+        return new ArrayList<>(names);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

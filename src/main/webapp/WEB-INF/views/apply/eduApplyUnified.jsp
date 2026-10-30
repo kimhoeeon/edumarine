@@ -195,6 +195,8 @@
                             </c:when>
                             <%-- 팸투어형(FAMTOUR_FORM) 양식은 미구현. 필요해지면 _form_unified_famtour.jsp 를 만들고 여기와 관리자 교육 등록 화면의 form_type 선택지에 추가한다 (2026-10-30 보류). --%>
                             <c:otherwise>
+                                <%-- 2026-10-30 G5: 정의되지 않은 양식은 제출 버튼을 내지 않는다 (빈 신청서 저장 방지) --%>
+                                <c:set var="formUnknown" value="true"/>
                                 <div class="form_box">
                                     <p style="text-align:center; padding: 20px;">
                                         [오류] 잘못된 신청서 양식입니다. (form_type: ${trainInfo.formType})<br>
@@ -206,7 +208,9 @@
 
                         <div class="form_btn_box">
                             <a href="<c:url value="/apply/eduApplyUnified.do?seq=${seq}"/>" class="btnSt03">초기화</a>
+                            <c:if test="${not formUnknown}">
                             <a href="javascript:void(0);" onclick="fn_apply_submit();" class="btnSt01">교육 신청하기</a>
+                            </c:if>
                         </div>
 
                         <!-- form_notice -->
@@ -302,22 +306,24 @@
         // 신청서 제출 (신규 통합 API 호출)
         function fn_apply_submit() {
 
-            // (필요시 폼 타입별 유효성 검사 추가)
-            var formType = "${trainInfo.formType}";
+            // 2026-10-30 G5: 양식 이름(formType) 목록으로 분기하지 않고 화면에 있는 필드 기준으로 검사한다.
+            //  새 양식을 추가해도 공통 검사가 빠지지 않고, 기존 3개 양식(BASIC·PRO·BASE)의 검사 결과는 전과 같다.
+            if ('${formUnknown}' === 'true') {
+                showMessage('', 'error', '[ 교육 신청 ]', '신청서 양식이 준비되지 않았습니다.<br>관리자에게 문의해 주세요.', '');
+                return;
+            }
 
-            if (formType === 'BASIC_FORM' || formType === 'PRO_FORM' || formType === 'BASE_FORM') {
-                if (formType === 'BASIC_FORM' || formType === 'PRO_FORM') {
-                    // 작업복 사이즈
-                    if ($('#clothesSize').length > 0) {
-                        let clothesSize = $('#clothesSize').val();
-                        if (nvl(clothesSize, '') === '') {
-                            showMessage('', 'error', '[ 교육 신청 ]', '작업복 사이즈(남여공용) 항목을<br>선택해 주세요.', '');
-                            return;
-                        }
-                    }
+            // 작업복 사이즈 (항목이 있는 양식만: BASIC·PRO)
+            if ($('#clothesSize').length > 0) {
+                let clothesSize = $('#clothesSize').val();
+                if (nvl(clothesSize, '') === '') {
+                    showMessage('', 'error', '[ 교육 신청 ]', '작업복 사이즈(남여공용) 항목을<br>선택해 주세요.', '');
+                    return;
                 }
+            }
 
-                // 참여경로
+            // 참여경로 (항목이 있는 양식만: 현재 전 양식)
+            if ($('#participationPath').length > 0) {
                 let participationPath = $('#participationPath').val();
                 if (nvl(participationPath, '') === '') {
                     showMessage('', 'error', '[ 교육 신청 ]', '참여경로 항목을<br>선택해 주세요.', '');

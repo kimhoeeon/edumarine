@@ -233,6 +233,10 @@
                                                         <option value="응급조치교육 (세일요트)">응급조치교육 (세일요트)</option>
                                                         <option value="발전기 정비 교육">발전기 정비 교육</option>
                                                         <option value="선외기/선내기 직무역량 강화과정">선외기/선내기 직무역량 강화과정</option>
+                                                        <%-- 2026-10-30 G2: 통합 양식 교육 과정명 (값 접두어 UNIFIED: 는 서버에서 application_unified 조회 분기용) --%>
+                                                        <c:forEach items="${unifiedGbnList}" var="unifiedGbn">
+                                                        <option value="UNIFIED:<c:out value='${unifiedGbn}'/>"><c:out value="${unifiedGbn}"/></option>
+                                                        </c:forEach>
                                                     </select>
                                                 </div>
                                                 <!--end::Col-->

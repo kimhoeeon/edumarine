@@ -133,6 +133,19 @@
                    , fo.member_seq
               FROM famtourout fo
               WHERE fo.apply_status NOT LIKE CONCAT('%', '취소', '%')
+              UNION ALL
+              /* 2026-10-30 G1: 레저선박 해양전자장비 교육(electro)과 통합 양식(application_unified) 신청자도 2일 전 안내 대상에 포함 */
+              SELECT el.train_seq
+                   , el.member_seq
+              FROM electro el
+              WHERE el.apply_status NOT LIKE CONCAT('%', '취소', '%')
+                AND el.del_yn = 'N'
+              UNION ALL
+              SELECT au.train_seq
+                   , au.member_seq
+              FROM application_unified au
+              WHERE au.apply_status NOT LIKE CONCAT('%', '취소', '%')
+                AND au.del_yn = 'N'
               ) r
         JOIN member m
         ON r.member_seq = m.seq

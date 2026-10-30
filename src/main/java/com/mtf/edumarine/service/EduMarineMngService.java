@@ -503,6 +503,9 @@ public interface EduMarineMngService {
 
     List<TrainDTO> processSelectActiveUnifiedTrainList();
 
+    /** 2026-10-30 G2: 관리자 문자 발송 화면의 과정 선택 목록용 통합 교육 과정명(중복 제거) */
+    List<String> processSelectUnifiedSmsGbnList();
+
     /** 통합 신청 엑셀용 전체 목록 조회 */
     List<ApplicationUnifiedDTO> processSelectExcelUnifiedApplicationList(SearchDTO searchDTO);
 
