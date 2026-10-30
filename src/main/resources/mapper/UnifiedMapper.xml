@@ -108,59 +108,7 @@
           AND apply_status NOT LIKE '%취소%'
     </select>
 
-    <select id="selectUnifiedApplicationList" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
-        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedApplicationList */
-        SELECT u.seq
-             , u.train_seq
-             , u.member_seq
-             , u.apply_status
-             , u.init_regi_dttm
-             , u.cancel_dttm
-             , m.name AS memberName
-             , m.phone AS memberPhone
-             , m.email AS memberEmail
-             , t.gbn AS trainName
-             , t.gbn_depth AS trainDepth
-        FROM application_unified u
-        JOIN member m ON u.member_seq = m.seq
-        JOIN train t ON u.train_seq = t.seq
-        WHERE 1=1
-        <if test='searchText != null and searchText != ""'>
-            <choose>
-                <when test='condition == "NAME"'>
-                    AND m.name LIKE CONCAT('%', #{searchText}, '%')
-                </when>
-                <when test='condition == "PHONE"'>
-                    AND m.phone LIKE CONCAT('%', #{searchText}, '%')
-                </when>
-                <otherwise>
-                    AND (m.name LIKE CONCAT('%', #{searchText}, '%') OR m.phone LIKE CONCAT('%', #{searchText}, '%'))
-                </otherwise>
-            </choose>
-        </if>
-        ORDER BY u.init_regi_dttm DESC
-        <if test='isPaging == "Y"'>
-            LIMIT #{startRow}, #{endRow}
-        </if>
-    </select>
 
-    <select id="selectUnifiedApplicationCount" parameterType="com.mtf.edumarine.dto.SearchDTO" resultType="int">
-        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedApplicationCount */
-        SELECT COUNT(*)
-        FROM application_unified u
-        JOIN member m ON u.member_seq = m.seq
-        WHERE 1=1
-        <if test='searchText != null and searchText != ""'>
-            <choose>
-                <when test='condition == "NAME"'>
-                    AND m.name LIKE CONCAT('%', #{searchText}, '%')
-                </when>
-                <when test='condition == "PHONE"'>
-                    AND m.phone LIKE CONCAT('%', #{searchText}, '%')
-                </when>
-            </choose>
-        </if>
-    </select>
 
     <select id="selectUnifiedList" parameterType="com.mtf.edumarine.dto.ApplicationUnifiedDTO" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
         /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedList */
@@ -220,31 +168,6 @@
         ORDER BY m.grade IS NULL, au.init_regi_dttm DESC
     </select>
 
-    <select id="selectUnifiedListCnt" parameterType="java.util.HashMap" resultType="int">
-        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedListCnt */
-        SELECT COUNT(*)
-        FROM application_unified A
-        WHERE A.del_yn = 'N'
-        <if test='status != null and status != ""'>
-            AND A.apply_status = #{status}
-        </if>
-        <if test='trainSeq != null and trainSeq != ""'>
-            AND A.train_seq = #{trainSeq}
-        </if>
-        <if test='searchText != null and searchText != ""'>
-            <choose>
-                <when test='condition == "name"'>
-                    AND A.name LIKE CONCAT('%', #{searchText}, '%')
-                </when>
-                <when test='condition == "phone"'>
-                    AND A.phone LIKE CONCAT('%', #{searchText}, '%')
-                </when>
-                <otherwise>
-                    AND (A.name LIKE CONCAT('%', #{searchText}, '%') OR A.phone LIKE CONCAT('%', #{searchText}, '%'))
-                </otherwise>
-            </choose>
-        </if>
-    </select>
 
     <select id="selectActiveUnifiedTrainList" resultType="com.mtf.edumarine.dto.TrainDTO">
         SELECT seq, gbn, gbn_depth, next_time
@@ -254,17 +177,6 @@
         ORDER BY gbn ASC, gbn_depth ASC
     </select>
 
-    <select id="selectUnifiedApplicationSingle" parameterType="String" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
-        /* com.mtf.edumarine.mapper.UnifiedMapper.selectUnifiedApplicationSingle */
-        SELECT u.*
-             , m.name AS memberName
-             , m.id AS memberId
-             , t.gbn AS trainName
-        FROM application_unified u
-         JOIN member m ON u.member_seq = m.seq
-         JOIN train t ON u.train_seq = t.seq
-        WHERE u.seq = #{seq}
-    </select>
 
     <select id="selectApplicationUnifiedSingle" parameterType="java.lang.String" resultType="com.mtf.edumarine.dto.ApplicationUnifiedDTO">
         /* com.mtf.edumarine.mapper.EdumarineMapper.selectApplicationUnifiedSingle */

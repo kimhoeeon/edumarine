@@ -6180,78 +6180,6 @@ public class EduMarineController {
         return response;
     }
 
-    /*private String getDate() {
-        Calendar calendar = Calendar.getInstance();
-
-        StringBuffer times = new StringBuffer();
-        times.append(Integer.toString(calendar.get(Calendar.YEAR)));
-        if ((calendar.get(Calendar.MONTH) + 1) < 10) {
-            times.append("0");
-        }
-        times.append(Integer.toString(calendar.get(Calendar.MONTH) + 1));
-        if ((calendar.get(Calendar.DATE)) < 10) {
-            times.append("0");
-        }
-        times.append(Integer.toString(calendar.get(Calendar.DATE)));
-
-        return times.toString();
-    }
-
-    private String getTime() {
-        Calendar calendar = Calendar.getInstance();
-
-        StringBuffer times = new StringBuffer();
-
-        times.append("[");
-        if ((calendar.get(Calendar.HOUR_OF_DAY)) < 10) {
-            times.append("0");
-        }
-        times.append(Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)));
-        times.append(":");
-        if ((calendar.get(Calendar.MINUTE)) < 10) {
-            times.append("0");
-        }
-        times.append(Integer.toString(calendar.get(Calendar.MINUTE)));
-        times.append(":");
-        if ((calendar.get(Calendar.SECOND)) < 10) {
-            times.append("0");
-        }
-        times.append(Integer.toString(calendar.get(Calendar.SECOND)));
-        times.append("]");
-
-        return times.toString();
-    }
-
-    private void writeLog(String file_path) throws Exception {
-
-        File file = new File(file_path);
-        file.createNewFile();
-
-        FileWriter file2 = new FileWriter(file_path + "/vacctinput_" + getDate() + ".log", true);
-
-
-        file2.write("\n************************************************\n");
-        file2.write("PageCall time : " + getTime());
-        file2.write("\nID_MERCHANT : " + id_merchant);
-        file2.write("\nNO_TID : " + no_tid);
-        file2.write("\nNO_OID : " + no_oid);
-        file2.write("\nNO_VACCT : " + no_vacct);
-        file2.write("\nAMT_INPUT : " + amt_input);
-        file2.write("\nNM_INPUTBANK : " + nm_inputbank);
-        file2.write("\nNM_INPUT : " + nm_input);
-        file2.write("\n************************************************\n");
-
-        file2.close();
-
-    }*/
-
-    @RequestMapping(value = "/payment/INIstdpay_pc_req.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView payment_INIstdpay_pc_req(@RequestBody InistdpayRequestDTO inistdpayRequestDTO) {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/payment/INIstdpay_pc_req");
-        return mv;
-    }
-
     @RequestMapping(value = "/payment/close.do", method = RequestMethod.GET)
     public ModelAndView payment_close(String trainSeq , String trainUrl) {
         ModelAndView mv = new ModelAndView();
@@ -6266,21 +6194,6 @@ public class EduMarineController {
         ResponseDTO responseDTO = eduMarineService.processDeleteFile(fileDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    public HashMap<String, Object> convertMap(HttpServletRequest request) {
-        HashMap<String, Object> hm = new HashMap<String, Object>();
-        String key;
-        Enumeration<?> en = request.getParameterNames();
-        while ( en.hasMoreElements()){
-            key = (String) en.nextElement();
-            if (request.getParameterValues(key).length > 1) {
-                hm.put(key, request.getParameterValues(key));
-            } else {
-                hm.put(key, request.getParameter(key));
-            }
-        }
-        return hm;
     }
 
     @RequestMapping(value="/sitemap.xml", produces= {"application/xml"})

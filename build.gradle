@@ -45,8 +45,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.1'
-	testImplementation group: 'junit', name: 'junit', version: '4.13.1'
 }
 
 tasks.named('test') {

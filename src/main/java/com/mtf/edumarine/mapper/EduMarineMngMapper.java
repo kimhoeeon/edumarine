@@ -330,13 +330,9 @@ public interface EduMarineMngMapper {
 
     List<LicenseDTO> selectLicenseList(String boarderSeq);
 
-    List<FileDTO> selectFileList(String userId);
-
     List<ResumeDTO> selectResumeList(SearchDTO searchDTO);
 
     ResumeDTO selectResumeSingle(ResumeDTO resumeDTO);
-
-    List<SmsSendDTO> selectSmsSendList(SearchDTO searchDTO);
 
     List<SmsSendDTO> selectSmsSendRegularList();
 
@@ -589,20 +585,5 @@ public interface EduMarineMngMapper {
     List<SmsSendDTO> selectSmsSendElectroList(String boarderGbn);
 
     Integer updateElectroTrainSeq(ElectroDTO electroDTO);
-
-    /**
-     * 통합 신청 PK (AU0000001) 채번
-     */
-    String getUnifiedAppSeq();
-
-    /**
-     * 신규 통합 신청서 INSERT
-     */
-    int insertUnifiedApplication(ApplicationUnifiedDTO dto);
-
-    /**
-     * 신규 통합 신청서 상태 업데이트 (결제/취소 공용)
-     */
-    int updateUnifiedApplicationPayStatus(ApplicationUnifiedDTO dto);
 
 }

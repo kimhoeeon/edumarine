@@ -3,6 +3,7 @@ package com.mtf.edumarine.controller;
 import lombok.extern.slf4j.Slf4j;
 
 import com.mtf.edumarine.constants.CommConstants;
+import com.mtf.edumarine.util.ExcelExportUtil;
 import com.mtf.edumarine.util.PathSecurityUtil;
 import com.mtf.edumarine.util.SimpleRateLimiter;
 import com.mtf.edumarine.dto.*;
@@ -4663,69 +4664,43 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getGrade());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getGrade());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getName());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getName());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 관심키워드
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getKeyword());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getKeyword());
 
                 // SMS수신동의여부
                 cell = row.createCell(cellCnt++);
@@ -4737,22 +4712,15 @@ public class EduMarineMngController {
                 cell.setCellValue(smsYn);
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -4764,24 +4732,6 @@ public class EduMarineMngController {
             res.getOutputStream().close();
             workbook.dispose();
 
-            /* 변경코드 (암호화)
-            try (POIFSFileSystem fs = new POIFSFileSystem()) {
-                EncryptionInfo info = new EncryptionInfo(EncryptionMode.agile);
-                Encryptor enc = info.getEncryptor();
-                enc.confirmPassword("123");
-                try (OutputStream os = enc.getDataStream(fs)) {
-                    workbook.write(os);
-                } catch (Exception e) {
-                    log.error("OutputStream error while encrypting excel", e);
-                }
-
-                fs.writeFilesystem(res.getOutputStream());
-
-                res.getOutputStream().close();
-                workbook.dispose();
-            } catch (Exception e) {
-                log.error("POIFSFileSystem error while encrypting excel", e);
-            }*/
 
         } catch (IOException e) {
             log.error("[customer_member_detail_excel_download] error", e);
@@ -4914,9 +4864,7 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
                 cell = row.createCell(cellCnt++);
@@ -4946,9 +4894,7 @@ public class EduMarineMngController {
                 }
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getName());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getName());
 
                 // 성명(영문)
                 cell = row.createCell(cellCnt++);
@@ -4960,14 +4906,10 @@ public class EduMarineMngController {
                 }
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
                 cell = row.createCell(cellCnt++);
@@ -4979,39 +4921,25 @@ public class EduMarineMngController {
                 }
 
                 // 거주지역
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRegion());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRegion());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 1순위 신청분야
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFirstApplicationField());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFirstApplicationField());
 
                 // 2순위 신청분야
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSecondApplicationField());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSecondApplicationField());
 
                 // 3순위 신청분야
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getThirdApplicationField());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getThirdApplicationField());
 
                 // 희망교육시기
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getDesiredEducationTime());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getDesiredEducationTime());
 
                 // 전공
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMajor());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMajor());
 
                 // 경험유무
                 cell = row.createCell(cellCnt++);
@@ -5023,24 +4951,16 @@ public class EduMarineMngController {
                 cell.setCellValue(experienceYn);
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 결제상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
                 if(info.getTrainInfoList() != null && !info.getTrainInfoList().isEmpty()){
                     for(int i=0; i<info.getTrainInfoList().size(); i++){
@@ -5062,19 +4982,14 @@ public class EduMarineMngController {
                 }else{
                     // 교육데이터 없는 애들은 공백 4칸 만들기
                     for(int i=0; i<4; i++){
-                        cell = row.createCell(cellCnt++);
-                        cell.setCellStyle(bodyStyle);
-                        cell.setCellValue("");
+                        cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, "");
                     }
                 }
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -5176,61 +5091,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -5447,99 +5311,61 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 상의사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getTopClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getTopClothesSize());
 
                 // 하의사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBottomClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBottomClothesSize());
 
                 // 안전화사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getShoesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getShoesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 졸업구분
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getGradeGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getGradeGbn());
 
                 // 학교명
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSchoolName());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSchoolName());
 
                 // 전공
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMajor());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMajor());
 
                 for(int i=0; i<15; i++) {
                     // 근무처
@@ -5553,9 +5379,7 @@ public class EduMarineMngController {
                     } else {
                         careerPlaceSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerPlaceSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerPlaceSplit, i));
 
                     // 기간
                     String[] careerDateSplit = new String[15];
@@ -5568,9 +5392,7 @@ public class EduMarineMngController {
                     } else {
                         careerDateSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerDateSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerDateSplit, i));
 
                     // 직위
                     String[] careerPositionSplit = new String[15];
@@ -5583,9 +5405,7 @@ public class EduMarineMngController {
                     } else {
                         careerPositionSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerPositionSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerPositionSplit, i));
 
                     // 담당업무
                     String[] careerTaskSplit = new String[15];
@@ -5598,9 +5418,7 @@ public class EduMarineMngController {
                     } else {
                         careerTaskSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerTaskSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerTaskSplit, i));
 
                     // 소재지
                     String[] careerLocationSplit = new String[15];
@@ -5613,9 +5431,7 @@ public class EduMarineMngController {
                     } else {
                         careerLocationSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerLocationSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerLocationSplit, i));
                 }
 
                 for(int i=0; i<10; i++) {
@@ -5630,9 +5446,7 @@ public class EduMarineMngController {
                     } else {
                         licenseNameSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(licenseNameSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(licenseNameSplit, i));
 
                     // 취득일
                     String[] licenseDateSplit = new String[10];
@@ -5645,9 +5459,7 @@ public class EduMarineMngController {
                     } else {
                         licenseDateSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(licenseDateSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(licenseDateSplit, i));
 
                     // 발행기관
                     String[] licenseOrgSplit = new String[10];
@@ -5660,83 +5472,52 @@ public class EduMarineMngController {
                     } else {
                         licenseOrgSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(licenseOrgSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(licenseOrgSplit, i));
                 }
 
                 // 병역
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMilitaryGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMilitaryGbn());
 
                 // 병역(사유)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMilitaryReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMilitaryReason());
 
                 // 장애인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getDisabledGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getDisabledGbn());
 
                 // 취업지원대상
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getJobSupportGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getJobSupportGbn());
 
                 // 테크니션교육경험
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getTechEduGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getTechEduGbn());
 
                 // 테크니션교육경험(교육명)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getTechEduName());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getTechEduName());
 
                 // 지원동기
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyReason());
 
                 // 적합성 기술
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getTechReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getTechReason());
 
                 // 활동사항
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getActivityReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getActivityReason());
 
                 // 포부
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPlanReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPlanReason());
 
                 // 기타
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEtcReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEtcReason());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -5838,61 +5619,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -6109,99 +5839,61 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 상의사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getTopClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getTopClothesSize());
 
                 // 하의사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBottomClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBottomClothesSize());
 
                 // 안전화사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getShoesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getShoesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 졸업구분
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getGradeGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getGradeGbn());
 
                 // 학교명
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSchoolName());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSchoolName());
 
                 // 전공
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMajor());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMajor());
 
                 for(int i=0; i<15; i++) {
                     // 근무처
@@ -6215,9 +5907,7 @@ public class EduMarineMngController {
                     } else {
                         careerPlaceSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerPlaceSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerPlaceSplit, i));
 
                     // 기간
                     String[] careerDateSplit = new String[15];
@@ -6230,9 +5920,7 @@ public class EduMarineMngController {
                     } else {
                         careerDateSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerDateSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerDateSplit, i));
 
                     // 직위
                     String[] careerPositionSplit = new String[15];
@@ -6245,9 +5933,7 @@ public class EduMarineMngController {
                     } else {
                         careerPositionSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerPositionSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerPositionSplit, i));
 
                     // 담당업무
                     String[] careerTaskSplit = new String[15];
@@ -6260,9 +5946,7 @@ public class EduMarineMngController {
                     } else {
                         careerTaskSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerTaskSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerTaskSplit, i));
 
                     // 소재지
                     String[] careerLocationSplit = new String[15];
@@ -6275,9 +5959,7 @@ public class EduMarineMngController {
                     } else {
                         careerLocationSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(careerLocationSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(careerLocationSplit, i));
                 }
 
                 for(int i=0; i<10; i++) {
@@ -6292,9 +5974,7 @@ public class EduMarineMngController {
                     } else {
                         licenseNameSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(licenseNameSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(licenseNameSplit, i));
 
                     // 취득일
                     String[] licenseDateSplit = new String[10];
@@ -6307,9 +5987,7 @@ public class EduMarineMngController {
                     } else {
                         licenseDateSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(licenseDateSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(licenseDateSplit, i));
 
                     // 발행기관
                     String[] licenseOrgSplit = new String[10];
@@ -6322,83 +6000,52 @@ public class EduMarineMngController {
                     } else {
                         licenseOrgSplit[0] = "";
                     }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(licenseOrgSplit, i));
+                    cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, convertValue(licenseOrgSplit, i));
                 }
 
                 // 병역
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMilitaryGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMilitaryGbn());
 
                 // 병역(사유)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMilitaryReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMilitaryReason());
 
                 // 장애인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getDisabledGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getDisabledGbn());
 
                 // 취업지원대상
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getJobSupportGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getJobSupportGbn());
 
                 // 알게된 경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getKnowPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getKnowPath());
 
                 // 기타 경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getKnowPathReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getKnowPathReason());
 
                 // 지원동기
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyReason());
 
                 // 적합성 기술
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getTechReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getTechReason());
 
                 // 활동사항
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getActivityReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getActivityReason());
 
                 // 포부
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPlanReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPlanReason());
 
                 // 기타
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEtcReason());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEtcReason());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -6440,61 +6087,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -6566,102 +6162,63 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 교육구분
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBoarderGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBoarderGbn());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -6703,61 +6260,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -6829,102 +6335,63 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 교육구분
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBoarderGbn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBoarderGbn());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -6966,61 +6433,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -7092,79 +6508,49 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 추천인 생년월일
                 cell = row.createCell(cellCnt++);
@@ -7176,22 +6562,15 @@ public class EduMarineMngController {
                 }
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -7233,61 +6612,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -7359,79 +6687,49 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 추천인 생년월일
                 cell = row.createCell(cellCnt++);
@@ -7443,22 +6741,15 @@ public class EduMarineMngController {
                 }
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -7500,61 +6791,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -7626,79 +6866,49 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 추천인 생년월일
                 cell = row.createCell(cellCnt++);
@@ -7710,22 +6920,15 @@ public class EduMarineMngController {
                 }
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -7767,61 +6970,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -7893,74 +7045,46 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 교육이해
                 cell = row.createCell(cellCnt++);
@@ -7996,27 +7120,18 @@ public class EduMarineMngController {
                 }
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -8058,61 +7173,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -8184,74 +7248,46 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 교육이해
                 cell = row.createCell(cellCnt++);
@@ -8287,27 +7323,18 @@ public class EduMarineMngController {
                 }
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -8347,61 +7374,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -8455,59 +7431,37 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 추천인 생년월일
                 cell = row.createCell(cellCnt++);
@@ -8519,21 +7473,14 @@ public class EduMarineMngController {
                 }
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -8575,61 +7522,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -8701,74 +7597,46 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 교육이해
                 cell = row.createCell(cellCnt++);
@@ -8804,27 +7672,18 @@ public class EduMarineMngController {
                 }
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -8864,61 +7723,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -8972,59 +7780,37 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 추천인 생년월일
                 cell = row.createCell(cellCnt++);
@@ -9036,21 +7822,14 @@ public class EduMarineMngController {
                 }
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -9092,61 +7871,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -9218,74 +7946,46 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 교육이해
                 cell = row.createCell(cellCnt++);
@@ -9321,9 +8021,7 @@ public class EduMarineMngController {
                 }
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 추천인 생년월일
                 cell = row.createCell(cellCnt++);
@@ -9335,22 +8033,15 @@ public class EduMarineMngController {
                 }
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -9392,61 +8083,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -9518,74 +8158,46 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 작업복사이즈
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getClothesSize());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getClothesSize());
 
                 // 참여경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 교육이해
                 cell = row.createCell(cellCnt++);
@@ -9621,22 +8233,15 @@ public class EduMarineMngController {
                 }
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -9676,61 +8281,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -9802,87 +8356,54 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 신청일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyDay());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -9922,61 +8443,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -10048,87 +8518,54 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 신청일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyDay());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -10170,61 +8607,10 @@ public class EduMarineMngController {
             workbook.setCompressTempFiles(true);
 
             // *** Style--------------------------------------------------
-            //Font
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-
-            // 엑셀 헤더 셋팅 default
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
+            CellStyle headerStyle = ExcelExportUtil.headerStyle(workbook); // 2026-10-30 정리: 공통 스타일(글꼴·테두리·색 동일)
+            CellStyle headerStyle_light_green = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_GREEN);
+            CellStyle headerStyle_light_orange = ExcelExportUtil.headerStyle(workbook, IndexedColors.LIGHT_ORANGE);
+            CellStyle bodyStyle = ExcelExportUtil.bodyStyle(workbook);
 
             //rows
             int rowCnt = 0;
@@ -10296,102 +8682,63 @@ public class EduMarineMngController {
                 }
 
                 // 넘버링
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(listCount--);
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, listCount--);
 
                 // 상태
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getMemberStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getMemberStatus());
 
                 // 등급
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getApplyStatus());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getApplyStatus());
 
                 // 아이디
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getId());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getId());
 
                 // 성명(국문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameKo());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameKo());
 
                 // 성명(영문)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getNameEn());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getNameEn());
 
                 // 연락처
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getPhone());
 
                 // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getEmail());
 
                 // 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getBirthYear() + "-" + info.getBirthMonth() + "-" + info.getBirthDay());
 
                 // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getSex());
 
                 // 주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddress());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddress());
 
                 // 상세주소
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getAddressDetail());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getAddressDetail());
 
                 // 날짜 선택
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getChoiceDate());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getChoiceDate());
 
                 // 참여 경로
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationPath());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getParticipationPath());
 
                 // 추천인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRecommendPerson());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRecommendPerson());
 
                 // 추천인 생년월일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRcBirthYear() + "-" + info.getRcBirthMonth() + "-" + info.getRcBirthDay());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getRcBirthYear() + "-" + info.getRcBirthMonth() + "-" + info.getRcBirthDay());
 
                 // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getInitRegiDttm());
 
                 // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
+                cell = ExcelExportUtil.cell(row, cellCnt++, bodyStyle, info.getFinalRegiDttm());
 
             }
 
             //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
-            }
+            ExcelExportUtil.autoWidth(sheet, colNames_ex.length);
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

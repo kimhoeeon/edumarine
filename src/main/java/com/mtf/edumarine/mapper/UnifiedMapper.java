@@ -6,7 +6,6 @@ import com.mtf.edumarine.dto.TrainDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The interface EduMarine Mng mapper.
@@ -29,15 +28,11 @@ public interface UnifiedMapper {
      */
     int updateUnifiedApplicationPayStatus(ApplicationUnifiedDTO dto);
 
-    List<ApplicationUnifiedDTO> selectUnifiedApplicationList(SearchDTO searchDTO);
-
     int updateUnifiedApplication(ApplicationUnifiedDTO dto);
 
     ApplicationUnifiedDTO selectApplicationUnifiedSingle(String seq);
 
     List<ApplicationUnifiedDTO> selectUnifiedList(SearchDTO searchDTO);
-
-    int selectUnifiedListCnt(Map<String, Object> paramMap);
 
     Integer updateUnifiedApplyStatus(ApplicationUnifiedDTO info);
 

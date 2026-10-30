@@ -33,8 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,7 +54,7 @@ import java.util.*;
  */
 @Service
 @Slf4j
-public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSessionBindingListener {
+public class EduMarineMngServiceImpl implements EduMarineMngService {
 
     @Setter(onMethod_ = {@Autowired})
     private EduMarineMngMapper eduMarineMngMapper;
@@ -180,9 +178,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         }
 
         session.invalidate(); // 세션 초기화
-    }
-
-    public void valueUnbound(HttpSessionBindingEvent event) {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -7939,18 +7934,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public int processSelectUnifiedListCnt(Map<String, Object> paramMap) {
-        return unifiedMapper.selectUnifiedListCnt(paramMap);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public List<ApplicationUnifiedDTO> processSelectUnifiedApplicationList(SearchDTO searchDTO) {
-        return unifiedMapper.selectUnifiedApplicationList(searchDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
     public ApplicationUnifiedDTO processSelectApplicationUnifiedSingle(String seq) {
         return unifiedMapper.selectApplicationUnifiedSingle(seq);
     }
@@ -8328,9 +8311,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     public InistdpayCancelResponseDTO processApplyPaymentCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO) {
 
         /* 이니시스 취소 API CALL */
-        InistdpayCancelResponseDTO responseDTO = new InistdpayCancelResponseDTO();
 
-        SHA512 sha512 = new SHA512();
         Date date_now = new Date(System.currentTimeMillis());
         SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -8357,10 +8338,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
         JSONObject data = new JSONObject(data1);
 
-        // Hash Encryption
-        String plainTxt = key + mid + type + timestamp + data ;
-        plainTxt = plainTxt.replaceAll("\\\\", "");
-        String hashData = sha512.hash(plainTxt);
 
         // reqeust URL
         String apiUrl = "https://iniapi.inicis.com/v2/pg/refund";
@@ -8368,49 +8345,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             apiUrl = "https://iniapi.inicis.com/v2/pg/partialRefund";
         }
 
-        JSONObject respJson = new JSONObject();
-        respJson.put("mid", mid);
-        respJson.put("type", type);
-        respJson.put("timestamp",timestamp);
-        respJson.put("clientIp",clientIp);
-        respJson.put("data",data);
-        respJson.put("hashData",hashData);
-
-
-        //step2. key=value 로 post 요청
-        try {
-            URL reqUrl = new URL(apiUrl);
-            HttpURLConnection conn = (HttpURLConnection) reqUrl.openConnection();
-
-            if (conn != null) {
-                conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                conn.setRequestMethod("POST");
-                conn.setDefaultUseCaches(false);
-                conn.setDoOutput(true);
-
-                if (conn.getDoOutput()) {
-                    conn.getOutputStream().write(respJson.toString().getBytes(StandardCharsets.UTF_8));
-                    conn.getOutputStream().flush();
-                    conn.getOutputStream().close();
-                }
-
-                conn.connect();
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-
-                //step3. 요청 결과
-                String result = br.readLine();
-                log.info("이니시스 취소 API 응답: {}", result);
-                ObjectMapper om = new ObjectMapper();
-                responseDTO = om.readValue(result, InistdpayCancelResponseDTO.class);
-                br.close();
-            }
-
-        }catch(Exception e ) {
-            log.error("[processApplyPaymentCancelApi] 처리 중 예외", e);
-        }
-
-        return responseDTO;
+        return callInicisRefundApi(apiUrl, key, mid, type, timestamp, clientIp, data, "processApplyPaymentCancelApi");
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -8418,9 +8353,7 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
     public InistdpayCancelResponseDTO processApplyPaymentVbankCancelApi(InistdpayCancelRequestDTO inistdpayCancelRequestDTO) {
 
         /* 이니시스 취소 API CALL */
-        InistdpayCancelResponseDTO responseDTO = new InistdpayCancelResponseDTO();
 
-        SHA512 sha512 = new SHA512();
         AES128 aes128 = new AES128();
         Date date_now = new Date(System.currentTimeMillis());
         SimpleDateFormat fourteen_format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -8465,10 +8398,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
 
         JSONObject data = new JSONObject(data1);
 
-        // Hash Encryption
-        String plainTxt = key + mid + type + timestamp + data ;
-        plainTxt = plainTxt.replaceAll("\\\\", "");
-        String hashData = sha512.hash(plainTxt);
 
         // reqeust URL
         String apiUrl = "https://iniapi.inicis.com/v2/pg/refund/vacct";
@@ -8478,6 +8407,23 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
             }
         }
 
+        return callInicisRefundApi(apiUrl, key, mid, type, timestamp, clientIp, data, "processApplyPaymentVbankCancelApi");
+    }
+
+    /**
+     * 이니시스 취소·환불 API 공통 호출 (2026-10-30 정리: processApplyPaymentCancelApi / processApplyPaymentVbankCancelApi 의
+     * 동일 코드 통합). hashData = SHA512(key + mid + type + timestamp + data) 생성, JSON POST, 응답 파싱 모두 기존과 같다.
+     */
+    private InistdpayCancelResponseDTO callInicisRefundApi(String apiUrl, String key, String mid, String type, String timestamp,
+                                                           String clientIp, JSONObject data, String logTag) {
+        InistdpayCancelResponseDTO responseDTO = new InistdpayCancelResponseDTO();
+        SHA512 sha512 = new SHA512();
+
+        // Hash Encryption
+        String plainTxt = key + mid + type + timestamp + data ;
+        plainTxt = plainTxt.replaceAll("\\\\", "");
+        String hashData = sha512.hash(plainTxt);
+
         JSONObject respJson = new JSONObject();
         respJson.put("mid", mid);
         respJson.put("type", type);
@@ -8485,7 +8431,6 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
         respJson.put("clientIp",clientIp);
         respJson.put("data",data);
         respJson.put("hashData",hashData);
-
 
         //step2. key=value 로 post 요청
         try {
@@ -8515,11 +8460,8 @@ public class EduMarineMngServiceImpl implements EduMarineMngService, HttpSession
                 responseDTO = om.readValue(result, InistdpayCancelResponseDTO.class);
                 br.close();
             }
-
         }catch(Exception e ) {
-            log.error("[processApplyPaymentVbankCancelApi] error", e);
-            responseDTO.setResultCode(CommConstants.RESULT_CODE_FAIL);
-            responseDTO.setResultMsg("[Exception] processApplyPaymentVbankCancelApi : " + CommConstants.RESULT_MSG_FAIL);
+            log.error("[" + logTag + "] 처리 중 예외", e);
         }
 
         return responseDTO;
