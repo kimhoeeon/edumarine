@@ -99,4 +99,5 @@
   - 이니시스 취소 API 2개 메서드의 해시·요청·응답 코드를 `callInicisRefundApi` helper 로 통합(87→39줄, 109→59줄).
   - 관리자 JSP 레이아웃 공통화: 82개 파일을 `views/mng/inc/_*.jspf` 11개 정적 include 로 전환. 스크립트가 각 파일의 include 를 글자 그대로 펼쳐 원본과 비교 — 65개 바이트 동일, 17개는 HTML 주석 한 줄 위치만 다름(보이는 결과 동일). 관리자 JSP 합계 74,214줄 → 46,271줄. 전 JSP JspC 번역·컴파일 전후 모두 오류 0.
   - 발주사 결정 반영: 통합 양식 신청 완료 직후 수강신청 안내 문자(템플릿 2) 호출 추가(`eduApplyUnified.jsp`, 신청번호 AU… 로 서버가 회원 조회). FAMTOUR_FORM 주석 잔재 제거(`eduApplyUnified.jsp`, 관리자 교육 등록 `form_type` 선택지).
-  - 로컬 기동 정상(설정 8항목), Java 컴파일 통과. 브라우저 확인은 관리자 로그인 필요(사용자). 같은 작업에서 Gradle `war`/`bootWar` 가 `cos.jar` 중복으로 실패하던 것을 `build.gradle` 중복 제외 설정으로 해결하고 WAR(`security.admin-password-hash=true` 포함) 빌드 확인. 관리자 상세 화면 변경은 로그인이 필요해 브라우저 확인은 배포 후 확인 포인트 5 로 넘김.
+  - 로컬 기동 정상(설정 8항목), Java 컴파일 통과. 사용자 로그인 후 관리자 화면 7종·상세 2종·엑셀 다운로드 확인(QA 문서 11장). 4개 커밋으로 푸시.
+- 2026-10-30 (저장소 용량 정리, 사용자 결정): 정적 폴더 5개(`static/img`·`file`·`assets`·`eng/img`·`eng/fonts`)와 `.well-known` 2개를 `git filter-branch` 로 **전체 히스토리 110개 커밋에서 제거**. 최종 트리 동일, 커밋 수 동일, `.git` 103MB → 3.2MB. **이 시점 이전의 커밋 해시는 모두 다시 바뀌었다**(문서에 적힌 옛 해시는 기록용). 백업 번들은 세션 scratchpad 에 임시 보관. 강제 푸시는 사용자가 실행. 같은 작업에서 Gradle `war`/`bootWar` 가 `cos.jar` 중복으로 실패하던 것을 `build.gradle` 중복 제외 설정으로 해결하고 WAR(`security.admin-password-hash=true` 포함) 빌드 확인. 관리자 상세 화면 변경은 로그인이 필요해 브라우저 확인은 배포 후 확인 포인트 5 로 넘김.
