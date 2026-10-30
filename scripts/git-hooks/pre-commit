@@ -1,0 +1,24 @@
+#!/bin/sh
+# 2026-10-30 edumarine 비밀값 커밋 방지 훅.
+# 연결: 프로젝트 루트에서  git config core.hooksPath scripts/git-hooks   (클론마다 한 번)
+# 1) 실제 설정 파일이 스테이징되면 거부
+# 2) 스테이징된 내용에 비밀값 키=값 이 들어 있으면 거부 (application.properties.example 처럼 값이 비어 있으면 통과)
+
+if git diff --cached --name-only | grep -q '^src/main/resources/application.properties$'; then
+  echo "[pre-commit] src/main/resources/application.properties 는 커밋할 수 없습니다 (비밀값 포함, git 제외 대상)." >&2
+  exit 1
+fi
+
+if git diff --cached --name-only | grep -q 'dbTest/MySQLConnectionTest.java$'; then
+  echo "[pre-commit] DB 자격증명이 들던 테스트 파일은 커밋할 수 없습니다." >&2
+  exit 1
+fi
+
+PATTERN='^\+[[:space:]]*(spring\.datasource\.password|inicis\.mid|inicis\.sign-key|inicis\.cancel-key|inicis\.cancel-iv|directsend\.username|directsend\.key|aligo\.user-id|aligo\.key)[[:space:]]*=[[:space:]]*[^[:space:]]+'
+if git diff --cached -U0 | grep -E -q "$PATTERN"; then
+  echo "[pre-commit] 스테이징된 변경에 비밀값(키=값)이 들어 있습니다. 값은 application.properties(git 제외)에만 둡니다." >&2
+  git diff --cached -U0 | grep -E "$PATTERN" | sed -E 's/=.*/=<값 생략>/' >&2
+  exit 1
+fi
+
+exit 0

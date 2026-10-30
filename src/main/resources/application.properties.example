@@ -1,0 +1,58 @@
+# application.properties 예시 (값 없음). 실제 파일은 git 제외이며 Bitwarden 사본에서 복원한다.
+# 2026-10-30 작성. 새 설정 항목을 추가하면 이 파일에도 키 이름을 적는다(값은 비워 둔다).
+
+# thymeleaf ?? false
+spring.thymeleaf.enabled=false
+
+# view prefix / suffix
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+# static - img , css , js .. etc file path
+spring.mvc.static-path-pattern=/**
+
+# mysql Driver / info
+spring.datasource.driver-class-name=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+spring.datasource.username=
+spring.datasource.password=
+
+# mybatis mapper path
+mybatis.mapper-locations=classpath:mapper/*.xml
+
+# log level set
+# 2026-10-30: log4jdbc 쿼리·결과셋 로그 전체 OFF (운영 로그에 SQL·개인정보가 남지 않도록). 디버깅 때만 sqltiming=INFO 로 잠시 켠다.
+logging.level.jdbc=OFF
+logging.level.jdbc.sqlonly=OFF
+logging.level.jdbc.sqltiming=OFF
+logging.level.jdbc.resultsettable=OFF
+logging.level.jdbc.audit=OFF
+logging.level.jdbc.resultset=OFF
+logging.level.jdbc.connection=OFF
+
+spring.servlet.multipart.max-file-size=50MB
+spring.servlet.multipart.max-request-size=50MB
+spring.servlet.multipart.enabled=false
+
+server.servlet.jsp.init-parameters.mappedfile=false
+
+# prod
+spring.datasource.jdbc-url=
+
+# local
+
+# 2026-10-30 보안 조치: 관리자 비밀번호 해시 저장 (true 로 바꾸면 로그인 시 평문 -> 해시 전환, 신규 관리자 해시 저장)
+# 해시 전환 뒤 구버전 WAR 로 롤백하면 관리자 로그인이 안 되므로 배포 안정 확인 후 켠다. (2026-10-30 2차 배포 확인 후 true 로 전환)
+security.admin-password-hash=true
+
+# 2026-10-30 보안 조치: 관리자 IP 검사 기준. server = 서버가 본 접속 IP 로 비교(권장), client = 화면이 보낸 IP 로 비교(구방식, 롤백용)
+security.admin-ip-check=server
+
+# 2026-10-30 보안 조치(2단계): 외부 서비스 키를 소스에서 분리. 값을 바꾸면 WAR 재배포 필요. 이 파일은 git 제외.
+inicis.mid=
+inicis.sign-key=
+inicis.cancel-key=
+inicis.cancel-iv=
+directsend.username=
+directsend.key=
+aligo.user-id=
+aligo.key=
